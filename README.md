@@ -2,7 +2,7 @@
 
 **Artificial Critical Thinking built-in from day one.**
 
-A complete cognitive architecture for AI agents, designed to think critically about their own reasoning. Use this template to bootstrap any project with ~25K tokens of innate reasoning, ethics, and growth machinery.
+A complete cognitive architecture for AI agents, designed to think critically about their own reasoning. Use this template to bootstrap any project with ~40K tokens of innate reasoning, ethics, and growth machinery.
 
 ## The 10 ACT Tenets
 
@@ -82,7 +82,7 @@ Each platform folder is **self-contained** with the full `.github/` brain.
 
 See [`platforms/README.md`](platforms/README.md) for delivery mechanisms and ACT support details.
 
-## 38 Built-In Instructions
+## 42 Built-In Instructions
 
 | Category | Instructions |
 |----------|-------------|
@@ -91,6 +91,7 @@ See [`platforms/README.md`](platforms/README.md) for delivery mechanisms and ACT
 | **Planning** | creative-loop, research-validation, scope-management, option-generation, trade-off-analysis |
 | **Decision Making** | decision-frameworks, risk-analysis, requirements-analysis |
 | **Collaboration** | meeting-efficiency, postmortem, adversarial-review |
+| **Dialog Engineering** | csar-loop, partnership-charter, appropriate-reliance, vibe-diagnostics |
 | **Learning** | bootstrap-learning, learning-psychology, knowledge-coverage, skill-building |
 | **Memory** | memory-curation, memory-triggers, pii-memory-filter, proactive-awareness, session-health-monitoring |
 | **Growth** | meditation, brain-design |
@@ -114,9 +115,9 @@ Start with a skill. Add instruction if you need auto-loading. Add muscle when au
 | Component | Tokens |
 |-----------|--------|
 | copilot-instructions.md | ~470 |
-| 38 instructions | ~34,400 |
+| 42 instructions | ~38,900 |
 | episodic/ | ~800 |
-| **Total** | **~35,700** |
+| **Total** | **~40,200** |
 
 Lean enough to leave room for domain-specific growth.
 
