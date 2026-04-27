@@ -84,6 +84,44 @@ How the 10 ACT tenets are delivered on each platform:
 - **Auto** = Instruction auto-loads based on `applyTo` patterns (Copilot only)
 - **Config** = Platform config file instructs agent to read ACT instructions
 
+### Auto vs Config: What's the Difference?
+
+| Delivery | What Happens | User Action |
+|----------|--------------|-------------|
+| **Auto** (Copilot) | VS Code reads `applyTo` patterns, loads matching instructions before every request | None — fully automatic |
+| **Config** (others) | Config file tells the agent "read these files before complex tasks" | None — agent follows instruction |
+
+**How Auto works (Copilot):**
+
+VS Code's Copilot extension reads the `applyTo` field in each instruction's YAML frontmatter:
+```yaml
+applyTo: "**"  # Matches all files → always loads
+```
+When a file matches the pattern, the instruction is injected into context automatically.
+
+**How Config works (other platforms):**
+
+The platform's config file contains an ACT identity summary plus explicit instructions to read the full instruction files. Example from `.cursorrules`:
+```markdown
+## Required Reading
+
+Before complex tasks, read these instruction files:
+
+### Critical Thinking (always)
+- `.github/instructions/act-foundations.instructions.md`
+- `.github/instructions/critical-thinking.instructions.md`
+```
+
+The agent sees this instruction, reads the files, and applies ACT. It's instruction-following rather than automatic loading.
+
+**Aider is special** — its `read:` directive pre-loads files into context automatically:
+```yaml
+read:
+  - .github/instructions/act-foundations.instructions.md
+  - .github/instructions/critical-thinking.instructions.md
+```
+This is closer to Copilot's auto-load behavior, but without pattern matching.
+
 ### How ACT Works Per Platform
 
 | Platform | ACT Delivery Mechanism |
