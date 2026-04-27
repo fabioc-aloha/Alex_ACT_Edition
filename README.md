@@ -115,9 +115,9 @@ Start with a skill. Add instruction if you need auto-loading. Add muscle when au
 | Component | Tokens |
 |-----------|--------|
 | copilot-instructions.md | ~470 |
-| 42 instructions | ~38,900 |
+| 45 instructions | ~42,400 |
 | episodic/ | ~800 |
-| **Total** | **~40,200** |
+| **Total** | **~43,700** |
 
 Lean enough to leave room for domain-specific growth.
 
