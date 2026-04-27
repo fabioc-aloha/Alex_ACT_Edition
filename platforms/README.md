@@ -22,7 +22,7 @@ Every platform folder includes:
 |------|---------|
 | `README.md` | Platform-specific installation guide |
 | Platform config | `.cursorrules`, `CLAUDE.md`, etc. |
-| `.github/` | **Complete brain** (32 instructions, episodic memory) |
+| `.github/` | **Complete brain** (38 instructions, episodic memory) |
 
 ## Feature Parity
 
