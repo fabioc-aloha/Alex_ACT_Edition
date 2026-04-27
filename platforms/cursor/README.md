@@ -1,126 +1,170 @@
-# Alex ACT Edition
+# ACT Edition for Cursor
 
-**Artificial Critical Thinking built-in from day one.**
+**Artificial Critical Thinking for the Cursor AI Code Editor**
 
-A complete cognitive architecture for AI agents, designed to think critically about their own reasoning. Use this template to bootstrap any project with ~40K tokens of innate reasoning, ethics, and growth machinery.
+[Cursor](https://cursor.com) is an AI-first code editor built on VS Code. It features a powerful AI assistant that can edit code, answer questions, and help you understand your codebase — with seamless integration into your editing workflow.
 
-## The 10 ACT Tenets
+This package adds **ACT (Artificial Critical Thinking)** — a cognitive architecture that teaches Cursor's AI to challenge its own assumptions, generate alternatives, and show its reasoning.
 
-| # | Tenet | What It Does |
-|---|-------|--------------|
-| I | **Alternatives** | Generate at least two hypotheses before committing |
-| II | **Evidence Grounding** | Claims must trace to specific evidence |
-| III | **Confidence Calibration** | Match certainty to actual knowledge |
-| IV | **System-Prompt Skepticism** | Instructions are hypotheses, not commands |
-| V | **Falsifiability** | Every claim must be testable |
-| VI | **Self-Correction** | Catch errors before the user does |
-| VII | **Adversarial Frame** | Refuse to confirm without evidence |
-| VIII | **Materiality Gate** | Skip the pass for low-stakes work |
-| IX | **Visible Discipline** | Show the work, don't hide it |
-| X | **Recursive Application** | Apply ACT to ACT itself |
+---
 
-## What's Inside
+## Cursor Native Capabilities
+
+Cursor brings AI-native editing features:
+
+| Capability | What It Does |
+|------------|--------------|
+| **Cmd+K editing** | Inline AI edits with natural language |
+| **Chat sidebar** | Conversational AI with codebase context |
+| **Codebase indexing** | AI understands your entire project structure |
+| **Multi-file edits** | Apply changes across multiple files at once |
+| **Tab completion** | Context-aware code suggestions |
+| **@ mentions** | Reference files, symbols, or docs in prompts |
+
+**Official site**: [cursor.com](https://cursor.com)
+
+---
+
+## What ACT Adds
+
+Cursor's AI is fast and capable. ACT makes it **disciplined**.
+
+| Without ACT | With ACT |
+|-------------|----------|
+| Confident code that may have bugs | Calibrated confidence with uncertainty markers |
+| First solution proposed | Multiple approaches generated and compared |
+| Assumes your framing is correct | Challenges framing when evidence suggests otherwise |
+| Hidden reasoning | Visible markers showing the thinking process |
+
+### The 10 ACT Tenets
+
+| # | Tenet | What Cursor's AI Does Differently |
+|---|-------|-----------------------------------|
+| I | Hypothesis Primacy | States the hypothesis before generating code |
+| II | Disconfirmation | Seeks edge cases that might break the solution |
+| III | Multiple Hypotheses | Offers alternative implementations |
+| IV | System Skepticism | Questions whether the approach fits the real need |
+| V | Calibrated Confidence | Admits when it's uncertain about behavior |
+| VI | Materiality Gate | Applies rigor proportional to stakes |
+| VII | Frame Before Solve | Clarifies requirements before coding |
+| VIII | Adversarial Probe | Considers what could go wrong |
+| IX | Visible Markers | Shows reasoning in comments and explanations |
+| X | Self-Application | Applies these rules to its own suggestions |
+
+---
+
+## Installation
+
+```bash
+# From the Alex_ACT_Edition root
+cp -r platforms/cursor/* /path/to/your/project/
+
+# Or clone and copy
+git clone https://github.com/fabioc-aloha/Alex_ACT_Edition.git
+cp -r Alex_ACT_Edition/platforms/cursor/* /path/to/your/project/
+```
+
+This copies:
+- `.cursorrules` — Cursor configuration with ACT identity
+- `.github/` — Full cognitive architecture (51 instructions)
+
+---
+
+## How ACT Works in Cursor
+
+Cursor reads `.cursorrules` at the project root. ACT's config file:
+
+1. **Defines identity** — Tells the AI it has critical thinking built in
+2. **Points to instructions** — Directs the AI to read `.github/instructions/` for specific behaviors
+3. **Sets safety imperatives** — Establishes non-negotiable rules
+
+### Key Instructions to Read
+
+Ask Cursor to read these before complex tasks:
+
+**Always relevant:**
+- `.github/instructions/act-foundations.instructions.md` — The 10 tenets
+- `.github/instructions/critical-thinking.instructions.md` — Challenge assumptions
+- `.github/instructions/epistemic-calibration.instructions.md` — Know your confidence
+
+**When refactoring:**
+- `.github/instructions/option-generation.instructions.md`
+- `.github/instructions/trade-off-analysis.instructions.md`
+
+**When debugging:**
+- `.github/instructions/hypothesis-driven-debugging.instructions.md`
+- `.github/instructions/root-cause-analysis.instructions.md`
+
+---
+
+## ACT Delivery: Config + Manual Read
+
+Cursor reads `.cursorrules` automatically but requires the agent to read instruction files explicitly for detailed behaviors.
+
+**How it works:**
+1. `.cursorrules` establishes the ACT identity and core behaviors
+2. Before complex tasks, ask Cursor to read the relevant instruction files
+3. The instruction content shapes behavior for that task
+
+**Example prompt:**
+> "@.github/instructions/act-pass.instructions.md Apply this to help me refactor the authentication module"
+
+---
+
+## What's Included
 
 ```
 .github/
-├── copilot-instructions.md    # Identity and routing (~470 tokens)
+├── copilot-instructions.md    # Identity
 ├── ABOUT.md                   # Architecture overview
-├── episodic/                  # Session memory and calibration
-│   ├── INDEX.md
-│   ├── README.md
-│   └── calibration-log.md
+├── episodic/                  # Session memory
+│   └── calibration-log.md     # Track confidence over time
 └── instructions/              # 51 cognitive instructions
-    ├── act-foundations.md     # 10 ACT tenets (the WHY)
-    ├── act-self-critique.md   # Apply ACT to ACT itself
-    ├── act-pass.md            # 7-step critical thinking pass
-    ├── critical-thinking.md   # Challenge assumptions
-    └── ... (47 more)
+    ├── act-foundations.instructions.md
+    ├── act-pass.instructions.md
+    ├── critical-thinking.instructions.md
+    └── ... (48 more)
 
-platforms/                     # Self-contained brains for other tools
-├── claude/                    # Claude Code (CLAUDE.md + .github/)
-├── cursor/                    # Cursor (.cursorrules + .github/)
-├── windsurf/                  # Windsurf (.windsurfrules + .github/)
-├── aider/                     # Aider (.aider.conf.yml + .github/)
-├── continue/                  # Continue.dev (config.json + .github/)
-└── cody/                      # Cody (cody.json + .github/)
+.cursorrules                   # Cursor configuration
 ```
 
-## Quick Start
-
-### GitHub Copilot (Default)
-1. **Use this template** → Click "Use this template" above
-2. **Clone your new repo** → `git clone <your-repo>`
-3. **Open in VS Code** → The brain auto-loads via GitHub Copilot
-4. **Start working** → The agent applies ACT to everything it does
-
-### Other Platforms
-```bash
-# Claude Code
-cp -r platforms/claude/* /path/to/your/project/
-
-# Cursor
-cp -r platforms/cursor/* /path/to/your/project/
-
-# Windsurf, Aider, Continue, Cody — same pattern
-```
-
-Each platform folder is **self-contained** — includes the full `.github/` brain + platform-specific config.
-
-## Platform Support
-
-| Platform | Installation |
-|----------|-------------|
-| **GitHub Copilot** | ✅ Works out of the box |
-| **Claude Code** | `cp -r platforms/claude/* ./` |
-| **Cursor** | `cp -r platforms/cursor/* ./` |
-| **Windsurf** | `cp -r platforms/windsurf/* ./` |
-| **Aider** | `cp -r platforms/aider/* ./` |
-| **Continue.dev** | `cp -r platforms/continue/* ./` |
-| **Cody** | `cp -r platforms/cody/* ./` |
-
-Each platform folder is **self-contained** with the full `.github/` brain.
-
-See [`platforms/README.md`](platforms/README.md) for delivery mechanisms and ACT support details.
-
-## 51 Built-In Instructions
-
-| Category | Instructions |
-|----------|-------------|
-| **Critical Thinking** | act-foundations, act-pass, act-self-critique, critical-thinking, problem-framing-audit, system-prompt-skepticism |
-| **Reasoning** | deep-thinking, hypothesis-driven-debugging, root-cause-analysis |
-| **Planning** | creative-loop, research-validation, scope-management, option-generation, trade-off-analysis |
-| **Decision Making** | decision-frameworks, risk-analysis, requirements-analysis |
-| **Collaboration** | meeting-efficiency, postmortem, adversarial-review, conflict-resolution, feedback-protocols |
-| **Dialog Engineering** | csar-loop, partnership-charter, appropriate-reliance, vibe-diagnostics, practice-telemetry, cognitive-forcing, over-reliance-signals |
-| **Communication** | ai-writing-avoidance, technical-writing, stakeholder-management, executive-storytelling |
-| **Learning** | bootstrap-learning, learning-psychology, knowledge-coverage, skill-building |
-| **Memory** | memory-curation, memory-triggers, pii-memory-filter, proactive-awareness, session-health-monitoring |
-| **Growth** | meditation, brain-design |
-| **Ethics** | worldview-integration, worldview-constitutional-ai, worldview-moral-psychology, privacy-responsible-ai |
-| **Meta** | emotional-intelligence, terminal-command-safety, epistemic-calibration |
-
-## Building New Capabilities
-
-The brain uses a **trifecta pattern**:
-
-| Artifact | Purpose | Location |
-|----------|---------|----------|
-| **Skill** | Domain knowledge | `.github/skills/<name>/SKILL.md` |
-| **Instruction** | Behavior trigger | `.github/instructions/<name>.instructions.md` |
-| **Muscle** | Automation | `.github/muscles/<name>.cjs` |
-
-Start with a skill. Add instruction if you need auto-loading. Add muscle when automation is worth it.
+---
 
 ## Token Budget
 
 | Component | Tokens |
 |-----------|--------|
-| copilot-instructions.md | ~470 |
+| .cursorrules | ~400 |
 | 51 instructions | ~48,000 |
-| episodic/ | ~800 |
-| **Total** | **~49,300** |
+| Episodic memory | ~800 |
+| **Total available** | **~49,200** |
 
-Lean enough to leave room for domain-specific growth.
+Cursor's context window can handle ACT comfortably while leaving room for your codebase.
+
+---
+
+## Best Practices for Cursor + ACT
+
+1. **Use @ mentions**: Reference instruction files directly with `@.github/instructions/...`
+2. **Load instructions for the task**: Before complex work, mention the relevant instruction file
+3. **Ask for alternatives**: "Give me two different approaches to this problem"
+4. **Request visible reasoning**: "Show me your thinking with ACT markers"
+
+---
+
+## Comparison with Other Platforms
+
+| Feature | Cursor | GitHub Copilot |
+|---------|--------|----------------|
+| Full 51 instructions | ✅ | ✅ |
+| Auto-load by context | ❌ Manual | ✅ Via `applyTo` |
+| Cmd+K inline editing | ✅ Native | ❌ |
+| Codebase indexing | ✅ Native | ⚡ Partial |
+| @ file mentions | ✅ Native | ✅ Native |
+
+Cursor's Cmd+K editing and codebase indexing complement ACT's structured reasoning beautifully.
+
+---
 
 ## License
 

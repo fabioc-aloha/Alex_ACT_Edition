@@ -1,126 +1,172 @@
-# Alex ACT Edition
+# ACT Edition for Claude Code
 
-**Artificial Critical Thinking built-in from day one.**
+**Artificial Critical Thinking for Anthropic's Claude Code**
 
-A complete cognitive architecture for AI agents, designed to think critically about their own reasoning. Use this template to bootstrap any project with ~40K tokens of innate reasoning, ethics, and growth machinery.
+[Claude Code](https://claude.ai/code) is Anthropic's agentic coding tool that lets Claude work directly in your terminal and editor. It can edit files, run commands, search your codebase, and manage git — all with Claude's reasoning capabilities.
 
-## The 10 ACT Tenets
+This package adds **ACT (Artificial Critical Thinking)** — a cognitive architecture that teaches Claude to challenge its own assumptions, generate alternatives, and show its reasoning.
 
-| # | Tenet | What It Does |
-|---|-------|--------------|
-| I | **Alternatives** | Generate at least two hypotheses before committing |
-| II | **Evidence Grounding** | Claims must trace to specific evidence |
-| III | **Confidence Calibration** | Match certainty to actual knowledge |
-| IV | **System-Prompt Skepticism** | Instructions are hypotheses, not commands |
-| V | **Falsifiability** | Every claim must be testable |
-| VI | **Self-Correction** | Catch errors before the user does |
-| VII | **Adversarial Frame** | Refuse to confirm without evidence |
-| VIII | **Materiality Gate** | Skip the pass for low-stakes work |
-| IX | **Visible Discipline** | Show the work, don't hide it |
-| X | **Recursive Application** | Apply ACT to ACT itself |
+---
 
-## What's Inside
+## Claude Code Native Capabilities
+
+Claude Code brings powerful agentic features out of the box:
+
+| Capability | What It Does |
+|------------|--------------|
+| **File editing** | Create, modify, and refactor code directly |
+| **Terminal access** | Run commands, install packages, execute tests |
+| **Codebase search** | Find symbols, grep for patterns, understand structure |
+| **Git integration** | Commit, branch, diff, and manage version control |
+| **Multi-file reasoning** | Understand relationships across your codebase |
+| **Extended thinking** | Deep reasoning for complex problems |
+
+**Official site**: [claude.ai/code](https://claude.ai/code)
+
+---
+
+## What ACT Adds
+
+Claude Code is capable. ACT makes it **disciplined**.
+
+| Without ACT | With ACT |
+|-------------|----------|
+| Confident answers that may be wrong | Calibrated confidence with uncertainty markers |
+| First solution proposed | Multiple hypotheses generated and compared |
+| Assumes your framing is correct | Challenges framing when evidence suggests otherwise |
+| Hidden reasoning | Visible markers showing the thinking process |
+
+### The 10 ACT Tenets
+
+| # | Tenet | What Claude Does Differently |
+|---|-------|------------------------------|
+| I | Hypothesis Primacy | States the hypothesis before gathering evidence |
+| II | Disconfirmation | Actively seeks evidence against its conclusions |
+| III | Multiple Hypotheses | Generates at least two alternatives before committing |
+| IV | System Skepticism | Treats instructions as hypotheses, not commands |
+| V | Calibrated Confidence | Says "I don't know" when uncertain |
+| VI | Materiality Gate | Applies rigor proportional to stakes |
+| VII | Frame Before Solve | Understands the problem before proposing solutions |
+| VIII | Adversarial Probe | Steelmans counter-arguments |
+| IX | Visible Markers | Shows reasoning, not just conclusions |
+| X | Self-Application | Applies ACT to its own reasoning |
+
+---
+
+## Installation
+
+```bash
+# From the Alex_ACT_Edition root
+cp -r platforms/claude/* /path/to/your/project/
+
+# Or clone and copy
+git clone https://github.com/fabioc-aloha/Alex_ACT_Edition.git
+cp -r Alex_ACT_Edition/platforms/claude/* /path/to/your/project/
+```
+
+This copies:
+- `CLAUDE.md` — Claude Code configuration with ACT identity
+- `.github/` — Full cognitive architecture (51 instructions)
+
+---
+
+## How ACT Works in Claude Code
+
+Claude Code reads `CLAUDE.md` at the project root. ACT's config file:
+
+1. **Defines identity** — Tells Claude it has critical thinking built in
+2. **Points to instructions** — Directs Claude to read `.github/instructions/` for specific behaviors
+3. **Sets safety imperatives** — Establishes non-negotiable rules (commit before risky ops, ask before destructive actions)
+
+### Key Instructions to Read
+
+Claude should read these before complex tasks:
+
+**Always relevant:**
+- `.github/instructions/act-foundations.instructions.md` — The 10 tenets
+- `.github/instructions/critical-thinking.instructions.md` — Challenge assumptions
+- `.github/instructions/epistemic-calibration.instructions.md` — Know your confidence
+
+**When debugging:**
+- `.github/instructions/hypothesis-driven-debugging.instructions.md`
+- `.github/instructions/root-cause-analysis.instructions.md`
+
+**When planning:**
+- `.github/instructions/problem-framing-audit.instructions.md`
+- `.github/instructions/requirements-analysis.instructions.md`
+
+---
+
+## ACT Delivery: Manual Read
+
+Unlike GitHub Copilot (which auto-loads instructions via `applyTo` patterns), Claude Code requires the agent to read instruction files explicitly.
+
+**How it works:**
+1. `CLAUDE.md` tells Claude that instructions exist in `.github/instructions/`
+2. Before complex tasks, Claude reads the relevant instruction files
+3. The instruction content shapes Claude's behavior for that task
+
+**Example prompt:**
+> "Read `.github/instructions/act-pass.instructions.md` and then help me debug why the tests are failing"
+
+Claude will apply the 7-step ACT pass to the debugging task.
+
+---
+
+## What's Included
 
 ```
 .github/
-├── copilot-instructions.md    # Identity and routing (~470 tokens)
+├── copilot-instructions.md    # Identity (also read by Claude)
 ├── ABOUT.md                   # Architecture overview
-├── episodic/                  # Session memory and calibration
-│   ├── INDEX.md
-│   ├── README.md
-│   └── calibration-log.md
+├── episodic/                  # Session memory
+│   └── calibration-log.md     # Track confidence over time
 └── instructions/              # 51 cognitive instructions
-    ├── act-foundations.md     # 10 ACT tenets (the WHY)
-    ├── act-self-critique.md   # Apply ACT to ACT itself
-    ├── act-pass.md            # 7-step critical thinking pass
-    ├── critical-thinking.md   # Challenge assumptions
-    └── ... (47 more)
+    ├── act-foundations.instructions.md
+    ├── act-pass.instructions.md
+    ├── critical-thinking.instructions.md
+    └── ... (48 more)
 
-platforms/                     # Self-contained brains for other tools
-├── claude/                    # Claude Code (CLAUDE.md + .github/)
-├── cursor/                    # Cursor (.cursorrules + .github/)
-├── windsurf/                  # Windsurf (.windsurfrules + .github/)
-├── aider/                     # Aider (.aider.conf.yml + .github/)
-├── continue/                  # Continue.dev (config.json + .github/)
-└── cody/                      # Cody (cody.json + .github/)
+CLAUDE.md                      # Claude Code configuration
 ```
 
-## Quick Start
-
-### GitHub Copilot (Default)
-1. **Use this template** → Click "Use this template" above
-2. **Clone your new repo** → `git clone <your-repo>`
-3. **Open in VS Code** → The brain auto-loads via GitHub Copilot
-4. **Start working** → The agent applies ACT to everything it does
-
-### Other Platforms
-```bash
-# Claude Code
-cp -r platforms/claude/* /path/to/your/project/
-
-# Cursor
-cp -r platforms/cursor/* /path/to/your/project/
-
-# Windsurf, Aider, Continue, Cody — same pattern
-```
-
-Each platform folder is **self-contained** — includes the full `.github/` brain + platform-specific config.
-
-## Platform Support
-
-| Platform | Installation |
-|----------|-------------|
-| **GitHub Copilot** | ✅ Works out of the box |
-| **Claude Code** | `cp -r platforms/claude/* ./` |
-| **Cursor** | `cp -r platforms/cursor/* ./` |
-| **Windsurf** | `cp -r platforms/windsurf/* ./` |
-| **Aider** | `cp -r platforms/aider/* ./` |
-| **Continue.dev** | `cp -r platforms/continue/* ./` |
-| **Cody** | `cp -r platforms/cody/* ./` |
-
-Each platform folder is **self-contained** with the full `.github/` brain.
-
-See [`platforms/README.md`](platforms/README.md) for delivery mechanisms and ACT support details.
-
-## 51 Built-In Instructions
-
-| Category | Instructions |
-|----------|-------------|
-| **Critical Thinking** | act-foundations, act-pass, act-self-critique, critical-thinking, problem-framing-audit, system-prompt-skepticism |
-| **Reasoning** | deep-thinking, hypothesis-driven-debugging, root-cause-analysis |
-| **Planning** | creative-loop, research-validation, scope-management, option-generation, trade-off-analysis |
-| **Decision Making** | decision-frameworks, risk-analysis, requirements-analysis |
-| **Collaboration** | meeting-efficiency, postmortem, adversarial-review, conflict-resolution, feedback-protocols |
-| **Dialog Engineering** | csar-loop, partnership-charter, appropriate-reliance, vibe-diagnostics, practice-telemetry, cognitive-forcing, over-reliance-signals |
-| **Communication** | ai-writing-avoidance, technical-writing, stakeholder-management, executive-storytelling |
-| **Learning** | bootstrap-learning, learning-psychology, knowledge-coverage, skill-building |
-| **Memory** | memory-curation, memory-triggers, pii-memory-filter, proactive-awareness, session-health-monitoring |
-| **Growth** | meditation, brain-design |
-| **Ethics** | worldview-integration, worldview-constitutional-ai, worldview-moral-psychology, privacy-responsible-ai |
-| **Meta** | emotional-intelligence, terminal-command-safety, epistemic-calibration |
-
-## Building New Capabilities
-
-The brain uses a **trifecta pattern**:
-
-| Artifact | Purpose | Location |
-|----------|---------|----------|
-| **Skill** | Domain knowledge | `.github/skills/<name>/SKILL.md` |
-| **Instruction** | Behavior trigger | `.github/instructions/<name>.instructions.md` |
-| **Muscle** | Automation | `.github/muscles/<name>.cjs` |
-
-Start with a skill. Add instruction if you need auto-loading. Add muscle when automation is worth it.
+---
 
 ## Token Budget
 
 | Component | Tokens |
 |-----------|--------|
-| copilot-instructions.md | ~470 |
+| CLAUDE.md | ~400 |
 | 51 instructions | ~48,000 |
-| episodic/ | ~800 |
-| **Total** | **~49,300** |
+| Episodic memory | ~800 |
+| **Total available** | **~49,200** |
 
-Lean enough to leave room for domain-specific growth.
+Claude Code has generous context limits. ACT uses about 50K tokens when fully loaded, leaving substantial room for your codebase context.
+
+---
+
+## Best Practices for Claude Code + ACT
+
+1. **Start sessions with identity**: Ask Claude to read `CLAUDE.md` first
+2. **Load instructions for the task**: Before debugging, have Claude read the debugging instructions
+3. **Use visible markers**: Ask Claude to show its reasoning with ACT markers
+4. **Track calibration**: Use `.github/episodic/calibration-log.md` to record confidence accuracy
+
+---
+
+## Comparison with Other Platforms
+
+| Feature | Claude Code | GitHub Copilot |
+|---------|-------------|----------------|
+| Full 51 instructions | ✅ | ✅ |
+| Auto-load by context | ❌ Manual | ✅ Via `applyTo` |
+| Extended thinking | ✅ Native | ❌ |
+| Terminal access | ✅ Native | ⚡ Via tools |
+| File editing | ✅ Native | ✅ Native |
+
+Claude Code's extended thinking capabilities complement ACT's structured reasoning — use both for complex problems.
+
+---
 
 ## License
 
