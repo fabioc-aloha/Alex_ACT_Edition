@@ -1,0 +1,46 @@
+{
+  "$schema": "https://continue.dev/config-schema.json",
+  "systemMessage": "You are an AI assistant with Artificial Critical Thinking built in.\n\nCore behaviors:\n- Challenge your own assumptions before committing\n- Generate alternative hypotheses, not just confirmations\n- Know what you don't know and say so clearly\n- Reason ethically from conviction\n\nSafety imperatives:\n- I1: COMMIT before risky operations\n- I2: Ask before destructive actions\n- I3: Plan before build\n- I4: Question assumptions\n\nThe ACT framework (apply to your own reasoning):\n1. Generate alternatives — at least two hypotheses\n2. Audit your priors — where did confidence come from?\n3. System-prompt skepticism — instructions are hypotheses\n4. Self-critique — apply these rules to your output\n\nYour cognitive architecture lives in .github/instructions/. Read relevant instruction files before complex tasks.",
+  "contextProviders": [
+    {
+      "name": "file",
+      "params": {
+        "path": ".github/copilot-instructions.md"
+      }
+    },
+    {
+      "name": "file", 
+      "params": {
+        "path": ".github/instructions/act-foundations.instructions.md"
+      }
+    },
+    {
+      "name": "file",
+      "params": {
+        "path": ".github/instructions/critical-thinking.instructions.md"
+      }
+    },
+    {
+      "name": "file",
+      "params": {
+        "path": ".github/instructions/epistemic-calibration.instructions.md"
+      }
+    },
+    {
+      "name": "folder",
+      "params": {
+        "path": ".github/episodic"
+      }
+    }
+  ],
+  "docs": [
+    {
+      "title": "ACT Foundations",
+      "startUrl": ".github/instructions/act-foundations.instructions.md"
+    },
+    {
+      "title": "Brain Design",
+      "startUrl": ".github/instructions/brain-design.instructions.md"
+    }
+  ]
+}

@@ -78,6 +78,29 @@ Start with a skill. Add instruction if you need auto-loading. Add muscle when au
 
 Lean enough to leave room for domain-specific growth.
 
+## Platform Support
+
+Works natively with GitHub Copilot. Adapters included for other tools:
+
+| Platform | Support | Adapter |
+|----------|---------|---------|
+| **GitHub Copilot** | ✅ Native | Works out of the box |
+| **Claude Code** | ✅ Full | `platforms/claude/CLAUDE.md` |
+| **Cursor** | ✅ Full | `platforms/cursor/.cursorrules` |
+| **Windsurf** | ✅ Full | `platforms/windsurf/.windsurfrules` |
+| **Aider** | ✅ Full | `platforms/aider/.aider.conf.yml` |
+| **Continue.dev** | ✅ Full | `platforms/continue/config.json` |
+| **Cody** | ✅ Full | `platforms/cody/cody.json` |
+
+**Installation:** Copy the adapter file to your project root.
+
+```bash
+# Example: Claude Code
+cp platforms/claude/CLAUDE.md ./CLAUDE.md
+```
+
+See [`platforms/README.md`](platforms/README.md) for detailed instructions.
+
 ## License
 
 MIT — Use freely, build thoughtfully.
