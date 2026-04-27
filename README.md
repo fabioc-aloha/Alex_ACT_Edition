@@ -68,22 +68,19 @@ Each platform folder is **self-contained** — includes the full `.github/` brai
 
 ## Platform Support
 
-| Platform | Delivery | Installation |
-|----------|----------|--------------|
-| **GitHub Copilot** | Auto | ✅ Works out of the box |
-| **Claude Code** | Config | `cp -r platforms/claude/* ./` |
-| **Cursor** | Config | `cp -r platforms/cursor/* ./` |
-| **Windsurf** | Config | `cp -r platforms/windsurf/* ./` |
-| **Aider** | Pre-load | `cp -r platforms/aider/* ./` |
-| **Continue.dev** | Config | `cp -r platforms/continue/* ./` |
-| **Cody** | Config | `cp -r platforms/cody/* ./` |
+| Platform | Installation |
+|----------|-------------|
+| **GitHub Copilot** | ✅ Works out of the box |
+| **Claude Code** | `cp -r platforms/claude/* ./` |
+| **Cursor** | `cp -r platforms/cursor/* ./` |
+| **Windsurf** | `cp -r platforms/windsurf/* ./` |
+| **Aider** | `cp -r platforms/aider/* ./` |
+| **Continue.dev** | `cp -r platforms/continue/* ./` |
+| **Cody** | `cp -r platforms/cody/* ./` |
 
-**Delivery types:**
-- **Auto** — Instructions load automatically via `applyTo` patterns (Copilot only)
-- **Config** — Config file instructs agent to read instruction files
-- **Pre-load** — Config file pre-loads instructions into context (like Auto)
+Each platform folder is **self-contained** with the full `.github/` brain.
 
-See [`platforms/README.md`](platforms/README.md) for full details.
+See [`platforms/README.md`](platforms/README.md) for delivery mechanisms and ACT support details.
 
 ## 27 Built-In Instructions
 
