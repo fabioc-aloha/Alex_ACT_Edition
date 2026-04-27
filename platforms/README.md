@@ -1,79 +1,66 @@
 # Platform Adapters
 
-Pre-built configurations to use Alex ACT Edition across different AI coding tools.
+Self-contained Alex ACT Edition brain for different AI coding tools.
 
-## Fully Supported (Native)
+**Default**: The root of this template works with GitHub Copilot (VS Code/JetBrains) out of the box.
 
-| Platform | Config Location | Instructions |
-|----------|-----------------|--------------|
-| **GitHub Copilot (VS Code)** | `.github/copilot-instructions.md` | Works out of the box |
-| **GitHub Copilot (JetBrains)** | `.github/copilot-instructions.md` | Works out of the box |
+**Other platforms**: Each folder below contains a **complete, self-contained brain** — just copy the folder contents to your project root.
 
-## Adapter Installation
+## Quick Start
+
+### GitHub Copilot (Default)
+Just use the template as-is. Works immediately.
 
 ### Claude Code
 ```bash
-cp platforms/claude/CLAUDE.md ./CLAUDE.md
+cp -r platforms/claude/* /path/to/your/project/
 ```
 
 ### Cursor
 ```bash
-cp platforms/cursor/.cursorrules ./.cursorrules
+cp -r platforms/cursor/* /path/to/your/project/
 ```
 
 ### Windsurf (Codeium)
 ```bash
-cp platforms/windsurf/.windsurfrules ./.windsurfrules
+cp -r platforms/windsurf/* /path/to/your/project/
 ```
 
 ### Aider
 ```bash
-cp platforms/aider/.aider.conf.yml ./.aider.conf.yml
+cp -r platforms/aider/* /path/to/your/project/
 ```
 
 ### Continue.dev
 ```bash
-cp platforms/continue/config.json .continue/config.json
+cp -r platforms/continue/* /path/to/your/project/
+mkdir -p ~/.continue && cp config.json ~/.continue/
 ```
 
 ### Cody (Sourcegraph)
 ```bash
-mkdir -p .cody
-cp platforms/cody/cody.json .cody/cody.json
+cp -r platforms/cody/* /path/to/your/project/
+mkdir -p .cody && mv cody.json .cody/
 ```
 
-## What Each Adapter Does
+## What Each Platform Contains
 
-All adapters:
-1. Load the core identity from `copilot-instructions.md`
-2. Reference the 27 instructions in `.github/instructions/`
-3. Adapt to platform-specific syntax
+Every platform folder includes:
 
-## Feature Parity Matrix
+| File | Purpose |
+|------|---------|
+| `README.md` | Platform-specific installation guide |
+| Platform config | `.cursorrules`, `CLAUDE.md`, etc. |
+| `.github/` | **Complete brain** (27 instructions, episodic memory) |
+
+## Feature Parity
 
 | Feature | Copilot | Claude | Cursor | Windsurf | Aider | Continue | Cody |
 |---------|---------|--------|--------|----------|-------|----------|------|
-| Identity loading | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Full brain | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Auto-load instructions | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | `applyTo` patterns | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| Memory tiers | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| Agent modes | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| VS Code memory | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
 | Episodic memory | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 
-**Note**: Episodic memory (`.github/episodic/`) works everywhere because it's just markdown files the agent can read/write.
-
-## Manual Instruction Loading
-
-For platforms without auto-load, add to your prompt:
-
-```
-Before responding, read these files for context:
-- .github/instructions/act-foundations.instructions.md
-- .github/instructions/critical-thinking.instructions.md
-- .github/instructions/epistemic-calibration.instructions.md
-```
-
-Or for the full brain:
-```
-Read all files in .github/instructions/ before responding.
-```
+**Note**: Non-Copilot platforms include instructions to manually read relevant `.github/instructions/` files. The agent has access to the full brain — it just needs prompting to use it.

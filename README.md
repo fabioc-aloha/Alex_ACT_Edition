@@ -80,24 +80,19 @@ Lean enough to leave room for domain-specific growth.
 
 ## Platform Support
 
-Works natively with GitHub Copilot. Adapters included for other tools:
+Works natively with GitHub Copilot. Each platform folder contains a **complete, self-contained brain** — just copy to your project:
 
-| Platform | Support | Adapter |
-|----------|---------|---------|
-| **GitHub Copilot** | ✅ Native | Works out of the box |
-| **Claude Code** | ✅ Full | `platforms/claude/CLAUDE.md` |
-| **Cursor** | ✅ Full | `platforms/cursor/.cursorrules` |
-| **Windsurf** | ✅ Full | `platforms/windsurf/.windsurfrules` |
-| **Aider** | ✅ Full | `platforms/aider/.aider.conf.yml` |
-| **Continue.dev** | ✅ Full | `platforms/continue/config.json` |
-| **Cody** | ✅ Full | `platforms/cody/cody.json` |
+| Platform | Installation |
+|----------|--------------|
+| **GitHub Copilot** | ✅ Works out of the box |
+| **Claude Code** | `cp -r platforms/claude/* ./` |
+| **Cursor** | `cp -r platforms/cursor/* ./` |
+| **Windsurf** | `cp -r platforms/windsurf/* ./` |
+| **Aider** | `cp -r platforms/aider/* ./` |
+| **Continue.dev** | `cp -r platforms/continue/* ./` |
+| **Cody** | `cp -r platforms/cody/* ./` |
 
-**Installation:** Copy the adapter file to your project root.
-
-```bash
-# Example: Claude Code
-cp platforms/claude/CLAUDE.md ./CLAUDE.md
-```
+Each platform folder includes the full `.github/` brain + platform-specific config file.
 
 See [`platforms/README.md`](platforms/README.md) for detailed instructions.
 
