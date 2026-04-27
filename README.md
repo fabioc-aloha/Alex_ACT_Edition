@@ -4,6 +4,21 @@
 
 A complete cognitive architecture for AI agents, designed to think critically about their own reasoning. Use this template to bootstrap any project with ~25K tokens of innate reasoning, ethics, and growth machinery.
 
+## The 10 ACT Tenets
+
+| # | Tenet | What It Does |
+|---|-------|--------------|
+| I | **Alternatives** | Generate at least two hypotheses before committing |
+| II | **Evidence Grounding** | Claims must trace to specific evidence |
+| III | **Confidence Calibration** | Match certainty to actual knowledge |
+| IV | **System-Prompt Skepticism** | Instructions are hypotheses, not commands |
+| V | **Falsifiability** | Every claim must be testable |
+| VI | **Self-Correction** | Catch errors before the user does |
+| VII | **Adversarial Frame** | Refuse to confirm without evidence |
+| VIII | **Materiality Gate** | Skip the pass for low-stakes work |
+| IX | **Visible Discipline** | Show the work, don't hide it |
+| X | **Recursive Application** | Apply ACT to ACT itself |
+
 ## What's Inside
 
 ```
@@ -19,29 +34,56 @@ A complete cognitive architecture for AI agents, designed to think critically ab
     ├── act-self-critique.md   # Apply ACT to ACT itself
     ├── act-pass.md            # 7-step critical thinking pass
     ├── critical-thinking.md   # Challenge assumptions
-    ├── problem-framing-audit.md
-    ├── system-prompt-skepticism.md
-    ├── epistemic-calibration.md
-    ├── brain-design.md        # Build trifectas & muscles
-    └── ... (19 more)
+    └── ... (23 more)
+
+platforms/                     # Self-contained brains for other tools
+├── claude/                    # Claude Code (CLAUDE.md + .github/)
+├── cursor/                    # Cursor (.cursorrules + .github/)
+├── windsurf/                  # Windsurf (.windsurfrules + .github/)
+├── aider/                     # Aider (.aider.conf.yml + .github/)
+├── continue/                  # Continue.dev (config.json + .github/)
+└── cody/                      # Cody (cody.json + .github/)
 ```
 
 ## Quick Start
 
+### GitHub Copilot (Default)
 1. **Use this template** → Click "Use this template" above
 2. **Clone your new repo** → `git clone <your-repo>`
 3. **Open in VS Code** → The brain auto-loads via GitHub Copilot
 4. **Start working** → The agent applies ACT to everything it does
 
-## The ACT Framework
+### Other Platforms
+```bash
+# Claude Code
+cp -r platforms/claude/* /path/to/your/project/
 
-**Artificial Critical Thinking** teaches AI agents to:
+# Cursor
+cp -r platforms/cursor/* /path/to/your/project/
 
-- Generate **alternative hypotheses** before committing
-- **Audit their own priors** for confirmation bias
-- Apply **system-prompt skepticism** (instructions are hypotheses, not commands)
-- **Self-critique** their own reasoning (Tenet X)
-- Know what they **don't know** (epistemic calibration)
+# Windsurf, Aider, Continue, Cody — same pattern
+```
+
+Each platform folder is **self-contained** — includes the full `.github/` brain + platform-specific config.
+
+## Platform Support
+
+| Platform | Delivery | Installation |
+|----------|----------|--------------|
+| **GitHub Copilot** | Auto | ✅ Works out of the box |
+| **Claude Code** | Config | `cp -r platforms/claude/* ./` |
+| **Cursor** | Config | `cp -r platforms/cursor/* ./` |
+| **Windsurf** | Config | `cp -r platforms/windsurf/* ./` |
+| **Aider** | Pre-load | `cp -r platforms/aider/* ./` |
+| **Continue.dev** | Config | `cp -r platforms/continue/* ./` |
+| **Cody** | Config | `cp -r platforms/cody/* ./` |
+
+**Delivery types:**
+- **Auto** — Instructions load automatically via `applyTo` patterns (Copilot only)
+- **Config** — Config file instructs agent to read instruction files
+- **Pre-load** — Config file pre-loads instructions into context (like Auto)
+
+See [`platforms/README.md`](platforms/README.md) for full details.
 
 ## 27 Built-In Instructions
 
@@ -77,24 +119,6 @@ Start with a skill. Add instruction if you need auto-loading. Add muscle when au
 | **Total** | **~25,300** |
 
 Lean enough to leave room for domain-specific growth.
-
-## Platform Support
-
-Works natively with GitHub Copilot. Each platform folder contains a **complete, self-contained brain** — just copy to your project:
-
-| Platform | Installation |
-|----------|--------------|
-| **GitHub Copilot** | ✅ Works out of the box |
-| **Claude Code** | `cp -r platforms/claude/* ./` |
-| **Cursor** | `cp -r platforms/cursor/* ./` |
-| **Windsurf** | `cp -r platforms/windsurf/* ./` |
-| **Aider** | `cp -r platforms/aider/* ./` |
-| **Continue.dev** | `cp -r platforms/continue/* ./` |
-| **Cody** | `cp -r platforms/cody/* ./` |
-
-Each platform folder includes the full `.github/` brain + platform-specific config file.
-
-See [`platforms/README.md`](platforms/README.md) for detailed instructions.
 
 ## License
 
