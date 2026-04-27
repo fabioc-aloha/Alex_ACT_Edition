@@ -29,12 +29,12 @@ A complete cognitive architecture for AI agents, designed to think critically ab
 │   ├── INDEX.md
 │   ├── README.md
 │   └── calibration-log.md
-└── instructions/              # 29 cognitive instructions
+└── instructions/              # 49 cognitive instructions
     ├── act-foundations.md     # 10 ACT tenets (the WHY)
     ├── act-self-critique.md   # Apply ACT to ACT itself
     ├── act-pass.md            # 7-step critical thinking pass
     ├── critical-thinking.md   # Challenge assumptions
-    └── ... (34 more)
+    └── ... (45 more)
 
 platforms/                     # Self-contained brains for other tools
 ├── claude/                    # Claude Code (CLAUDE.md + .github/)
@@ -82,7 +82,7 @@ Each platform folder is **self-contained** with the full `.github/` brain.
 
 See [`platforms/README.md`](platforms/README.md) for delivery mechanisms and ACT support details.
 
-## 42 Built-In Instructions
+## 49 Built-In Instructions
 
 | Category | Instructions |
 |----------|-------------|
@@ -91,12 +91,13 @@ See [`platforms/README.md`](platforms/README.md) for delivery mechanisms and ACT
 | **Planning** | creative-loop, research-validation, scope-management, option-generation, trade-off-analysis |
 | **Decision Making** | decision-frameworks, risk-analysis, requirements-analysis |
 | **Collaboration** | meeting-efficiency, postmortem, adversarial-review |
-| **Dialog Engineering** | csar-loop, partnership-charter, appropriate-reliance, vibe-diagnostics |
+| **Dialog Engineering** | csar-loop, partnership-charter, appropriate-reliance, vibe-diagnostics, practice-telemetry, cognitive-forcing, over-reliance-signals |
+| **Communication** | ai-writing-avoidance, technical-writing, stakeholder-management, executive-storytelling |
 | **Learning** | bootstrap-learning, learning-psychology, knowledge-coverage, skill-building |
 | **Memory** | memory-curation, memory-triggers, pii-memory-filter, proactive-awareness, session-health-monitoring |
 | **Growth** | meditation, brain-design |
 | **Ethics** | worldview-integration, worldview-constitutional-ai, worldview-moral-psychology, privacy-responsible-ai |
-| **Interaction** | emotional-intelligence, terminal-command-safety |
+| **Meta** | emotional-intelligence, terminal-command-safety, epistemic-calibration |
 
 ## Building New Capabilities
 
@@ -115,9 +116,9 @@ Start with a skill. Add instruction if you need auto-loading. Add muscle when au
 | Component | Tokens |
 |-----------|--------|
 | copilot-instructions.md | ~470 |
-| 49 instructions | ~47,000 |
+| 49 instructions | ~45,200 |
 | episodic/ | ~800 |
-| **Total** | **~48,200** |
+| **Total** | **~46,500** |
 
 Lean enough to leave room for domain-specific growth.
 
