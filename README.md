@@ -34,7 +34,7 @@ A complete cognitive architecture for AI agents, designed to think critically ab
     ├── act-self-critique.md   # Apply ACT to ACT itself
     ├── act-pass.md            # 7-step critical thinking pass
     ├── critical-thinking.md   # Challenge assumptions
-    └── ... (25 more)
+    └── ... (28 more)
 
 platforms/                     # Self-contained brains for other tools
 ├── claude/                    # Claude Code (CLAUDE.md + .github/)
@@ -82,13 +82,14 @@ Each platform folder is **self-contained** with the full `.github/` brain.
 
 See [`platforms/README.md`](platforms/README.md) for delivery mechanisms and ACT support details.
 
-## 29 Built-In Instructions
+## 32 Built-In Instructions
 
 | Category | Instructions |
 |----------|-------------|
 | **Critical Thinking** | act-foundations, act-pass, act-self-critique, critical-thinking, problem-framing-audit, system-prompt-skepticism |
 | **Reasoning** | deep-thinking, hypothesis-driven-debugging, root-cause-analysis |
-| **Planning** | creative-loop, research-validation |
+| **Planning** | creative-loop, research-validation, scope-management |
+| **Collaboration** | meeting-efficiency, postmortem |
 | **Learning** | bootstrap-learning, learning-psychology, knowledge-coverage, skill-building |
 | **Memory** | memory-curation, memory-triggers, pii-memory-filter, proactive-awareness, session-health-monitoring |
 | **Growth** | meditation, brain-design |
@@ -112,9 +113,9 @@ Start with a skill. Add instruction if you need auto-loading. Add muscle when au
 | Component | Tokens |
 |-----------|--------|
 | copilot-instructions.md | ~470 |
-| 29 instructions | ~25,500 |
+| 32 instructions | ~27,300 |
 | episodic/ | ~800 |
-| **Total** | **~26,800** |
+| **Total** | **~28,600** |
 
 Lean enough to leave room for domain-specific growth.
 
