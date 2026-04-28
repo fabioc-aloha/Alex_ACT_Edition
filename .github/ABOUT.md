@@ -9,7 +9,7 @@ This folder contains Alex's cognitive architecture.
 | `copilot-instructions.md` | Identity and routing |
 | `instructions/` | 52 always-on cognitive behaviors |
 | `skills/` | Reusable expertise packages (ships with `markdown-mermaid`, `md-to-html`, `md-to-word`, `md-to-eml`, `docx-to-md`) |
-| `prompts/` | User-invokable workflows (`/welcome`, `/feedback`, `/save-session-note`) |
+| `prompts/` | User-invokable workflows (`/welcome`, `/feedback`, `/save-session-note`, `/install-from-mall`) |
 | `muscles/` | Executable converters (`md-to-html`, `md-to-eml`, `md-to-txt`, `html-to-md`, `md-to-word`, `docx-to-md`) + shared modules + Pandoc lua filters |
 | `episodic/` | Memory-formation templates (heirs fill these in) |
 | `scripts/` | `bootstrap-heir.cjs` (one-shot heir init) and `upgrade-self.cjs` (heir-side pull) |
@@ -35,6 +35,12 @@ Edition ships six format converters under `muscles/`:
 | `docx-to-md.cjs` | Word → Markdown round-trip | Pandoc |
 
 Heirs that need PDF, EPUB, LaTeX, PPTX, or Gamma converters can pull them on-demand from [Alex_Skill_Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall) under `skills/converters/`.
+
+## The Mall: On-Demand Add-Ons
+
+[Alex_Skill_Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall) is a public catalog of optional skills, patterns, MCP server configs, and scaffolds. Pull only what you need — keep the brain small by default.
+
+Install with the `/install-from-mall` prompt, or follow `instructions/mall-installation.instructions.md`. **Always install under the `local/` subdirs** (`skills/local/`, `instructions/local/`, `muscles/local/`, `prompts/local/`) — those paths are heir-owned and survive Edition upgrades.
 
 ## Growth
 
