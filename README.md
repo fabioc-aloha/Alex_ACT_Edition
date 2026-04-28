@@ -6,7 +6,7 @@ Most AI coding assistants are helpful, fast, and often wrong in subtle ways. The
 
 ACT Edition changes that.
 
-This is a **cognitive architecture** — 57 behavioral instructions, 5 skills, 10 prompts, and 7 muscles that teach your AI assistant to think critically about its own reasoning. Built for GitHub Copilot's `.github/` discovery model, the brain ships as a self-contained folder you bootstrap into any repo.
+This is a **cognitive architecture** — 57 behavioral instructions, 6 skills, 11 prompts, and 9 muscles that teach your AI assistant to think critically about its own reasoning. Built for GitHub Copilot's `.github/` discovery model, the brain ships as a self-contained folder you bootstrap into any repo.
 
 ---
 
@@ -232,9 +232,9 @@ Beyond the 57 instructions, the brain bundles:
 
 | Surface | Count | Purpose |
 |---------|-------|---------|
-| **Skills** (`.github/skills/`) | 5 | Document conversion (md ↔ html, docx, eml, word) + markdown-mermaid |
+| **Skills** (`.github/skills/`) | 6 | Document conversion (md ↔ html, docx, eml, word) + markdown-mermaid + alex-banner-generation |
 | **Prompts** (`.github/prompts/`) | 11 | `/welcome`, `/upgrade`, `/status`, `/fleet`, `/find-skill`, `/install-from-mall`, `/feedback`, `/note`, `/save-session-note`, `/finalize-migration`, `/audit-apis` |
-| **Muscles** (`.github/muscles/`) | 8 | Converter executables + `heir-doctor.cjs` (health check) + `audit-api-drift.cjs` (external-API freshness) |
+| **Muscles** (`.github/muscles/`) | 9 | Converter executables + `heir-doctor.cjs` (health check) + `audit-api-drift.cjs` (external-API freshness) + `generate-banner.cjs` (SVG banners) |
 | **Configs** (`.github/config/`) | 5 | `sync-policy.json`, `markdown-light.css`, heir-owned `cognitive-config.json` + `goals.json`, README |
 | **Scripts** (`.github/scripts/`) | 3 | `bootstrap-heir.cjs`, `upgrade-self.cjs`, shared `_registry.cjs` |
 | **Registry** (`.github/EXTERNAL-API-REGISTRY.md`) | 1 | Source-of-truth for external API/model versions consumed by skills (paired with `/audit-apis`) |
