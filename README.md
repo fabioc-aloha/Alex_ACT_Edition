@@ -208,15 +208,17 @@ node $env:TEMP\edition\.github\scripts\bootstrap-heir.cjs --target . --apply
 
 ### Migrating an Existing Alex Heir
 
-If you have an older Alex-flavored heir (with the master/inheritable/custom tier model), use the migration tool. See `migrate-to-edition.cjs` in the [Alex_ACT_Supervisor](https://github.com/fabioc-aloha/Alex_ACT_Supervisor) tooling — it snapshots the old `.github/`, classifies files via frontmatter (master-tier files dropped, custom files routed to `local/`), installs Edition, and registers the heir.
+If you have an older Alex-flavored heir (with the master/inheritable/custom tier model), use the migration tool that ships at the root of this repo. It snapshots the old `.github/`, classifies files via frontmatter (master-tier files dropped, custom files routed to `local/`), installs Edition, and registers the heir.
 
 ```powershell
 cd <your-heir-repo>
-node migrate-to-edition.cjs              # dry-run, see the triage plan
-node migrate-to-edition.cjs --apply      # snapshot old brain + install Edition
+node <path-to>/migrate-to-edition.cjs              # dry-run, see the triage plan
+node <path-to>/migrate-to-edition.cjs --apply      # snapshot old brain + install Edition
 ```
 
 Then in a chat session inside the migrated heir: run the `/finalize-migration` prompt to do the semantic pass over remaining custom content.
+
+See [MIGRATION.md](MIGRATION.md) for the full migration guide — auto-detection, triage rules, failure recovery, and what's intentionally lost.
 
 ### After Bootstrap
 
