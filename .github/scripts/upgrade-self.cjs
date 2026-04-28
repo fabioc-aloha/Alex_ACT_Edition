@@ -22,6 +22,7 @@ const path = require('path');
 const os = require('os');
 const crypto = require('crypto');
 const { execFileSync } = require('child_process');
+const { upsertHeir } = require('./_registry.cjs');
 
 const HEIR_ROOT = process.cwd();
 const args = new Set(process.argv.slice(2));
@@ -238,6 +239,12 @@ const now = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
 marker.edition_version = newVersion;
 marker.last_sync_at = now;
 fs.writeFileSync(markerPath, JSON.stringify(marker, null, 2) + '\n');
+
+// Best-effort: refresh this heir's row in shared AI-Memory/heirs/registry.json.
+const registryResult = upsertHeir(marker, HEIR_ROOT);
+if (registryResult.ok) {
+    console.log(`Refreshed fleet registry: ${registryResult.path}`);
+}
 
 console.log(`Wrote ${written} files. Marker bumped to ${newVersion} @ ${now}.`);
 console.log('');

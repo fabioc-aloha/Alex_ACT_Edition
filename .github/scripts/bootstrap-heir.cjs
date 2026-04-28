@@ -23,6 +23,35 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
+const { upsertHeir } = require('./_registry.cjs');
+
+const IDENTITY_TEMPLATE = `# Identity (heir-owned)
+
+<!--
+  This file is heir-owned. Edition upgrades never overwrite it.
+  Use it to layer YOUR identity, project context, and preferences
+  on top of the Edition's copilot-instructions.md.
+-->
+
+## Project Context
+
+<!-- One-paragraph summary: what this repo does, who uses it, and why. -->
+
+## Domain Vocabulary
+
+<!-- Project-specific terms, abbreviations, or product names that
+     would otherwise be ambiguous. -->
+
+## My Preferences
+
+<!-- Communication style, code-review priorities, naming conventions,
+     test framework choices, etc. -->
+
+## Constraints
+
+<!-- Hard rules: "never use X", "always do Y first". -->
+`;
+
 
 function arg(name, fallback) {
     const i = process.argv.indexOf(name);
@@ -185,7 +214,29 @@ for (const rel of sortedFiles) {
 fs.mkdirSync(path.dirname(markerPath), { recursive: true });
 fs.writeFileSync(markerPath, JSON.stringify(marker, null, 2) + '\n');
 
-console.log(`Wrote ${copied} edition files + 1 marker to ${targetAbs}`);
+// Render copilot-instructions.local.md template if it doesn't already exist.
+// Heir-owned — only created on first bootstrap, never overwritten.
+const identityPath = path.join(targetAbs, '.github', 'copilot-instructions.local.md');
+let identityRendered = false;
+if (!fs.existsSync(identityPath)) {
+    fs.writeFileSync(identityPath, IDENTITY_TEMPLATE);
+    identityRendered = true;
+}
+
+// Best-effort: register this heir in shared AI-Memory/heirs/registry.json.
+const registryResult = upsertHeir(marker, targetAbs);
+
+console.log(`Wrote ${copied} edition files + 1 marker${identityRendered ? ' + identity template' : ''} to ${targetAbs}`);
+if (registryResult.ok) {
+    console.log(`Registered in fleet: ${registryResult.path}`);
+} else if (registryResult.reason === 'opted-out') {
+    console.log('Skipped fleet registration (opt_in.fleet_inventory: false in marker)');
+} else if (registryResult.reason === 'no-ai-memory') {
+    console.log('Skipped fleet registration (no AI-Memory folder found in OneDrive/iCloud/Dropbox/~).');
+} else {
+    console.log(`Skipped fleet registration: ${registryResult.reason}`);
+}
+console.log('');
 console.log('');
 console.log('Next steps:');
 console.log(`  cd ${targetAbs}`);

@@ -97,6 +97,7 @@ if (fs.existsSync(skillsDir)) {
 const editionShippedPrompts = new Set([
     'welcome.prompt.md', 'feedback.prompt.md', 'save-session-note.prompt.md',
     'install-from-mall.prompt.md', 'status.prompt.md', 'upgrade.prompt.md',
+    'note.prompt.md', 'fleet.prompt.md', 'find-skill.prompt.md',
 ]);
 const promptsDir = path.join(GH, 'prompts');
 if (fs.existsSync(promptsDir)) {

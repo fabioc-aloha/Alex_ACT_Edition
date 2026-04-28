@@ -12,6 +12,7 @@
         ".github/config/sync-policy.json",
         ".github/scripts/upgrade-self.cjs",
         ".github/scripts/bootstrap-heir.cjs",
+        ".github/scripts/_registry.cjs",
         ".github/VERSION",
         ".github/LICENSE"
     ],
