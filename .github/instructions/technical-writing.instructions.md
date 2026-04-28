@@ -96,7 +96,7 @@ Creates a new resource.
 
 **Cause**: Why this happens
 
-**Fix**: 
+**Fix**:
 1. Step one
 2. Step two
 
