@@ -122,6 +122,17 @@ for (const s of ['upgrade-self.cjs', 'bootstrap-heir.cjs']) {
     }
 }
 
+// ---- Check 6b: heir-owned config templates ----------------------------------
+const heirConfigs = [
+    { rel: '.github/config/cognitive-config.json', ref: 'knowledge-coverage instruction (showConfidenceBadge)' },
+    { rel: '.github/config/goals.json', ref: 'proactive-awareness instruction (active focus routing)' },
+];
+for (const { rel, ref } of heirConfigs) {
+    if (!fs.existsSync(path.join(HEIR_ROOT, rel))) {
+        warn(`Missing ${rel} — referenced by ${ref}. Bootstrap should have rendered it.`);
+    }
+}
+
 // ---- Check 7: VERSION matches marker ----------------------------------------
 const versionPath = path.join(GH, 'VERSION');
 if (fs.existsSync(versionPath)) {

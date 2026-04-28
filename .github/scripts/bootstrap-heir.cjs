@@ -211,6 +211,23 @@ for (const rel of sortedFiles) {
     fs.copyFileSync(src, dst);
     copied += 1;
 }
+
+// Heir-owned templates: copy from Edition source on first bootstrap if missing.
+// These files become heir-owned the moment they land — upgrade-self.cjs will
+// never touch them again. Skip any glob (e.g. **/local/**) without source files.
+let templatesRendered = 0;
+for (const pattern of (policy.heir_owned || [])) {
+    for (const rel of expandGlob(pattern)) {
+        const src = path.join(EDITION_ROOT, rel);
+        const dst = path.join(targetAbs, rel);
+        if (!fs.existsSync(src)) continue;
+        if (fs.existsSync(dst)) continue;
+        fs.mkdirSync(path.dirname(dst), { recursive: true });
+        fs.copyFileSync(src, dst);
+        templatesRendered += 1;
+    }
+}
+
 fs.mkdirSync(path.dirname(markerPath), { recursive: true });
 fs.writeFileSync(markerPath, JSON.stringify(marker, null, 2) + '\n');
 
@@ -226,7 +243,7 @@ if (!fs.existsSync(identityPath)) {
 // Best-effort: register this heir in shared AI-Memory/heirs/registry.json.
 const registryResult = upsertHeir(marker, targetAbs);
 
-console.log(`Wrote ${copied} edition files + 1 marker${identityRendered ? ' + identity template' : ''} to ${targetAbs}`);
+console.log(`Wrote ${copied} edition files + ${templatesRendered} heir-owned template${templatesRendered === 1 ? '' : 's'} + 1 marker${identityRendered ? ' + identity template' : ''} to ${targetAbs}`);
 if (registryResult.ok) {
     console.log(`Registered in fleet: ${registryResult.path}`);
 } else if (registryResult.reason === 'opted-out') {

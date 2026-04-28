@@ -10,6 +10,8 @@
         ".github/muscles/**",
         ".github/episodic/**",
         ".github/config/sync-policy.json",
+        ".github/config/markdown-light.css",
+        ".github/config/README.md",
         ".github/scripts/upgrade-self.cjs",
         ".github/scripts/bootstrap-heir.cjs",
         ".github/scripts/_registry.cjs",
@@ -19,6 +21,9 @@
     "heir_owned": [
         ".github/.act-heir.json",
         ".github/copilot-instructions.local.md",
+        ".github/config/cognitive-config.json",
+        ".github/config/goals.json",
+        ".github/config/local/**",
         ".github/instructions/local/**",
         ".github/skills/local/**",
         ".github/prompts/local/**",
