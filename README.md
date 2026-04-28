@@ -233,10 +233,11 @@ Beyond the 57 instructions, the brain bundles:
 | Surface | Count | Purpose |
 |---------|-------|---------|
 | **Skills** (`.github/skills/`) | 5 | Document conversion (md ↔ html, docx, eml, word) + markdown-mermaid |
-| **Prompts** (`.github/prompts/`) | 10 | `/welcome`, `/upgrade`, `/status`, `/fleet`, `/find-skill`, `/install-from-mall`, `/feedback`, `/note`, `/save-session-note`, `/finalize-migration` |
-| **Muscles** (`.github/muscles/`) | 7 | Converter executables + `heir-doctor.cjs` (health check) |
+| **Prompts** (`.github/prompts/`) | 11 | `/welcome`, `/upgrade`, `/status`, `/fleet`, `/find-skill`, `/install-from-mall`, `/feedback`, `/note`, `/save-session-note`, `/finalize-migration`, `/audit-apis` |
+| **Muscles** (`.github/muscles/`) | 8 | Converter executables + `heir-doctor.cjs` (health check) + `audit-api-drift.cjs` (external-API freshness) |
 | **Configs** (`.github/config/`) | 5 | `sync-policy.json`, `markdown-light.css`, heir-owned `cognitive-config.json` + `goals.json`, README |
 | **Scripts** (`.github/scripts/`) | 3 | `bootstrap-heir.cjs`, `upgrade-self.cjs`, shared `_registry.cjs` |
+| **Registry** (`.github/EXTERNAL-API-REGISTRY.md`) | 1 | Source-of-truth for external API/model versions consumed by skills (paired with `/audit-apis`) |
 
 ### Heir-Owned Customization Slots
 
