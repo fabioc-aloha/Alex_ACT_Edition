@@ -116,6 +116,27 @@ This runs the prompt at `.github/prompts/finalize-migration.prompt.md`. The prom
 
 The semantic pass is judgment work. Don't try to automate it — frontmatter classification only goes so far.
 
+## After Migration: Ongoing Maintenance
+
+Once `migrate-to-edition.cjs` and `/finalize-migration` are done, **the heir is on Edition**. Migration is a one-time event, not a recurring tool.
+
+From here on, you pull updates the same way every other Edition heir does:
+
+```text
+/upgrade
+```
+
+That prompt runs `upgrade-self.cjs` in dry-run mode, summarizes the diff in plain English (instructions/skills/prompts/muscles/scripts changed, new, deleted, plus version bump), and asks before applying. It is the **only** maintenance tool you need going forward.
+
+| When to use what | Tool |
+|------------------|------|
+| First time installing Edition into an old Alex heir | `migrate-to-edition.cjs` (one-time) |
+| Just-finished migration, polishing custom content | `/finalize-migration` (one-time) |
+| Every Edition release after that | `/upgrade` (recurring) |
+| First time installing Edition into a brand-new repo | `bootstrap-heir.cjs` (one-time) |
+
+If you ever run `migrate-to-edition.cjs` again on a heir that's already on Edition, it refuses — `.github/.act-heir.json` exists, which the pre-flight checks for. You'll see the message *"this heir is already on Edition — use upgrade-self.cjs instead"* and exit cleanly.
+
 ## Why Two Phases
 
 | Mechanical | Semantic |
