@@ -8,8 +8,6 @@
         ".github/skills/**",
         ".github/episodic/**",
         ".github/config/sync-policy.json",
-        ".github/.act-heir.json.template",
-        ".github/.act-heir.README.md",
         "scripts/upgrade-self.cjs",
         "scripts/bootstrap-heir.cjs",
         "VERSION",
