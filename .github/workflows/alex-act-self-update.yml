@@ -7,7 +7,7 @@ name: Alex ACT self-update
 # upgrades should delete this file or set the schedule far in the future.
 #
 # What it does:
-#   - Weekly (Mondays 09:00 UTC), runs `node scripts/upgrade-self.cjs --apply`
+#   - Weekly (Mondays 09:00 UTC), runs `node .github/scripts/upgrade-self.cjs --apply`
 #   - If anything changed, opens a PR titled "Sync to Alex_ACT_Edition <version>"
 #   - Major bumps are NOT auto-applied (script returns 2 without --allow-major)
 #
@@ -40,9 +40,9 @@ jobs:
         run: |
           set +e
           if [ "${{ github.event.inputs.allow-major }}" = "true" ]; then
-            node scripts/upgrade-self.cjs --apply --allow-major
+            node .github/scripts/upgrade-self.cjs --apply --allow-major
           else
-            node scripts/upgrade-self.cjs --apply
+            node .github/scripts/upgrade-self.cjs --apply
           fi
           echo "exit_code=$?" >> $GITHUB_OUTPUT
       - name: Detect changes
@@ -62,6 +62,6 @@ jobs:
           commit-message: 'Sync to Alex_ACT_Edition ${{ steps.changes.outputs.version }}'
           title: 'Sync to Alex_ACT_Edition ${{ steps.changes.outputs.version }}'
           body: |
-            Automated sync via `scripts/upgrade-self.cjs`. Review the diff before merging.
+            Automated sync via `.github/scripts/upgrade-self.cjs`. Review the diff before merging.
 
             Major bumps require re-running with `--allow-major`.

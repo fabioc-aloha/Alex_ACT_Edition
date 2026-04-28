@@ -7,11 +7,11 @@
  * heir_owned paths, and bumps edition_version + last_sync_at in the marker.
  *
  * Usage:
- *   node scripts/upgrade-self.cjs              # dry-run; reports changes
- *   node scripts/upgrade-self.cjs --apply      # apply changes
- *   node scripts/upgrade-self.cjs --from <url> # use alternate Edition remote
- *   node scripts/upgrade-self.cjs --ref <ref>  # use alternate ref (default: main)
- *   node scripts/upgrade-self.cjs --allow-major  # required if Edition major bumped
+ *   node .github/scripts/upgrade-self.cjs              # dry-run; reports changes
+ *   node .github/scripts/upgrade-self.cjs --apply      # apply changes
+ *   node .github/scripts/upgrade-self.cjs --from <url> # use alternate Edition remote
+ *   node .github/scripts/upgrade-self.cjs --ref <ref>  # use alternate ref (default: main)
+ *   node .github/scripts/upgrade-self.cjs --allow-major  # required if Edition major bumped
  *
  * The script never writes outside the heir repo. It does not touch git
  * (no commits, no pushes). The heir reviews the diff and commits.
@@ -38,7 +38,7 @@ const REF = arg('--ref', 'main');
 const markerPath = path.join(HEIR_ROOT, '.github', '.act-heir.json');
 if (!fs.existsSync(markerPath)) {
     console.error(`No .github/.act-heir.json found in ${HEIR_ROOT}`);
-    console.error('Are you running from a heir repo root? Bootstrap first via Edition\'s scripts/bootstrap-heir.cjs.');
+    console.error('Are you running from a heir repo root? Bootstrap first via Edition\'s .github/scripts/bootstrap-heir.cjs.');
     process.exit(2);
 }
 
@@ -74,9 +74,9 @@ try {
     process.exit(1);
 }
 
-const versionPath = path.join(tmp, 'VERSION');
+const versionPath = path.join(tmp, '.github', 'VERSION');
 if (!fs.existsSync(versionPath)) {
-    console.error(`Cloned Edition has no VERSION file. Aborting.`);
+    console.error(`Cloned Edition has no .github/VERSION file. Aborting.`);
     process.exit(1);
 }
 const newVersion = fs.readFileSync(versionPath, 'utf8').trim();

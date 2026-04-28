@@ -1,5 +1,5 @@
 {
-    "$comment": "Sync policy for ACT-Edition pull-based fleet. Read by scripts/upgrade-self.cjs in each heir. Edition-owned paths are overwritten on upgrade; heir-owned paths are preserved.",
+    "$comment": "Sync policy for ACT-Edition pull-based fleet. Read by .github/scripts/upgrade-self.cjs in each heir. Edition-owned paths are overwritten on upgrade; heir-owned paths are preserved. All Edition-owned files live under .github/ to avoid colliding with heir project files.",
     "spec_version": "1.0",
     "edition_owned": [
         ".github/copilot-instructions.md",
@@ -8,10 +8,10 @@
         ".github/skills/**",
         ".github/episodic/**",
         ".github/config/sync-policy.json",
-        "scripts/upgrade-self.cjs",
-        "scripts/bootstrap-heir.cjs",
-        "VERSION",
-        "LICENSE"
+        ".github/scripts/upgrade-self.cjs",
+        ".github/scripts/bootstrap-heir.cjs",
+        ".github/VERSION",
+        ".github/LICENSE"
     ],
     "heir_owned": [
         ".github/.act-heir.json",

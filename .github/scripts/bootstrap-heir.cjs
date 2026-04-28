@@ -6,7 +6,7 @@
  * directory, copies edition-owned files, and renders the .act-heir.json marker.
  *
  * Usage:
- *   node scripts/bootstrap-heir.cjs \
+ *   node .github/scripts/bootstrap-heir.cjs \
  *       --target <path> \
  *       --heir-id <slug> \
  *       --heir-name "Display Name" \
@@ -17,7 +17,7 @@
  * Without --apply, the script reports what it would do (dry-run by default).
  *
  * After bootstrap, the heir owns the directory. Subsequent upgrades happen
- * via `node scripts/upgrade-self.cjs` from the heir's own repo root.
+ * via `node .github/scripts/upgrade-self.cjs` from the heir's own repo root.
  */
 
 const fs = require('fs');
@@ -32,7 +32,8 @@ function arg(name, fallback) {
 const args = new Set(process.argv.slice(2));
 const APPLY = args.has('--apply');
 
-const EDITION_ROOT = path.resolve(__dirname, '..');
+// Script lives at <edition-root>/.github/scripts/bootstrap-heir.cjs
+const EDITION_ROOT = path.resolve(__dirname, '..', '..');
 const TARGET = arg('--target', null);
 const HEIR_ID = arg('--heir-id', null);
 const HEIR_NAME = arg('--heir-name', null);
@@ -53,7 +54,7 @@ if (!/^[a-z0-9][a-z0-9-]*[a-z0-9]$/.test(HEIR_ID) || HEIR_ID.length < 2) {
 const targetAbs = path.resolve(TARGET);
 const policyPath = path.join(EDITION_ROOT, '.github', 'config', 'sync-policy.json');
 const policy = JSON.parse(fs.readFileSync(policyPath, 'utf8'));
-const editionVersion = fs.readFileSync(path.join(EDITION_ROOT, 'VERSION'), 'utf8').trim();
+const editionVersion = fs.readFileSync(path.join(EDITION_ROOT, '.github', 'VERSION'), 'utf8').trim();
 const now = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
 
 console.log(`ACT Heir Bootstrap`);
@@ -189,4 +190,4 @@ console.log('');
 console.log('Next steps:');
 console.log(`  cd ${targetAbs}`);
 console.log('  git init && git add . && git commit -m "Bootstrap from Alex_ACT_Edition ' + editionVersion + '"');
-console.log('  # then: node scripts/upgrade-self.cjs to pull future Edition releases');
+console.log('  # then: node .github/scripts/upgrade-self.cjs to pull future Edition releases');
