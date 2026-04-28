@@ -62,18 +62,18 @@ let JSZip;
 try {
   JSZip = require('jszip');
 } catch {
-  // Fallback: search common locations relative to the muscle
+  // Fallback: search common locations relative to the heir repo
   const fallbackPaths = [
-    path.join(__dirname, '..', '..', 'heir', 'platforms', 'vscode-extension', 'node_modules', 'jszip'),
-    path.join(__dirname, '..', '..', 'node_modules', 'jszip'),
-    path.join(__dirname, 'node_modules', 'jszip'),
+    path.join(__dirname, '..', '..', 'node_modules', 'jszip'),       // heir/node_modules
+    path.join(__dirname, 'node_modules', 'jszip'),                   // muscles/node_modules
+    path.join(process.cwd(), 'node_modules', 'jszip'),               // cwd/node_modules
   ];
   for (const p of fallbackPaths) {
     try { JSZip = require(p); break; } catch { /* continue */ }
   }
   if (!JSZip) {
     console.error('WARNING: jszip not found. Post-processing (formatting, centering) will be limited.');
-    console.error('  Install: npm install jszip  |  Or set NODE_PATH to extension node_modules.');
+    console.error('  Install in your heir: npm install jszip');
   }
 }
 

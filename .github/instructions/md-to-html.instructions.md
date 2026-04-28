@@ -12,7 +12,6 @@ currency: 2026-04-22
 
 Auto-loaded for HTML conversion requests.
 
-> **Staleness Watch**: See [EXTERNAL-API-REGISTRY.md](../EXTERNAL-API-REGISTRY.md) for source URLs and recheck cadence
 
 ## Quick Reference
 
