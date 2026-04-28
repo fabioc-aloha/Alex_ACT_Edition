@@ -169,7 +169,12 @@ function expandGlob(root, pattern) {
 }
 
 function hash(file) {
-    return crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+    // Normalize CRLF -> LF so Windows/Unix checkouts compare equal.
+    // Binary files rarely contain raw 0x0D 0x0A pairs, so the normalization
+    // is safe for the file types Edition ships (markdown, JSON, JS, YAML).
+    const buf = fs.readFileSync(file);
+    const normalized = Buffer.from(buf.toString('binary').replace(/\r\n/g, '\n'), 'binary');
+    return crypto.createHash('sha256').update(normalized).digest('hex');
 }
 
 const editionFiles = new Set();
