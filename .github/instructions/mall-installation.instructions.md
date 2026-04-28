@@ -16,6 +16,7 @@ applyTo: "**/.github/skills/local/**,**/.github/instructions/local/**,**/.github
 | Trifecta (skill + instruction + muscle) | `skills/<category>/<name>/` containing all three | Each part to its `local/` home |
 | MCP server config | `mcp/<name>.json` | merge into heir's `.mcp.json` (root) — see MCP section |
 | Pattern | `patterns/<name>.md` | `.github/instructions/local/<name>.instructions.md` (with frontmatter added) |
+| Config | `configs/<name>/` | `.vscode/`, `.github/config/local/`, or repo root — see Config section |
 | Scaffold | `scaffolds/<name>/` | bootstrap a new repo, not added to existing one |
 
 ## Cardinal Rule: Use `local/` Subdirs
@@ -80,7 +81,6 @@ Patterns in the Mall are plain `.md` files with no frontmatter. Convert to a hei
 3. Commit.
 
 ## Install an MCP Server (forward-looking)
-
 When the Mall ships MCP configs (under `mcp/<name>.json`), the install pattern is:
 
 1. Read the Mall's `mcp/<name>.json` — it contains a single MCP server definition
@@ -92,6 +92,20 @@ When the Mall ships MCP configs (under `mcp/<name>.json`), the install pattern i
 5. Commit `.mcp.json` (do NOT commit secrets — use env vars or user-level config for those)
 
 MCP configs are **not** edition-owned — they live at repo root, not under `.github/`, so Edition upgrades never touch them.
+
+## Install a Config
+
+Configs in the Mall are portable, drop-in tool configurations (VS Code themes, editor settings, linter rules) — consumed by tooling, not by AI assistants.
+
+1. Read the config's own `README.md` in `configs/<name>/` for tool-specific install steps
+2. Typical destinations:
+   - `.vscode/` — VS Code settings, themes, snippets
+   - `.github/config/local/` — heir-owned configs that should travel with the repo's brain
+   - Repo root — `.editorconfig`, `.eslintrc`, etc.
+3. Reference it from the consuming tool's config file (e.g. `markdown.styles` in `.vscode/settings.json`)
+4. Commit
+
+Configs in `.github/config/local/` are heir-owned per `sync-policy.json` — Edition upgrades never touch them.
 
 ## Install a Scaffold
 
