@@ -6,7 +6,7 @@ Most AI coding assistants are helpful, fast, and often wrong in subtle ways. The
 
 ACT Edition changes that.
 
-This is a **cognitive architecture** — a set of 51 behavioral instructions that teach your AI assistant to think critically about its own reasoning. It works across platforms: GitHub Copilot, Claude Code, Cursor, Windsurf, Aider, Continue.dev, and Sourcegraph Cody. Same brain, different delivery mechanisms.
+This is a **cognitive architecture** — 57 behavioral instructions, 5 skills, 10 prompts, and 7 muscles that teach your AI assistant to think critically about its own reasoning. Built for GitHub Copilot's `.github/` discovery model, the brain ships as a self-contained folder you bootstrap into any repo.
 
 ---
 
@@ -29,7 +29,7 @@ ACT doesn't eliminate these failures — it makes them **visible** and **correct
 
 ## The 10 ACT Tenets
 
-These tenets form the philosophical foundation. The 51 instructions operationalize them.
+These tenets form the philosophical foundation. The 57 instructions operationalize them.
 
 | # | Tenet | The Discipline | What It Prevents |
 |---|-------|----------------|------------------|
@@ -46,9 +46,9 @@ These tenets form the philosophical foundation. The 51 instructions operationali
 
 ---
 
-## What's Included: 51 Instructions
+## What's Included: 57 Instructions
 
-ACT Edition ships with 51 behavioral instructions across 12 categories. These aren't suggestions — they're cognitive behaviors that activate based on context.
+ACT Edition ships with 57 behavioral instructions across 13 categories. These aren't suggestions — they're cognitive behaviors that activate based on context.
 
 ### Critical Thinking Core (6)
 
@@ -174,77 +174,99 @@ Ethical reasoning from genuine conviction.
 | `terminal-command-safety` | Safe command execution |
 | `epistemic-calibration` | Confidence matching, hallucination prevention |
 
+### Converters & Mall (6)
+
+Document conversion trifectas + the bridge to optional add-ons.
+
+| Instruction | What It Does |
+|-------------|--------------|
+| `markdown-mermaid` | Markdown + Mermaid diagram rendering rules |
+| `md-to-html` | Convert Markdown to standalone HTML |
+| `md-to-word` | Convert Markdown to .docx with style presets |
+| `md-to-eml` | Convert Markdown to email (.eml) |
+| `docx-to-md` | Convert Word to Markdown |
+| `mall-installation` | How heirs install skills/configs/MCP from Alex_Skill_Mall |
+
 ---
 
 ## Quick Start
 
-### GitHub Copilot (Recommended)
+ACT Edition is bootstrapped into your repo, not cloned as a template. The bootstrap script writes the brain, registers your repo in your fleet registry, and sets up the upgrade channel.
 
-GitHub Copilot has the deepest ACT integration — instructions auto-load based on file context.
+### New Repo
 
-1. Click **"Use this template"** above
-2. Clone your new repo
-3. Open in VS Code with GitHub Copilot
-4. Start working — ACT is active
+```powershell
+# 1. Create your repo and cd into it
+mkdir my-project; cd my-project; git init
 
-### Other Platforms
+# 2. Clone Edition somewhere outside your repo
+git clone --depth 1 https://github.com/fabioc-aloha/Alex_ACT_Edition.git $env:TEMP\edition
 
-Each platform has a self-contained folder with the full brain + platform-specific config:
-
-```bash
-# Claude Code
-cp -r platforms/claude/* /path/to/your/project/
-
-# Cursor
-cp -r platforms/cursor/* /path/to/your/project/
-
-# Windsurf, Aider, Continue, Cody — same pattern
+# 3. Bootstrap the brain into your repo (auto-derives heir-id from git remote)
+node $env:TEMP\edition\.github\scripts\bootstrap-heir.cjs --target . --apply
 ```
 
-See [platforms/README.md](platforms/README.md) for detailed comparison.
+### Migrating an Existing Alex Heir
+
+If you have an older Alex-flavored heir (with the master/inheritable/custom tier model), use the migration tool. See `migrate-to-edition.cjs` in the [Alex_ACT_Supervisor](https://github.com/fabioc-aloha/Alex_ACT_Supervisor) tooling — it snapshots the old `.github/`, classifies files via frontmatter (master-tier files dropped, custom files routed to `local/`), installs Edition, and registers the heir.
+
+```powershell
+cd <your-heir-repo>
+node migrate-to-edition.cjs              # dry-run, see the triage plan
+node migrate-to-edition.cjs --apply      # snapshot old brain + install Edition
+```
+
+Then in a chat session inside the migrated heir: run the `/finalize-migration` prompt to do the semantic pass over remaining custom content.
+
+### After Bootstrap
+
+Open the heir in VS Code with Copilot. Run `/welcome` for orientation. The brain is active.
 
 ---
 
-## Platform Comparison
+## What Else Ships
 
-| Capability | Copilot | Claude | Cursor | Windsurf | Aider | Continue | Cody |
-|------------|---------|--------|--------|----------|-------|----------|------|
-| **Full 51 instructions** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| **Auto-load by context** | ✅ | ❌ | ❌ | ❌ | ⚡ | ❌ | ❌ |
-| **`applyTo` patterns** | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| **VS Code memory** | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| **Pre-load at startup** | ✅ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ |
-| **Episodic memory** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+Beyond the 57 instructions, the brain bundles:
 
-**Legend**: ✅ Native support | ⚡ Via `read:` directive | ❌ Manual (agent reads on request)
+| Surface | Count | Purpose |
+|---------|-------|---------|
+| **Skills** (`.github/skills/`) | 5 | Document conversion (md ↔ html, docx, eml, word) + markdown-mermaid |
+| **Prompts** (`.github/prompts/`) | 10 | `/welcome`, `/upgrade`, `/status`, `/fleet`, `/find-skill`, `/install-from-mall`, `/feedback`, `/note`, `/save-session-note`, `/finalize-migration` |
+| **Muscles** (`.github/muscles/`) | 7 | Converter executables + `heir-doctor.cjs` (health check) |
+| **Configs** (`.github/config/`) | 5 | `sync-policy.json`, `markdown-light.css`, heir-owned `cognitive-config.json` + `goals.json`, README |
+| **Scripts** (`.github/scripts/`) | 3 | `bootstrap-heir.cjs`, `upgrade-self.cjs`, shared `_registry.cjs` |
 
-### Delivery Mechanisms
+### Heir-Owned Customization Slots
 
-**GitHub Copilot** — `applyTo` patterns in YAML frontmatter automatically inject instructions:
-```yaml
-applyTo: "**"  # Matches all files → always loads
+Edition reserves `local/` subdirectories that survive every upgrade:
+
+```text
+.github/instructions/local/  ← your project-specific instructions
+.github/skills/local/        ← your custom skills
+.github/prompts/local/       ← your custom prompts
+.github/muscles/local/       ← your automation scripts
+.github/config/local/        ← your tool configs
+.github/copilot-instructions.local.md  ← your identity layer
 ```
 
-**Aider** — `read:` directive pre-loads files at startup:
-```yaml
-read:
-  - .github/instructions/act-foundations.instructions.md
+The `sync-policy.json` declares these heir-owned. Adding a custom skill to `local/` is permanent; adding it to `.github/skills/` will be wiped on next `upgrade-self.cjs --apply`.
+
+### Upgrade Flow
+
+```powershell
+# From your heir's repo root
+node .github/scripts/upgrade-self.cjs           # dry-run
+node .github/scripts/upgrade-self.cjs --apply   # write changes
 ```
 
-**Others** — Config file instructs agent to read `.github/instructions/` files on demand.
+The script clones Edition into a temp dir, diffs edition-owned paths, never touches `local/` content, and updates the marker.
 
----
+### AI-Memory & The Mall
 
-## Token Budget
+Two shared surfaces complete the architecture:
 
-| Component | Tokens |
-|-----------|--------|
-| Core identity | ~470 |
-| 51 instructions | ~48,000 |
-| Episodic memory | ~800 |
-| **Total** | **~49,300** |
-
-This leaves room for domain-specific growth. The architecture is designed to stay under 50K tokens while providing comprehensive cognitive capabilities.
+- **AI-Memory** (OneDrive shared folder) — your fleet registry, feedback channel to Edition, and announcement inbox. Bootstrapped automatically on first install.
+- **[Alex_Skill_Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall)** — public catalog of optional skills, patterns, MCP configs, scaffolds, and tool configs. Browse, copy what you need into `local/` slots. Edition's `mall-installation` instruction documents the install pattern.
 
 ---
 
