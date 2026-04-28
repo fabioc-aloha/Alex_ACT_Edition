@@ -2,6 +2,20 @@
 
 All notable changes to the Alex converter infrastructure.
 
+## v5.4.0 (2026-04-28)
+
+### md-to-word.cjs
+
+- **Diagram-type-aware Mermaid palette injection** — when a Mermaid block has no `classDef`, no `%%{init}%%` directive, and no explicit theme variables, the converter now injects a default pastel palette tuned to the diagram type. Sequence diagrams receive `actorBkg`/`actorBorder`/`noteBkgColor`/`signalColor` themeVariables; `stateDiagram-v2` receives `primaryColor`/`mainBkg`/`labelBoxBkgColor`. Flowcharts and classDiagrams get standard `primaryColor`/`secondaryColor`/`tertiaryColor`. Authors with `classDef` (flowchart/class) are respected — injection only fires when no styling is present.
+- **`--no-default-palette`** flag to disable injection (preserves prior behavior of letting mermaid's neutral defaults render).
+- **Lint warnings during preprocessing** — emits `💡` nudges for flowcharts without `classDef` ("injecting default pastel palette") and `⚠️` warnings when `--no-default-palette` is set on diagrams that would render flat. Roll-up summary reports how many of N diagrams received injection.
+- **Skill doc fidelity** — corrected stale "40% height" claim in `skills/md-to-word/SKILL.md` (constants are 90% width / 60% height, encoded as `MAX_IMAGE_WIDTH_RATIO = 0.90` and `MAX_IMAGE_HEIGHT_RATIO = 0.60`).
+
+### shared/mermaid-pipeline.cjs
+
+- **`analyzeMermaid(content)`** — new export returning `{ diagramType, hasClassDef, hasInitDirective, hasExplicitTheme, supportsClassDef }`. Used by md-to-word for lint + injection decisions; available for other muscles.
+- **`injectPalette()` is now diagram-type-aware** via internal `_buildThemeVars(diagramType, palette)` helper. Backward compatible: callers that don't pass `analysis` get auto-analysis. Sequence and state diagrams now receive type-appropriate theme variables instead of generic flowchart vars.
+
 ## v5.3.0 (2026-03-25)
 
 ### md-to-word.cjs

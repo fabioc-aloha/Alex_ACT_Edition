@@ -203,14 +203,21 @@ SVG files are automatically detected and converted to PNG for Word compatibility
 
 ## Image Sizing Algorithm
 
-The script automatically fits images to page bounds:
+The script automatically fits images to page bounds. The constraints are codified
+in `md-to-word.cjs`:
 
 ```
 Page: 8.5" × 11" (Letter)
 Margins: 1" each side
 Usable area: 6.5" × 9.0"
-Max image: 6.5" × 3.6" (40% height for inline fit)
+MAX_IMAGE_WIDTH_RATIO  = 0.90   →  max width  ≈ 5.85"
+MAX_IMAGE_HEIGHT_RATIO = 0.60   →  max height ≈ 5.40"
 ```
+
+These ratios apply width-priority for landscape/wide diagrams (LR flowcharts,
+gantts, sequence diagrams) and height-priority for portrait/tall diagrams (TB/TD
+flowcharts with multiple subgraphs). The algorithm picks the more restrictive
+constraint so the image fits in both dimensions.
 
 ### Algorithm Steps
 
@@ -218,6 +225,49 @@ Max image: 6.5" × 3.6" (40% height for inline fit)
 2. **Calculate scale factors** for width and height constraints
 3. **Apply most restrictive** — ensures fit in both dimensions
 4. **Specify constraining dimension** — pandoc preserves aspect ratio
+
+---
+
+## Mermaid Palette and Fidelity
+
+When a Mermaid block has no `classDef`, no `%%{init}%%` directive, and no
+explicit theme variables, the converter injects a **default pastel palette**
+(GitHub-style soft colors with dark text) before rendering. This gives WYSIWYG
+fidelity to authors who don't styled-by-design every diagram.
+
+### Why per-diagram-type injection matters
+
+| Diagram type | Honors `classDef`? | Color path |
+|---|---|---|
+| `flowchart` / `graph` | Yes | `classDef` (preferred) or injected init |
+| `classDiagram` | Partial | `classDef` or injected init |
+| `sequenceDiagram` | **No** | `themeVariables` only (e.g. `actorBkg`, `noteBkgColor`) |
+| `stateDiagram-v2` | **No** | `themeVariables` only (`primaryColor`, `mainBkg`, `labelBoxBkgColor`) |
+| `erDiagram` | No | `themeVariables` only |
+
+Without diagram-type-aware injection, sequence and state diagrams would render
+as flat neutral nodes regardless of any `classDef` the author wrote.
+
+### Behavior
+
+- `flowchart` / `graph` / `classDiagram` with `classDef` → **respected, no
+  injection** (author wins)
+- `flowchart` / `graph` without `classDef` → **palette injected** + lint nudge
+- `sequenceDiagram` / `stateDiagram-v2` without `%%{init}%%` or explicit
+  `actorBkg` / `primaryColor` → **palette injected** (only path to colors)
+- Any block with `%%{init}%%` already present → **respected, no injection**
+
+### Opting out
+
+Pass `--no-default-palette` to disable injection. Diagrams without `classDef` or
+explicit theme will then render with mermaid's default neutral theme, and a
+warning is emitted per affected diagram.
+
+### Lint warnings
+
+During preprocessing the converter emits `💡` nudges for unstyled flowcharts
+("inject default pastel palette") and `⚠️` warnings when `--no-default-palette`
+is set on diagrams that would have rendered flat.
 
 ---
 
@@ -355,7 +405,7 @@ node .github/muscles/md-to-word.cjs spec.md --watch
   run: |
     npm install -g @mermaid-js/mermaid-cli svgexport
     node .github/muscles/md-to-word.cjs docs/spec.md --toc --cover
-    
+
 - name: Upload artifacts
   uses: actions/upload-artifact@v4
   with:
@@ -388,6 +438,7 @@ node .github/muscles/md-to-word.cjs spec.md --watch
 
 | Version | Changes |
 |---------|---------|
+| **5.4.0** | Diagram-type-aware Mermaid palette injection (sequence/state get themeVariables, flowcharts respect classDef), `--no-default-palette` opt-out, lint warnings for unstyled diagrams, sizing constants documented |
 | **5.3.0** | Style presets (professional, academic, course, creative), --cover, --toc |
 | **5.0.0** | SVG auto-conversion via svgexport, watch mode, recursive processing |
 | **4.0.0** | OOXML post-processing: page numbers, hyperlinks, code block styling |

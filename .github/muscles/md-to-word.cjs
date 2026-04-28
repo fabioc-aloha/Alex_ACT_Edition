@@ -5,9 +5,9 @@
  * @lifecycle stable
  * @inheritance inheritable
  * @description Convert Markdown to production-quality Word documents
- * @version 5.3.0
+ * @version 5.4.0
  * @skill md-to-word
- * @reviewed 2026-04-15
+ * @reviewed 2026-04-28
  * @platform windows,macos,linux
  * @requires pandoc, mermaid-cli, svgexport (optional)
  *
@@ -35,6 +35,7 @@
  *   --strip-frontmatter  Remove YAML frontmatter before conversion
  *   --recursive          Process all .md files in a directory tree
  *   --dry-run            Run preprocessing + validation only, no .docx output
+ *   --no-default-palette Skip auto-injection of pastel palette into unstyled Mermaid blocks
  *
  * Examples:
  *   node md-to-word.cjs README.md
@@ -81,7 +82,7 @@ try {
 // Shared module imports
 // ---------------------------------------------------------------------------
 const { preprocessMarkdown, validateHeadingHierarchy, embedLocalImages, validateLinks } = require(path.join(__dirname, 'shared', 'markdown-preprocessor.cjs'));
-const { findMermaidBlocks } = require(path.join(__dirname, 'shared', 'mermaid-pipeline.cjs'));
+const { findMermaidBlocks, analyzeMermaid, injectPalette } = require(path.join(__dirname, 'shared', 'mermaid-pipeline.cjs'));
 
 // ---------------------------------------------------------------------------
 // Page Layout Constants (Letter: 8.5"  11", 1" margins)
@@ -163,7 +164,7 @@ function determineImageSizeHeuristic(mmdContent) {
   if (subgraphCount >= 3) return wTag;
   if (lower.includes('flowchart lr') || lower.includes('graph lr')) return wTag;
   if (lower.includes('flowchart td') || lower.includes('graph td') ||
-      lower.includes('flowchart tb') || lower.includes('graph tb')) {
+    lower.includes('flowchart tb') || lower.includes('graph tb')) {
     if (subgraphCount >= 2) return `{height=${MAX_IMAGE_HEIGHT.toFixed(1)}in}`;
     return wTag;
   }
@@ -556,7 +557,7 @@ function fixParagraphSpacing(xml, style) {
 
     // Skip headings and code (already handled)
     if (styleName.startsWith('Heading') || styleName.includes('Code') ||
-        styleName.includes('Source') || styleName.includes('Verbatim')) {
+      styleName.includes('Source') || styleName.includes('Verbatim')) {
       return pMatch;
     }
 
@@ -831,7 +832,8 @@ function parseArgs(argv) {
     embedImages: false,
     stripFrontmatter: false,
     recursive: false,
-    dryRun: false
+    dryRun: false,
+    noDefaultPalette: false
   };
 
   const positional = [];
@@ -878,6 +880,8 @@ function parseArgs(argv) {
       result.recursive = true;
     } else if (args[i] === '--dry-run') {
       result.dryRun = true;
+    } else if (args[i] === '--no-default-palette') {
+      result.noDefaultPalette = true;
     } else if (!args[i].startsWith('--')) {
       positional.push(args[i]);
     }
@@ -887,7 +891,7 @@ function parseArgs(argv) {
     console.error('Usage: node md-to-word.cjs SOURCE.md [OUTPUT.docx] [options]');
     console.error('  Options: --toc --cover --page-size letter|a4|6x9 --style professional|academic|course|creative');
     console.error('           --reference-doc PATH --watch --lua-filter PATH --debug --no-format-tables --keep-temp');
-    console.error('           --embed-images --strip-frontmatter --recursive --dry-run');
+    console.error('           --embed-images --strip-frontmatter --recursive --dry-run --no-default-palette');
     process.exit(1);
   }
 
@@ -1010,6 +1014,51 @@ async function build(args) {
       if (!validTypes.test(typeLine.trim())) {
         console.warn(`   \u26a0\ufe0f  Diagram ${block.index + 1}: unrecognized diagram type: "${typeLine.trim().slice(0, 40)}"`);
       }
+    }
+
+    // Phase 1b: Analyze each block for styling, emit lint warnings, and
+    // inject a default pastel palette when the author has not styled the
+    // diagram. Sequence and stateDiagram-v2 always benefit (classDef does
+    // not apply); flowcharts only get injection when classDef is absent.
+    let injectedCount = 0;
+    let lintCount = 0;
+    for (const block of mermaidBlocks) {
+      const analysis = analyzeMermaid(block.content);
+
+      // Lint: flowchart with no classDef and no init -> will render flat
+      if (analysis.diagramType === 'flowchart' &&
+        !analysis.hasClassDef &&
+        !analysis.hasInitDirective &&
+        !analysis.hasExplicitTheme) {
+        if (args.noDefaultPalette) {
+          console.warn(`   \u26a0\ufe0f  Diagram ${block.index + 1} has no classDef and --no-default-palette is set; will render with neutral palette.`);
+        } else {
+          console.warn(`   \u{1f4a1} Diagram ${block.index + 1} (flowchart) has no classDef; injecting default pastel palette. Author classDef to override, or pass --no-default-palette to disable.`);
+        }
+        lintCount++;
+      }
+
+      // Lint: sequence/state without explicit theme -> would default to neutral
+      if ((analysis.diagramType === 'sequence' || analysis.diagramType === 'state') &&
+        !analysis.hasInitDirective &&
+        !analysis.hasExplicitTheme &&
+        args.noDefaultPalette) {
+        console.warn(`   \u26a0\ufe0f  Diagram ${block.index + 1} (${analysis.diagramType}) has no theme variables and --no-default-palette is set; will render with default theme.`);
+        lintCount++;
+      }
+
+      // Inject default palette unless opted out
+      if (!args.noDefaultPalette) {
+        const before = block.content;
+        block.content = injectPalette(block.content, { analysis });
+        if (block.content !== before) injectedCount++;
+      }
+    }
+    if (injectedCount > 0) {
+      console.log(`   \u{1f3a8} Injected default pastel palette into ${injectedCount} of ${mermaidBlocks.length} diagram(s)`);
+    }
+    if (lintCount > 0 && !args.noDefaultPalette) {
+      // Already nudged inline; no roll-up warning needed beyond the count.
     }
 
     const replacements = [];
