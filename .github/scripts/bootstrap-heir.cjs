@@ -68,7 +68,7 @@ if (fs.existsSync(targetAbs)) {
     const heirMarker = path.join(targetAbs, '.github', '.act-heir.json');
     if (fs.existsSync(heirMarker)) {
         console.error(`Refusing to bootstrap: target already has .github/.act-heir.json`);
-        console.error(`Use scripts/upgrade-self.cjs from inside the heir to update.`);
+        console.error(`Use .github/scripts/upgrade-self.cjs from inside the heir to update.`);
         process.exit(2);
     }
 }
@@ -191,3 +191,6 @@ console.log('Next steps:');
 console.log(`  cd ${targetAbs}`);
 console.log('  git init && git add . && git commit -m "Bootstrap from Alex_ACT_Edition ' + editionVersion + '"');
 console.log('  # then: node .github/scripts/upgrade-self.cjs to pull future Edition releases');
+console.log('');
+console.log('Feedback channel: drop markdown files in AI-Memory/feedback/alex-act/ on shared OneDrive.');
+console.log('Announcements:    read AI-Memory/announcements/alex-act/ for fleet-wide updates.');
