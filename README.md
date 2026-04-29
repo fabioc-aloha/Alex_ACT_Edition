@@ -231,6 +231,49 @@ Open the heir in VS Code with Copilot. Run `/welcome` for orientation. The brain
 
 ---
 
+## Commands
+
+The brain ships 12 slash-prompts grouped by lifecycle stage. Type `/` in Copilot Chat to see them.
+
+### Setup (run once per heir)
+
+| Command | When | What it does |
+|---------|------|--------------|
+| `/initialize` | Workspace has Edition content but isn't a registered heir | Detects state (fresh / partial-clean / partial-dirty / full) and runs the right bootstrap path |
+| `/welcome` | First session after bootstrap | Orientation tour — identity, tenets, surfaces, what to try next |
+| `/finalize-migration` | After `migrate-to-edition.cjs` | Semantic pass over `local/` — review classified files, prune stale custom content |
+
+### Daily Operations
+
+| Command | When | What it does |
+|---------|------|--------------|
+| `/status` | Anytime | Snapshot of brain version, marker, drift from Edition, fleet membership |
+| `/upgrade` | Edition has shipped a new version | Runs `upgrade-self.cjs` (dry-run by default), shows diff, applies on confirmation |
+| `/fleet` | From Supervisor or any heir | Reads fleet inventory, shows who's on what version, who's drifted |
+
+### Skill Discovery
+
+| Command | When | What it does |
+|---------|------|--------------|
+| `/find-skill` | Need capability not in Edition | Searches Alex_Skill_Mall catalog, shows matches with install paths |
+| `/install-from-mall` | Found a Mall skill to adopt | Copies skill/config/MCP into `local/` slots, preserving upgrade safety |
+
+### Memory & Feedback
+
+| Command | When | What it does |
+|---------|------|--------------|
+| `/save-session-note` | End of meaningful session | Persists session memory to `/memories/session/` for next-conversation pickup |
+| `/note` | Mid-session insight worth keeping | Quick capture to user/repo/session memory based on scope |
+| `/feedback` | Edition friction or improvement idea | Writes structured entry to `AI-Memory/feedback/alex-act/` for Supervisor triage |
+
+### Maintenance
+
+| Command | When | What it does |
+|---------|------|--------------|
+| `/audit-apis` | Quarterly or before shipping skills that touch external APIs | Reads `EXTERNAL-API-REGISTRY.md`, flags stale entries via `audit-api-drift.cjs` |
+
+---
+
 ## What Else Ships
 
 Beyond the 57 instructions, the brain bundles:
@@ -238,7 +281,7 @@ Beyond the 57 instructions, the brain bundles:
 | Surface | Count | Purpose |
 |---------|-------|---------|
 | **Skills** (`.github/skills/`) | 6 | Document conversion (md ↔ html, docx, eml, word) + markdown-mermaid + alex-banner-generation |
-| **Prompts** (`.github/prompts/`) | 12 | `/welcome`, `/initialize`, `/upgrade`, `/status`, `/fleet`, `/find-skill`, `/install-from-mall`, `/feedback`, `/note`, `/save-session-note`, `/finalize-migration`, `/audit-apis` |
+| **Prompts** (`.github/prompts/`) | 12 | `/welcome`, `/initialize`, `/upgrade`, `/status`, `/fleet`, `/find-skill`, `/install-from-mall`, `/feedback`, `/note`, `/save-session-note`, `/finalize-migration`, `/audit-apis` (see [Commands](#commands)) |
 | **Muscles** (`.github/muscles/`) | 9 | Converter executables + `heir-doctor.cjs` (health check) + `audit-api-drift.cjs` (external-API freshness) + `generate-banner.cjs` (SVG banners) |
 | **Configs** (`.github/config/`) | 5 | `sync-policy.json`, `markdown-light.css`, heir-owned `cognitive-config.json` + `goals.json`, README |
 | **Scripts** (`.github/scripts/`) | 3 | `bootstrap-heir.cjs`, `upgrade-self.cjs`, shared `_registry.cjs` |
