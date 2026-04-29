@@ -1,5 +1,7 @@
 # Alex ACT Edition
 
+![Alex ACT Edition — Artificial Critical Thinking for AI Coding Assistants](assets/banner-readme.svg)
+
 **Artificial Critical Thinking for AI Coding Assistants**
 
 Most AI coding assistants are helpful, fast, and often wrong in subtle ways. They confirm your assumptions instead of challenging them. They generate plausible-sounding code without questioning whether they understood the problem. They're confident when they should be uncertain.
