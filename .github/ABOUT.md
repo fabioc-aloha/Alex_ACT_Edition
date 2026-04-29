@@ -7,9 +7,9 @@ This folder contains Alex's cognitive architecture.
 | Folder | Purpose |
 |--------|---------|
 | `copilot-instructions.md` | Identity and routing |
-| `instructions/` | 52 always-on cognitive behaviors |
-| `skills/` | Reusable expertise packages (ships with `markdown-mermaid`, `md-to-html`, `md-to-word`, `md-to-eml`, `docx-to-md`) |
-| `prompts/` | User-invokable workflows (`/welcome`, `/feedback`, `/save-session-note`, `/install-from-mall`) |
+| `instructions/` | Always-on cognitive behaviors |
+| `skills/` | Reusable expertise packages (markdown-mermaid, document converters, and more) |
+| `prompts/` | User-invokable slash-workflows (see Command Cheat Sheet below) |
 | `muscles/` | Executable converters (`md-to-html`, `md-to-eml`, `md-to-txt`, `html-to-md`, `md-to-word`, `docx-to-md`) + shared modules + Pandoc lua filters |
 | `episodic/` | Memory-formation templates (heirs fill these in) |
 | `scripts/` | `bootstrap-heir.cjs` (one-shot heir init) and `upgrade-self.cjs` (heir-side pull) |
