@@ -4,17 +4,17 @@
 
 **Artificial Critical Thinking for AI Coding Assistants**
 
-Most AI coding assistants are helpful, fast, and often wrong in subtle ways. They confirm your assumptions instead of challenging them. They generate plausible-sounding code without questioning whether they understood the problem. They're confident when they should be uncertain.
+Most AI coding assistants are helpful, fast, and confidently wrong in subtle ways. They confirm your assumptions instead of challenging them. They generate plausible-sounding code without questioning whether they understood the problem. They sound certain when they should hedge.
 
 ACT Edition changes that.
 
-This is a **cognitive architecture** — 57 behavioral instructions, 6 skills, 11 prompts, and 9 muscles that teach your AI assistant to think critically about its own reasoning. Built for GitHub Copilot's `.github/` discovery model, the brain ships as a self-contained folder you bootstrap into any repo.
+This is a **cognitive architecture** — a curated set of behavioral instructions, skills, prompts, and automation muscles that teach your AI assistant to think critically about its own reasoning. Built for GitHub Copilot's `.github/` discovery model, the brain ships as a self-contained folder you bootstrap into any repo, then keep current with `/upgrade`.
 
 ---
 
 ## Commands
 
-The brain ships 12 slash-prompts grouped by lifecycle stage. Type `/` in Copilot Chat to see them.
+The brain ships slash-prompts grouped by lifecycle stage. Type `/` in Copilot Chat to see the full list.
 
 ### Setup (run once per heir)
 
@@ -76,7 +76,7 @@ ACT doesn't eliminate these failures — it makes them **visible** and **correct
 
 ## The 10 ACT Tenets
 
-These tenets form the philosophical foundation. The 57 instructions operationalize them.
+These tenets form the philosophical foundation. The instructions operationalize them.
 
 | # | Tenet | The Discipline | What It Prevents |
 |---|-------|----------------|------------------|
@@ -93,9 +93,9 @@ These tenets form the philosophical foundation. The 57 instructions operationali
 
 ---
 
-## What's Included: 57 Instructions
+## What's Included: Instructions
 
-ACT Edition ships with 57 behavioral instructions across 13 categories. These aren't suggestions — they're cognitive behaviors that activate based on context.
+ACT Edition ships behavioral instructions across these categories. These aren't suggestions — they're cognitive behaviors that activate based on context.
 
 ### Critical Thinking Core (6)
 
@@ -280,16 +280,16 @@ Open the heir in VS Code with Copilot. Run `/welcome` for orientation. The brain
 
 ## What Else Ships
 
-Beyond the 57 instructions, the brain bundles:
+Beyond the instructions, the brain bundles:
 
-| Surface | Count | Purpose |
-|---------|-------|---------|
-| **Skills** (`.github/skills/`) | 6 | Document conversion (md ↔ html, docx, eml, word) + markdown-mermaid + alex-banner-generation |
-| **Prompts** (`.github/prompts/`) | 12 | `/welcome`, `/initialize`, `/upgrade`, `/status`, `/fleet`, `/find-skill`, `/install-from-mall`, `/feedback`, `/note`, `/save-session-note`, `/finalize-migration`, `/audit-apis` (see [Commands](#commands)) |
-| **Muscles** (`.github/muscles/`) | 9 | Converter executables + `heir-doctor.cjs` (health check) + `audit-api-drift.cjs` (external-API freshness) + `generate-banner.cjs` (SVG banners) |
-| **Configs** (`.github/config/`) | 5 | `sync-policy.json`, `markdown-light.css`, heir-owned `cognitive-config.json` + `goals.json`, README |
-| **Scripts** (`.github/scripts/`) | 3 | `bootstrap-heir.cjs`, `upgrade-self.cjs`, shared `_registry.cjs` |
-| **Registry** (`.github/EXTERNAL-API-REGISTRY.md`) | 1 | Source-of-truth for external API/model versions consumed by skills (paired with `/audit-apis`) |
+| Surface | Purpose |
+|---------|---------|
+| **Skills** (`.github/skills/`) | Document conversion (md ↔ html, docx, eml, word), markdown-mermaid, banner generation |
+| **Prompts** (`.github/prompts/`) | Slash-prompts for setup, daily ops, skill discovery, memory, and maintenance (see [Commands](#commands)) |
+| **Muscles** (`.github/muscles/`) | Converter executables, `heir-doctor.cjs` (health check), `audit-api-drift.cjs` (external-API freshness), `generate-banner.cjs` (SVG banners) |
+| **Configs** (`.github/config/`) | `sync-policy.json`, `markdown-light.css`, heir-owned `cognitive-config.json` + `goals.json` |
+| **Scripts** (`.github/scripts/`) | `bootstrap-heir.cjs`, `upgrade-self.cjs`, shared `_registry.cjs` |
+| **Registry** (`.github/EXTERNAL-API-REGISTRY.md`) | Source-of-truth for external API/model versions consumed by skills (paired with `/audit-apis`) |
 
 ### Heir-Owned Customization Slots
 
