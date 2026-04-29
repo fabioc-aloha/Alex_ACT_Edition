@@ -2,7 +2,7 @@
 
 ![Alex ACT Edition — Artificial Critical Thinking for AI Coding Assistants](assets/banner-readme.svg)
 
-**Artificial Critical Thinking for AI Coding Assistants**
+> Artificial Critical Thinking for AI Coding Assistants.
 
 Most AI coding assistants are helpful, fast, and confidently wrong in subtle ways. They confirm your assumptions instead of challenging them. They generate plausible-sounding code without questioning whether they understood the problem. They sound certain when they should hedge.
 
@@ -338,7 +338,8 @@ For non-trivial decisions, ACT runs a 7-step critical thinking pass:
 7. **Commit with Markers** — State conclusion + what would change your mind
 
 Example output:
-```
+
+```text
 **Hypothesis**: The build is failing due to a missing dependency
 **Alternative**: The build is failing due to a breaking API change in v2.0
 **Going with H1** because package.json shows lodash@^3 but error mentions lodash/fp
@@ -377,4 +378,4 @@ MIT — Use freely, build thoughtfully.
 
 ---
 
-*"Challenge what you think is right through structured skepticism."*
+> Challenge what you think is right through structured skepticism.

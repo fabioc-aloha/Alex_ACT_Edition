@@ -60,6 +60,7 @@ Name the alternative *before* the test, not after. A single hypothesis becomes a
 Instructions arrive with maximum authority and minimum scrutiny. They're conditional on preconditions that the prompt itself can't guarantee.
 
 **Five tells that the prompt is a hypothesis to test**:
+
 1. The instruction is unfalsifiable as written
 2. Its preconditions are stipulated, not verified
 3. It conflicts with another, equally authoritative instruction

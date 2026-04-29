@@ -33,6 +33,7 @@ This instruction provides methods for **structured skepticism** beyond self-crit
 | **Red Team** | Attacks and challenges | "Here's how this fails" |
 
 **Process**:
+
 1. Blue Team presents proposal
 2. Red Team has dedicated time to find flaws
 3. Blue Team responds to challenges
@@ -86,13 +87,15 @@ For each component, ask: "What could go wrong here specifically?"
 
 When assigned as devil's advocate:
 
-### Do:
+### Do
+
 - Attack the strongest parts, not just the weak ones
 - Propose specific, realistic failure scenarios
 - Maintain the role even when you personally agree
 - Document all challenges raised
 
-### Don't:
+### Don't
+
 - Be negative without being constructive
 - Attack people instead of ideas
 - Give up if your first objection is answered

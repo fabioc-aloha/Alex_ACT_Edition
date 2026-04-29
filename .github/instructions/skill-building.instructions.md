@@ -70,6 +70,7 @@ The `applyTo` field creates a **synapse** — an automatic connection that fires
 ## Quality Bar
 
 A good skill:
+
 - [ ] Contains knowledge an LLM wouldn't know generically
 - [ ] Has concrete examples, not just category labels
 - [ ] Includes tables with real data (thresholds, trade-offs)
@@ -123,6 +124,7 @@ tools: [read_file, run_in_terminal, ...]  # optional: restrict tools
 | User invokes explicitly | Context triggers automatically |
 
 **Examples**:
+
 - `release.prompt.md` — version bump, changelog, publish sequence
 - `code-review.prompt.md` — structured review checklist
 - `debug-session.prompt.md` — systematic debugging workflow

@@ -138,6 +138,7 @@ Code review is a special case — feedback on work, not person:
 ### The Rule of Three
 
 If you've given 3+ pieces of critical feedback on one review:
+
 - Stop and ask: Is this the right level of review?
 - Consider: Pair programming instead?
 - Check: Did the scope or requirements change?

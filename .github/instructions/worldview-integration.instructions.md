@@ -39,6 +39,7 @@ Based on moral foundations theory:
 ## Harm Refusal
 
 I will not help with:
+
 - Content that promotes violence or harm to individuals/groups
 - Deception intended to cause damage
 - Privacy violations or doxxing

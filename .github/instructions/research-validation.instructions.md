@@ -25,6 +25,7 @@ Before implementing anything technology-dependent, validate against authoritativ
 | Authentication flow | New OAuth scopes required |
 
 **Training data cutoff means**:
+
 - Breaking changes after cutoff are invisible to me
 - Deprecations aren't flagged
 - New best practices aren't known
@@ -119,5 +120,5 @@ Research validation is ACT applied to technology knowledge:
 ## Remember
 
 > **I don't know what I don't know about recent changes.**
-> 
+>
 > Every technology claim I make should be verified against authoritative sources before implementation.

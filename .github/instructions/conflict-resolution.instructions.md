@@ -44,6 +44,7 @@ This instruction handles the second type.
 | "I won't approve this design" | Concern about maintenance burden |
 
 **Key questions**:
+
 - "What problem are you trying to solve?"
 - "What would happen if we did X instead?"
 - "What's driving the urgency?"

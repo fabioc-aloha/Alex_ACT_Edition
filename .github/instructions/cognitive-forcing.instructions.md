@@ -23,6 +23,7 @@ Deliberate interventions that require effortful thinking before accepting automa
 Before seeing AI's suggestion, write what you expect.
 
 **Process**:
+
 1. Read the problem/task
 2. Write one sentence predicting the AI's approach: *"I expect the AI will suggest a recursive solution with memoization."*
 3. Then view the AI's output
@@ -104,6 +105,7 @@ One task per month, completed without AI assistance. Not trivial tasks — the t
 ### Confidence Journaling
 
 Before accepting output, note:
+
 - Confidence level (high/medium/low)
 - One reason for that rating
 

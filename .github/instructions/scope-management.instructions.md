@@ -36,15 +36,19 @@ Scope management isn't about saying "no" — it's about saying "yes" to the righ
 ## Negotiation Patterns
 
 ### Capture & Defer
+>
 > "Great idea. Adding to Phase 2 backlog. Ship core first."
 
 ### Trade-Off
+>
 > "We can add X, but something comes out. Options: (A) Add X, defer Y. (B) Add X, extend timeline. (C) Keep scope, backlog X."
 
 ### MVP Challenge
+>
 > "If we shipped today with just this, would users get value? If yes, we're at MVP."
 
 ### 80/20 Cut
+>
 > "This handles 80%. The remaining 20% is complex. Ship, gather feedback, then decide."
 
 ## Definition of Done

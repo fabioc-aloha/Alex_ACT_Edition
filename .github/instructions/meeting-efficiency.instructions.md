@@ -38,6 +38,7 @@ currency: 2026-04-27
 | **Timekeeper** | Signal when time boxes end |
 
 **Rules:**
+
 - Strict end time
 - Per-topic time limits
 - Parking lot for off-topic items

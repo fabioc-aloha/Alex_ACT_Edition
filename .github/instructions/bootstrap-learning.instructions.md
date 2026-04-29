@@ -32,6 +32,7 @@ When entering a new project:
 ### 2. Understand the Goal
 
 Ask yourself (or the user):
+
 - What is this project?
 - What problem does it solve?
 - Who uses it?

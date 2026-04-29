@@ -14,7 +14,6 @@ currency: 2026-04-22
 
 > Write in Markdown, send as professional email — works in any email client
 
-
 Convert Markdown documents with YAML frontmatter into RFC 5322-compliant `.eml` files ready for governance, newsletter, and stakeholder communication workflows.
 
 ---

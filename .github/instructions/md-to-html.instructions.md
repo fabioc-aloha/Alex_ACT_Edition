@@ -12,7 +12,6 @@ currency: 2026-04-22
 
 Auto-loaded for HTML conversion requests.
 
-
 ## Quick Reference
 
 | Option | Usage |

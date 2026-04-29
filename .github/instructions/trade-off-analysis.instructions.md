@@ -46,6 +46,7 @@ For comparing 3+ options on multiple criteria:
 ```
 
 **Rules**:
+
 - Weights must sum to 100%
 - Scores 1-10 (or 1-5 for simpler decisions)
 - Criteria should be independent (not double-counting)
@@ -85,6 +86,7 @@ When two criteria dominate:
 ```
 
 **Common 2x2s**:
+
 - Impact vs Effort (prioritization)
 - Urgency vs Importance (Eisenhower)
 - Risk vs Reward (investment)
