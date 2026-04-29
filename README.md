@@ -198,13 +198,18 @@ ACT Edition is bootstrapped into your repo, not cloned as a template. The bootst
 ```powershell
 # 1. Create your repo and cd into it
 mkdir my-project; cd my-project; git init
+git remote add origin https://github.com/<you>/my-project.git  # optional but recommended
 
 # 2. Clone Edition somewhere outside your repo
 git clone --depth 1 https://github.com/fabioc-aloha/Alex_ACT_Edition.git $env:TEMP\edition
 
-# 3. Bootstrap the brain into your repo (auto-derives heir-id from git remote)
-node $env:TEMP\edition\.github\scripts\bootstrap-heir.cjs --target . --apply
+# 3. Bootstrap the brain into your repo (--heir-id required; --heir-name/--repo-url/--owner recommended)
+node $env:TEMP\edition\.github\scripts\bootstrap-heir.cjs --target . --heir-id my-project --apply
 ```
+
+### Already Cloned the Template? Use `/initialize`
+
+If you copied or cloned Edition's content into a workspace without running `bootstrap-heir.cjs`, the workspace is *not* a registered heir — it has the brain content but no `.github/.act-heir.json` marker, so `fleet-inventory` can't see it and `upgrade-self.cjs` will refuse. Open the workspace in VS Code with Copilot and run `/initialize`. The prompt detects whether the workspace is fresh, partially installed and clean, or partially installed with local modifications, and runs the right path (full bootstrap or path-1 quick register).
 
 ### Migrating an Existing Alex Heir
 
@@ -233,7 +238,7 @@ Beyond the 57 instructions, the brain bundles:
 | Surface | Count | Purpose |
 |---------|-------|---------|
 | **Skills** (`.github/skills/`) | 6 | Document conversion (md ↔ html, docx, eml, word) + markdown-mermaid + alex-banner-generation |
-| **Prompts** (`.github/prompts/`) | 11 | `/welcome`, `/upgrade`, `/status`, `/fleet`, `/find-skill`, `/install-from-mall`, `/feedback`, `/note`, `/save-session-note`, `/finalize-migration`, `/audit-apis` |
+| **Prompts** (`.github/prompts/`) | 12 | `/welcome`, `/initialize`, `/upgrade`, `/status`, `/fleet`, `/find-skill`, `/install-from-mall`, `/feedback`, `/note`, `/save-session-note`, `/finalize-migration`, `/audit-apis` |
 | **Muscles** (`.github/muscles/`) | 9 | Converter executables + `heir-doctor.cjs` (health check) + `audit-api-drift.cjs` (external-API freshness) + `generate-banner.cjs` (SVG banners) |
 | **Configs** (`.github/config/`) | 5 | `sync-policy.json`, `markdown-light.css`, heir-owned `cognitive-config.json` + `goals.json`, README |
 | **Scripts** (`.github/scripts/`) | 3 | `bootstrap-heir.cjs`, `upgrade-self.cjs`, shared `_registry.cjs` |
