@@ -6,6 +6,7 @@ description: "Convert Markdown to standalone HTML with embedded CSS, images, and
 application: "When converting Markdown files to HTML for sharing, print, or offline viewing"
 applyTo: "**/*.md"
 currency: 2026-04-22
+lastReviewed: 2026-01-01
 ---
 
 # Markdown to HTML Conversion

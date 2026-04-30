@@ -6,6 +6,7 @@ description: "Partnership Charter — five commitments for effective human-AI co
 application: "Always active — defines the behavioral contract between human and AI"
 applyTo: "**/*"
 currency: 2026-04-27
+lastReviewed: 2026-01-01
 ---
 
 # Partnership Charter

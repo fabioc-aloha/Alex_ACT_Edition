@@ -8,6 +8,7 @@ inheritance: inheritable
 applyTo: '**/*banner*,**/assets/**,**/README*,**/PLAN*,**/CHANGELOG*'
 muscle: .github/muscles/generate-banner.cjs
 currency: 2026-04-28
+lastReviewed: 2026-01-01
 ---
 
 # Alex Banner Generation

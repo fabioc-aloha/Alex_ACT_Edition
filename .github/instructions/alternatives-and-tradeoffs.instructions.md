@@ -6,6 +6,7 @@ description: "Generate alternatives and compare them — methods for option gene
 application: "When choosing between options, recommending an approach, or explaining 'it depends'"
 applyTo: "**"
 currency: 2026-04-30
+lastReviewed: 2026-01-01
 ---
 
 # Alternatives and Trade-offs

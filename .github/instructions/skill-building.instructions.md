@@ -6,6 +6,7 @@ description: "Create reusable skills from emerged patterns — the growth mechan
 application: "When domain knowledge or process patterns are worth persisting"
 applyTo: "**/*skill*,**/*build*,**/*create*"
 currency: 2026-04-27
+lastReviewed: 2026-01-01
 ---
 
 # Skill Building
@@ -40,6 +41,7 @@ description: "<one-line purpose>"
 tier: standard|advanced
 applyTo: '<glob pattern>'
 currency: YYYY-MM-DD
+lastReviewed: 2026-01-01
 ---
 ```
 

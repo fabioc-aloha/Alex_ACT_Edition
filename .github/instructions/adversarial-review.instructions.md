@@ -6,6 +6,7 @@ description: "Structured devil's advocate and adversarial review — supports AC
 application: "When reviewing important decisions, testing proposals, or playing devil's advocate"
 applyTo: "**/*review*,**/*validate*,**/*challenge*"
 currency: 2026-04-27
+lastReviewed: 2026-01-01
 ---
 
 # Adversarial Review

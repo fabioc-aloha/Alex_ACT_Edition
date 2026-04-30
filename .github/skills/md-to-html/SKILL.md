@@ -8,6 +8,7 @@ inheritance: inheritable
 applyTo: '**/*md-to-html*,**/*convert*html*'
 muscle: .github/muscles/md-to-html.cjs
 currency: 2026-04-22
+lastReviewed: 2026-01-01
 ---
 
 # Markdown to HTML Conversion

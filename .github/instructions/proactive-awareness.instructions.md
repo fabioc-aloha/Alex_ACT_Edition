@@ -6,6 +6,7 @@ description: "Cross-session context recovery, uncommitted work detection, and pr
 application: "Always active — recover context on session start, detect uncommitted work, route to active focus"
 applyTo: "**"
 currency: 2026-04-20
+lastReviewed: 2026-01-01
 ---
 
 # Proactive Awareness

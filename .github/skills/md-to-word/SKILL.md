@@ -8,6 +8,7 @@ applyTo: '**/*docx*,**/*word*,**/*md-to-word*,**/*export*'
 muscle: .github/muscles/md-to-word.cjs
 inheritance: inheritable
 currency: 2026-04-22
+lastReviewed: 2026-01-01
 ---
 
 # Markdown to Word Conversion

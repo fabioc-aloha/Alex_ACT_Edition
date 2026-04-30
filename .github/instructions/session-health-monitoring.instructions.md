@@ -6,6 +6,7 @@ description: "Monitor session health, manage context window, and ensure continui
 application: "Always active — unconscious monitoring of session state and context capacity"
 applyTo: "**"
 currency: 2026-04-22
+lastReviewed: 2026-01-01
 ---
 
 # Session Health Monitoring

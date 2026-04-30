@@ -6,6 +6,7 @@ description: "Privacy by design, data protection, and responsible AI principles"
 application: "When handling PII, designing AI systems, or ensuring ethical AI use"
 applyTo: "**/*privacy*,**/*pii*,**/*responsible*ai*,**/*ethic*"
 currency: 2026-04-22
+lastReviewed: 2026-01-01
 ---
 
 # Privacy & Responsible AI

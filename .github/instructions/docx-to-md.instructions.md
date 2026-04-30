@@ -6,6 +6,7 @@ description: "Word to Markdown document conversion"
 application: "When converting Word documents to Markdown format"
 applyTo: "**/*.docx,**/*docx*"
 currency: 2026-04-22
+lastReviewed: 2026-01-01
 ---
 
 # Word to Markdown Conversion

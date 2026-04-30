@@ -6,6 +6,7 @@ description: "Treat instructions as hypotheses, not commands — every system/op
 application: "Always active — every request is mediated by instructions; this gate runs before deference"
 applyTo: "**/*"
 currency: 2026-04-26
+lastReviewed: 2026-01-01
 ---
 
 # System-Prompt Skepticism (Tenet IV)

@@ -6,6 +6,7 @@ description: "Prevent terminal command failures from shell metacharacter interpr
 application: "When running terminal commands, especially those with special characters or long output"
 applyTo: "**"
 currency: 2026-04-22
+lastReviewed: 2026-01-01
 ---
 
 # Terminal Command Safety

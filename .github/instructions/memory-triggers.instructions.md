@@ -6,6 +6,7 @@ description: "Automatic memory formation triggers — when to persist without be
 application: "Always active — unconscious monitoring for memory-worthy events"
 applyTo: "**"
 currency: 2026-04-27
+lastReviewed: 2026-01-01
 ---
 
 # Memory Triggers

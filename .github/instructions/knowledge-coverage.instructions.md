@@ -6,6 +6,7 @@ description: "Knowledge coverage taxonomy and visible uncertainty indicators —
 application: "Always active — unconscious coverage assessment before responding"
 applyTo: "**"
 currency: 2026-04-20
+lastReviewed: 2026-01-01
 ---
 
 # Knowledge Coverage

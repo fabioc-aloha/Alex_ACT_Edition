@@ -6,6 +6,7 @@ description: "Frame audit before solving — restate the problem, flag user-fram
 application: "Every non-trivial request — multi-file changes, > 15-minute estimates, or requests using fix/improve/broken/just-do-X language"
 applyTo: "**/*"
 currency: 2026-04-26
+lastReviewed: 2026-01-01
 ---
 
 # Problem Framing Audit (Discipline -1)

@@ -7,6 +7,7 @@ tier: standard
 inheritance: inheritable
 applyTo: '**/*.md,**/*mermaid*,**/*diagram*'
 currency: 2026-04-22
+lastReviewed: 2026-01-01
 ---
 
 # Markdown & Mermaid

@@ -6,6 +6,7 @@ description: "Brain architecture patterns — trifectas, muscles, agents, and th
 application: "When designing automation, creating agents, or building complete capabilities"
 applyTo: "**/*muscle*,**/*agent*,**/*trifecta*,**/*.cjs"
 currency: 2026-04-27
+lastReviewed: 2026-01-01
 ---
 
 # Brain Design Patterns

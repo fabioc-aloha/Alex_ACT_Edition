@@ -6,6 +6,7 @@ description: "Communication craft — give feedback, explain concepts, tailor to
 application: "When reviewing work, explaining concepts, writing for audiences, or handling vague requests"
 applyTo: "**"
 currency: 2026-04-30
+lastReviewed: 2026-01-01
 ---
 
 # Communication Craft

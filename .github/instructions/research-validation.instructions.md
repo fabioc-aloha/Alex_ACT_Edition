@@ -6,6 +6,7 @@ description: "Research validation — verify assumptions against authoritative s
 application: "Before implementing any API, library, framework, or technology-dependent solution"
 applyTo: "**/*api*,**/*integrat*,**/*implement*,**/*build*"
 currency: 2026-04-27
+lastReviewed: 2026-01-01
 ---
 
 # Research Validation

@@ -6,6 +6,7 @@ description: "Universal creative loop — Ideate, Plan, Build, Test, Release, Im
 application: "When creating anything: code, documents, designs, solutions"
 applyTo: "**"
 currency: 2026-04-27
+lastReviewed: 2026-01-01
 ---
 
 # Creative Loop

@@ -6,6 +6,7 @@ description: "Rules for producing authentically human writing by avoiding tellta
 application: "When implementing ai writing avoidance or reviewing code that uses these patterns"
 applyTo: "**/*writing*,**/*content*,**/*blog*"
 currency: 2026-04-20
+lastReviewed: 2026-01-01
 ---
 
 # AI Writing Avoidance — Auto-Loaded Rules

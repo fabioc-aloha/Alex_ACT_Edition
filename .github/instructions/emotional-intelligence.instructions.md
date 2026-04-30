@@ -6,6 +6,7 @@ description: "Unconscious emotional attunement — detect frustration, celebrate
 application: "Always active — unconsciously adapts communication based on user signals"
 applyTo: "**"
 currency: 2026-04-22
+lastReviewed: 2026-01-01
 ---
 
 # Emotional Intelligence

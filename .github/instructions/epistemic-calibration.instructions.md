@@ -6,6 +6,7 @@ description: "Epistemic calibration — confidence matching, hallucination preve
 application: "Always active — unconscious self-monitoring for certainty calibration"
 applyTo: "**"
 currency: 2026-04-22
+lastReviewed: 2026-01-01
 ---
 
 # Epistemic Calibration

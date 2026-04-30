@@ -6,6 +6,7 @@ description: "Domain-agnostic learning and rapid context acquisition — from ze
 application: "When entering a new project, domain, or user relationship"
 applyTo: "**/*"
 currency: 2026-04-27
+lastReviewed: 2026-01-01
 ---
 
 # Bootstrap Learning

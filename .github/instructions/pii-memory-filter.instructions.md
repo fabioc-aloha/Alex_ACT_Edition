@@ -6,6 +6,7 @@ description: "PII filter at memory write boundaries — prevent sensitive data f
 application: "Always active — unconscious filter before writing to any persistent memory tier"
 applyTo: "**"
 currency: 2026-04-20
+lastReviewed: 2026-01-01
 ---
 
 # PII Memory Filter
