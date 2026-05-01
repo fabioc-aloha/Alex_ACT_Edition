@@ -30,7 +30,8 @@ Register these on any project that benefits from advanced code review or documen
 "chat.pluginLocations": {
     "C:\\Development\\MALL\\.github-private\\plugins\\deep-review": true,
     "C:\\Development\\MALL\\.github-private\\plugins\\bug-hunter": true,
-    "C:\\Development\\MALL\\.github-private\\plugins\\deployment-safety": true
+    "C:\\Development\\MALL\\.github-private\\plugins\\deployment-safety": true,
+    "C:\\Development\\MALL\\.github-private\\plugins\\code-quality-audit": true
 }
 ```
 
@@ -38,6 +39,7 @@ Register these on any project that benefits from advanced code review or documen
 | --- | --- | --- |
 | `deep-review` | 3 (advocate, skeptic, architect) | Adversarial code review — three agents with opposing mindsets review in parallel |
 | `bug-hunter` | 1 + hooks | Autonomous bug detection across 19 categories including IaC scanning (Bicep/ARM) |
+| `code-quality-audit` | 8 | Dead-code detection, consistency analysis, improvement suggestions, rule auditing, similarity analysis |
 | `deployment-safety` | 6 | Deployment safety checks: SDL, privacy, responsible AI, accessibility |
 
 ## Azure / SFI Compliance Plugins
@@ -91,6 +93,7 @@ For projects that need everything (e.g., `lab-subscription`):
     "C:\\Development\\MALL\\.github-private\\plugins\\deep-review": true,
     "C:\\Development\\MALL\\.github-private\\plugins\\bug-hunter": true,
     "C:\\Development\\MALL\\.github-private\\plugins\\deployment-safety": true,
+    "C:\\Development\\MALL\\.github-private\\plugins\\code-quality-audit": true,
     "C:\\Development\\MALL\\.github-private\\plugins\\sfi-ns251-overexposed-endpoints": true,
     "C:\\Development\\MALL\\.github-private\\plugins\\sfi-ti322-entra-app-tenant-isolation": true,
     "C:\\Development\\MALL\\.github-private\\plugins\\sfi-es331-exposed-secrets": true,
