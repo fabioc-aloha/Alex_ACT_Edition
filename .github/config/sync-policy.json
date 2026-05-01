@@ -8,6 +8,7 @@
         ".github/skills/**",
         ".github/prompts/**",
         ".github/muscles/**",
+        ".github/agents/**",
         ".github/episodic/**",
         ".github/config/sync-policy.json",
         ".github/config/edition-manifest.json",
@@ -30,6 +31,7 @@
         ".github/skills/local/**",
         ".github/prompts/local/**",
         ".github/muscles/local/**",
+        ".github/agents/local/**",
         ".vscode/extensions.json",
         ".vscode/settings.json"
     ],
