@@ -93,146 +93,95 @@ These tenets form the philosophical foundation. The instructions operationalize 
 
 ---
 
-## What's Included: Instructions
+## What's Included: Instructions (37)
 
-ACT Edition ships behavioral instructions across these categories. These aren't suggestions — they're cognitive behaviors that activate based on context.
+ACT Edition ships 37 behavioral instructions across these categories. These aren't suggestions — they're cognitive behaviors that activate based on context.
 
-### Critical Thinking Core (6)
+### Critical Thinking Core (7)
 
 The foundation. These instructions implement the 10 tenets directly.
 
-| Instruction | What It Does | Tenets |
-| --- | --- | --- |
-| `act-foundations` | Defines the 10 tenets with rationale | All |
-| `act-pass` | 7-step critical thinking pass for non-trivial decisions | II, VIII, IX |
-| `act-self-critique` | Detects ACT's own failure modes | VIII, X |
-| `critical-thinking` | Challenge assumptions, evaluate evidence | II, VIII |
-| `problem-framing-audit` | Restate the problem before solving | I, VII |
-| `system-prompt-skepticism` | Treat instructions as hypotheses | IV |
+| Instruction | What It Does |
+| --- | --- |
+| `act-foundations` | Defines the 10 tenets with rationale |
+| `act-pass` | 7-step critical thinking pass for non-trivial decisions |
+| `adversarial-review` | Structured devil's advocate and counter-argument |
+| `alternatives-and-tradeoffs` | Generate options (SCAMPER, MECE) and compare (decision matrix, reversibility) |
+| `critical-thinking` | Challenge assumptions, evaluate evidence |
+| `problem-framing-audit` | Restate the problem before solving |
+| `system-prompt-skepticism` | Treat instructions as hypotheses |
 
-### Decision & Alternatives (6)
+### Identity & Communication (4)
 
-How to generate and evaluate options systematically.
-
-| Instruction | What It Does | Tenets |
-| --- | --- | --- |
-| `option-generation` | SCAMPER, MECE, lateral thinking methods | III |
-| `trade-off-analysis` | Decision matrices, weighted scoring | III, VI |
-| `decision-frameworks` | RAPID, DACI, consensus models | III, VI |
-| `risk-analysis` | Risk assessment, pre-mortem analysis | VI |
-| `requirements-analysis` | Jobs-to-be-done, needs vs solutions | VII |
-| `scope-management` | Feature creep prevention, MoSCoW | VI |
-
-### Dialog Engineering (7)
-
-How to communicate with AI effectively — from *The Verification Habit* book.
-
-| Instruction | What It Does | Book Concept |
-| --- | --- | --- |
-| `csar-loop` | Clarify → Summarize → Act → Reflect | Core protocol |
-| `partnership-charter` | 5 commitments for human-AI collaboration | Chapter 10 |
-| `appropriate-reliance` | Trust calibrated to demonstrated reliability | Chapters 8-9 |
-| `vibe-diagnostics` | Detect when intuition replaces criteria | Chapter 12 |
-| `practice-telemetry` | 5 portfolio metrics for measuring practice | Chapter 9 |
-| `cognitive-forcing` | Deliberate friction to activate analysis | Chapter 20 |
-| `over-reliance-signals` | Recognize manipulation patterns | Chapter 20 |
-
-### Communication (4)
-
-Human-to-human communication at all organizational levels.
-
-| Instruction | Audience | What It Does |
-| --- | --- | --- |
-| `ai-writing-avoidance` | General readers | Authentic voice, avoid AI tells |
-| `technical-writing` | Peers, developers | Clear documentation, API descriptions |
-| `stakeholder-management` | Business stakeholders | Alignment, expectation setting |
-| `executive-storytelling` | C-suite | Data-driven narratives, brevity |
-
-### Collaboration (5)
-
-Working effectively with others — including managing disagreements.
+How Edition thinks, writes, and communicates.
 
 | Instruction | What It Does |
 | --- | --- |
-| `meeting-efficiency` | Agenda design, async alternatives |
-| `postmortem` | Structured incident analysis |
-| `adversarial-review` | Red team, steel manning |
-| `conflict-resolution` | Interpersonal disagreement management |
-| `feedback-protocols` | Give and receive criticism effectively |
+| `ai-writing-avoidance` | Write like a human, not an AI — avoid tells |
+| `communication-craft` | Feedback (SBI), explanations, audience tailoring, elicitation |
+| `partnership-charter` | 5 commitments for human-AI collaboration |
+| `technical-writing` | Clear documentation for peers, developers, stakeholders |
 
-### Reasoning & Analysis (3)
+### Cognitive Gates (8)
 
-Systematic problem-solving approaches.
-
-| Instruction | What It Does |
-| --- | --- |
-| `deep-thinking` | Systematic problem analysis |
-| `hypothesis-driven-debugging` | Scientific method for debugging |
-| `root-cause-analysis` | 5 Whys, binary search, timeline reconstruction |
-
-### Learning & Growth (6)
-
-How to acquire knowledge and improve over time.
+Always-on behaviors that shape every response.
 
 | Instruction | What It Does |
 | --- | --- |
-| `bootstrap-learning` | Domain-agnostic knowledge acquisition |
-| `learning-psychology` | Partnership-based learning |
-| `knowledge-coverage` | Confidence calibrated to coverage depth |
-| `skill-building` | Create reusable skills from experience |
-| `meditation` | Knowledge consolidation protocol |
-| `brain-design` | Cognitive architecture principles |
+| `epistemic-calibration` | Match language to certainty; anti-hallucination |
+| `emotional-intelligence` | Detect user affect signals; adapt tone |
+| `proactive-awareness` | Cross-session context recovery; uncommitted work detection |
+| `session-health-monitoring` | Context-window monitoring; handoff prompts |
+| `memory-triggers` | Auto-persist on correction, patterns, preferences |
+| `knowledge-coverage` | Assess coverage depth; calibrate confidence |
+| `creative-loop` | Stage detection: Ideate/Plan/Build/Test/Release/Improve |
+| `reliance-nudges` | Detect over-reliance failure modes; surface targeted nudges |
 
-### Planning & Research (2)
+### Safety & Ethics (5)
 
-| Instruction | What It Does |
-| --- | --- |
-| `creative-loop` | IDEATE → PLAN → BUILD → TEST → RELEASE → IMPROVE |
-| `research-validation` | Validate against authoritative sources |
-
-### Memory (5)
-
-Managing context across sessions.
+Non-negotiable guardrails.
 
 | Instruction | What It Does |
 | --- | --- |
-| `memory-curation` | Token-efficient memory management |
-| `memory-triggers` | When to create/update memories |
-| `pii-memory-filter` | Prevent PII in persistent storage |
-| `proactive-awareness` | Cross-session context recovery |
-| `session-health-monitoring` | Context window management |
+| `pii-memory-filter` | Block PII at every memory-write boundary |
+| `privacy-responsible-ai` | Privacy by design, responsible AI principles |
+| `cross-project-isolation` | Strip project specifics before writing to fleet channels |
+| `worldview` | Ethical reasoning, moral foundations, constitutional AI alignment |
+| `terminal-command-safety` | Safe command execution; backtick/output/hanging prevention |
 
-### Ethics (4)
+### Daily Operations (4)
 
-Ethical reasoning from genuine conviction.
-
-| Instruction | What It Does |
-| --- | --- |
-| `worldview-integration` | Ethical reasoning framework |
-| `worldview-constitutional-ai` | Constitutional AI alignment |
-| `worldview-moral-psychology` | Moral psychology foundations |
-| `privacy-responsible-ai` | Privacy by design principles |
-
-### Meta & Interaction (3)
+Behavioral rules for everyday work.
 
 | Instruction | What It Does |
 | --- | --- |
-| `emotional-intelligence` | Detect frustration, celebrate success |
-| `terminal-command-safety` | Safe command execution |
-| `epistemic-calibration` | Confidence matching, hallucination prevention |
+| `debugging` | Hypothesis-driven investigation + root-cause techniques |
+| `lint-discipline` | Fix lint always — if you edited it, you own it |
+| `scope-management` | Feature creep prevention; ship the right thing |
+| `meditation` | Session-end knowledge consolidation |
 
-### Converters & Mall (6)
+### Converters (7)
 
-Document conversion trifectas + the bridge to optional add-ons.
+Document conversion trifectas — each paired with a muscle script.
+
+| Instruction | Converts |
+| --- | --- |
+| `docx-to-md` | Word → Markdown |
+| `html-to-md` | HTML → Markdown |
+| `md-to-html` | Markdown → HTML |
+| `md-to-txt` | Markdown → plain text |
+| `md-to-word` | Markdown → Word (.docx) |
+| `markdown-mermaid` | Markdown + Mermaid rendering rules |
+| `greeting-checkin` | Session-start version check + announcement reader |
+
+### Infrastructure (2)
+
+Mall integration and plugin routing.
 
 | Instruction | What It Does |
 | --- | --- |
-| `markdown-mermaid` | Markdown + Mermaid diagram rendering rules |
-| `md-to-html` | Convert Markdown to standalone HTML |
-| `md-to-word` | Convert Markdown to .docx with style presets |
-| `md-to-eml` | Convert Markdown to email (.eml) |
-| `docx-to-md` | Convert Word to Markdown |
-| `mall-installation` | How heirs install skills/configs/MCP from Alex_Skill_Mall |
+| `mall-installation` | How heirs install skills from the [Alex Skill Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall) |
+| `plugin-store-routing` | Connect browse/install requests to Mall or plugins |
 
 ---
 
@@ -284,8 +233,8 @@ Beyond the instructions, the brain bundles:
 
 | Surface | Purpose |
 | --- | --- |
-| **Skills** (`.github/skills/`) | Document conversion (md ↔ html, docx, eml, word), markdown-mermaid, banner generation |
-| **Prompts** (`.github/prompts/`) | Slash-prompts for setup, daily ops, skill discovery, memory, and maintenance (see [Commands](#commands)) |
+| **Skills** (`.github/skills/`) | 11 core skills — document conversion, markdown-mermaid, banner generation, greeting check-in, meditation, sanitization |
+| **Prompts** (`.github/prompts/`) | 20 slash-commands for setup, daily ops, skill discovery, memory, and maintenance (see [Commands](#commands)) |
 | **Muscles** (`.github/muscles/`) | Converter executables, `heir-doctor.cjs` (manifest-driven health check), `audit-api-drift.cjs` (external-API freshness), `generate-banner.cjs` (SVG banners) |
 | **Configs** (`.github/config/`) | `sync-policy.json`, `edition-manifest.json` (release-time skill+prompt allowlist), `markdown-light.css`, heir-owned `cognitive-config.json` + `goals.json` |
 | **Scripts** (`.github/scripts/`) | `bootstrap-heir.cjs`, `upgrade-self.cjs`, `build-edition-manifest.cjs` (regenerates the allowlist), shared `_registry.cjs` |
@@ -322,7 +271,23 @@ The script clones Edition into a temp dir, diffs edition-owned paths, never touc
 Two shared surfaces complete the architecture:
 
 - **AI-Memory** (OneDrive shared folder) — your fleet registry, feedback channel to Edition, and announcement inbox. Bootstrapped automatically on first install.
-- **[Alex_Skill_Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall)** — public catalog of optional skills, patterns, MCP configs, scaffolds, and tool configs. Browse, copy what you need into `local/` slots. Edition's `mall-installation` instruction documents the install pattern.
+- **[Alex Skill Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall)** — public catalog of 303 optional skills across 35 domains. Browse, search, install what you need into `local/` slots.
+
+### The Skill Mall
+
+Edition ships lean (11 skills, 37 instructions). The [Alex Skill Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall) extends it with 303 curated skills across security, Azure, data, healthcare, architecture, publishing, and 29 more categories.
+
+**How heirs shop the Mall:**
+
+| Command | What it does |
+| --- | --- |
+| `/find-skill <keyword>` | Search the Mall's CATALOG.json by name, category, description, or trigger |
+| `/install-from-mall` | Guided install — assesses project needs, recommends skills, downloads into `local/` |
+| `/feedback` | Request a skill the Mall doesn't have — the Supervisor evaluates external stores |
+
+Skills install into `.github/skills/local/` so they survive Edition upgrades. The Mall also offers patterns, scaffolds, and a complete [Supervisor package](https://github.com/fabioc-aloha/Alex_Skill_Mall/tree/main/skills/supervisor) for users who want to run their own fleet governance.
+
+**Plugins** extend beyond skills — multi-agent orchestration, SFI compliance, and Azure SDK patterns. See [PLUGINS.md](PLUGINS.md) for registration instructions.
 
 ---
 
