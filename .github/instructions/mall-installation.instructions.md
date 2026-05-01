@@ -29,13 +29,13 @@ List `.github/skills/` (edition-owned) — the Edition baseline already covers g
 
 ### Step 3 — Match project needs to Mall categories
 
-Consult the Mall `CATALOG.md`. Fetch directly from GitHub if no local clone:
+Consult the Mall `CATALOG.json`. Fetch directly from GitHub if no local clone:
 
 ```bash
-gh api repos/fabioc-aloha/Alex_Skill_Mall/contents/CATALOG.md --jq .content | base64 -d
+gh api repos/fabioc-aloha/Alex_Skill_Mall/contents/CATALOG.json --jq .content | base64 -d
 ```
 
-Or read from local clone at `~/Alex_Skill_Mall/CATALOG.md` if available. Match by:
+Or read from local clone at `~/Alex_Skill_Mall/CATALOG.json` if available. Match by:
 
 | Project signal | Mall category to check |
 | --- | --- |
@@ -88,7 +88,7 @@ Putting Mall content directly under `.github/skills/<name>/` (no `local/`) means
 
 ## Install a Skill (most common case)
 
-1. **Browse** the catalog: <https://github.com/fabioc-aloha/Alex_Skill_Mall/blob/main/CATALOG.md>
+1. **Search** the catalog: `/find-skill <keyword>` or browse <https://github.com/fabioc-aloha/Alex_Skill_Mall/blob/main/CATALOG.json>
 
 2. **Download from GitHub** (preferred — no local clone needed):
 
