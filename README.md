@@ -211,8 +211,8 @@ The `sync-policy.json` declares these project-owned. Adding a custom skill to `l
 
 ### Upgrade Flow
 
-```powershell
-# From your heir's repo root
+```bash
+# From your project root
 node .github/scripts/upgrade-self.cjs           # dry-run
 node .github/scripts/upgrade-self.cjs --apply   # write changes
 ```
