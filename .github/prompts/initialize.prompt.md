@@ -1,6 +1,7 @@
 ---
 description: "Initialize this workspace as an ACT heir — bootstrap the brain or finish a partial install (path-1 quick register)"
 mode: agent
+lastReviewed: 2026-04-30
 ---
 
 # Initialize

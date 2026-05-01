@@ -19,7 +19,7 @@ The brain ships slash-prompts grouped by lifecycle stage. Type `/` in Copilot Ch
 ### Setup (run once per heir)
 
 | Command | When | What it does |
-|---------|------|--------------|
+| --- | --- | --- |
 | `/initialize` | Workspace has Edition content but isn't a registered heir | Detects state (fresh / partial-clean / partial-dirty / full) and runs the right bootstrap path |
 | `/welcome` | First session after bootstrap | Orientation tour — identity, tenets, surfaces, what to try next |
 | `/finalize-migration` | After `migrate-to-edition.cjs` | Semantic pass over `local/` — review classified files, prune stale custom content |
@@ -27,7 +27,7 @@ The brain ships slash-prompts grouped by lifecycle stage. Type `/` in Copilot Ch
 ### Daily Operations
 
 | Command | When | What it does |
-|---------|------|--------------|
+| --- | --- | --- |
 | `/status` | Anytime | Snapshot of brain version, marker, drift from Edition, fleet membership |
 | `/upgrade` | Edition has shipped a new version | Runs `upgrade-self.cjs` (dry-run by default), shows diff, applies on confirmation |
 | `/fleet` | From Supervisor or any heir | Reads fleet inventory, shows who's on what version, who's drifted |
@@ -35,14 +35,14 @@ The brain ships slash-prompts grouped by lifecycle stage. Type `/` in Copilot Ch
 ### Skill Discovery
 
 | Command | When | What it does |
-|---------|------|--------------|
+| --- | --- | --- |
 | `/find-skill` | Need capability not in Edition | Searches Alex_Skill_Mall catalog, shows matches with install paths |
 | `/install-from-mall` | Found a Mall skill to adopt | Copies skill/config/MCP into `local/` slots, preserving upgrade safety |
 
 ### Memory & Feedback
 
 | Command | When | What it does |
-|---------|------|--------------|
+| --- | --- | --- |
 | `/save-session-note` | End of meaningful session | Persists session memory to `/memories/session/` for next-conversation pickup |
 | `/note` | Mid-session insight worth keeping | Quick capture to user/repo/session memory based on scope |
 | `/feedback` | Edition friction or improvement idea | Writes structured entry to `AI-Memory/feedback/alex-act/` for Supervisor triage |
@@ -50,7 +50,7 @@ The brain ships slash-prompts grouped by lifecycle stage. Type `/` in Copilot Ch
 ### Maintenance
 
 | Command | When | What it does |
-|---------|------|--------------|
+| --- | --- | --- |
 | `/audit-apis` | Quarterly or before shipping skills that touch external APIs | Reads `EXTERNAL-API-REGISTRY.md`, flags stale entries via `audit-api-drift.cjs` |
 
 New to Edition? Jump to [Quick Start](#quick-start) to bootstrap a heir.
@@ -62,7 +62,7 @@ New to Edition? Jump to [Quick Start](#quick-start) to bootstrap a heir.
 AI assistants suffer from predictable failure modes:
 
 | Failure Mode | What Happens | ACT Defense |
-|--------------|--------------|-------------|
+| --- | --- | --- |
 | **Confirmation bias** | Agrees with your framing even when wrong | Tenet II: Disconfirmation over confirmation |
 | **Anchoring** | First solution becomes the only solution | Tenet III: Generate multiple hypotheses |
 | **Hallucination** | Invents plausible-sounding nonsense | Tenet V: Calibrated confidence |
@@ -79,7 +79,7 @@ ACT doesn't eliminate these failures — it makes them **visible** and **correct
 These tenets form the philosophical foundation. The instructions operationalize them.
 
 | # | Tenet | The Discipline | What It Prevents |
-|---|-------|----------------|------------------|
+| --- | --- | --- | --- |
 | I | **Hypothesis Primacy** | State the hypothesis before gathering evidence | Confirmation bias via selective attention |
 | II | **Disconfirmation Over Confirmation** | Actively seek evidence against your conclusion | Motivated reasoning, cherry-picking |
 | III | **Multiple Working Hypotheses** | Generate at least two alternatives before committing | Anchoring, Einstellung effect |
@@ -102,7 +102,7 @@ ACT Edition ships behavioral instructions across these categories. These aren't 
 The foundation. These instructions implement the 10 tenets directly.
 
 | Instruction | What It Does | Tenets |
-|-------------|--------------|--------|
+| --- | --- | --- |
 | `act-foundations` | Defines the 10 tenets with rationale | All |
 | `act-pass` | 7-step critical thinking pass for non-trivial decisions | II, VIII, IX |
 | `act-self-critique` | Detects ACT's own failure modes | VIII, X |
@@ -115,7 +115,7 @@ The foundation. These instructions implement the 10 tenets directly.
 How to generate and evaluate options systematically.
 
 | Instruction | What It Does | Tenets |
-|-------------|--------------|--------|
+| --- | --- | --- |
 | `option-generation` | SCAMPER, MECE, lateral thinking methods | III |
 | `trade-off-analysis` | Decision matrices, weighted scoring | III, VI |
 | `decision-frameworks` | RAPID, DACI, consensus models | III, VI |
@@ -128,7 +128,7 @@ How to generate and evaluate options systematically.
 How to communicate with AI effectively — from *The Verification Habit* book.
 
 | Instruction | What It Does | Book Concept |
-|-------------|--------------|--------------|
+| --- | --- | --- |
 | `csar-loop` | Clarify → Summarize → Act → Reflect | Core protocol |
 | `partnership-charter` | 5 commitments for human-AI collaboration | Chapter 10 |
 | `appropriate-reliance` | Trust calibrated to demonstrated reliability | Chapters 8-9 |
@@ -142,7 +142,7 @@ How to communicate with AI effectively — from *The Verification Habit* book.
 Human-to-human communication at all organizational levels.
 
 | Instruction | Audience | What It Does |
-|-------------|----------|--------------|
+| --- | --- | --- |
 | `ai-writing-avoidance` | General readers | Authentic voice, avoid AI tells |
 | `technical-writing` | Peers, developers | Clear documentation, API descriptions |
 | `stakeholder-management` | Business stakeholders | Alignment, expectation setting |
@@ -153,7 +153,7 @@ Human-to-human communication at all organizational levels.
 Working effectively with others — including managing disagreements.
 
 | Instruction | What It Does |
-|-------------|--------------|
+| --- | --- |
 | `meeting-efficiency` | Agenda design, async alternatives |
 | `postmortem` | Structured incident analysis |
 | `adversarial-review` | Red team, steel manning |
@@ -165,7 +165,7 @@ Working effectively with others — including managing disagreements.
 Systematic problem-solving approaches.
 
 | Instruction | What It Does |
-|-------------|--------------|
+| --- | --- |
 | `deep-thinking` | Systematic problem analysis |
 | `hypothesis-driven-debugging` | Scientific method for debugging |
 | `root-cause-analysis` | 5 Whys, binary search, timeline reconstruction |
@@ -175,7 +175,7 @@ Systematic problem-solving approaches.
 How to acquire knowledge and improve over time.
 
 | Instruction | What It Does |
-|-------------|--------------|
+| --- | --- |
 | `bootstrap-learning` | Domain-agnostic knowledge acquisition |
 | `learning-psychology` | Partnership-based learning |
 | `knowledge-coverage` | Confidence calibrated to coverage depth |
@@ -186,7 +186,7 @@ How to acquire knowledge and improve over time.
 ### Planning & Research (2)
 
 | Instruction | What It Does |
-|-------------|--------------|
+| --- | --- |
 | `creative-loop` | IDEATE → PLAN → BUILD → TEST → RELEASE → IMPROVE |
 | `research-validation` | Validate against authoritative sources |
 
@@ -195,7 +195,7 @@ How to acquire knowledge and improve over time.
 Managing context across sessions.
 
 | Instruction | What It Does |
-|-------------|--------------|
+| --- | --- |
 | `memory-curation` | Token-efficient memory management |
 | `memory-triggers` | When to create/update memories |
 | `pii-memory-filter` | Prevent PII in persistent storage |
@@ -207,7 +207,7 @@ Managing context across sessions.
 Ethical reasoning from genuine conviction.
 
 | Instruction | What It Does |
-|-------------|--------------|
+| --- | --- |
 | `worldview-integration` | Ethical reasoning framework |
 | `worldview-constitutional-ai` | Constitutional AI alignment |
 | `worldview-moral-psychology` | Moral psychology foundations |
@@ -216,7 +216,7 @@ Ethical reasoning from genuine conviction.
 ### Meta & Interaction (3)
 
 | Instruction | What It Does |
-|-------------|--------------|
+| --- | --- |
 | `emotional-intelligence` | Detect frustration, celebrate success |
 | `terminal-command-safety` | Safe command execution |
 | `epistemic-calibration` | Confidence matching, hallucination prevention |
@@ -226,7 +226,7 @@ Ethical reasoning from genuine conviction.
 Document conversion trifectas + the bridge to optional add-ons.
 
 | Instruction | What It Does |
-|-------------|--------------|
+| --- | --- |
 | `markdown-mermaid` | Markdown + Mermaid diagram rendering rules |
 | `md-to-html` | Convert Markdown to standalone HTML |
 | `md-to-word` | Convert Markdown to .docx with style presets |
@@ -283,12 +283,13 @@ Open the heir in VS Code with Copilot. Run `/welcome` for orientation. The brain
 Beyond the instructions, the brain bundles:
 
 | Surface | Purpose |
-|---------|---------|
+| --- | --- |
 | **Skills** (`.github/skills/`) | Document conversion (md ↔ html, docx, eml, word), markdown-mermaid, banner generation |
 | **Prompts** (`.github/prompts/`) | Slash-prompts for setup, daily ops, skill discovery, memory, and maintenance (see [Commands](#commands)) |
-| **Muscles** (`.github/muscles/`) | Converter executables, `heir-doctor.cjs` (health check), `audit-api-drift.cjs` (external-API freshness), `generate-banner.cjs` (SVG banners) |
-| **Configs** (`.github/config/`) | `sync-policy.json`, `markdown-light.css`, heir-owned `cognitive-config.json` + `goals.json` |
-| **Scripts** (`.github/scripts/`) | `bootstrap-heir.cjs`, `upgrade-self.cjs`, shared `_registry.cjs` |
+| **Muscles** (`.github/muscles/`) | Converter executables, `heir-doctor.cjs` (manifest-driven health check), `audit-api-drift.cjs` (external-API freshness), `generate-banner.cjs` (SVG banners) |
+| **Configs** (`.github/config/`) | `sync-policy.json`, `edition-manifest.json` (release-time skill+prompt allowlist), `markdown-light.css`, heir-owned `cognitive-config.json` + `goals.json` |
+| **Scripts** (`.github/scripts/`) | `bootstrap-heir.cjs`, `upgrade-self.cjs`, `build-edition-manifest.cjs` (regenerates the allowlist), shared `_registry.cjs` |
+| **Workspace defaults** (`.vscode/`) | `extensions.json` + `settings.json` shipped as heir-owned templates — new heirs receive them at bootstrap; existing heirs keep their own |
 | **Registry** (`.github/EXTERNAL-API-REGISTRY.md`) | Source-of-truth for external API/model versions consumed by skills (paired with `/audit-apis`) |
 
 ### Heir-Owned Customization Slots
@@ -353,7 +354,7 @@ Example output:
 The brain uses a **trifecta pattern** for extensibility:
 
 | Artifact | Purpose | Location |
-|----------|---------|----------|
+| --- | --- | --- |
 | **Skill** | Domain knowledge | `.github/skills/<name>/SKILL.md` |
 | **Instruction** | Behavior trigger | `.github/instructions/<name>.instructions.md` |
 | **Muscle** | Automation script | `.github/muscles/<name>.cjs` |

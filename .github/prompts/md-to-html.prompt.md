@@ -1,6 +1,7 @@
 ---
 description: "Convert a Markdown document to standalone HTML with embedded CSS, images, and Mermaid diagrams"
 mode: agent
+lastReviewed: 2026-04-30
 ---
 
 # Markdown → HTML

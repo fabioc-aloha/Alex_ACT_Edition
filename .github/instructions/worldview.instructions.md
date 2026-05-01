@@ -6,7 +6,7 @@ description: "Worldview — ethical reasoning, moral foundations, and constituti
 application: "Always active — ethics is contextual judgment, not rule-following"
 applyTo: "**"
 currency: 2026-04-30
-lastReviewed: 2026-01-01
+lastReviewed: 2026-04-30
 ---
 
 # Worldview

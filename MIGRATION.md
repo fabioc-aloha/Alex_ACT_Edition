@@ -1,5 +1,7 @@
 # Migrating an Existing Heir to Alex ACT Edition
 
+![Alex ACT Edition — Artificial Critical Thinking for AI Coding Assistants](assets/banner-readme.svg)
+
 If you have an older Alex-flavored repo (with the master/inheritable/custom inheritance tier model) and want to move it to ACT Edition's simpler edition-vs-`local/` ownership model, this is the path.
 
 ## What `migrate-to-edition.cjs` Does
@@ -29,7 +31,7 @@ The script lives at the root of [Alex_ACT_Edition](https://github.com/fabioc-alo
 If the heir has a GitHub `origin` remote, all identity fields are derived automatically:
 
 | Field | Source | Example |
-|-------|--------|---------|
+| ------- | -------- | --------- |
 | `--heir-id` | repo name slugified | `FabricCapacity` → `fabric-capacity` |
 | `--owner` | first path segment of remote | `fabioc-aloha` |
 | `--repo-url` | normalized HTTPS URL | `https://github.com/fabioc-aloha/FabricCapacity` |
@@ -40,7 +42,7 @@ Each field is tagged `[auto]` or `[override]` in the banner so you can see what 
 The slugifier handles camelCase, PascalCase, underscores, dots, and acronym boundaries:
 
 | Input | Slug |
-|-------|------|
+| ------- | ------ |
 | `FabricCapacity` | `fabric-capacity` |
 | `Alex_ACT_Edition` | `alex-act-edition` |
 | `AlexACTSupervisor` | `alex-act-supervisor` |
@@ -62,7 +64,7 @@ A missing `--owner` is a warning, not an error.
 Before any files move, the script inventories `.github/` and classifies every file into one of six buckets. The bucket counts are printed before the dry-run pauses.
 
 | Bucket | What goes here | Action |
-|--------|----------------|--------|
+| -------- | ---------------- | -------- |
 | **drop (extension-only)** | `agents/`, `hooks/`, `episodic/`, extension-UI configs (`loop-menu.json`, `taglines.json`, `MASTER-ALEX-PROTECTED.json`, etc.), schema files, `*-template.json` | dropped (Edition has no consumer) |
 | **drop (replaced by Edition)** | Instructions/skills/prompts whose name matches what Edition ships (`critical-thinking`, `epistemic-calibration`, `markdown-mermaid`, `welcome`, etc.) | dropped (Edition's version wins) |
 | **drop (master-tier inherited)** | Files with frontmatter `inheritance: inheritable` or `inheritance: master-only`; muscles with JSDoc `@inheritance inheritable` or `master-only` | dropped (was AlexMaster fleet content, not custom heir work) |
@@ -79,22 +81,21 @@ The triage table prints the first 20 port-to-local entries with their planned `.
 When run with `--apply`, the script executes five steps:
 
 1. **Snapshot** — `.github/` → `.github-old-YYYY-MM-DD/` (renamed, not deleted; rolled back automatically if any later step fails)
-2. **Clone Edition** — shallow clone of Edition into `%TEMP%/edition-migrate-*/`
-3. **Bootstrap** — runs Edition's `bootstrap-heir.cjs --target . --apply` against the heir cwd. Writes the new brain, the `.act-heir.json` marker, the identity template at `copilot-instructions.local.md`, the heir-owned config templates, and registers the heir in your shared `AI-Memory/heirs/registry.json`.
-4. **Verify** — runs `heir-doctor.cjs`. Should exit 0 with informational notes about empty `local/` directories.
-5. **Print hand-off** — banner directing you to run `/finalize-migration` in a chat session for the semantic pass.
+2. **Bootstrap** — runs Edition's `bootstrap-heir.cjs --target . --apply` against the heir cwd. Writes the new brain, the `.act-heir.json` marker, the identity template at `copilot-instructions.local.md`, the heir-owned config templates, the `.vscode/` workspace defaults if absent, and registers the heir in your shared `AI-Memory/heirs/registry.json`.
+3. **Verify** — runs `heir-doctor.cjs`. Should exit 0 with informational notes about empty `local/` directories.
+4. **Print hand-off** — banner directing you to run `/finalize-migration` in a chat session for the semantic pass.
 
-The temp clone is cleaned up on success.
+A shallow clone of Edition is taken **before** triage runs (so the triage classifier reads the live `edition-manifest.json` and instruction set rather than a hardcoded allowlist). The temp clone is reused for the bootstrap step and cleaned up on success.
 
 ### Failure Recovery
 
 The atomic snapshot is the safety net:
 
 | If this fails | Behavior |
-|---------------|----------|
-| Network during clone (step 2) | Snapshot is renamed back to `.github/` automatically — your old brain is restored as if nothing happened |
-| Bootstrap (step 3) | Snapshot is preserved at `.github-old-YYYY-MM-DD/`. Recover manually: `Remove-Item .github -Recurse; Rename-Item .github-old-YYYY-MM-DD .github` |
-| Doctor (step 4) | Migration is technically complete but flagged. Read the doctor output and fix |
+| ------------- | -------- |
+| Network during the pre-triage clone | Script aborts before any snapshot or destructive step — your old brain is untouched |
+| Bootstrap | Snapshot is preserved at `.github-old-YYYY-MM-DD/`. Recover manually: `Remove-Item .github -Recurse; Rename-Item .github-old-YYYY-MM-DD .github` |
+| Doctor | Migration is technically complete but flagged. Read the doctor output and fix |
 
 The snapshot folder is **not deleted** on success. It travels with the migration commit so you can mine it for content later or recover from it.
 
@@ -129,7 +130,7 @@ From here on, you pull updates the same way every other Edition heir does:
 That prompt runs `upgrade-self.cjs` in dry-run mode, summarizes the diff in plain English (instructions/skills/prompts/muscles/scripts changed, new, deleted, plus version bump), and asks before applying. It is the **only** maintenance tool you need going forward.
 
 | When to use what | Tool |
-|------------------|------|
+| ---------------- | ---- |
 | First time installing Edition into an old Alex heir | `migrate-to-edition.cjs` (one-time) |
 | Just-finished migration, polishing custom content | `/finalize-migration` (one-time) |
 | Every Edition release after that | `/upgrade` (recurring) |
@@ -140,7 +141,7 @@ If you ever run `migrate-to-edition.cjs` again on a heir that's already on Editi
 ## Why Two Phases
 
 | Mechanical | Semantic |
-|------------|----------|
+| ---------- | -------- |
 | Repeatable | Judgment-dependent |
 | Same answer every run | Different answer per heir |
 | Frontmatter-decidable | Content-decidable |
@@ -153,7 +154,7 @@ Mixing them produces tools that are either too aggressive (auto-port everything 
 Edition removed several primitives that older Alex heirs had. The migration drops them on purpose:
 
 | Lost | Why | Mitigation |
-|------|-----|------------|
+| ---- | --- | ---------- |
 | `agents/*.agent.md` | Edition has no agent primitive | Port the system prompt into `prompts/local/<name>.prompt.md` |
 | `hooks/*.cjs` | Edition has no hook event registry | Pre-commit hooks survive at `.git/hooks/` if installed |
 | `episodic/*.md` | Master-only operational state | Not relevant to heirs |

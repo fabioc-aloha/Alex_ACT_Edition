@@ -2,6 +2,7 @@
 type: resource
 lifecycle: stable
 inheritance: inheritable
+lastReviewed: 2026-04-30
 ---
 
 # Polish Mermaid Setup

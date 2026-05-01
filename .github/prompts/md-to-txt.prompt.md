@@ -1,6 +1,7 @@
 ---
 description: "Strip Markdown formatting and produce clean plain text via pandoc"
 mode: agent
+lastReviewed: 2026-04-30
 ---
 
 # Markdown → Plain Text

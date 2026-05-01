@@ -5,8 +5,8 @@ inheritance: inheritable
 description: "Postmortem writing — structured incident analysis for root cause and prevention"
 application: "After failures, incidents, or mistakes that reveal novel failure modes"
 applyTo: "**/*postmortem*,**/*incident*,**/*failure*,**/*retro*"
-currency: 2026-04-27
-lastReviewed: 2026-01-01
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Postmortem Writing

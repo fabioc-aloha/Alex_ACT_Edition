@@ -185,22 +185,52 @@ const EXTENSION_ONLY_PATTERNS = [
     /^config\/.*-template\.json/,
 ];
 
-const EDITION_SHIPPED_INSTRUCTIONS = new Set([
-    'critical-thinking', 'epistemic-calibration', 'emotional-intelligence',
-    'session-health-monitoring', 'system-prompt-skepticism', 'problem-framing-audit',
-    'act-pass', 'pii-memory-filter', 'cross-project-isolation', 'proactive-awareness',
-    'knowledge-coverage', 'learned-patterns', 'terminal-command-safety',
-    'mall-installation',
-]);
+// --- Clone Edition early so triage can use the live edition-manifest --------
+// Both dry-run and apply need the manifest to classify old-brain files
+// correctly. We clone once, reuse for the apply phase. Network is required
+// either way (apply must clone); dry-run incurs ~5-10s.
 
-const EDITION_SHIPPED_SKILLS = new Set([
-    'markdown-mermaid', 'md-to-html', 'md-to-word', 'md-to-eml', 'docx-to-md',
-]);
+const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'edition-migrate-'));
+const editionDir = path.join(tmpRoot, 'edition');
+console.log(`Cloning Edition for triage (and apply): ${editionDir}`);
+const earlyClone = spawnSync('git', ['clone', '--depth', '1', EDITION_REPO, editionDir], { stdio: 'inherit' });
+if (earlyClone.status !== 0) {
+    console.error('git clone failed. Cannot triage without Edition manifest.');
+    try { fs.rmSync(tmpRoot, { recursive: true, force: true }); } catch { /* best effort */ }
+    process.exit(1);
+}
 
-const EDITION_SHIPPED_PROMPTS = new Set([
-    'welcome', 'feedback', 'save-session-note', 'install-from-mall',
-    'status', 'upgrade', 'note', 'fleet', 'find-skill', 'finalize-migration',
-]);
+function loadShippedSets(editionRoot) {
+    const manifestPath = path.join(editionRoot, '.github', 'config', 'edition-manifest.json');
+    if (!fs.existsSync(manifestPath)) {
+        console.warn(`  warning: no edition-manifest.json in cloned Edition. Triage will be conservative (everything portToLocal).`);
+        return { instructions: new Set(), skills: new Set(), prompts: new Set() };
+    }
+    const m = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+    // Manifest stores prompts with .prompt.md suffix and skills as folder names.
+    // Instructions aren't in the manifest yet, so derive from filesystem.
+    const instructionsDir = path.join(editionRoot, '.github', 'instructions');
+    const instructions = new Set();
+    if (fs.existsSync(instructionsDir)) {
+        for (const e of fs.readdirSync(instructionsDir, { withFileTypes: true })) {
+            if (e.isFile() && e.name.endsWith('.instructions.md')) {
+                instructions.add(e.name.replace(/\.instructions\.md$/, ''));
+            }
+        }
+    }
+    return {
+        instructions,
+        skills: new Set(m.skills || []),
+        prompts: new Set((m.prompts || []).map(p => p.replace(/\.prompt\.md$/, ''))),
+    };
+}
+
+const shipped = loadShippedSets(editionDir);
+const EDITION_SHIPPED_INSTRUCTIONS = shipped.instructions;
+const EDITION_SHIPPED_SKILLS = shipped.skills;
+const EDITION_SHIPPED_PROMPTS = shipped.prompts;
+console.log(`Edition ships: ${EDITION_SHIPPED_INSTRUCTIONS.size} instructions, ${EDITION_SHIPPED_SKILLS.size} skills, ${EDITION_SHIPPED_PROMPTS.size} prompts`);
+console.log('');
 
 // Read the `inheritance:` field from a YAML/Markdown frontmatter block.
 // Returns one of: 'inheritable', 'master-only', 'custom', null (no frontmatter or tag missing).
@@ -352,6 +382,7 @@ console.log('');
 
 if (!APPLY) {
     console.log('DRY-RUN complete. Re-run with --apply to migrate.');
+    try { fs.rmSync(tmpRoot, { recursive: true, force: true }); } catch { /* best effort */ }
     process.exit(0);
 }
 
@@ -360,15 +391,7 @@ if (!APPLY) {
 console.log(`[1/5] Snapshotting ${GH}  ->  ${snapshot}`);
 fs.renameSync(GH, snapshot);
 
-const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'edition-migrate-'));
-const editionDir = path.join(tmpRoot, 'edition');
-console.log(`[2/5] Cloning Edition to ${editionDir}`);
-const clone = spawnSync('git', ['clone', '--depth', '1', EDITION_REPO, editionDir], { stdio: 'inherit' });
-if (clone.status !== 0) {
-    console.error('git clone failed. Restoring snapshot.');
-    fs.renameSync(snapshot, GH);
-    process.exit(1);
-}
+console.log(`[2/5] Edition already cloned at ${editionDir}`);
 
 console.log(`[3/5] Running bootstrap-heir`);
 const bootstrap = path.join(editionDir, '.github', 'scripts', 'bootstrap-heir.cjs');

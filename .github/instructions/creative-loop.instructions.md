@@ -5,8 +5,8 @@ inheritance: inheritable
 description: "Universal creative loop — Ideate, Plan, Build, Test, Release, Improve — applies to all creative work"
 application: "When creating anything: code, documents, designs, solutions"
 applyTo: "**"
-currency: 2026-04-27
-lastReviewed: 2026-01-01
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Creative Loop

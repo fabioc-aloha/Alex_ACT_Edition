@@ -1,6 +1,7 @@
 ---
 description: "Convert Word (.docx) documents to clean Markdown with image extraction"
 mode: agent
+lastReviewed: 2026-04-30
 ---
 
 # Word → Markdown

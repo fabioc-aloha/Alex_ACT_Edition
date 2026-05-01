@@ -1,6 +1,7 @@
 ---
 description: "Convert HTML documents to clean Markdown via pandoc"
 mode: agent
+lastReviewed: 2026-04-30
 ---
 
 # HTML → Markdown

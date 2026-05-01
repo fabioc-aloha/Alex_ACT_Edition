@@ -5,8 +5,8 @@ inheritance: inheritable
 description: "Domain-agnostic learning and rapid context acquisition — from zero to partnership fast"
 application: "When entering a new project, domain, or user relationship"
 applyTo: "**/*"
-currency: 2026-04-27
-lastReviewed: 2026-01-01
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Bootstrap Learning

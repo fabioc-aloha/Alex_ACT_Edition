@@ -6,8 +6,8 @@ description: "Clear documentation through visual excellence"
 tier: standard
 inheritance: inheritable
 applyTo: '**/*.md,**/*mermaid*,**/*diagram*'
-currency: 2026-04-22
-lastReviewed: 2026-01-01
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Markdown & Mermaid
@@ -485,7 +485,7 @@ linkStyle default stroke:#57606a,stroke-width:1.5px
 **Key Principles**:
 
 1. **Light fills** (#fff1e5, #ddf4ff) — Easy on the eyes
-2. **Medium text** (#953800, #0550ae) — Readable but not harsh  
+2. **Medium text** (#953800, #0550ae) — Readable but not harsh
 3. **Soft strokes** matching fill family
 4. **Gray arrows** (#57606a) — Neutral, doesn't compete with nodes
 5. **1.5-2px stroke-width** — Visible but not heavy
@@ -1528,9 +1528,9 @@ Identify all Mermaid diagrams in the target scope:
 
 ```powershell
 # Find all markdown files with mermaid blocks
-Get-ChildItem -Recurse -Filter "*.md" | 
-  Select-String -Pattern '```mermaid' | 
-  Group-Object Path | 
+Get-ChildItem -Recurse -Filter "*.md" |
+  Select-String -Pattern '```mermaid' |
+  Group-Object Path |
   Select-Object Name, Count
 ```
 

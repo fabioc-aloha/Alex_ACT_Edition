@@ -1,6 +1,7 @@
 ---
 description: "Convert a Markdown document to a polished Word (.docx) file with professional layout, Mermaid PNGs, and APA-margin sizing"
 mode: agent
+lastReviewed: 2026-04-30
 ---
 
 # Markdown → Word

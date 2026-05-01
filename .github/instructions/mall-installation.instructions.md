@@ -1,7 +1,8 @@
 ---
 description: "How heirs install skills, trifectas, MCP configs, patterns, and scaffolds from Alex_Skill_Mall — into the right paths so Edition upgrades don't clobber them"
 applyTo: "**/.github/skills/local/**,**/.github/instructions/local/**,**/.github/muscles/local/**,**/.github/prompts/local/**,**/.mcp.json,**/mcp.json"
-lastReviewed: 2026-01-01
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Mall Installation

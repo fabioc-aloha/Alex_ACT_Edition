@@ -6,7 +6,7 @@ description: "Debugging — hypothesis-driven investigation and root-cause analy
 application: "When investigating build failures, test errors, runtime crashes, recurring bugs, or incidents"
 applyTo: "**/*debug*,**/*bug*,**/*error*,**/*fix*,**/*issue*,**/*incident*"
 currency: 2026-04-30
-lastReviewed: 2026-01-01
+lastReviewed: 2026-04-30
 ---
 
 # Debugging

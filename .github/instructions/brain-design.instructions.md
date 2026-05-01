@@ -5,8 +5,8 @@ inheritance: inheritable
 description: "Brain architecture patterns — trifectas, muscles, agents, and the mechanical/semantic split"
 application: "When designing automation, creating agents, or building complete capabilities"
 applyTo: "**/*muscle*,**/*agent*,**/*trifecta*,**/*.cjs"
-currency: 2026-04-27
-lastReviewed: 2026-01-01
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Brain Design Patterns
@@ -32,8 +32,8 @@ Skill (knowledge) + Instruction (behavior) + Muscle (automation)
 
 | Example | Skill | Instruction | Muscle |
 |---------|-------|-------------|--------|
-| Code review | `code-review/SKILL.md` | `code-review.instructions.md` | `audit-pr.cjs` |
-| Brain QA | `brain-qa/SKILL.md` | `dream-state-automation.instructions.md` | `brain-qa.cjs` |
+| Markdown → Word | `md-to-word/SKILL.md` | `md-to-word.instructions.md` | `md-to-word.cjs` |
+| Word → Markdown | `docx-to-md/SKILL.md` | `docx-to-md.instructions.md` | `docx-to-md.cjs` |
 
 **Why trifectas work**:
 
@@ -175,10 +175,10 @@ const path = require('path');
 async function main() {
   try {
     // Mechanical work here
-    
+
     // If semantic review needed:
     // process.exit(2);
-    
+
     process.exit(0);
   } catch (err) {
     console.error(err.message);

@@ -1,6 +1,7 @@
 ---
 mode: agent
 description: "Consolidate session learning — extract new patterns into skills, instructions, prompts, or memory"
+lastReviewed: 2026-04-30
 ---
 
 # /meditate
@@ -16,7 +17,8 @@ Run the meditation protocol. Transform working memory into permanent architectur
 5. **Write** with concrete examples, correct frontmatter, and a trigger section
 6. If session is ending, write a handoff to `/memories/session/<topic>-handoff.md`
 7. Report what was persisted (and what was deliberately *not* persisted because it was already covered)
+8. **Compact** — run `/compact` to discard transcript noise. The persisted artifacts are now the canonical record of this session. This is irreversible by design; consolidation succeeded, raw data is redundant.
 
 ## Anti-pattern guard
 
-If after step 2 nothing new emerged, say so and stop. Don't manufacture insights. Most sessions are routine execution — that's fine.
+If after step 2 nothing new emerged, say so, then still run `/compact` at step 8. Routine execution is exactly what a session-end compact is for — the system working as intended is not a reason to skip the cleanup.

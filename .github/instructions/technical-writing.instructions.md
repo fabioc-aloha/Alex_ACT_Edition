@@ -5,8 +5,8 @@ inheritance: inheritable
 description: "Technical Writing — clear documentation for peers, developers, and technical audiences"
 application: "When writing documentation, API descriptions, architecture explanations, or technical guides"
 applyTo: "**/*doc*,**/*readme*,**/*guide*,**/*api*"
-currency: 2026-04-28
-lastReviewed: 2026-01-01
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Technical Writing

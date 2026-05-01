@@ -5,8 +5,8 @@ inheritance: inheritable
 description: "The 10 tenets of ACT with rationale — why each exists, what it prevents, how to apply it"
 application: "Always active — foundational reasoning discipline"
 applyTo: "**"
-currency: 2026-04-27
-lastReviewed: 2026-01-01
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # ACT Foundations

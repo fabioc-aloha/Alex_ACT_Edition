@@ -5,8 +5,8 @@ inheritance: inheritable
 description: "Research validation — verify assumptions against authoritative sources before implementing; LLM knowledge is almost always outdated"
 application: "Before implementing any API, library, framework, or technology-dependent solution"
 applyTo: "**/*api*,**/*integrat*,**/*implement*,**/*build*"
-currency: 2026-04-27
-lastReviewed: 2026-01-01
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Research Validation

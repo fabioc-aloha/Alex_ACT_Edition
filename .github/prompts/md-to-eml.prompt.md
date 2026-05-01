@@ -1,6 +1,7 @@
 ---
 description: "Convert a Markdown document to RFC 5322 email (.eml) with inline CSS, CID images, and email-safe formatting"
 mode: agent
+lastReviewed: 2026-04-30
 ---
 
 # Markdown → Email (.eml)

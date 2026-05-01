@@ -5,8 +5,8 @@ inheritance: inheritable
 description: "Create reusable skills from emerged patterns — the growth mechanism"
 application: "When domain knowledge or process patterns are worth persisting"
 applyTo: "**/*skill*,**/*build*,**/*create*"
-currency: 2026-04-27
-lastReviewed: 2026-01-01
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Skill Building

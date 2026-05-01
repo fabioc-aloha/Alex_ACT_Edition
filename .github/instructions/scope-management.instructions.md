@@ -5,8 +5,8 @@ inheritance: inheritable
 description: "Scope management and feature creep prevention — ship the right thing, not everything"
 application: "When planning work, evaluating changes, or noticing scope expansion"
 applyTo: "**/*scope*,**/*plan*,**/*mvp*,**/*feature*"
-currency: 2026-04-27
-lastReviewed: 2026-01-01
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Scope Management
