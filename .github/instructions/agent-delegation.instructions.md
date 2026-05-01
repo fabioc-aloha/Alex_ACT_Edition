@@ -28,7 +28,8 @@ Available worker SAs are listed in the model's agent set (visible to the runtime
 | Worker SA | Take this when the task is... |
 | --- | --- |
 | `markdown-author` | Authoring or substantively editing a markdown document (README, ADR, executive summary, prose-heavy `.md` artifact, frontmatter, tables, lists) |
-| `illustrator` | Creating a diagram (mermaid flowchart / sequence / state / class, SVG, ASCII art) |
+| `illustrator` | Creating a single diagram (mermaid flowchart / sequence / state / class, SVG, ASCII art) |
+| `document-assembler` | Stitching rendered diagrams into a draft markdown file that already contains 2 or more `<!-- ILLUSTRATOR: ... -->` placeholders. Dispatches the illustrator worker in parallel internally, replaces every placeholder, returns confirmation |
 
 **The check is not "could the parent do this?" — the parent can always do it. The check is "is this mechanical work that a worker is designed to absorb?"** If yes, delegate.
 
@@ -38,7 +39,8 @@ Available worker SAs are listed in the model's agent set (visible to the runtime
 | --- | --- |
 | User asks for a substantive markdown doc (>~10 lines, prose-heavy) | Delegate to `markdown-author` |
 | User asks for a diagram of any kind | Delegate to `illustrator` |
-| User asks for a doc that includes a diagram | Delegate to `markdown-author` first; it returns a `<!-- ILLUSTRATOR: ... -->` placeholder; parent then delegates to `illustrator`; parent assembles |
+| User asks for a doc that includes **one** diagram | Delegate to `markdown-author` first; it returns a `<!-- ILLUSTRATOR: ... -->` placeholder; parent then delegates to `illustrator`; parent assembles the single block |
+| User asks for a doc that includes **2 or more** diagrams | Delegate to `markdown-author` first (it writes the draft with N placeholders to a file); then delegate to `document-assembler` with the file path. The assembler dispatches all illustrators in parallel and stitches. Parent does not handle the placeholder-replacement step itself |
 | User asks the parent to *think about* something (analysis, decision, ACT pass) | Stay in the parent. Reasoning work belongs here |
 | User asks for a one-line markdown edit (typo fix, single-character change) | Stay in the parent. Below the SA's overhead threshold |
 | User asks for a plan, architecture review, or trade-off analysis | Stay in the parent |
