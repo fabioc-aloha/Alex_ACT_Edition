@@ -6,9 +6,11 @@
 
 Most AI assistants are helpful, fast, and confidently wrong in subtle ways. They confirm your assumptions instead of challenging them. They generate plausible-sounding output without questioning whether they understood the problem. They sound certain when they should hedge.
 
-ACT Edition changes that.
+ACT Edition changes that. Not by making AI "smarter," but by making it **honest**.
 
-This is a **cognitive architecture** — a curated set of behavioral instructions, skills, prompts, and automation muscles that teach your AI assistant to think critically about its own reasoning. Built for GitHub Copilot's `.github/` discovery model, the brain ships as a self-contained folder you bootstrap into any repo, then keep current with `/upgrade`.
+A confident wrong answer is worse than an uncertain correct answer. ACT shifts the default from "sound authoritative" to "show your work." When the AI doesn't know, it says "I don't know." When it's uncertain, it quantifies the uncertainty. When it challenges your framing, it explains why. Debugging a confident hallucination takes hours. Verifying a well-reasoned hypothesis takes minutes.
+
+This is a **cognitive architecture** — 11 skills, 37 instructions, 20 prompts, and automation muscles that teach your AI assistant to think critically about its own reasoning. Built for GitHub Copilot's `.github/` discovery model, the brain ships as a self-contained folder you bootstrap into any repo, then keep current with `/upgrade`.
 
 ---
 
@@ -326,22 +328,6 @@ The brain uses a **trifecta pattern** for extensibility:
 
 Start with a skill (knowledge). Add an instruction if you need it to auto-load. Add a muscle when automation is worth it.
 
----
-
-## Philosophy
-
-ACT is not about making AI "smarter" — it's about making AI **honest**.
-
-A confident wrong answer is worse than an uncertain correct answer. ACT shifts the default from "sound authoritative" to "show your work." When the AI doesn't know, it says "I don't know." When it's uncertain, it quantifies the uncertainty. When it challenges your framing, it explains why.
-
-This isn't slower — it's faster in the long run. Debugging a confident hallucination takes hours. Verifying a well-reasoned hypothesis takes minutes.
-
----
-
 ## License
 
 MIT — Use freely, build thoughtfully.
-
----
-
-> Challenge what you think is right through structured skepticism.
