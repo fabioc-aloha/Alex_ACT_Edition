@@ -2,7 +2,7 @@
 type: instruction
 lifecycle: stable
 inheritance: inheritable
-description: Plugin store routing — connect browse and install requests to the right local store and the plugin-browser skill
+description: Plugin store routing — connect browse and install requests to the Mall, escalate to Supervisor for external needs
 application: When the user mentions plugins, stores, browse, or wants capabilities beyond the Mall
 applyTo: '**/*plugin*,**/*browse*,**/*store*,**/*agent*'
 currency: 2026-05-01
@@ -11,34 +11,38 @@ lastReviewed: 2026-05-01
 
 # Plugin Store Routing
 
-Route plugin requests to the right store and skill.
+Route plugin requests to the Mall. Heirs shop the Mall only. The Supervisor curates from external stores.
 
 ## When to Fire
 
 | Trigger | Action |
 | --- | --- |
-| User says "browse plugins", "find a plugin", "search stores" | Fire `plugin-browser` skill |
-| User says "install plugin X" | Fire `plugin-browser` skill Step 4 (install components) |
-| `/browse-plugins` invoked | Fire `plugin-browser` skill |
-| `/install-from-mall` finds no match in Mall | Suggest browsing plugin stores as fallback |
-| Project needs agents, hooks, or MCP that Mall doesn't have | Suggest plugin stores proactively |
+| User says "find a skill", "browse skills" | Search the Mall via `/find-skill` |
+| User says "install skill X" | Run `/install-from-mall` with the Skill Selection Protocol |
+| `/install-from-mall` finds no match in Mall | Tell the user to run `/feedback` requesting the skill. The Supervisor evaluates external stores and promotes to the Mall. |
+| User asks for agents, hooks, or MCP servers | These are not in the Mall yet. Run `/feedback` to request. The Supervisor browses plugin stores and installs to `local/`. |
+| User explicitly asks to browse plugin stores | Explain the architecture: the Mall is the curated storefront; external stores are evaluated by the Supervisor. Offer to run `/feedback` instead. |
 
-## Store Priority
+## Architecture
 
-1. **Alex_Skill_Mall** — first-party, curated, compliant frontmatter
-2. **Production** (`.github-private`) — governance-reviewed plugins
-3. **Official** (`copilot-plugins`) — GitHub-curated
-4. **Community** (`awesome-copilot`) — mixed quality, review before installing
-5. **Playground** — largest (800+) but uncurated, staging quality
+```text
+Heirs → Mall (217 curated skills) → /find-skill, /install-from-mall
+         ↑
+   Supervisor promotes from external stores (production, official, community, playground)
+         ↑
+   /feedback requests from heirs drive what gets evaluated
+```
 
-Always check the Mall first. Plugin stores are the fallback for capabilities the Mall doesn't carry (agents, hooks, MCP servers, multi-agent orchestration).
+Heirs never browse external stores directly. This prevents:
+- Installing unreviewed skills with no frontmatter compliance
+- Shadow-installing skills that duplicate Edition baseline
+- Token waste from loading irrelevant skill catalogs
 
-## What Plugins Add That the Mall Doesn't
+## What the Mall Has vs What Requires Supervisor
 
-| Capability | Mall | Plugin stores |
+| Capability | Mall (heir can install) | Requires Supervisor |
 | --- | --- | --- |
-| Skills (SKILL.md) | 217 skills | Thousands more |
-| Agents (.agent.md) | Not in Mall | Available |
-| Hooks (hooks.json) | Not in Mall | Available |
-| MCP servers (.mcp.json) | Not in Mall | Available |
-| Multi-agent orchestration | Not in Mall | Available (e.g., deep-review) |
+| Skills (SKILL.md) | 217 skills, all compliant | Additional skills from 800+ external plugins |
+| Agents (.agent.md) | Not yet | Available in plugin stores |
+| Hooks (hooks.json) | Not yet | Available in plugin stores |
+| MCP servers (.mcp.json) | Not yet | Available in plugin stores |
