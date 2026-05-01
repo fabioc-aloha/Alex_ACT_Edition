@@ -31,32 +31,33 @@ Override the threshold with `--max-age-days=N`.
 
 ## Registries
 
-> **No entries yet.** This Edition installation has no skills that depend on external AI APIs. Add a table below when a skill lands that needs version tracking — typical categories are listed in the template at the bottom of this file. The audit muscle will report `0 entries` until populated.
+## CLI Tools
 
-<!-- Add tables here. Example structure:
+| Tool | Min Version | Source URL | Last Checked | Brain Files |
+| --- | --- | --- | --- | --- |
+| Pandoc | 2.19+ | <https://github.com/jgm/pandoc/releases> | 2026-05-01 | muscles/docx-to-md, muscles/md-to-word, muscles/md-to-html, muscles/md-to-eml, muscles/md-to-txt, muscles/html-to-md |
+| mermaid-cli (mmdc) | 10.x+ | <https://github.com/mermaid-js/mermaid-cli/releases> | 2026-05-01 | muscles/md-to-word (SVG render), muscles/md-to-html (--mermaid-png), skills/markdown-mermaid |
+| GitHub CLI (gh) | 2.x+ | <https://github.com/cli/cli/releases> | 2026-05-01 | instructions/mall-installation, prompts/find-skill, prompts/install-from-mall |
 
-## Replicate Image Models
+## npm Packages
 
-| Vendor | Latest Models | Source URL | Last Checked | Brain Files |
-|---|---|---|---|---|
-| Black Forest Labs (FLUX) | `flux-2-max`, `flux-2-pro` | <https://replicate.com/black-forest-labs> | 2026-04-26 | skills/image-handling, instructions/image-generation-guidelines |
+| Package | Purpose | Source URL | Last Checked | Brain Files |
+| --- | --- | --- | --- | --- |
+| jszip | Word .docx generation (ZIP container) | <https://www.npmjs.com/package/jszip> | 2026-05-01 | muscles/md-to-word |
 
-## Replicate Video Models
+## JavaScript Libraries (bundled in muscles)
 
-| Vendor | Latest Models | Source URL | Last Checked | Brain Files |
-|---|---|---|---|---|
+| Library | Purpose | Last Checked | Brain Files |
+| --- | --- | --- | --- |
+| marked.js | Markdown → HTML parsing | 2026-05-01 | skills/markdown-sanitization-chain |
+| DOMPurify | HTML sanitization (XSS prevention) | 2026-05-01 | skills/markdown-sanitization-chain |
 
-## Replicate TTS / Audio Models
+## GitHub APIs
 
-| Vendor | Latest Models | Source URL | Last Checked | Brain Files |
-|---|---|---|---|---|
-
-## Microsoft APIs
-
-| API | Endpoints / Versions | Source URL | Last Checked | Brain Files |
-|---|---|---|---|---|
-
-## CLI Tools (Pandoc, Mermaid, etc.)
+| API | Endpoint | Last Checked | Brain Files |
+| --- | --- | --- | --- |
+| GitHub REST (Contents) | `repos/{owner}/{repo}/contents/{path}` | 2026-05-01 | instructions/mall-installation, prompts/find-skill, prompts/install-from-mall |
+| GitHub REST (Repos) | `repos/{owner}/{repo}` | 2026-05-01 | scripts/upgrade-self, scripts/bootstrap-heir |
 
 | Tool | Tested Version | Source URL | Last Checked | Brain Files |
 |---|---|---|---|---|
