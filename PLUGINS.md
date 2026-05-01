@@ -60,6 +60,22 @@ Register these on projects that manage Azure subscriptions or require SFI compli
 | `nnf-cve-cleanup` | CVE | 1 | AKS vulnerable container image remediation |
 | `threat-modeling` | — | 13 | STRIDE threat model generation from repo analysis |
 
+## Fabric / Power BI Plugins (data heirs)
+
+Register these on projects that work with Microsoft Fabric, Power BI, or Azure data services:
+
+```json
+"chat.pluginLocations": {
+    "C:\\Development\\MALL\\microsoft-skills\\.github\\plugins\\azure-sdk-python": true,
+    "C:\\Development\\MALL\\microsoft-skills\\.github\\plugins\\azure-sdk-dotnet": true
+}
+```
+
+| Plugin | Skills | What it adds |
+| --- | --- | --- |
+| `azure-sdk-python` | 20+ (incl. `azure-mgmt-fabric-py`) | Azure SDK skills for Python — Fabric capacity management, AI services, Cosmos DB, Event Hubs, Storage, Search |
+| `azure-sdk-dotnet` | 10+ (incl. `azure-mgmt-fabric-dotnet`) | Azure SDK skills for .NET — Fabric capacity management, Event Grid, Event Hubs, Document Intelligence, Cosmos DB |
+
 **Note**: `sfi-ns251`, `sfi-ti322`, and `threat-modeling` ship `.mcp.json` files that reference Microsoft-internal endpoints. If MCP servers fail to connect, delete the `.mcp.json` from the plugin directory — the skills and agents still work without MCP.
 
 ## All Plugins Combined
@@ -75,7 +91,10 @@ For projects that need everything (e.g., `lab-subscription`):
     "C:\\Development\\MALL\\.github-private\\plugins\\sfi-ti322-entra-app-tenant-isolation": true,
     "C:\\Development\\MALL\\.github-private\\plugins\\sfi-es331-exposed-secrets": true,
     "C:\\Development\\MALL\\.github-private\\plugins\\nnf-cve-cleanup": true,
-    "C:\\Development\\MALL\\.github-private\\plugins\\threat-modeling": true
+    "C:\\Development\\MALL\\.github-private\\plugins\\threat-modeling": true,
+    "C:\\Development\\MALL\\microsoft-skills\\.github\\plugins\\azure-skills": true,
+    "C:\\Development\\MALL\\microsoft-skills\\.github\\plugins\\azure-sdk-python": true,
+    "C:\\Development\\MALL\\microsoft-skills\\.github\\plugins\\azure-sdk-dotnet": true
 }
 ```
 
