@@ -22,7 +22,7 @@ The script catches **time-based drift** (entries older than 30 days). The `/audi
 ## Freshness Policy
 
 | Age of `Last Checked` | Status |
-|---|---|
+| --- | --- |
 | ≤ 30 days | Fresh |
 | 31–90 days | Stale (warn) |
 | > 90 days | Expired (fail) |
@@ -31,21 +31,23 @@ Override the threshold with `--max-age-days=N`.
 
 ## Registries
 
-## CLI Tools
+The Edition baseline ships these external dependencies. Each entry tracks one tool, package, or API surface. The `audit-api-drift` muscle reports staleness; the `/audit-apis` prompt drives the semantic refresh.
+
+### CLI Tools
 
 | Tool | Min Version | Source URL | Last Checked | Brain Files |
 | --- | --- | --- | --- | --- |
-| Pandoc | 2.19+ | <https://github.com/jgm/pandoc/releases> | 2026-05-01 | muscles/docx-to-md, muscles/md-to-word, muscles/md-to-html, muscles/md-to-eml, muscles/md-to-txt, muscles/html-to-md |
-| mermaid-cli (mmdc) | 11.x+ | <https://github.com/mermaid-js/mermaid-cli/releases> | 2026-05-01 | muscles/md-to-word (SVG render), muscles/md-to-html (--mermaid-png), skills/markdown-mermaid |
+| Pandoc | 2.19+ | <https://github.com/jgm/pandoc/releases> | 2026-05-01 | muscles/docx-to-md, muscles/md-to-word, muscles/md-to-html, muscles/md-to-eml, muscles/md-to-txt, muscles/html-to-md, muscles/converter-qa |
+| mermaid-cli (mmdc) | 11.x+ | <https://github.com/mermaid-js/mermaid-cli/releases> | 2026-05-01 | muscles/md-to-word (SVG render), muscles/md-to-html (--mermaid-png), muscles/converter-qa, skills/markdown-mermaid |
 | GitHub CLI (gh) | 2.x+ | <https://github.com/cli/cli/releases> | 2026-05-01 | instructions/mall-installation, prompts/find-skill, prompts/install-from-mall |
 
-## npm Packages
+### npm Packages
 
 | Package | Purpose | Source URL | Last Checked | Brain Files |
 | --- | --- | --- | --- | --- |
 | jszip | Word .docx generation (ZIP container) | <https://www.npmjs.com/package/jszip> | 2026-05-01 | muscles/md-to-word |
 
-## GitHub APIs
+### GitHub APIs
 
 | API | Endpoint | Last Checked | Brain Files |
 | --- | --- | --- | --- |
@@ -53,7 +55,7 @@ Override the threshold with `--max-age-days=N`.
 | GitHub REST (Repos) | `repos/{owner}/{repo}` | 2026-05-01 | scripts/upgrade-self, scripts/bootstrap-heir |
 
 | Tool | Tested Version | Source URL | Last Checked | Brain Files |
-|---|---|---|---|---|
+| --- | --- | --- | --- | --- |
 
 -->
 
