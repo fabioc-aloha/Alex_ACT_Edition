@@ -42,6 +42,7 @@ Register these on projects that manage Azure subscriptions or require SFI compli
 
 ```json
 "chat.pluginLocations": {
+    "C:\\Development\\MALL\\microsoft-skills\\.github\\plugins\\azure-skills": true,
     "C:\\Development\\MALL\\.github-private\\plugins\\sfi-ns251-overexposed-endpoints": true,
     "C:\\Development\\MALL\\.github-private\\plugins\\sfi-ti322-entra-app-tenant-isolation": true,
     "C:\\Development\\MALL\\.github-private\\plugins\\sfi-es331-exposed-secrets": true,
@@ -52,6 +53,7 @@ Register these on projects that manage Azure subscriptions or require SFI compli
 
 | Plugin | SFI KPI | Agents | What it adds |
 | --- | --- | --- | --- |
+| `azure-skills` | — | 1 (infrastructure) | Microsoft's official Azure IaC plugin: 26 skills covering deploy, prepare, validate, K8s, enterprise infra planning, diagnostics, cost, storage, compute, migration, compliance + 500 reference docs |
 | `sfi-ns251-overexposed-endpoints` | NS2.5.1 | 1 | NSG audit, public IP discovery, endpoint closure on your Azure subscriptions |
 | `sfi-ti322-entra-app-tenant-isolation` | TI3.2.2 | 0 | Entra app registration audit, cross-tenant auth isolation |
 | `sfi-es331-exposed-secrets` | ES3.3.1 | 1 | Detect and remediate exposed secrets, Key Vault adoption |
