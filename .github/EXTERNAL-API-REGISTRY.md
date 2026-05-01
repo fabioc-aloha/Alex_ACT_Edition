@@ -14,7 +14,7 @@ Centralized source-of-truth for external APIs, models, and services referenced b
 ```text
 node .github/muscles/audit-api-drift.cjs                  # report stale entries
 node .github/muscles/audit-api-drift.cjs --probe          # also HEAD-check source URLs
-/audit-apis                                                # full LLM-driven refresh
+/audit-apis                                               # full LLM-driven refresh
 ```
 
 The script catches **time-based drift** (entries older than 30 days). The `/audit-apis` prompt catches **content drift** (new model versions, deprecated endpoints, breaking changes) — that's the LLM's job, not the script's.
