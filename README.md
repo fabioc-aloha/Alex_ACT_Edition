@@ -164,66 +164,45 @@ Mall integration and plugin routing.
 
 ## Quick Start
 
-ACT Edition is bootstrapped into your repo, not cloned as a template. The `init-edition.cjs` script clones Edition, writes the brain, registers your project, and sets up the upgrade channel — all in one command.
-
-### New Project
+Two scripts ship at the repo root. Copy them to your development root directory once, then use them from any project:
 
 ```bash
-# 1. Create your repo
+cp Alex_ACT_Edition/init-edition.cjs ~/Development/
+cp Alex_ACT_Edition/migrate-to-edition.cjs ~/Development/
+```
+
+| Script | When to use |
+| --- | --- |
+| `init-edition.cjs` | **New project** — creates the `.github/` brain, registers the project, sets up the upgrade channel |
+| `migrate-to-edition.cjs` | **Existing project** — snapshots the old brain, classifies files, installs Edition, routes custom content to `local/` |
+
+### New project
+
+```bash
 mkdir my-project && cd my-project && git init
 git remote add origin https://github.com/<you>/my-project.git
-
-# 2. Bootstrap with init-edition (auto-derives identity from git remote)
 node ~/Development/init-edition.cjs --apply
 ```
 
-If you don't have `init-edition.cjs` in your dev root yet, grab it from the repo:
+Identity is auto-derived from `git remote`. Run without `--apply` first for a dry-run.
+
+### Existing project (migration)
 
 ```bash
-git clone --depth 1 https://github.com/fabioc-aloha/Alex_ACT_Edition.git /tmp/edition
-node /tmp/edition/init-edition.cjs --apply
+cd my-existing-project
+node ~/Development/migrate-to-edition.cjs              # dry-run
+node ~/Development/migrate-to-edition.cjs --apply      # snapshot + install
 ```
 
-### Already Have Edition Content? Use `/initialize`
+Then run `/finalize-migration` in Copilot Chat for the semantic pass over custom content. See [MIGRATION.md](MIGRATION.md) for the full guide.
 
-If you copied or cloned Edition's content into a workspace without running the init script, the workspace is not registered — it has the brain content but no `.github/.act-heir.json` marker. Open the workspace in VS Code with Copilot and run `/initialize` to detect state and register.
+### Already have Edition content?
 
-### Migrating an Existing Project
+If you cloned or copied Edition without running the init script, run `/initialize` in Copilot Chat — it detects state and registers the project.
 
-If you have an older Alex-flavored project (with the master/inheritable/custom tier model), use the migration tool that ships at the root of this repo. It snapshots the old `.github/`, classifies files via frontmatter (master-tier files dropped, custom files routed to `local/`), installs Edition, and registers the project.
-
-```powershell
-cd <your-heir-repo>
-node <path-to>/migrate-to-edition.cjs              # dry-run, see the triage plan
-node <path-to>/migrate-to-edition.cjs --apply      # snapshot old brain + install Edition
-```
-
-Then in a chat session inside the migrated project: run the `/finalize-migration` prompt to do the semantic pass over remaining custom content.
-
-See [MIGRATION.md](MIGRATION.md) for the full migration guide — auto-detection, triage rules, failure recovery, and what's intentionally lost.
-
-### After Bootstrap
+### After bootstrap
 
 Open the project in VS Code with Copilot. Run `/welcome` for orientation. The brain is active.
-
-### Pro Tip: Root Scripts
-
-Two scripts ship at the repo root for convenience. Copy them to your development root directory (e.g., `C:\Development\` or `~/Development/`) so they're always within reach:
-
-| Script | What it does |
-| --- | --- |
-| `init-edition.cjs` | Scaffold a new project with Edition — creates the `.github/` brain, registers the project, sets up the upgrade channel |
-| `migrate-to-edition.cjs` | Migrate an older Alex-flavored project to Edition — snapshots the old brain, classifies files, installs Edition, routes custom content to `local/` |
-
-```bash
-# Copy to your dev root once
-cp Alex_ACT_Edition/init-edition.cjs ~/Development/
-cp Alex_ACT_Edition/migrate-to-edition.cjs ~/Development/
-
-# Then from any project directory
-node ~/Development/init-edition.cjs --target . --heir-id my-new-project --apply
-node ~/Development/migrate-to-edition.cjs --apply
-```
 
 ## What Else Ships
 
