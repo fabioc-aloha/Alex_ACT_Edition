@@ -1,6 +1,6 @@
-# Migrating an Existing Heir to Alex ACT Edition
+# Migrating to Alex ACT Edition
 
-![Alex ACT Edition — Artificial Critical Thinking for AI Coding Assistants](assets/banner-readme.svg)
+![Alex ACT Edition — Artificial Critical Thinking for AI Assistants](assets/banner-readme.svg)
 
 If you have an older Alex-flavored repo (with the master/inheritable/custom inheritance tier model) and want to move it to ACT Edition's simpler edition-vs-`local/` ownership model, this is the path.
 
@@ -13,13 +13,13 @@ node migrate-to-edition.cjs --apply    →    /finalize-migration
        (mechanical)                          (semantic)
 ```
 
-The script alone gets you to "heir is on Edition v0.3.x, doctor exits 0." The chat prompt finishes the migration by extracting your identity content and porting custom artifacts into `local/` slots.
+The script alone gets you to "project is on Edition v0.3.x, doctor exits 0." The chat prompt finishes the migration by extracting your identity content and porting custom artifacts into `local/` slots.
 
 ## Mechanical Phase (the Script)
 
-```powershell
-# From inside the heir repo you want to migrate
-cd <heir-repo>
+```bash
+# From inside the project repo you want to migrate
+cd <your-project>
 node <path-to>/migrate-to-edition.cjs              # dry-run, see the plan
 node <path-to>/migrate-to-edition.cjs --apply      # execute
 ```
@@ -28,7 +28,7 @@ The script lives at the root of [Alex_ACT_Edition](https://github.com/fabioc-alo
 
 ### Auto-Detection
 
-If the heir has a GitHub `origin` remote, all identity fields are derived automatically:
+If the project has a GitHub `origin` remote, all identity fields are derived automatically:
 
 | Field | Source | Example |
 | ------- | -------- | --------- |
@@ -53,9 +53,9 @@ The slugifier handles camelCase, PascalCase, underscores, dots, and acronym boun
 
 The script refuses to run if:
 
-- The cwd has no `.github/` (this isn't an Alex heir)
-- `.github/.act-heir.json` already exists (this heir is already on Edition — use `upgrade-self.cjs` instead)
-- The heir-id is invalid (must be lowercase alphanumeric + hyphens, 2–64 chars)
+- The cwd has no `.github/` (this isn't an Alex project)
+- `.github/.act-heir.json` already exists (this project is already on Edition — use `upgrade-self.cjs` instead)
+- the project-id is invalid (must be lowercase alphanumeric + hyphens, 2–64 chars)
 
 A missing `--owner` is a warning, not an error.
 
@@ -81,7 +81,7 @@ The triage table prints the first 20 port-to-local entries with their planned `.
 When run with `--apply`, the script executes five steps:
 
 1. **Snapshot** — `.github/` → `.github-old-YYYY-MM-DD/` (renamed, not deleted; rolled back automatically if any later step fails)
-2. **Bootstrap** — runs Edition's `bootstrap-heir.cjs --target . --apply` against the heir cwd. Writes the new brain, the `.act-heir.json` marker, the identity template at `copilot-instructions.local.md`, the heir-owned config templates, the `.vscode/` workspace defaults if absent, and registers the heir in your shared `AI-Memory/heirs/registry.json`.
+2. **Bootstrap** — runs Edition's `bootstrap-heir.cjs --target . --apply` against the project cwd. Writes the new brain, the `.act-heir.json` marker, the identity template at `copilot-instructions.local.md`, the project-owned config templates, the `.vscode/` workspace defaults if absent, and registers the project in your shared `AI-Memory/heirs/registry.json`.
 3. **Verify** — runs `heir-doctor.cjs`. Should exit 0 with informational notes about empty `local/` directories.
 4. **Print hand-off** — banner directing you to run `/finalize-migration` in a chat session for the semantic pass.
 
@@ -101,7 +101,7 @@ The snapshot folder is **not deleted** on success. It travels with the migration
 
 ## Semantic Phase (`/finalize-migration`)
 
-After the script's apply succeeds, open a chat session in the migrated heir and run:
+After the script's apply succeeds, open a chat session in the migrated project and run:
 
 ```text
 /finalize-migration
@@ -119,9 +119,9 @@ The semantic pass is judgment work. Don't try to automate it — frontmatter cla
 
 ## After Migration: Ongoing Maintenance
 
-Once `migrate-to-edition.cjs` and `/finalize-migration` are done, **the heir is on Edition**. Migration is a one-time event, not a recurring tool.
+Once `migrate-to-edition.cjs` and `/finalize-migration` are done, **the project is on Edition**. Migration is a one-time event, not a recurring tool.
 
-From here on, you pull updates the same way every other Edition heir does:
+From here on, you pull updates the same way every other Edition project does:
 
 ```text
 /upgrade
@@ -131,19 +131,19 @@ That prompt runs `upgrade-self.cjs` in dry-run mode, summarizes the diff in plai
 
 | When to use what | Tool |
 | ---------------- | ---- |
-| First time installing Edition into an old Alex heir | `migrate-to-edition.cjs` (one-time) |
+| First time installing Edition into an old Alex project | `migrate-to-edition.cjs` (one-time) |
 | Just-finished migration, polishing custom content | `/finalize-migration` (one-time) |
 | Every Edition release after that | `/upgrade` (recurring) |
 | First time installing Edition into a brand-new repo | `bootstrap-heir.cjs` (one-time) |
 
-If you ever run `migrate-to-edition.cjs` again on a heir that's already on Edition, it refuses — `.github/.act-heir.json` exists, which the pre-flight checks for. You'll see the message *"this heir is already on Edition — use upgrade-self.cjs instead"* and exit cleanly.
+If you ever run `migrate-to-edition.cjs` again on a project that's already on Edition, it refuses — `.github/.act-heir.json` exists, which the pre-flight checks for. You'll see the message *"this project is already on Edition — use upgrade-self.cjs instead"* and exit cleanly.
 
 ## Why Two Phases
 
 | Mechanical | Semantic |
 | ---------- | -------- |
 | Repeatable | Judgment-dependent |
-| Same answer every run | Different answer per heir |
+| Same answer every run | Different answer per project |
 | Frontmatter-decidable | Content-decidable |
 | Safe to ship as a script | Safe to ship as a prompt |
 
@@ -161,14 +161,14 @@ Edition removed several primitives that older Alex heirs had. The migration drop
 | Extension-UI configs | Tied to a deprecated brain-extension | Archive only; Edition is brain-only |
 | Old `inheritance:` frontmatter | Edition uses path-based ownership (`local/` subdirs) | Stripped during port |
 
-If a heir genuinely depended on agent or hook content, that content is preserved in the snapshot and you can resurrect the *content* (not the primitive) into a prompt or local instruction.
+If a project genuinely depended on agent or hook content, that content is preserved in the snapshot and you can resurrect the *content* (not the primitive) into a prompt or local instruction.
 
 ## Manual Alternative
 
 If you'd rather not use the script, the manual recipe is:
 
-```powershell
-cd <heir-repo>
+```bash
+cd <your-project>
 Rename-Item .github .github-old
 git clone --depth 1 https://github.com/fabioc-aloha/Alex_ACT_Edition.git $env:TEMP\edition
 node $env:TEMP\edition\.github\scripts\bootstrap-heir.cjs --target . --apply
@@ -178,13 +178,13 @@ git add -A
 git commit -m "Migrate to Alex ACT Edition"
 ```
 
-The script just automates and instruments this. For a single migration with mostly custom content, manual is fine. For multiple migrations or a heir with substantial inherited master content, the script's triage saves real time.
+The script just automates and instruments this. For a single migration with mostly custom content, manual is fine. For multiple migrations or a project with substantial inherited master content, the script's triage saves real time.
 
 ## Snapshot Cleanup
 
 After running the migration and the semantic pass, the snapshot stays at `.github-old-YYYY-MM-DD/` in your repo. **Don't delete it immediately.** Keep it for 1–2 weeks while you confirm nothing was missed. Then drop it in a separate commit:
 
-```powershell
+```bash
 Remove-Item .github-old-* -Recurse
 git add -A
 git commit -m "Drop migration snapshot — migration verified"
