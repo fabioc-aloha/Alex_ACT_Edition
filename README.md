@@ -164,45 +164,21 @@ Mall integration and plugin routing.
 
 ## Quick Start
 
-Two scripts ship at the repo root. Copy them to your development root directory once, then use them from any project:
+Two scripts ship at the repo root. Copy them to your development root directory once:
 
 ```bash
 cp Alex_ACT_Edition/init-edition.cjs ~/Development/
 cp Alex_ACT_Edition/migrate-to-edition.cjs ~/Development/
 ```
 
-| Script | When to use |
-| --- | --- |
-| `init-edition.cjs` | **New project** — creates the `.github/` brain, registers the project, sets up the upgrade channel |
-| `migrate-to-edition.cjs` | **Existing project** — snapshots the old brain, classifies files, installs Edition, routes custom content to `local/` |
+| Script | When to use | What it does |
+| --- | --- | --- |
+| `init-edition.cjs` | **New project** | Creates `.github/` brain, registers the project, sets up upgrade channel. Auto-derives identity from `git remote`. Run without `--apply` for dry-run. |
+| `migrate-to-edition.cjs` | **Existing Alex project** | Snapshots old brain, classifies files via frontmatter, installs Edition, routes custom content to `local/`. Then run `/finalize-migration` in Copilot Chat for the semantic pass. See [MIGRATION.md](MIGRATION.md) for the full two-phase guide. |
 
-### New project
+After either script, open the project in VS Code with Copilot and run `/welcome`.
 
-```bash
-mkdir my-project && cd my-project && git init
-git remote add origin https://github.com/<you>/my-project.git
-node ~/Development/init-edition.cjs --apply
-```
-
-Identity is auto-derived from `git remote`. Run without `--apply` first for a dry-run.
-
-### Existing project (migration)
-
-```bash
-cd my-existing-project
-node ~/Development/migrate-to-edition.cjs              # dry-run
-node ~/Development/migrate-to-edition.cjs --apply      # snapshot + install
-```
-
-Then run `/finalize-migration` in Copilot Chat for the semantic pass over custom content. See [MIGRATION.md](MIGRATION.md) for the full guide.
-
-### Already have Edition content?
-
-If you cloned or copied Edition without running the init script, run `/initialize` in Copilot Chat — it detects state and registers the project.
-
-### After bootstrap
-
-Open the project in VS Code with Copilot. Run `/welcome` for orientation. The brain is active.
+If you already have Edition content but never ran the init script, run `/initialize` in Copilot Chat to detect state and register.
 
 ## What Else Ships
 
