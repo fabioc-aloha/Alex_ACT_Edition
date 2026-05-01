@@ -3,7 +3,6 @@
     "spec_version": "1.0",
     "edition_owned": [
         ".github/copilot-instructions.md",
-        ".github/ABOUT.md",
         ".github/EXTERNAL-API-REGISTRY.md",
         ".github/instructions/**",
         ".github/skills/**",
@@ -19,8 +18,7 @@
         ".github/scripts/bootstrap-heir.cjs",
         ".github/scripts/build-edition-manifest.cjs",
         ".github/scripts/_registry.cjs",
-        ".github/VERSION",
-        ".github/LICENSE"
+        ".github/VERSION"
     ],
     "heir_owned": [
         ".github/.act-heir.json",

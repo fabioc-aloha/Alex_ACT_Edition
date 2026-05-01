@@ -26,8 +26,8 @@ To detect dirty state in B vs C: run `git status --porcelain .github/` and check
 ## Inputs to Gather
 
 1. **Edition checkout location**. Look in this order:
-   - `$env:TEMP\edition\.github\scripts\bootstrap-heir.cjs`
-   - `$env:USERPROFILE\Development\Alex_ACT_Edition\.github\scripts\bootstrap-heir.cjs`
+   - `/tmp/edition/.github/scripts/bootstrap-heir.cjs`
+   - `~/Development/Alex_ACT_Edition/.github/scripts/bootstrap-heir.cjs`
    - Any sibling directory of the current workspace named `Alex_ACT_Edition`
    - If none found, ask the user to run:
 
