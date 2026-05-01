@@ -30,4 +30,4 @@ Professional Word output. Skill: [md-to-word](../skills/md-to-word/SKILL.md). Mu
 
 - [lint-clean-markdown](../skills/lint-clean-markdown/SKILL.md) — pre-flight the source so the converter has clean input
 - [markdown-sanitization-chain](../skills/markdown-sanitization-chain/SKILL.md) — when the source contains user-provided content
-- [mermaid-mode-fragility](../skills/mermaid-mode-fragility/SKILL.md) — diagram-mode pitfalls
+- [markdown-mermaid (Mode Fragility section)](../skills/markdown-mermaid (Mode Fragility section)/SKILL.md) — diagram-mode pitfalls

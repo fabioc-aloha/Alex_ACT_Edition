@@ -247,7 +247,6 @@ Get-ChildItem *.docx | ForEach-Object {
 - **lint-clean-markdown** — Post-validate converted Markdown
 - **md-scaffold** — Template for structuring imported content
 - **md-to-html** — Convert result to HTML for web
-- **md-to-eml** — Convert result to email
 
 ---
 

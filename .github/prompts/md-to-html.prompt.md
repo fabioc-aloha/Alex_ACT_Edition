@@ -20,4 +20,4 @@ Skill: [md-to-html](../skills/md-to-html/SKILL.md). Muscle: `.github/muscles/md-
 
 - [lint-clean-markdown](../skills/lint-clean-markdown/SKILL.md)
 - [markdown-sanitization-chain](../skills/markdown-sanitization-chain/SKILL.md)
-- [mermaid-mode-fragility](../skills/mermaid-mode-fragility/SKILL.md)
+- [markdown-mermaid (Mode Fragility section)](../skills/markdown-mermaid (Mode Fragility section)/SKILL.md)

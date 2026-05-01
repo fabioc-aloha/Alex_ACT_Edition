@@ -115,4 +115,4 @@ Before writing markdown, plan for:
 ## Related
 
 - [markdown-mermaid](../markdown-mermaid/SKILL.md) — full markdown + Mermaid style guide
-- [mermaid-mode-fragility](../mermaid-mode-fragility/SKILL.md) — silent render failures
+- [markdown-mermaid § Mode Fragility](../markdown-mermaid/SKILL.md) — silent render failures
