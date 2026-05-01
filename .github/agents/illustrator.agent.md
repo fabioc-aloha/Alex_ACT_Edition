@@ -4,6 +4,7 @@ description: Creates visual diagrams (mermaid flowcharts and sequence/state/clas
 tools: ['edit', 'read']
 user-invocable: false
 disable-model-invocation: false
+model: ['Claude Haiku 4.5 (copilot)', 'Claude Sonnet 4.6 (copilot)']
 currency: 2026-05-01
 lastReviewed: 2026-05-01
 ---
