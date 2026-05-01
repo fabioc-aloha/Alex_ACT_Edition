@@ -29,7 +29,13 @@ List `.github/skills/` (edition-owned) — the Edition baseline already covers g
 
 ### Step 3 — Match project needs to Mall categories
 
-Consult the Mall `CATALOG.md` (at `~/Alex_Skill_Mall/CATALOG.md` or `C:\Development\Alex_Skill_Mall\CATALOG.md`). Match by:
+Consult the Mall `CATALOG.md`. Fetch directly from GitHub if no local clone:
+
+```bash
+gh api repos/fabioc-aloha/Alex_Skill_Mall/contents/CATALOG.md --jq .content | base64 -d
+```
+
+Or read from local clone at `~/Alex_Skill_Mall/CATALOG.md` if available. Match by:
 
 | Project signal | Mall category to check |
 | --- | --- |
@@ -83,21 +89,39 @@ Putting Mall content directly under `.github/skills/<name>/` (no `local/`) means
 ## Install a Skill (most common case)
 
 1. **Browse** the catalog: <https://github.com/fabioc-aloha/Alex_Skill_Mall/blob/main/CATALOG.md>
-2. **Clone or sparse-checkout** the Mall (one-time, somewhere outside the heir):
+
+2. **Download from GitHub** (preferred — no local clone needed):
+
+   Use `gh` CLI to fetch skill contents directly from the Mall repo:
+
+   ```bash
+   # Create local skill directory
+   mkdir -p .github/skills/local/<name>
+
+   # Download SKILL.md from Mall
+   gh api repos/fabioc-aloha/Alex_Skill_Mall/contents/skills/<category>/<name>/SKILL.md \
+     --jq .content | base64 -d > .github/skills/local/<name>/SKILL.md
+   ```
+
+   For skills with multiple files (references/, scripts/), list the directory first:
+
+   ```bash
+   # List all files in the skill
+   gh api repos/fabioc-aloha/Alex_Skill_Mall/contents/skills/<category>/<name> \
+     --jq '.[].path'
+   ```
+
+   Then download each file the same way. The AI should automate this — read the directory listing and download all files.
+
+3. **Alternative — local clone** (if `gh` is unavailable or for bulk installs):
 
    ```bash
    git clone https://github.com/fabioc-aloha/Alex_Skill_Mall.git ~/Alex_Skill_Mall
-   ```
-
-3. **Copy** the skill contents (not the folder) into the heir's `local/` area:
-
-   ```bash
-   # From the heir repo root — copy CONTENTS, not the folder itself
    mkdir -p .github/skills/local/<name>
    cp -r ~/Alex_Skill_Mall/skills/<category>/<name>/* .github/skills/local/<name>/
    ```
 
-   **Critical**: The `/*` glob copies files INTO the target directory. Without it, you get nested `<name>/<name>/SKILL.md`. On PowerShell, use `Copy-Item "$mall\skills\<category>\<name>\*" .github\skills\local\<name>\ -Recurse -Force`.
+   **Critical**: The `/*` glob copies files INTO the target. Without it, you get nested `<name>/<name>/SKILL.md`.
 
 4. **If the skill ships a `.cjs` companion**, move it to muscles:
 

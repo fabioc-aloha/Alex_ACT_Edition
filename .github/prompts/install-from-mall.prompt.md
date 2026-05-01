@@ -26,10 +26,9 @@ Assess what this project needs from the Mall, then install the right skills into
 
    Ask the user to confirm before installing.
 
-4. **Locate the Mall locally** — try:
-   - `~/Alex_Skill_Mall` or `C:\Development\Alex_Skill_Mall`
-   - Sibling: `../Alex_Skill_Mall`
-   - If absent: `git clone https://github.com/fabioc-aloha/Alex_Skill_Mall.git ~/Alex_Skill_Mall`
+4. **Fetch from GitHub** (preferred) or local clone (fallback):
+   - **GitHub API**: List skill files with `gh api repos/fabioc-aloha/Alex_Skill_Mall/contents/skills/<cat>/<name> --jq '.[].path'`, then download each file with `gh api repos/fabioc-aloha/Alex_Skill_Mall/contents/<path> --jq .content | base64 -d > <dest>`
+   - **Local clone** (fallback): `~/Alex_Skill_Mall` or `C:\Development\Alex_Skill_Mall`
 
 5. **Install** each confirmed skill:
    - Create `.github/skills/local/<name>/`
