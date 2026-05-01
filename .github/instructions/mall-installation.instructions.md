@@ -37,23 +37,26 @@ Putting Mall content directly under `.github/skills/<name>/` (no `local/`) means
 1. **Browse** the catalog: <https://github.com/fabioc-aloha/Alex_Skill_Mall/blob/main/CATALOG.md>
 2. **Clone or sparse-checkout** the Mall (one-time, somewhere outside the heir):
 
-   ```bash
-   git clone https://github.com/fabioc-aloha/Alex_Skill_Mall.git ~/Alex_Skill_Mall
+   ```powershell
+   git clone https://github.com/fabioc-aloha/Alex_Skill_Mall.git C:\Development\Alex_Skill_Mall
    ```
 
-3. **Copy** the skill folder into the heir's `local/` area:
+3. **Copy** the skill contents (not the folder) into the heir's `local/` area:
 
-   ```bash
-   # From the heir repo root:
-   mkdir -p .github/skills/local
-   cp -r ~/Alex_Skill_Mall/skills/<category>/<name> .github/skills/local/<name>
+   ```powershell
+   # From the heir repo root — use \* to copy CONTENTS, not the folder itself
+   $mall = "C:\Development\Alex_Skill_Mall"
+   New-Item -ItemType Directory -Path .github\skills\local\<name> -Force | Out-Null
+   Copy-Item "$mall\skills\<category>\<name>\*" .github\skills\local\<name>\ -Recurse -Force
    ```
+
+   **Critical**: The `\*` glob copies files INTO the target. Without it, `Copy-Item` nests `<name>\<name>\SKILL.md`.
 
 4. **If the skill ships a `.cjs` companion**, move it to muscles:
 
-   ```bash
-   mkdir -p .github/muscles/local
-   mv .github/skills/local/<name>/<name>.cjs .github/muscles/local/<name>.cjs
+   ```powershell
+   New-Item -ItemType Directory -Path .github\muscles\local -Force | Out-Null
+   Move-Item .github\skills\local\<name>\<name>.cjs .github\muscles\local\<name>.cjs
    ```
 
    Then update any path references in `SKILL.md` from `<name>.cjs` to `.github/muscles/local/<name>.cjs`.
@@ -61,8 +64,8 @@ Putting Mall content directly under `.github/skills/<name>/` (no `local/`) means
 5. **Verify** the SKILL.md's `External Dependencies` section — install Pandoc, jszip, etc. if listed.
 6. **Commit**:
 
-   ```bash
-   git add .github/skills/local .github/muscles/local
+   ```powershell
+   git add .github\skills\local .github\muscles\local
    git commit -m "Install <name> from Alex_Skill_Mall"
    ```
 
