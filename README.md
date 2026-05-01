@@ -12,8 +12,6 @@ A confident wrong answer is worse than an uncertain correct answer. ACT shifts t
 
 This is a **cognitive architecture** — 11 skills, 37 instructions, 20 prompts, and automation muscles that teach your AI assistant to think critically about its own reasoning. Built for GitHub Copilot's `.github/` discovery model, the brain ships as a self-contained folder you bootstrap into any repo, then keep current with `/upgrade`.
 
----
-
 ## Commands
 
 The brain ships slash-prompts grouped by lifecycle stage. Type `/` in Copilot Chat to see the full list.
@@ -57,25 +55,6 @@ The brain ships slash-prompts grouped by lifecycle stage. Type `/` in Copilot Ch
 
 New to Edition? Jump to [Quick Start](#quick-start) to bootstrap a heir.
 
----
-
-## Why Critical Thinking Matters for AI
-
-AI assistants suffer from predictable failure modes:
-
-| Failure Mode | What Happens | ACT Defense |
-| --- | --- | --- |
-| **Confirmation bias** | Agrees with your framing even when wrong | Tenet II: Disconfirmation over confirmation |
-| **Anchoring** | First solution becomes the only solution | Tenet III: Generate multiple hypotheses |
-| **Hallucination** | Invents plausible-sounding nonsense | Tenet V: Calibrated confidence |
-| **Sycophancy** | Tells you what you want to hear | Tenet IV: System-prompt skepticism |
-| **Type III error** | Solves the wrong problem precisely | Tenet VII: Frame before solve |
-| **Decision paralysis** | Over-analyzes trivial decisions | Tenet VIII: Materiality gate |
-
-ACT doesn't eliminate these failures — it makes them **visible** and **correctable**. When the AI catches itself, it says so. When it's uncertain, it quantifies the uncertainty. When it challenges your framing, it explains why.
-
----
-
 ## The 10 ACT Tenets
 
 These tenets form the philosophical foundation. The instructions operationalize them.
@@ -92,8 +71,6 @@ These tenets form the philosophical foundation. The instructions operationalize 
 | VIII | **Adversarial Self-Probe** | Steelman the counter-argument | Strawmanning, weak reasoning |
 | IX | **Visible Markers** | Show the reasoning, not just the conclusion | Audit drift, hidden assumptions |
 | X | **Recursive Application** | Apply ACT to ACT itself | Framework-as-ideology |
-
----
 
 ## What's Included: Instructions (37)
 
@@ -185,8 +162,6 @@ Mall integration and plugin routing.
 | `mall-installation` | How heirs install skills from the [Alex Skill Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall) |
 | `plugin-store-routing` | Connect browse/install requests to Mall or plugins |
 
----
-
 ## Quick Start
 
 ACT Edition is bootstrapped into your repo, not cloned as a template. The bootstrap script writes the brain, registers your repo in your fleet registry, and sets up the upgrade channel.
@@ -226,8 +201,6 @@ See [MIGRATION.md](MIGRATION.md) for the full migration guide — auto-detection
 ### After Bootstrap
 
 Open the heir in VS Code with Copilot. Run `/welcome` for orientation. The brain is active.
-
----
 
 ## What Else Ships
 
@@ -291,8 +264,6 @@ Skills install into `.github/skills/local/` so they survive Edition upgrades. Th
 
 **Plugins** extend beyond skills — multi-agent orchestration, SFI compliance, and Azure SDK patterns. See [PLUGINS.md](PLUGINS.md) for registration instructions.
 
----
-
 ## The ACT Pass: How It Works
 
 For non-trivial decisions, ACT runs a 7-step critical thinking pass:
@@ -313,8 +284,6 @@ Example output:
 **Going with H1** because package.json shows lodash@^3 but error mentions lodash/fp
 **Would revise if**: The error persists after adding lodash
 ```
-
----
 
 ## Building on ACT
 
