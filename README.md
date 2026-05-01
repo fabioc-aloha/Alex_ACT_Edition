@@ -202,6 +202,25 @@ See [MIGRATION.md](MIGRATION.md) for the full migration guide — auto-detection
 
 Open the project in VS Code with Copilot. Run `/welcome` for orientation. The brain is active.
 
+### Pro Tip: Root Scripts
+
+Two scripts ship at the repo root for convenience. Copy them to your development root directory (e.g., `C:\Development\` or `~/Development/`) so they're always within reach:
+
+| Script | What it does |
+| --- | --- |
+| `init-edition.cjs` | Scaffold a new project with Edition — creates the `.github/` brain, registers the project, sets up the upgrade channel |
+| `migrate-to-edition.cjs` | Migrate an older Alex-flavored project to Edition — snapshots the old brain, classifies files, installs Edition, routes custom content to `local/` |
+
+```bash
+# Copy to your dev root once
+cp Alex_ACT_Edition/init-edition.cjs ~/Development/
+cp Alex_ACT_Edition/migrate-to-edition.cjs ~/Development/
+
+# Then from any project directory
+node ~/Development/init-edition.cjs --target . --heir-id my-new-project --apply
+node ~/Development/migrate-to-edition.cjs --apply
+```
+
 ## What Else Ships
 
 Beyond the instructions, the brain bundles:
