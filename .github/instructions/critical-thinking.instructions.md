@@ -5,8 +5,8 @@ inheritance: inheritable
 description: "Critical thinking framework — challenge assumptions, evaluate evidence, detect bias, and test falsifiability"
 application: "When evaluating claims, reviewing proposals, assessing evidence quality, or performing adversarial analysis"
 applyTo: "**/*"
-currency: 2026-04-22
-lastReviewed: 2026-01-01
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Critical Thinking
