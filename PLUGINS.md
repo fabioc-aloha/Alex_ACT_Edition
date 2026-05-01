@@ -1,8 +1,12 @@
-# Available Plugins
+<p align="center">
+  <img src="assets/banner-plugins.svg" alt="ACT Edition Plugins — Multi-agent orchestration, security compliance, and Azure SDK patterns" width="100%"/>
+</p>
 
-Optional plugins that extend the Edition baseline with multi-agent orchestration. These are registered locally via `.vscode/settings.json` and require local clones of the plugin stores.
+# Plugins
 
-Skills from these plugins are also available individually in the [Alex_Skill_Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall). Use `/install-from-mall` for individual skills; use plugin registration for the full agent experience.
+Optional plugins that extend the Edition baseline with multi-agent orchestration. Register them locally via `.vscode/settings.json` — they require local clones of the plugin stores.
+
+Individual skills from these plugins are also available in the [Alex Skill Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall). Use `/install-from-mall` for individual skills; use plugin registration for the full agent experience.
 
 ## How to Register Plugins
 
@@ -18,7 +22,7 @@ Add to your project's `.vscode/settings.json`:
 
 Plugins are discovered by VS Code on restart. Agents, skills, hooks, and MCP servers from registered plugins appear alongside your local customizations.
 
-## General-Purpose Plugins (all heirs)
+## General-Purpose Plugins
 
 Register these on any project that benefits from advanced code review or documentation:
 
@@ -36,7 +40,7 @@ Register these on any project that benefits from advanced code review or documen
 | `bug-hunter` | 1 + hooks | Autonomous bug detection across 19 categories including IaC scanning (Bicep/ARM) |
 | `deployment-safety` | 6 | Deployment safety checks: SDL, privacy, responsible AI, accessibility |
 
-## Azure / SFI Compliance Plugins (infrastructure heirs)
+## Azure / SFI Compliance Plugins
 
 Register these on projects that manage Azure subscriptions or require SFI compliance:
 
@@ -60,7 +64,7 @@ Register these on projects that manage Azure subscriptions or require SFI compli
 | `nnf-cve-cleanup` | CVE | 1 | AKS vulnerable container image remediation |
 | `threat-modeling` | — | 13 | STRIDE threat model generation from repo analysis |
 
-## Fabric / Power BI Plugins (data heirs)
+## Fabric / Power BI Plugins
 
 Register these on projects that work with Microsoft Fabric, Power BI, or Azure data services:
 
