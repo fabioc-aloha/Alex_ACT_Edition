@@ -250,15 +250,7 @@ Two shared surfaces complete the architecture:
 
 ### The Skill Mall
 
-Edition ships lean (11 skills, 37 instructions). The [Alex Skill Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall) extends it with 303 curated skills across security, Azure, data, healthcare, architecture, publishing, and 29 more categories.
-
-**How heirs shop the Mall:**
-
-| Command | What it does |
-| --- | --- |
-| `/find-skill <keyword>` | Search the Mall's CATALOG.json by name, category, description, or trigger |
-| `/install-from-mall` | Guided install — assesses project needs, recommends skills, downloads into `local/` |
-| `/feedback` | Request a skill the Mall doesn't have — the Supervisor evaluates external stores |
+Edition ships lean (11 skills, 37 instructions). The [Alex Skill Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall) extends it with 303 curated skills across security, Azure, data, healthcare, architecture, publishing, and 29 more categories. Use `/find-skill`, `/install-from-mall`, and `/feedback` from the [Commands](#commands) section to shop.
 
 Skills install into `.github/skills/local/` so they survive Edition upgrades. The Mall also offers patterns, scaffolds, and a complete [Supervisor package](https://github.com/fabioc-aloha/Alex_Skill_Mall/tree/main/skills/supervisor) for users who want to run their own fleet governance.
 
