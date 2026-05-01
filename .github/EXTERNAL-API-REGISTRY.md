@@ -36,7 +36,7 @@ Override the threshold with `--max-age-days=N`.
 | Tool | Min Version | Source URL | Last Checked | Brain Files |
 | --- | --- | --- | --- | --- |
 | Pandoc | 2.19+ | <https://github.com/jgm/pandoc/releases> | 2026-05-01 | muscles/docx-to-md, muscles/md-to-word, muscles/md-to-html, muscles/md-to-eml, muscles/md-to-txt, muscles/html-to-md |
-| mermaid-cli (mmdc) | 10.x+ | <https://github.com/mermaid-js/mermaid-cli/releases> | 2026-05-01 | muscles/md-to-word (SVG render), muscles/md-to-html (--mermaid-png), skills/markdown-mermaid |
+| mermaid-cli (mmdc) | 11.x+ | <https://github.com/mermaid-js/mermaid-cli/releases> | 2026-05-01 | muscles/md-to-word (SVG render), muscles/md-to-html (--mermaid-png), skills/markdown-mermaid |
 | GitHub CLI (gh) | 2.x+ | <https://github.com/cli/cli/releases> | 2026-05-01 | instructions/mall-installation, prompts/find-skill, prompts/install-from-mall |
 
 ## npm Packages
@@ -44,13 +44,6 @@ Override the threshold with `--max-age-days=N`.
 | Package | Purpose | Source URL | Last Checked | Brain Files |
 | --- | --- | --- | --- | --- |
 | jszip | Word .docx generation (ZIP container) | <https://www.npmjs.com/package/jszip> | 2026-05-01 | muscles/md-to-word |
-
-## JavaScript Libraries (bundled in muscles)
-
-| Library | Purpose | Last Checked | Brain Files |
-| --- | --- | --- | --- |
-| marked.js | Markdown → HTML parsing | 2026-05-01 | skills/markdown-sanitization-chain |
-| DOMPurify | HTML sanitization (XSS prevention) | 2026-05-01 | skills/markdown-sanitization-chain |
 
 ## GitHub APIs
 
