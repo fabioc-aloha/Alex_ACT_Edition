@@ -17,7 +17,7 @@ This folder holds Alex's lived experience in this workspace.
 1. **INDEX.md** — Update when writing any memory (by topic, recency, confidence)
 2. **calibration-log.md** — Log predictions with outcomes to track confidence accuracy
 3. **Meditations** — Created via `meditation.instructions.md` protocol
-4. **Post-mortems** — Created via `root-cause-analysis.instructions.md` protocol
+4. **Post-mortems** — Write a `postmortem-YYYY-MM-DD-<issue>.md` capturing what failed, the root cause, and the prevention. For systematic root-cause investigation, install [`root-cause-analysis`](https://github.com/fabioc-aloha/Alex_Skill_Mall/tree/main/skills/critical-thinking/root-cause-analysis) from the Mall.
 
 Templates and conventions are in the instructions — this folder is for *content*, not *process*.
 
