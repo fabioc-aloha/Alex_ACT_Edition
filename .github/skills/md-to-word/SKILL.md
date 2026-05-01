@@ -7,8 +7,8 @@ tier: standard
 applyTo: '**/*docx*,**/*word*,**/*md-to-word*,**/*export*'
 muscle: .github/muscles/md-to-word.cjs
 inheritance: inheritable
-currency: 2026-04-22
-lastReviewed: 2026-01-01
+currency: 2026-04-30
+lastReviewed: 2026-04-30
 ---
 
 # Markdown to Word Conversion
@@ -83,7 +83,7 @@ All Mermaid diagram types are supported:
 | **Mindmap** | `mindmap` | Width priority |
 | **Timeline** | `timeline` | Width priority |
 
-Diagrams are rendered at 8x scale (2400px width) for crisp printing, then sized to fit within page bounds.
+Diagrams are rendered at 4x scale (4800px width) for crisp printing, then sized to fit within page bounds.
 
 ---
 
@@ -484,6 +484,9 @@ node .github/muscles/md-to-word.cjs spec.md --watch
 | Skill | Relationship |
 |-------|--------------|
 | **markdown-mermaid** | Mermaid syntax and ATACCU compliance |
+| **lint-clean-markdown** | Pre-flight the source — pass clean Markdown in |
+| **markdown-sanitization-chain** | Sanitize user-supplied Markdown before conversion |
+| **mermaid-mode-fragility** | Why we default to flowchart mode |
 | **svg-graphics** | Vector graphics creation |
 | **brand-asset-management** | Visual identity for headers/footers |
 | **pptx-generation** | Similar workflow for PowerPoint output |
