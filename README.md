@@ -16,11 +16,11 @@ This is a **cognitive architecture** — 11 skills, 37 instructions, 20 prompts,
 
 The brain ships slash-prompts grouped by lifecycle stage. Type `/` in Copilot Chat to see the full list.
 
-### Setup (run once per heir)
+### Setup (run once per project)
 
 | Command | When | What it does |
 | --- | --- | --- |
-| `/initialize` | Workspace has Edition content but isn't a registered heir | Detects state (fresh / partial-clean / partial-dirty / full) and runs the right bootstrap path |
+| `/initialize` | Workspace has Edition content but isn't registered | Detects state (fresh / partial-clean / partial-dirty / full) and runs the right bootstrap path |
 | `/welcome` | First session after bootstrap | Orientation tour — identity, tenets, surfaces, what to try next |
 | `/finalize-migration` | After `migrate-to-edition.cjs` | Semantic pass over `local/` — review classified files, prune stale custom content |
 
@@ -30,7 +30,7 @@ The brain ships slash-prompts grouped by lifecycle stage. Type `/` in Copilot Ch
 | --- | --- | --- |
 | `/status` | Anytime | Snapshot of brain version, marker, drift from Edition, fleet membership |
 | `/upgrade` | Edition has shipped a new version | Runs `upgrade-self.cjs` (dry-run by default), shows diff, applies on confirmation |
-| `/fleet` | From Supervisor or any heir | Reads fleet inventory, shows who's on what version, who's drifted |
+| `/fleet` | From Supervisor or any project | Reads fleet inventory, shows who's on what version, who's drifted |
 
 ### Skill Discovery
 
@@ -53,7 +53,7 @@ The brain ships slash-prompts grouped by lifecycle stage. Type `/` in Copilot Ch
 | --- | --- | --- |
 | `/audit-apis` | Quarterly or before shipping skills that touch external APIs | Reads `EXTERNAL-API-REGISTRY.md`, flags stale entries via `audit-api-drift.cjs` |
 
-New to Edition? Jump to [Quick Start](#quick-start) to bootstrap a heir.
+New to Edition? Jump to [Quick Start](#quick-start) to bootstrap your project.
 
 ## The 10 ACT Tenets
 
@@ -159,12 +159,12 @@ Mall integration and plugin routing.
 
 | Instruction | What It Does |
 | --- | --- |
-| `mall-installation` | How heirs install skills from the [Alex Skill Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall) |
+| `mall-installation` | How projects install skills from the [Alex Skill Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall) |
 | `plugin-store-routing` | Connect browse/install requests to Mall or plugins |
 
 ## Quick Start
 
-ACT Edition is bootstrapped into your repo, not cloned as a template. The bootstrap script writes the brain, registers your repo in your fleet registry, and sets up the upgrade channel.
+ACT Edition is bootstrapped into your repo, not cloned as a template. The bootstrap script writes the brain, registers your project in your fleet registry, and sets up the upgrade channel.
 
 ### New Repo
 
@@ -182,11 +182,11 @@ node $env:TEMP\edition\.github\scripts\bootstrap-heir.cjs --target . --heir-id m
 
 ### Already Cloned the Template? Use `/initialize`
 
-If you copied or cloned Edition's content into a workspace without running `bootstrap-heir.cjs`, the workspace is *not* a registered heir — it has the brain content but no `.github/.act-heir.json` marker, so `fleet-inventory` can't see it and `upgrade-self.cjs` will refuse. Open the workspace in VS Code with Copilot and run `/initialize`. The prompt detects whether the workspace is fresh, partially installed and clean, or partially installed with local modifications, and runs the right path (full bootstrap or path-1 quick register).
+If you copied or cloned Edition's content into a workspace without running `bootstrap-heir.cjs`, the workspace is *not* registered — it has the brain content but no `.github/.act-heir.json` marker, so `fleet-inventory` can't see it and `upgrade-self.cjs` will refuse. Open the workspace in VS Code with Copilot and run `/initialize`. The prompt detects whether the workspace is fresh, partially installed and clean, or partially installed with local modifications, and runs the right path (full bootstrap or path-1 quick register).
 
-### Migrating an Existing Alex Heir
+### Migrating an Existing Project
 
-If you have an older Alex-flavored heir (with the master/inheritable/custom tier model), use the migration tool that ships at the root of this repo. It snapshots the old `.github/`, classifies files via frontmatter (master-tier files dropped, custom files routed to `local/`), installs Edition, and registers the heir.
+If you have an older Alex-flavored project (with the master/inheritable/custom tier model), use the migration tool that ships at the root of this repo. It snapshots the old `.github/`, classifies files via frontmatter (master-tier files dropped, custom files routed to `local/`), installs Edition, and registers the project.
 
 ```powershell
 cd <your-heir-repo>
@@ -194,13 +194,13 @@ node <path-to>/migrate-to-edition.cjs              # dry-run, see the triage pla
 node <path-to>/migrate-to-edition.cjs --apply      # snapshot old brain + install Edition
 ```
 
-Then in a chat session inside the migrated heir: run the `/finalize-migration` prompt to do the semantic pass over remaining custom content.
+Then in a chat session inside the migrated project: run the `/finalize-migration` prompt to do the semantic pass over remaining custom content.
 
 See [MIGRATION.md](MIGRATION.md) for the full migration guide — auto-detection, triage rules, failure recovery, and what's intentionally lost.
 
 ### After Bootstrap
 
-Open the heir in VS Code with Copilot. Run `/welcome` for orientation. The brain is active.
+Open the project in VS Code with Copilot. Run `/welcome` for orientation. The brain is active.
 
 ## What Else Ships
 
@@ -210,13 +210,13 @@ Beyond the instructions, the brain bundles:
 | --- | --- |
 | **Skills** (`.github/skills/`) | 11 core skills — document conversion, markdown-mermaid, banner generation, greeting check-in, meditation, sanitization |
 | **Prompts** (`.github/prompts/`) | 20 slash-commands for setup, daily ops, skill discovery, memory, and maintenance (see [Commands](#commands)) |
-| **Muscles** (`.github/muscles/`) | Converter executables, `heir-doctor.cjs` (manifest-driven health check), `audit-api-drift.cjs` (external-API freshness), `generate-banner.cjs` (SVG banners) |
-| **Configs** (`.github/config/`) | `sync-policy.json`, `edition-manifest.json` (release-time skill+prompt allowlist), `markdown-light.css`, heir-owned `cognitive-config.json` + `goals.json` |
+| **Muscles** (`.github/muscles/`) | Converter executables, `heir-doctor.cjs` (health check), `audit-api-drift.cjs` (external-API freshness), `generate-banner.cjs` (SVG banners) |
+| **Configs** (`.github/config/`) | `sync-policy.json`, `edition-manifest.json` (release-time allowlist), `markdown-light.css`, project-owned `cognitive-config.json` + `goals.json` |
 | **Scripts** (`.github/scripts/`) | `bootstrap-heir.cjs`, `upgrade-self.cjs`, `build-edition-manifest.cjs` (regenerates the allowlist), shared `_registry.cjs` |
-| **Workspace defaults** (`.vscode/`) | `extensions.json` + `settings.json` shipped as heir-owned templates — new heirs receive them at bootstrap; existing heirs keep their own |
+| **Workspace defaults** (`.vscode/`) | `extensions.json` + `settings.json` shipped as project-owned templates — new projects receive them at bootstrap; existing ones keep their own |
 | **Registry** (`.github/EXTERNAL-API-REGISTRY.md`) | Source-of-truth for external API/model versions consumed by skills (paired with `/audit-apis`) |
 
-### Heir-Owned Customization Slots
+### Project-Owned Customization Slots
 
 Edition reserves `local/` subdirectories that survive every upgrade:
 
@@ -229,7 +229,7 @@ Edition reserves `local/` subdirectories that survive every upgrade:
 .github/copilot-instructions.local.md  ← your identity layer
 ```
 
-The `sync-policy.json` declares these heir-owned. Adding a custom skill to `local/` is permanent; adding it to `.github/skills/` will be wiped on next `upgrade-self.cjs --apply`.
+The `sync-policy.json` declares these project-owned. Adding a custom skill to `local/` is permanent; adding it to `.github/skills/` will be wiped on next `upgrade-self.cjs --apply`.
 
 ### Upgrade Flow
 
