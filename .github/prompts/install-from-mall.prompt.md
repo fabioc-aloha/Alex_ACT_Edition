@@ -1,65 +1,49 @@
 ---
-description: "Guided install of a skill, trifecta, pattern, or MCP config from Alex_Skill_Mall into the heir's local/ subdirs"
+description: "Guided install of skills from Alex_Skill_Mall — assess project needs, filter candidates, install into local/"
 mode: agent
-lastReviewed: 2026-04-30
+lastReviewed: 2026-05-01
 ---
 
 # Install from Mall
 
-Walk the user through installing a Mall asset into the right `local/` subdir so Edition upgrades don't overwrite it.
+Assess what this project needs from the Mall, then install the right skills into `local/` subdirs.
 
 ## Steps
 
-1. **Ask what to install** — the user should provide either:
-   - A skill name (e.g., `md-to-pdf`, `shell-injection-prevention`)
-   - A pattern name (e.g., `champion-challenger-cache`)
-   - An MCP config name (when Mall ships those)
-   - "browse" — open <https://github.com/fabioc-aloha/Alex_Skill_Mall/blob/main/CATALOG.md> and pick
+1. **Assess project needs** — follow the Skill Selection Protocol in `mall-installation.instructions.md`:
+   - Read project identity (`copilot-instructions.local.md`, `README.md`, `package.json`, directory structure)
+   - List what's already in `.github/skills/local/` and `.github/skills/` (Edition baseline)
+   - Match project signals to Mall categories
+   - Apply the selection filter (actually needed, not already covered, would be used soon)
 
-2. **Locate the Mall locally** — try in priority order:
-   - `~/Alex_Skill_Mall` (or `%USERPROFILE%\Alex_Skill_Mall` on Windows)
-   - Any sibling directory: check `..\Alex_Skill_Mall` from heir root
-   - If absent, instruct: `git clone https://github.com/fabioc-aloha/Alex_Skill_Mall.git ~/Alex_Skill_Mall`
+2. **If the user named specific skills**, validate them against the filter. Install if they pass, explain why not if they don't.
 
-3. **Identify the asset type** by its path in the Mall:
+3. **If no specific request** ("browse" or just `/install-from-mall`), recommend 3-5 skills based on the project assessment. Present as a table:
 
-   | Path matches | Type | Destination |
-   |--------------|------|-------------|
-   | `skills/<cat>/<name>/SKILL.md` only | skill alone | `.github/skills/local/<name>/` |
-   | `skills/<cat>/<name>/SKILL.md` + `<name>.cjs` | skill + muscle | skill → `.github/skills/local/<name>/`, muscle → `.github/muscles/local/<name>.cjs` |
-   | `skills/<cat>/<name>/` with SKILL.md + `.instructions.md` + `.cjs` | trifecta | each part → its `local/` home |
-   | `patterns/<name>.md` | pattern | `.github/instructions/local/<name>.instructions.md` (add frontmatter) |
-   | `mcp/<name>.json` | MCP server | merge into heir's `.mcp.json` (root, not `.github/`) |
-   | `scaffolds/<name>/` | scaffold | refuse — scaffolds bootstrap *new* repos, not existing heirs |
+   | Skill | Category | Why this project needs it |
+   | --- | --- | --- |
+   | `<name>` | `<cat>` | `<one-line rationale>` |
 
-4. **Copy** the files using `cp -r` (or `Copy-Item -Recurse` on Windows).
-5. **Update path references** if any moved (e.g., `.cjs` from skill folder to muscles).
-6. **Add frontmatter** if installing a pattern — derive `description` from the file's first paragraph and ask the user for a sensible `applyTo` glob.
-7. **Read External Dependencies** — open the SKILL.md, surface any `Pandoc`, `npm install foo`, environment variables required.
-8. **Verify** with a dry-run upgrade:
+   Ask the user to confirm before installing.
 
-   ```bash
-   node .github/scripts/upgrade-self.cjs
-   ```
+4. **Locate the Mall locally** — try:
+   - `~/Alex_Skill_Mall` or `C:\Development\Alex_Skill_Mall`
+   - Sibling: `../Alex_Skill_Mall`
+   - If absent: `git clone https://github.com/fabioc-aloha/Alex_Skill_Mall.git ~/Alex_Skill_Mall`
 
-   Confirm none of the just-installed files appear under "would write" / "would delete". If they do, the install went to an edition-owned path — move them.
+5. **Install** each confirmed skill:
+   - Create `.github/skills/local/<name>/`
+   - Copy contents (not folder) from Mall: `skills/<cat>/<name>/*` → `.github/skills/local/<name>/`
+   - If `.cjs` companion exists, move to `.github/muscles/local/<name>.cjs`
+   - Check External Dependencies in SKILL.md
 
-9. **Stage but do NOT commit** — show `git status` and let the user decide the commit message and timing.
+6. **Verify** — run `node .github/scripts/upgrade-self.cjs` (dry-run). Confirm installed files don't appear in "would write/delete".
+
+7. **Stage and commit** — `git add .github/skills/local .github/muscles/local && git commit -m "Install <N> Mall skills: <names>"`
 
 ## Refuse if
 
-- Mall not found locally and user declines to clone it
-- Asset is a scaffold (wrong tool — use `bootstrap-heir.cjs` instead)
-- Heir's `.github/scripts/upgrade-self.cjs` doesn't exist (heir not bootstrapped — guide them through bootstrap first)
-- Target file already exists under `local/` — ask the user whether to overwrite or rename
-
-## Quick Reference
-
-```bash
-# Skill alone
-cp -r ~/Alex_Skill_Mall/skills/<cat>/<name> .github/skills/local/<name>
-
-# Skill with muscle companion
-cp -r ~/Alex_Skill_Mall/skills/<cat>/<name> .github/skills/local/<name>
-mv .github/skills/local/<name>/<name>.cjs .github/muscles/local/<name>.cjs
-```
+- Mall not found locally and user declines to clone
+- Skill already exists in `.github/skills/local/` (ask to overwrite or skip)
+- Skill overlaps with Edition baseline (explain which instruction/skill already covers it)
+- Target is a scaffold (wrong tool)

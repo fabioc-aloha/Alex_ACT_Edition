@@ -9,6 +9,54 @@ lastReviewed: 2026-04-30
 
 [Alex_Skill_Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall) is a public catalog of optional add-ons. Heirs pull what they need on-demand — the brain stays small by default.
 
+## Skill Selection Protocol
+
+Before installing from the Mall, assess what the project actually needs. Do not install everything available — install only what earns its token cost.
+
+### Step 1 — Inventory what the project does
+
+Read the project's `copilot-instructions.local.md`, `README.md`, `package.json`, and top-level directory structure. Identify:
+
+- Primary language/framework (Node, Python, .NET, Bicep, etc.)
+- Domain (healthcare, publishing, finance, infrastructure, etc.)
+- Key workflows (MCP server, VS Code extension, data pipeline, etc.)
+
+### Step 2 — Check what the heir already has
+
+List `.github/skills/local/` — these are already installed. Do not reinstall or duplicate.
+
+List `.github/skills/` (edition-owned) — the Edition baseline already covers general-purpose skills. Do not install Mall skills that overlap with Edition baseline.
+
+### Step 3 — Match project needs to Mall categories
+
+Consult the Mall `CATALOG.md` (at `~/Alex_Skill_Mall/CATALOG.md` or `C:\Development\Alex_Skill_Mall\CATALOG.md`). Match by:
+
+| Project signal | Mall category to check |
+| --- | --- |
+| VS Code extension (`package.json` has `engines.vscode`) | `vscode/`, `quality/testing-strategies` |
+| MCP server code | `ai-llm/mcp-builder`, `ai-llm/mcp-development` |
+| Azure resources (Bicep, ARM, Fabric) | `azure/`, `infrastructure/` |
+| Healthcare/clinical data | `domain/healthcare-informatics` |
+| Book/publishing project | `publishing/`, `academic/` |
+| Security-sensitive (auth, tokens, APIs) | `security/` |
+| Data analysis (Python, KQL, notebooks) | `data/` |
+| Document conversion (Pandoc, PDF, Word) | `converters/` |
+
+### Step 4 — Apply the selection filter
+
+For each candidate skill, ask:
+
+| Question | If no, skip |
+| --- | --- |
+| Does this project actually do the thing this skill covers? | Skip — aspirational installs waste tokens |
+| Is this already covered by an Edition baseline instruction or skill? | Skip — don't shadow Edition |
+| Would this skill be used in the next 30 days of work? | Skip — install on demand later |
+| Is the skill's `tier` appropriate? (`core` = always, `standard` = common, `extended` = niche) | Skip extended unless the project is in that niche |
+
+### Step 5 — Install selected skills
+
+Follow the installation steps below. Copy contents, not folders. Commit once after all installs.
+
 ## What's in the Mall
 
 | Type | Path in Mall | Where it goes in heir |
