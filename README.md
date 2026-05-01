@@ -164,25 +164,29 @@ Mall integration and plugin routing.
 
 ## Quick Start
 
-ACT Edition is bootstrapped into your repo, not cloned as a template. The bootstrap script writes the brain, registers your project in your fleet registry, and sets up the upgrade channel.
+ACT Edition is bootstrapped into your repo, not cloned as a template. The `init-edition.cjs` script clones Edition, writes the brain, registers your project, and sets up the upgrade channel — all in one command.
 
-### New Repo
+### New Project
 
-```powershell
-# 1. Create your repo and cd into it
-mkdir my-project; cd my-project; git init
-git remote add origin https://github.com/<you>/my-project.git  # optional but recommended
+```bash
+# 1. Create your repo
+mkdir my-project && cd my-project && git init
+git remote add origin https://github.com/<you>/my-project.git
 
-# 2. Clone Edition somewhere outside your repo
-git clone --depth 1 https://github.com/fabioc-aloha/Alex_ACT_Edition.git $env:TEMP\edition
-
-# 3. Bootstrap the brain into your repo (--heir-id required; --heir-name/--repo-url/--owner recommended)
-node $env:TEMP\edition\.github\scripts\bootstrap-heir.cjs --target . --heir-id my-project --apply
+# 2. Bootstrap with init-edition (auto-derives identity from git remote)
+node ~/Development/init-edition.cjs --apply
 ```
 
-### Already Cloned the Template? Use `/initialize`
+If you don't have `init-edition.cjs` in your dev root yet, grab it from the repo:
 
-If you copied or cloned Edition's content into a workspace without running `bootstrap-heir.cjs`, the workspace is *not* registered — it has the brain content but no `.github/.act-heir.json` marker, so `fleet-inventory` can't see it and `upgrade-self.cjs` will refuse. Open the workspace in VS Code with Copilot and run `/initialize`. The prompt detects whether the workspace is fresh, partially installed and clean, or partially installed with local modifications, and runs the right path (full bootstrap or path-1 quick register).
+```bash
+git clone --depth 1 https://github.com/fabioc-aloha/Alex_ACT_Edition.git /tmp/edition
+node /tmp/edition/init-edition.cjs --apply
+```
+
+### Already Have Edition Content? Use `/initialize`
+
+If you copied or cloned Edition's content into a workspace without running the init script, the workspace is not registered — it has the brain content but no `.github/.act-heir.json` marker. Open the workspace in VS Code with Copilot and run `/initialize` to detect state and register.
 
 ### Migrating an Existing Project
 
