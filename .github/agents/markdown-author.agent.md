@@ -4,6 +4,8 @@ description: Authors or edits markdown content (prose, tables, lists, frontmatte
 tools: ['edit', 'read', 'search/codebase', 'search/usages']
 user-invocable: false
 disable-model-invocation: false
+currency: 2026-05-01
+lastReviewed: 2026-05-01
 ---
 
 # Markdown Author Worker
