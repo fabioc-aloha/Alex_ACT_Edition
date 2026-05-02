@@ -416,32 +416,111 @@ Acknowledge the milestone, write a retrospective, and update the Supervisor flee
 - AlexMaster framework changes (tenets, claims registry)
 - New capabilities not in the current 59
 
-## 6b. Companion Plan: Skill Mall Re-Curation
+## 6b. Companion Plan: Alex ACT Plugin Mall (v2)
 
-The v1 refactor changes what "coherent with Edition" means. The Mall (302 skills, 35 categories) must be re-curated to match the new architecture. This is Supervisor-scoped work, tracked here for coordination.
+The v1 refactor changes what "coherent with Edition" means. The Skill Mall becomes the **Alex ACT Plugin Mall**: the unit of distribution shifts from a bare SKILL.md to a self-describing plugin bundle.
 
-### Why now
+### Naming
 
-- Edition v1 deleted 6 per-format converter instructions and 1 `plugin-store-routing` instruction. Mall skills that reference these by name will have broken cross-references.
-- Edition v1 changed activation patterns for 7 instructions (always-on to conditional). Mall install instructions that assume always-on behavior may give wrong guidance.
-- The DRY converter SA pattern (1 shared instruction + `/convert` prompt) replaces the old per-format entry points. Mall converter skills need updated install instructions.
-- The new tier definitions (`core`/`standard`/`extended`) from the architecture document should be consistently applied across both Edition and Mall.
+- **Repo rename**: `Alex_Skill_Mall` becomes `Alex_ACT_Plugin_Mall`
+- **Unit of distribution**: "plugin" (a capability bundle with declared shape)
+- **Edition-internal artifacts** keep their VS Code type names (instruction, skill, prompt, agent, muscle). "Plugin" is the distribution wrapper.
 
-### Scope
+### Plugin Structure
+
+Each plugin in the Mall becomes a self-contained folder:
+
+```text
+category/plugin-name/
+  README.md        -- human-friendly storefront: what, why, when, prerequisites
+  SKILL.md         -- machine-consumed brain file (the actual rules)
+  plugin.json      -- manifest: shape, artifacts, requires_edition, tier
+  *.cjs            -- muscle (if the plugin ships executable code)
+  *.instructions.md -- instruction (if the plugin ships one)
+  *.prompt.md      -- prompt (if the plugin ships one)
+```
+
+- `README.md` explains the plugin in plain language: what problem it solves, example use cases, what Edition version it needs, and what artifacts it installs.
+- `plugin.json` declares the shape and artifact manifest so the install script knows what to copy and where.
+- SKILL.md, instructions, prompts, muscles are the actual brain artifacts that get installed into heir `.github/` paths.
+
+### Plugin Manifest Schema (`plugin.json`)
+
+```json
+{
+  "name": "md-to-word",
+  "version": "1.0.0",
+  "shape": ".S.M",
+  "description": "Convert Markdown to Word with style presets and professional features",
+  "category": "converters",
+  "tier": "standard",
+  "requires_edition": ">=1.0.0",
+  "requires_plugins": [],
+  "artifacts": {
+    "skill": "SKILL.md",
+    "muscle": "md-to-word.cjs"
+  },
+  "install_paths": {
+    "skill": ".github/skills/local/md-to-word/SKILL.md",
+    "muscle": ".github/muscles/local/md-to-word.cjs"
+  }
+}
+```
+
+### CATALOG.json v2 Schema
+
+Shape becomes a first-class field so users can gauge plugin complexity at a glance:
+
+```json
+{
+  "schema_version": "2.0",
+  "plugins": [
+    {
+      "name": "md-to-word",
+      "title": "Markdown to Word",
+      "category": "converters",
+      "shape": ".S.M",
+      "tier": "standard",
+      "description": "Convert Markdown to Word with style presets and professional features",
+      "requires_edition": ">=1.0.0",
+      "requires_plugins": [],
+      "path": "skills/converters/md-to-word/",
+      "artifacts": ["SKILL.md", "md-to-word.cjs"]
+    }
+  ]
+}
+```
+
+Shape tells you what you're getting before you open the folder:
+
+| Shape | Meaning | Complexity |
+| --- | --- | --- |
+| `I...` | Instruction only -- a rule | Minimal (1 file) |
+| `.S..` | Skill only -- domain knowledge | Minimal (1 file) |
+| `.S.M` | Skill + muscle -- knowledge with executable | Light (2 files) |
+| `ISP.` | Instruction + skill + prompt -- full trifecta | Medium (3 files) |
+| `I.P.` | Instruction + prompt (+ SA reference) | Medium (2-3 files) |
+| `ISPM` | Full stack -- all four artifact types | Heavy (4+ files) |
+| `I...L` | Lock (boundary guard) -- gate instruction | Minimal but critical |
+
+Heirs can filter by shape: "show me all `.S.M` plugins in the converters category" or "what `ISP.` trifectas are available for security?"
+
+### Migration Path (302 skills to plugins)
 
 | Task | Description | Priority |
 | --- | --- | --- |
-| **Broken-ref sweep** | Grep all 302 Mall SKILL.md files for references to deleted Edition instructions (`md-to-html.instructions.md`, `plugin-store-routing.instructions.md`, etc.). Update or remove. | High -- blocks v1 release coherence |
-| **Install-path update** | Mall skills with install instructions that mention the old per-format prompts (`/md-to-word`, `/md-to-html`, etc.) need updating to reference `/convert`. | High |
-| **Tier audit** | Walk CATALOG.json `tier` fields against the tier definitions in the architecture. Reclassify any mismatches. | Medium |
-| **Frontmatter quality** | Mall SKILL.md files should have all required fields (`type`, `lifecycle`, `inheritance`, `description`, `applyTo`, `currency`, `lastReviewed`). Run the same validation as Phase 9. | Medium |
-| **CATALOG.json refresh** | Regenerate CATALOG.json from the skill tree after fixes land. | Low -- mechanical |
+| **Schema design** | Finalize `plugin.json` schema, README template, install script updates | High |
+| **Batch conversion** | Script to wrap each existing SKILL.md in a plugin folder with generated README + plugin.json | High |
+| **CATALOG.json v2** | Update catalog schema to reference plugins instead of skills; add shape, requires_edition fields | High |
+| **Install script update** | Update `/mall install` to read plugin.json and copy the full bundle to `local/` paths | High |
+| **Repo rename** | `Alex_Skill_Mall` to `Alex_ACT_Plugin_Mall` (GitHub redirect handles old URLs) | Medium |
+| **Broken-ref sweep** | Same as original 6b: update refs to deleted Edition instructions | Medium |
 
 ### Sequencing
 
-- **Before Edition v1.0.0 release**: broken-ref sweep and install-path update (high priority). These are coherence gates.
-- **After v1.0.0 release**: tier audit and frontmatter quality (medium priority). These improve quality but don't block heirs.
-- **Owner**: Supervisor (per `brain-curation-rules.instructions.md` and `mall-maintenance-rules.instructions.md`).
+- **Before Edition v1.0.0 release**: schema design + broken-ref sweep only. The Mall rename and batch conversion happen after v1 ships.
+- **After v1.0.0**: batch conversion, CATALOG v2, install script update, repo rename.
+- **Owner**: Supervisor (per `mall-maintenance-rules.instructions.md`).
 
 ## 7. Timeline Estimate
 
