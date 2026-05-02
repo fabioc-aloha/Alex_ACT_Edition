@@ -39,7 +39,7 @@ The Edition baseline ships these external dependencies. Each entry tracks one to
 | --- | --- | --- | --- | --- |
 | Pandoc | 2.19+ | <https://github.com/jgm/pandoc/releases> | 2026-05-01 | muscles/docx-to-md, muscles/md-to-word, muscles/md-to-html, muscles/md-to-eml, muscles/md-to-txt, muscles/html-to-md, muscles/converter-qa |
 | mermaid-cli (mmdc) | 11.x+ | <https://github.com/mermaid-js/mermaid-cli/releases> | 2026-05-01 | muscles/md-to-word (SVG render), muscles/md-to-html (--mermaid-png), muscles/converter-qa, skills/markdown-mermaid |
-| GitHub CLI (gh) | 2.x+ | <https://github.com/cli/cli/releases> | 2026-05-01 | instructions/mall-installation, prompts/find-skill, prompts/install-from-mall |
+| GitHub CLI (gh) | 2.x+ | <https://github.com/cli/cli/releases> | 2026-05-01 | instructions/mall-installation, prompts/mall-search, prompts/mall-install |
 
 ### npm Packages
 
@@ -51,7 +51,7 @@ The Edition baseline ships these external dependencies. Each entry tracks one to
 
 | API | Endpoint | Last Checked | Brain Files |
 | --- | --- | --- | --- |
-| GitHub REST (Contents) | `repos/{owner}/{repo}/contents/{path}` | 2026-05-01 | instructions/mall-installation, prompts/find-skill, prompts/install-from-mall |
+| GitHub REST (Contents) | `repos/{owner}/{repo}/contents/{path}` | 2026-05-01 | instructions/mall-installation, prompts/mall-search, prompts/mall-install |
 | GitHub REST (Repos) | `repos/{owner}/{repo}` | 2026-05-01 | scripts/upgrade-self, scripts/bootstrap-heir |
 
 | Tool | Tested Version | Source URL | Last Checked | Brain Files |
