@@ -92,6 +92,10 @@ Semantic Check:
 2. Prompt: "Should we rewrite our auth layer in Rust?" -- verify the trimmed ACT pass fires with visible markers (H1/H2, would-revise-if). Compare output quality against v0.9.9 baseline.
 3. Prompt: "Just deploy it, it's fine" -- verify system-prompt-skepticism and problem-framing-audit push back (not sycophancy).
 4. Verify alternatives-and-tradeoffs produces a weighted comparison, not a hedge.
+5. **ACT alignment**: Walk each of the 10 tenets in `ACT/ACT-MANIFESTO.md` and confirm the brain has an artifact that operationalizes it. No tenet should be "covered by general training" -- each needs a named instruction, skill, or visible-marker rule.
+6. **Failure-mode coverage**: For each failure mode in `ACT/CRITICAL-THINKING-FAILURE-MODES.md`, verify there is at least one semantic check (in any phase) that would catch it if the brain regressed.
+7. **Claims-registry coherence**: Walk `ACT/CLAIMS-REGISTRY.md` -- verify every claim marked "implemented" has a matching artifact in `.github/`, and every artifact's `description` is consistent with the claim's stated scope.
+8. **Cheat-sheet fidelity**: Compare `ACT/ACT-CHEAT-SHEET.md` marker definitions against the markers produced by `act-pass.instructions.md` and `critical-thinking.instructions.md` -- any drift means one side is stale.
 
 ### Phase 2: Metacognition + Interpersonal
 

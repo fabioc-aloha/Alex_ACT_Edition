@@ -4,33 +4,33 @@ Lightweight index for efficient memory retrieval. Update when writing any memory
 
 ## By Topic
 
-| Topic | Locations |
-|-------|-----------|
-| *Add topics as memories form* | |
+| Topic           | Locations                                   |
+| --------------- | ------------------------------------------- |
+| Plan refinement | meditation-2026-05-02-plan-v1-refinement.md |
 
 ## By Recency
 
-| Date | File | Action |
-|------|------|--------|
-| *Log memory writes here* | | |
+| Date       | File                                         | Action                              |
+| ---------- | -------------------------------------------- | ----------------------------------- |
+| 2026-05-02 | meditation-2026-05-02-plan-v1-refinement.md  | PLAN-edition-brain-v1 final polish  |
 
 ## By Confidence
 
-| Level | Memories |
-|-------|----------|
-| **High** | Explicit user instructions, validated patterns |
-| **Medium** | Multi-session observations |
-| **Low** | Single-session observations |
+| Level      | Memories                                         |
+| ---------- | ------------------------------------------------ |
+| **High**   | Explicit user instructions, validated patterns   |
+| **Medium** | Multi-session observations                       |
+| **Low**    | Single-session observations                      |
 
 ## By Type
 
-| Type | Count | Notes |
-|------|-------|-------|
-| User preferences | 0 | |
-| Repo conventions | 0 | |
-| Skills | 0 | |
-| Post-mortems | 0 | |
-| Meditations | 0 | |
+| Type             | Count | Notes |
+| ---------------- | ----- | ----- |
+| User preferences | 0     |       |
+| Repo conventions | 0     |       |
+| Skills           | 0     |       |
+| Post-mortems     | 0     |       |
+| Meditations      | 1     |       |
 
 ---
 
@@ -38,11 +38,11 @@ Lightweight index for efficient memory retrieval. Update when writing any memory
 
 Use wiki-style links to cross-reference memories:
 
-| Syntax | Use |
-|--------|-----|
-| `[[filename]]` | Link to file in same directory |
-| `[[path/to/file]]` | Link to file in different directory |
-| `[[filename#section]]` | Link to specific section |
+| Syntax                | Use                                  |
+| --------------------- | ------------------------------------ |
+| `[[filename]]`        | Link to file in same directory       |
+| `[[path/to/file]]`    | Link to file in different directory  |
+| `[[filename#section]]`| Link to specific section             |
 
 Examples:
 
@@ -50,7 +50,7 @@ Examples:
 - `[[../instructions/memory-triggers.instructions.md]]`
 - `[[CONFIDENCE-CONVENTION.md#validation]]`
 
-Links are for human navigation — not parsed automatically.
+Links are for human navigation -- not parsed automatically.
 
 ---
 
@@ -71,4 +71,4 @@ When reading memories:
 
 ---
 
-*Index maintained by Alex. Last updated: YYYY-MM-DD*
+Index maintained by Alex. Last updated: 2026-05-02
