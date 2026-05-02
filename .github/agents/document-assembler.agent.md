@@ -25,11 +25,31 @@ If the parent did not give you a file path, return a one-sentence question. Do n
 ## Internal workflow (in order)
 
 1. **Read the file.** Use `read` to load the full contents.
-2. **Extract placeholders.** Find every line matching `<!-- ILLUSTRATOR: <brief> -->`. For each, capture (a) the exact placeholder string for replacement and (b) the brief text (everything after `ILLUSTRATOR:` and before `-->`).
-3. **Dispatch all illustrators in parallel.** In a single tool-call batch, call `runSubagent` once per placeholder with `agentName: "illustrator"` and the brief as the prompt. Add the pastel-palette reminder if not already in the brief. **Parallel dispatch is mandatory** — sequential dispatch defeats the purpose of this worker.
+2. **Extract placeholders.** Find every occurrence of `<!-- ILLUSTRATOR: <brief> -->` (the markers are the *only* exact bounds — do not include surrounding prose, blank lines, or punctuation in the placeholder text you'll later replace). For each match, capture:
+   - The **exact placeholder string from `<!-- ILLUSTRATOR:` through the closing `-->` inclusive** — this is the `oldString` for replacement
+   - The **brief text** (everything after `ILLUSTRATOR:` and before `-->`, trimmed)
+
+   Verify each captured `oldString` appears **exactly once** in the file before proceeding. If any captured string is ambiguous, capture more of its surroundings (the line before and after) until it is unique.
+3. **Dispatch all illustrators in parallel.** In a single tool-call batch, call `runSubagent` once per placeholder. **Every call requires three fields**: `agentName`, `description` (a 3–6 word label — the dispatch will fail with a schema error if omitted), and `prompt` (the brief). Add the pastel-palette reminder if not already in the brief. **Parallel dispatch is mandatory** — sequential dispatch defeats the purpose of this worker.
+
+   Concrete example of a single dispatch call (you make N of these in one batch):
+
+   ```json
+   {
+     "agentName": "illustrator",
+     "description": "Editorial pipeline flowchart",
+     "prompt": "Mermaid flowchart (LR) showing ... [full brief from the placeholder, with palette reminder appended if absent]"
+   }
+   ```
+
+   Common failure on first attempt: omitting `description`. The runtime returns `"must have required property 'description'"`. If you see that error, the fix is always to add a short `description` field — never to change the agent name or the prompt.
 4. **Validate each returned diagram.** The illustrator should return a fenced ` ```mermaid ... ``` ` block. If a return is missing the fence, contains prose around the fence, or is empty, re-dispatch that one illustrator with a sharper brief that says "return ONLY the fenced mermaid block, no prose". Do this at most once per placeholder.
-5. **Stitch.** Use `multi_replace_string_in_file` (one batched call) to swap every placeholder for its corresponding rendered block. The `oldString` is the exact placeholder line; the `newString` is the returned mermaid block.
-6. **Verify.** Use `get_errors` (via your edit tool) on the file path. If markdown lint passes, you are done. If it fails on something the assembly introduced (orphaned placeholder, stray fence), fix it; if the failure is unrelated to the assembly, report it but do not try to fix it.
+5. **Stitch.** Use `multi_replace_string_in_file` (one batched call) with one replacement per placeholder. For each:
+   - `oldString`: the exact captured placeholder string from step 2 (`<!-- ILLUSTRATOR: ... -->` and nothing else — no leading/trailing whitespace, no surrounding paragraphs)
+   - `newString`: the rendered ` ```mermaid ... ``` ` block returned by the illustrator
+
+   If `multi_replace_string_in_file` reports any failed replacement (string not found), the captured `oldString` did not match the file byte-for-byte. **Do not retry blindly.** Re-read the file at the placeholder's line range to see the current text, then issue a single `replace_string_in_file` for that one placeholder with the corrected `oldString`. Common cause: the placeholder spans multiple lines or has trailing whitespace the capture missed.
+6. **Verify.** Use `get_errors` on the file path. If markdown lint passes and zero `<!-- ILLUSTRATOR:` markers remain in the file, you are done. If lint fails on something the assembly introduced (orphaned placeholder, stray fence), fix it; if the failure is unrelated to the assembly, report it but do not try to fix it.
 
 ## Output contract
 
