@@ -18,7 +18,7 @@ target: Alex_ACT_Edition v1.0.0
 
 | Phase | Description | Caps | Status |
 | --- | --- | ---: | --- |
-| 0 | Scaffold | -- | Not started |
+| 0 | Scaffold | -- | **Complete** (2026-05-02) |
 | 1 | Critical Thinking Core | 7 | Not started |
 | 2 | Metacognition + Interpersonal | 7 | Not started |
 | 3 | Session & Memory + Boundary Guards | 13 | Not started |
@@ -73,6 +73,30 @@ Rename `.github/` to `.github-v0/`, then create a fresh `.github/` with empty su
 - `episodic/`
 
 **Baseline capture**: Before any migration, record v0.9.9 responses to 5 representative prompts (one per functional cluster: critical-thinking, metacognition, memory, situational, infrastructure). These become the regression-comparison baseline for Phase 10 -- without them, "compare against v0.9.9" is memory-dependent.
+
+#### Phase 0 Results (2026-05-02)
+
+- [x] Baseline token inventory captured: `decisions/BASELINE-v0.9.9-token-inventory.md` (commit `7b147c0`)
+- [x] Activation frequency audit: 23 always-on instructions identified, grouped by functional cluster
+- [ ] Regression prompts (5 representative): deferred to Phase 1 start (record before scaffold rename)
+- [ ] Scaffold rename (`.github/` to `.github-v0/`): deferred to Phase 1 start
+
+**Key finding: Always-on budget is 25.8K tokens; target is 15K. Gap: 8.4K (36% cut needed).**
+
+| Group | Always-on tokens | % of budget |
+| --- | ---: | ---: |
+| CT Core | 6,647 | 28.4% |
+| Metacognition + Interpersonal | 5,057 | 21.6% |
+| Session/Memory/Boundary | 7,167 | 30.6% |
+| Principles + Situational | 4,569 | 19.5% |
+
+**Top token reduction targets** (see baseline doc Section 7 for full list):
+
+1. Make agent-delegation conditional (~1,500 saved)
+2. Consolidate alternatives-and-tradeoffs into CT skill (~1,200 saved)
+3. Make cross-project-isolation conditional (~1,400 saved)
+4. Make reliance-nudges conditional (~900 saved)
+5. Trim communication-craft, proactive-awareness, partnership-charter, creative-loop (~2,200 saved)
 
 ### Phase 1: Critical Thinking Core
 
