@@ -29,7 +29,7 @@ target: Alex_ACT_Edition v1.0.0
 | 8 | Infrastructure & Fleet | 6 | **Complete** (2026-05-02) |
 | 9 | Audit | -- | **Complete** (2026-05-02) |
 | 9b | Capability Gap Analysis | -- | **Complete** (2026-05-02) |
-| 10 | Heir Testing | -- | Not started |
+| 10 | Heir Testing | -- | **In progress** (2026-05-02) |
 | 11 | Release v1.0.0 | -- | Not started |
 | 12 | Celebrate | -- | Not started |
 
@@ -398,6 +398,8 @@ Each test heir must also exercise the Plugin Mall v2 integration:
 | Heir 1 | Code-heavy | ACT pass on architecture decision, debugging hypothesis, scope management | `/mall search` for relevant code-quality or security plugins; install one; verify it fires |
 | Heir 2 | Docs-heavy | Converter SA (`/convert` to Word), markdown authoring delegation, meditation | `/mall search` for documentation or publishing plugins; install one; verify it fires |
 | Heir 3 | Infra-heavy | Terminal safety with backticks, Azure deployment prompts, PII filter on memory writes | `/mall search` for cloud-infrastructure or devops plugins; install one; verify it fires |
+
+**Selected heirs** (2026-05-02): `read-aloud` (code), `gcx-tldr` (docs), `correax` (infra). Full test protocol in `decisions/PHASE-10-TEST-PROTOCOL.md`.
 
 #### Exit Criteria
 

@@ -78,7 +78,7 @@ function detectProjectSignals(dir) {
         signals.hasReadme = true;
         try {
             signals.readmeSnippet = fs.readFileSync(path.join(dir, 'README.md'), 'utf8').slice(0, 300);
-        } catch {}
+        } catch { }
     }
 
     return signals;

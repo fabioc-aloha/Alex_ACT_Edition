@@ -340,7 +340,7 @@ if (isMajorBump && ALLOW_MAJOR) {
     fs.writeFileSync(markerPath, JSON.stringify(marker, null, 2) + '\n');
 
     // Cleanup temp
-    try { fs.rmSync(holdDir, { recursive: true, force: true }); } catch {}
+    try { fs.rmSync(holdDir, { recursive: true, force: true }); } catch { }
 
     const registryResult2 = upsertHeir(marker, HEIR_ROOT);
     if (registryResult2.ok) console.log(`Refreshed fleet registry: ${registryResult2.path}`);
