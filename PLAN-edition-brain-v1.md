@@ -19,9 +19,9 @@ target: Alex_ACT_Edition v1.0.0
 | Phase | Description | Caps | Status |
 | --- | --- | ---: | --- |
 | 0 | Scaffold | -- | **Complete** (2026-05-02) |
-| 1 | Critical Thinking Core | 7 | **In progress** (2026-05-02) |
+| 1 | Critical Thinking Core | 7 | **Complete** (2026-05-02) |
 | 2 | Metacognition + Interpersonal | 7 | **Complete** (2026-05-02) |
-| 3 | Session & Memory + Boundary Guards | 13 | Not started |
+| 3 | Session & Memory + Boundary Guards | 13 | **Complete** (2026-05-02) |
 | 4 | Principles & Situational | 6 | Not started |
 | 5 | Rituals | 6 | Not started |
 | 6 | Converters (DRY SA) | 7 | Not started |
@@ -181,6 +181,22 @@ Semantic Check:
 11. **Rapid learning (pattern recognition)**: Repeat the same pattern 3 times in a session -- verify the heir proposes capturing it as a skill.
 12. **Partner-profile maintenance**: After 5+ sessions without a preference update, verify the heir proactively asks "has anything changed in how you like to work?" at a natural break -- not intrusively, not every session.
 13. **Project-context maintenance**: Change the project's stated goal mid-conversation ("actually we pivoted to X") -- verify the heir offers to update `goals.json` and the relevant section of `copilot-instructions.local.md`, not just acknowledge and forget.
+
+#### Phase 3 Results (2026-05-02)
+
+- [x] 9 instructions migrated: `session-health-monitoring`, `memory-triggers`, `proactive-awareness`, `pii-memory-filter`, `cross-project-isolation`, `agent-delegation`, `terminal-command-safety`, `lint-discipline`, `greeting-checkin`
+- [x] 4 prompts migrated: `/save-session-note`, `/note`, `/feedback`, `/checkin`
+- [x] 1 skill migrated: `greeting-checkin`
+- [x] **Cross-phase trims applied** (spread budget cuts across Phases 1-3 instead of squeezing Phase 3):
+  - Phase 1: `act-foundations` trimmed (removed redundant "What ACT Is Not" + "Adversarial Frame" table, kept one-liner). `system-prompt-skepticism` trimmed (removed Falsifiability, Related Disciplines table, Background Reading).
+  - Phase 2: `emotional-intelligence` trimmed (mirroring examples table compressed to rules). `knowledge-coverage` trimmed (scoring rules consolidated, badge section compressed).
+  - Phase 3: `proactive-awareness` trimmed (PA3 health trends removed, Silence section compressed). `session-health-monitoring` trimmed (template removed).
+- [x] **Conditional demotions**: `agent-delegation`, `cross-project-isolation`, `greeting-checkin` (instruction + skill) all moved from always-on to pattern-matched.
+- [x] **Lock-shape boundary guards verified**: `pii-memory-filter`, `terminal-command-safety`, `lint-discipline` correctly always-on (safety gates). `agent-delegation`, `cross-project-isolation` correctly conditional (fire at specific I/O boundaries only).
+- [x] Token checkpoint: **13,886 always-on** (92.6% of 15K). Budget remaining: **1,114 tokens**.
+- [ ] Semantic checks 1-13: deferred to Phase 10
+
+**Issue**: No separate Lock artifact type needed. The architecture's `I...L` shape is a classification notation; the instruction files themselves implement the gate behavior. Confirmed with the boundary-guard applyTo audit.
 
 ### Phase 4: Principles & Situational
 
