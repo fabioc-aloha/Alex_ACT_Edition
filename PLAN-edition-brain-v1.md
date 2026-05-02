@@ -20,7 +20,7 @@ target: Alex_ACT_Edition v1.0.0
 | --- | --- | ---: | --- |
 | 0 | Scaffold | -- | **Complete** (2026-05-02) |
 | 1 | Critical Thinking Core | 7 | **In progress** (2026-05-02) |
-| 2 | Metacognition + Interpersonal | 7 | Not started |
+| 2 | Metacognition + Interpersonal | 7 | **Complete** (2026-05-02) |
 | 3 | Session & Memory + Boundary Guards | 13 | Not started |
 | 4 | Principles & Situational | 6 | Not started |
 | 5 | Rituals | 6 | Not started |
@@ -148,6 +148,17 @@ Semantic Check:
 2. Prompt with frustrated language ("this still doesn't work!!") -- verify tone adapts without mirroring the frustration.
 3. Generate a 3-paragraph explanation -- verify no em-dashes, no "delve", no "tapestry", no filler intensifiers.
 4. Ask a question where the user sounds certain but is wrong -- verify the heir challenges rather than agrees.
+
+#### Phase 2 Results (2026-05-02)
+
+- [x] 7 instructions migrated: `epistemic-calibration`, `knowledge-coverage`, `reliance-nudges`, `emotional-intelligence`, `communication-craft`, `ai-writing-avoidance`, `technical-writing`
+- [x] All straight copies (no trimming needed this phase)
+- [x] Token checkpoint: **10,991 always-on** (73.3% of 15K). Budget remaining: **4,009 tokens**.
+- [ ] Semantic checks 1-4: deferred to Phase 10
+
+**Finding**: Budget is tight. Phase 3 baseline (7,167 tokens) exceeds the 4,009 remaining. Phase 3 MUST make several instructions conditional or trim them to fit. Top candidates: `cross-project-isolation` (1,387, make conditional on fleet contexts), `proactive-awareness` (1,277, trim absent-infrastructure sections), `greeting-checkin` (592, make conditional on session start).
+
+**Issue**: `reliance-nudges` (889 tokens) was considered for conditional activation but its behavioral-signal detection (prompt roulette, zero verification) fires across all session types, so always-on is correct. The inhibition rules already suppress in low-stakes work.
 
 ### Phase 3: Session & Memory + Boundary Guards
 
