@@ -118,6 +118,160 @@ if (currentVersion === newVersion) {
 }
 console.log('');
 
+// ── Major-version path: backup + fresh install + recover heir-owned ──
+if (isMajorBump && ALLOW_MAJOR) {
+    console.log('MAJOR VERSION UPGRADE: backup + fresh install + recover heir-owned');
+    console.log('');
+
+    const datestamp = new Date().toISOString().replace(/[-:T]/g, '').slice(0, 8);
+    const backupDir = path.join(HEIR_ROOT, `.github-backup-${datestamp}`);
+
+    if (fs.existsSync(backupDir)) {
+        console.error(`Backup directory already exists: ${backupDir}`);
+        console.error('Remove it or wait until tomorrow to re-run.');
+        process.exit(2);
+    }
+
+    // Collect heir-owned files before rename (from the CURRENT policy, not new)
+    const currentPolicyPath = path.join(HEIR_ROOT, '.github', 'config', 'sync-policy.json');
+    let heirOwnedFiles = [];
+    if (fs.existsSync(currentPolicyPath)) {
+        const currentPolicy = JSON.parse(fs.readFileSync(currentPolicyPath, 'utf8'));
+        for (const pattern of (currentPolicy.heir_owned || [])) {
+            for (const rel of expandGlob(HEIR_ROOT, pattern)) {
+                heirOwnedFiles.push(rel);
+            }
+        }
+    }
+    // Always recover these regardless of policy
+    const alwaysRecover = [
+        '.github/.act-heir.json',
+        '.github/copilot-instructions.local.md',
+        '.github/config/cognitive-config.json',
+        '.github/config/goals.json',
+    ];
+    for (const f of alwaysRecover) {
+        if (fs.existsSync(path.join(HEIR_ROOT, f)) && !heirOwnedFiles.includes(f)) {
+            heirOwnedFiles.push(f);
+        }
+    }
+    // Recover local/ directories
+    const localDirs = [
+        '.github/skills/local', '.github/instructions/local',
+        '.github/muscles/local', '.github/prompts/local',
+        '.github/agents/local',
+    ];
+    for (const ld of localDirs) {
+        const absLd = path.join(HEIR_ROOT, ld);
+        if (fs.existsSync(absLd)) {
+            walkDir(absLd).forEach(f => {
+                const rel = path.relative(HEIR_ROOT, f).replace(/\\/g, '/');
+                if (!heirOwnedFiles.includes(rel)) heirOwnedFiles.push(rel);
+            });
+        }
+    }
+    // Recover episodic/
+    const episodicDir = path.join(HEIR_ROOT, '.github', 'episodic');
+    if (fs.existsSync(episodicDir)) {
+        walkDir(episodicDir).forEach(f => {
+            const rel = path.relative(HEIR_ROOT, f).replace(/\\/g, '/');
+            if (!heirOwnedFiles.includes(rel)) heirOwnedFiles.push(rel);
+        });
+    }
+
+    console.log(`Heir-owned files to recover: ${heirOwnedFiles.length}`);
+    if (heirOwnedFiles.length > 0) {
+        heirOwnedFiles.slice(0, 10).forEach(f => console.log(`  ${f}`));
+        if (heirOwnedFiles.length > 10) console.log(`  ... and ${heirOwnedFiles.length - 10} more`);
+    }
+    console.log('');
+
+    if (!APPLY) {
+        console.log('DRY-RUN (major): would rename .github/ to ' + path.basename(backupDir));
+        console.log('  Then install fresh Edition v' + newVersion);
+        console.log('  Then recover ' + heirOwnedFiles.length + ' heir-owned files from backup');
+        process.exit(0);
+    }
+
+    // Step 1: Copy heir-owned files to temp holding area
+    const holdDir = fs.mkdtempSync(path.join(os.tmpdir(), 'heir-owned-'));
+    for (const rel of heirOwnedFiles) {
+        const src = path.join(HEIR_ROOT, rel);
+        if (!fs.existsSync(src)) continue;
+        const dst = path.join(holdDir, rel);
+        fs.mkdirSync(path.dirname(dst), { recursive: true });
+        fs.copyFileSync(src, dst);
+    }
+
+    // Step 2: Rename .github/ to backup
+    fs.renameSync(path.join(HEIR_ROOT, '.github'), backupDir);
+
+    // Step 3: Copy fresh Edition .github/ from cloned tmp
+    const editionGh = path.join(tmp, '.github');
+    copyDirRecursive(editionGh, path.join(HEIR_ROOT, '.github'));
+
+    // Step 4: Restore heir-owned files from holding area
+    let recovered = 0;
+    for (const rel of heirOwnedFiles) {
+        const src = path.join(holdDir, rel);
+        if (!fs.existsSync(src)) continue;
+        const dst = path.join(HEIR_ROOT, rel);
+        fs.mkdirSync(path.dirname(dst), { recursive: true });
+        fs.copyFileSync(src, dst);
+        recovered++;
+    }
+
+    // Step 5: Update marker
+    const now2 = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
+    marker.edition_version = newVersion;
+    marker.last_sync_at = now2;
+    fs.writeFileSync(markerPath, JSON.stringify(marker, null, 2) + '\n');
+
+    // Cleanup temp
+    try { fs.rmSync(holdDir, { recursive: true, force: true }); } catch {}
+
+    const registryResult2 = upsertHeir(marker, HEIR_ROOT);
+    if (registryResult2.ok) console.log(`Refreshed fleet registry: ${registryResult2.path}`);
+
+    console.log(`Major upgrade complete: ${currentVersion} -> ${newVersion}`);
+    console.log(`Fresh brain installed. ${recovered} heir-owned files recovered.`);
+    console.log(`Backup at: ${path.basename(backupDir)}`);
+    console.log('');
+    console.log('Next steps:');
+    console.log('  git status                    # review changes');
+    console.log('  git add -A && git commit -m "Major upgrade to Edition ' + newVersion + '"');
+    console.log('  # Test, then delete ' + path.basename(backupDir) + '/ when satisfied');
+    process.exit(0);
+}
+
+// ── Helper: walk a directory recursively, return all file paths ──
+function walkDir(dir) {
+    const results = [];
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+        const full = path.join(dir, entry.name);
+        if (entry.isDirectory()) {
+            results.push(...walkDir(full));
+        } else {
+            results.push(full);
+        }
+    }
+    return results;
+}
+
+// ── Helper: copy a directory recursively ──
+function copyDirRecursive(src, dest) {
+    fs.mkdirSync(dest, { recursive: true });
+    for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+        const s = path.join(src, entry.name);
+        const d = path.join(dest, entry.name);
+        if (entry.isDirectory()) {
+            copyDirRecursive(s, d);
+        } else {
+            fs.copyFileSync(s, d);
+        }
+    }
+}
+
 function expandGlob(root, pattern) {
     const literal = pattern.replace(/\\/g, '/');
     if (!literal.includes('*')) {
@@ -211,12 +365,33 @@ console.log(`Files unchanged:       ${changes.same.length}`);
 console.log(`Heir-owned (skipped):  ${changes.skipped_heir_owned.length}`);
 console.log('');
 
+// ── Deprecated file cleanup (v1.0+ incremental) ──
+// Find files in heir's .github/ that are edition-owned paths but NOT in the
+// new Edition. These are deprecated artifacts from a prior version.
+const heirEditionFiles = new Set();
+for (const pattern of policy.edition_owned) {
+    for (const rel of expandGlob(HEIR_ROOT, pattern)) heirEditionFiles.add(rel);
+}
+const deprecated = [];
+for (const rel of heirEditionFiles) {
+    if (heirOwnedSet.has(rel)) continue; // heir owns it, don't touch
+    if (editionFiles.has(rel)) continue; // still in Edition, keep it
+    deprecated.push(rel);
+}
+
+if (deprecated.length > 0) {
+    console.log(`Deprecated files (in heir but not in Edition): ${deprecated.length}`);
+    deprecated.slice(0, 15).forEach(f => console.log(`  - ${f}`));
+    if (deprecated.length > 15) console.log(`  ... and ${deprecated.length - 15} more`);
+    console.log('');
+}
+
 if (changes.add.length || changes.update.length) {
     console.log('Changes:');
-    [...changes.add.map((f) => `  + ${f}`), ...changes.update.map((f) => `  ~ ${f}`)]
+    [...changes.add.map((f) => `  + ${f}`), ...changes.update.map((f) => `  ~ ${f}`), ...deprecated.map((f) => `  - ${f}`)]
         .slice(0, 30)
         .forEach((line) => console.log(line));
-    const total = changes.add.length + changes.update.length;
+    const total = changes.add.length + changes.update.length + deprecated.length;
     if (total > 30) console.log(`  ... and ${total - 30} more`);
     console.log('');
 }
@@ -235,6 +410,16 @@ for (const rel of [...changes.add, ...changes.update]) {
     written += 1;
 }
 
+// Remove deprecated files
+let removed = 0;
+for (const rel of deprecated) {
+    const target = path.join(HEIR_ROOT, rel);
+    if (fs.existsSync(target)) {
+        fs.unlinkSync(target);
+        removed++;
+    }
+}
+
 const now = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
 marker.edition_version = newVersion;
 marker.last_sync_at = now;
@@ -246,7 +431,7 @@ if (registryResult.ok) {
     console.log(`Refreshed fleet registry: ${registryResult.path}`);
 }
 
-console.log(`Wrote ${written} files. Marker bumped to ${newVersion} @ ${now}.`);
+console.log(`Wrote ${written} files. Removed ${removed} deprecated files. Marker bumped to ${newVersion} @ ${now}.`);
 console.log('');
 console.log('Next steps:');
 console.log('  git status                    # review changes');
