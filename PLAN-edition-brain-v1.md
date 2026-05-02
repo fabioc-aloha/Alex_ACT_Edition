@@ -23,7 +23,7 @@ target: Alex_ACT_Edition v1.0.0
 | 2 | Metacognition + Interpersonal | 7 | **Complete** (2026-05-02) |
 | 3 | Session & Memory + Boundary Guards | 13 | **Complete** (2026-05-02) |
 | 4 | Principles & Situational | 6 | **Complete** (2026-05-02) |
-| 5 | Rituals | 6 | Not started |
+| 5 | Rituals | 6 | **Complete** (2026-05-02) |
 | 6 | Converters (DRY SA) | 7 | Not started |
 | 7 | Formatting & Authoring (SAs) | 7 | Not started |
 | 8 | Infrastructure & Fleet | 6 | Not started |
@@ -229,6 +229,15 @@ Semantic Check:
 3. Run `/initialize` on a blank repo -- verify it produces a working heir with correct `.act-heir.json` and the full brain.
 4. Run `/feedback` -- verify cross-project-isolation strips project specifics before writing.
 5. **Growth (meditation)**: After an extended work session, trigger meditation -- verify it produces a useful consolidation entry (not boilerplate), extracts a genuine pattern, and writes to episodic memory with rationale.
+
+#### Phase 5 Results (2026-05-02)
+
+- [x] `meditation` migrated (instruction + skill + prompt)
+- [x] 4 prompts migrated: `/initialize`, `/welcome`, `/finalize-migration`, `/upgrade`
+- [x] `greeting-checkin` already migrated in Phase 3 (no duplication)
+- [x] All conditional or on-demand. Always-on unchanged at **13,886**.
+- [x] Cumulative: 30 instructions, 4 skills, 11 prompts
+- [ ] Semantic checks 1-5: deferred to Phase 10
 
 ### Phase 6: Converters
 
