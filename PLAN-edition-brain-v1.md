@@ -322,8 +322,8 @@ Run quality and coherence checks on the new brain:
 
 - Run `brain-qa` -- must exit 0.
 - Run `epistemic-integrity-audit` -- score must be >= 70.
-- Run `coherence-check` against Skill Mall -- zero hard violations.
-- Verify artifact count matches the plan: 59 capabilities, about 65 artifact files post-DRY.
+- Run `coherence-check` against Plugin Mall -- zero hard violations.
+- Verify artifact count matches the plan: 59 capabilities across ~73 context-loaded files.
 - Fix any findings.
 
 Semantic Check:
@@ -558,7 +558,7 @@ Consolidate from 35 categories to 16. Every category has 7+ plugins. Tiny catego
 | **Batch conversion** | Script to wrap each existing SKILL.md in a plugin folder with generated README + plugin.json | High |
 | **CATALOG.json v2** | Update catalog schema to reference plugins instead of skills; add shape, requires_edition fields | High |
 | **Install script update** | Update `/mall install` to read plugin.json and copy the full bundle to `local/` paths | High |
-| **Repo rename** | `Alex_Skill_Mall` to `Alex_ACT_Plugin_Mall` (GitHub redirect handles old URLs) | Medium |
+| **Repo rename** | `Alex_Skill_Mall` to `Alex_ACT_Plugin_Mall` (GitHub redirect handles old URLs). Local folder already renamed. 20+ `Alex_Skill_Mall` references in Edition brain files (`mall-installation`, `find-skill`, `banner`, `EXTERNAL-API-REGISTRY`) need updating after GitHub rename. | Medium |
 | **Broken-ref sweep** | Same as original 6b: update refs to deleted Edition instructions | Medium |
 
 ### Sequencing
