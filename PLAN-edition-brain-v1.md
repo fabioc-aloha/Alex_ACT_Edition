@@ -25,8 +25,8 @@ target: Alex_ACT_Edition v1.0.0
 | 4 | Principles & Situational | 6 | **Complete** (2026-05-02) |
 | 5 | Rituals | 6 | **Complete** (2026-05-02) |
 | 6 | Converters (DRY SA) | 7 | **Complete** (2026-05-02) |
-| 7 | Formatting & Authoring (SAs) | 7 | Not started |
-| 8 | Infrastructure & Fleet | 6 | Not started |
+| 7 | Formatting & Authoring (SAs) | 7 | **Complete** (2026-05-02) |
+| 8 | Infrastructure & Fleet | 6 | **Complete** (2026-05-02) |
 | 9 | Audit | -- | Not started |
 | 9b | Capability Gap Analysis | -- | Not started |
 | 10 | Heir Testing | -- | Not started |
@@ -281,6 +281,16 @@ Semantic Check:
 4. Test `document-assembler` with a draft containing 3 placeholders -- verify all 3 are rendered and stitched without duplication or ordering errors.
 5. Verify the parent never does mechanical authoring directly when an SA is available (delegation instruction holds).
 
+#### Phase 7 Results (2026-05-02)
+
+- [x] 3 worker SAs migrated: `markdown-author`, `illustrator`, `document-assembler`
+- [x] 6 skills migrated: `markdown-mermaid`, `alex-banner-generation`, `creative-writing`, `academic-paper-drafting`, `lint-clean-markdown`, `markdown-sanitization-chain`
+- [x] 1 instruction migrated: `markdown-mermaid` (conditional on `**/*.md`)
+- [x] 3 prompts migrated: `/banner`, `/format-markdown`, `/lint-markdown`
+- [x] 1 muscle: `generate-banner.cjs`
+- [x] All conditional/on-demand. Always-on unchanged at **13,886**.
+- [ ] Semantic checks 1-5: deferred to Phase 10
+
 ### Phase 8: Infrastructure & Fleet
 
 Migrate Group 10 (6 capabilities).
@@ -291,6 +301,17 @@ Semantic Check:
 2. Run `heir-doctor` on a deliberately broken heir (missing marker, stale brain) -- verify it diagnoses the specific problem and suggests the fix.
 3. Run `/status` -- verify it produces a stakeholder-appropriate summary (not raw git output).
 4. Verify `upgrade-self.cjs` refuses a major bump without `--allow-major` and explains why.
+
+#### Phase 8 Results (2026-05-02)
+
+- [x] 1 instruction migrated: `mall-installation` (absorbs `plugin-store-routing` per D-IF decision; -1 artifact)
+- [x] 5 prompts migrated: `/audit-apis`, `/fleet`, `/status`, `/find-skill`, `/install-from-mall`
+- [x] 2 muscles migrated: `audit-api-drift.cjs`, `heir-doctor.cjs`
+- [x] Scripts migrated: `bootstrap-heir.cjs`, `upgrade-self.cjs`, `build-edition-manifest.cjs`, `_registry.cjs`
+- [x] Config migrated: 7 config files + VERSION + EXTERNAL-API-REGISTRY.md
+- [x] `plugin-store-routing` not migrated (absorbed into `mall-installation`)
+- [x] All conditional/on-demand. Always-on unchanged at **13,886**.
+- [ ] Semantic checks 1-4: deferred to Phase 10
 
 ### Phase 9: Audit
 
