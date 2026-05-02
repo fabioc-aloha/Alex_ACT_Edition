@@ -498,7 +498,7 @@ if (deprecated.length > 0) {
     console.log('');
 }
 
-if (changes.add.length || changes.update.length) {
+if (changes.add.length || changes.update.length || deprecated.length) {
     console.log('Changes:');
     [...changes.add.map((f) => `  + ${f}`), ...changes.update.map((f) => `  ~ ${f}`), ...deprecated.map((f) => `  - ${f}`)]
         .slice(0, 30)
