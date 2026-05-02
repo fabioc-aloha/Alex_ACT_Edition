@@ -423,6 +423,18 @@ Acknowledge the milestone, write a retrospective, and update the Supervisor flee
 
 The v1 refactor changes what "coherent with Edition" means. The Skill Mall becomes the **Alex ACT Plugin Mall**: the unit of distribution shifts from a bare SKILL.md to a self-describing plugin bundle.
 
+### Design Principles
+
+| # | Principle | Rationale |
+| --- | --- | --- |
+| P1 | **Shape is the contract** -- every plugin declares its shape (`I...`, `.S.M`, `ISP.`, etc.) and that shape is visible in the catalog before install | Heirs need to know what they're getting. A `.S..` is a knowledge file; an `ISPM` is a full stack with executable code. Shape sets expectations for complexity, token cost, and maintenance surface. |
+| P2 | **Self-describing over convention-dependent** -- each plugin carries a README (human), plugin.json (machine), and the artifacts themselves. No external documentation required to understand or install it | A heir should be able to read the README and decide in 30 seconds. The install script should be able to read plugin.json and act without heuristics. |
+| P3 | **Install into `local/`, never into edition-owned paths** -- plugins install to `.github/skills/local/`, `.github/instructions/local/`, etc. Edition upgrades never touch `local/` | This is the survival guarantee. A heir can upgrade Edition without losing Mall-installed plugins. The boundary is enforced by `sync-policy.json`. |
+| P4 | **Declare dependencies, don't assume them** -- `requires_edition` states the minimum Edition version. `requires_plugins` lists other plugins that must be installed first. No silent assumptions | A plugin that needs `converter.instructions.md` must declare `"requires_edition": ">=1.0.0"`. A plugin that extends another plugin must declare the dependency. The install script validates before copying. |
+| P5 | **Token cost is the plugin's responsibility** -- every plugin.json should declare its approximate token cost so heirs can budget their context window | The Edition brain targets 15K always-on. Every installed plugin adds to that. A heir running 10 Mall plugins with no cost awareness will blow the budget. Transparency is the fix, not restriction. |
+| P6 | **One plugin, one capability** -- a plugin does one thing. If it does two things, it's two plugins. Bundles of related plugins are categories, not mega-plugins | Composability over completeness. A heir who needs `md-to-word` shouldn't have to install all 6 converters. Categories group related plugins for discovery; install granularity stays at the individual plugin level. |
+| P7 | **README is the storefront** -- the README sells the plugin to a human. It answers: what problem does this solve, when would I use it, what does it install, what Edition version do I need | The catalog provides search and filtering. The README provides the buy decision. Without a README, a plugin is a file dump with a frontmatter block. |
+
 ### Naming
 
 - **Repo rename**: `Alex_Skill_Mall` becomes `Alex_ACT_Plugin_Mall`
