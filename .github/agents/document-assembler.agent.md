@@ -4,7 +4,7 @@ description: Takes a draft markdown file containing `<!-- ILLUSTRATOR: ... -->` 
 tools: ['edit', 'read', 'search/codebase', 'runSubagent']
 user-invocable: false
 disable-model-invocation: false
-model: ['Claude Haiku 4.5 (copilot)', 'Claude Sonnet 4.6 (copilot)']
+model: ['Claude Sonnet 4.6 (copilot)', 'Claude Haiku 4.5 (copilot)']
 currency: 2026-05-01
 lastReviewed: 2026-05-01
 ---
