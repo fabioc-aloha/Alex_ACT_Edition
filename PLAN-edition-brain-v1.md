@@ -19,7 +19,7 @@ target: Alex_ACT_Edition v1.0.0
 | Phase | Description | Caps | Status |
 | --- | --- | ---: | --- |
 | 0 | Scaffold | -- | **Complete** (2026-05-02) |
-| 1 | Critical Thinking Core | 7 | Not started |
+| 1 | Critical Thinking Core | 7 | **In progress** (2026-05-02) |
 | 2 | Metacognition + Interpersonal | 7 | Not started |
 | 3 | Session & Memory + Boundary Guards | 13 | Not started |
 | 4 | Principles & Situational | 6 | Not started |
@@ -120,6 +120,23 @@ Semantic Check:
 6. **Failure-mode coverage**: For each failure mode in `ACT/CRITICAL-THINKING-FAILURE-MODES.md`, verify there is at least one semantic check (in any phase) that would catch it if the brain regressed.
 7. **Claims-registry coherence**: Walk `ACT/CLAIMS-REGISTRY.md` -- verify every claim marked "implemented" has a matching artifact in `.github/`, and every artifact's `description` is consistent with the claim's stated scope.
 8. **Cheat-sheet fidelity**: Compare `ACT/ACT-CHEAT-SHEET.md` marker definitions against the markers produced by `act-pass.instructions.md` and `critical-thinking.instructions.md` -- any drift means one side is stale.
+
+#### Phase 1 Results (2026-05-02)
+
+- [x] 7 instructions migrated to `.github/instructions/`
+- [x] 2 skills migrated: `critical-thinking`, `problem-framing-audit`
+- [x] 2 prompts migrated: `critical-thinking.prompt.md`, `problem-framing-audit.prompt.md`
+- [x] `alternatives-and-tradeoffs` changed from always-on (`**`) to conditional (`**/*option*,**/*alternative*,...`)
+- [x] Token checkpoint: **5,934 always-on** (39.6% of 15K target). Budget: 9,066 remaining.
+- [ ] Semantic checks 1-8: deferred to Phase 10 (require heir session)
+
+**Findings**:
+
+- Saved ~700 tokens by making alternatives-and-tradeoffs conditional. The Two-Hypothesis Floor rule in critical-thinking.instructions.md already covers the always-on need; the detailed SCAMPER/MECE/Decision Matrix frameworks fire only when the user is actually comparing options.
+- All cross-references between instructions and skills verified intact.
+- Scaffold used copy+delete instead of rename due to VS Code file locks on `.github/`.
+
+**Issue**: `brain-qa` muscle not yet migrated (depends on Phase 9 infrastructure). Mechanical gate deferred.
 
 ### Phase 2: Metacognition + Interpersonal
 
