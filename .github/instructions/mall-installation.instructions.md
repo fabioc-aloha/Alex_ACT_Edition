@@ -25,7 +25,12 @@ Each plugin in the Mall is a self-contained folder under `plugins/<category>/<na
 | `*.prompt.md` | Optional prompt artifact |
 | `*.cjs` | Optional muscle (executable code) |
 
-Read `plugin.json` to understand what you're installing. The `shape` field tells you the complexity:
+Read `plugin.json` to understand what you're installing:
+
+- `shape` tells you the complexity (`.S..` = 1 file, `ISP.` = 3 files)
+- `engines` tells you which AI hosts support the plugin (`["copilot"]`, `["copilot", "claude"]`)
+- `token_cost` tells you the approximate context-window impact
+- `requires_edition` tells you the minimum Edition version
 
 | Shape | What it includes |
 | --- | --- |
