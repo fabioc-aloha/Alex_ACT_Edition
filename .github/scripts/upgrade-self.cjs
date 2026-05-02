@@ -179,6 +179,104 @@ if (isMajorBump && ALLOW_MAJOR) {
         });
     }
 
+    // ── Detect heir-added artifacts outside local/ (pre-v1.0 pattern) ──
+    // These are skills/instructions/prompts/muscles the heir added directly
+    // into edition-owned paths. In v1.0+ they must live in local/.
+    // We detect them by diffing the heir's files against the Edition manifest.
+    const editionManifestPath = path.join(tmp, '.github', 'config', 'edition-manifest.json');
+    let editionSkills = new Set();
+    let editionPrompts = new Set();
+    let editionAgents = new Set();
+    if (fs.existsSync(editionManifestPath)) {
+        const manifest = JSON.parse(fs.readFileSync(editionManifestPath, 'utf8'));
+        (manifest.skills || []).forEach(s => editionSkills.add(s));
+        (manifest.prompts || []).forEach(p => editionPrompts.add(p));
+        (manifest.agents || []).forEach(a => editionAgents.add(a));
+    }
+
+    // Relocations: { from: original relative path, to: new local/ relative path }
+    const relocations = [];
+
+    // Check skills: heir has skill folders that Edition doesn't ship
+    const heirSkillsDir = path.join(HEIR_ROOT, '.github', 'skills');
+    if (fs.existsSync(heirSkillsDir)) {
+        for (const entry of fs.readdirSync(heirSkillsDir, { withFileTypes: true })) {
+            if (!entry.isDirectory()) continue;
+            if (entry.name === 'local') continue; // already handled
+            if (editionSkills.has(entry.name)) continue; // Edition ships this
+            // This is a heir-added skill outside local/ -- relocate
+            const srcDir = path.join(heirSkillsDir, entry.name);
+            for (const f of walkDir(srcDir)) {
+                const rel = path.relative(HEIR_ROOT, f).replace(/\\/g, '/');
+                const newRel = rel.replace('.github/skills/', '.github/skills/local/');
+                relocations.push({ from: rel, to: newRel });
+            }
+        }
+    }
+
+    // Check instructions: heir has instruction files that Edition doesn't ship
+    const editionInstrDir = path.join(tmp, '.github', 'instructions');
+    const editionInstructions = new Set();
+    if (fs.existsSync(editionInstrDir)) {
+        fs.readdirSync(editionInstrDir).forEach(f => editionInstructions.add(f));
+    }
+    const heirInstrDir = path.join(HEIR_ROOT, '.github', 'instructions');
+    if (fs.existsSync(heirInstrDir)) {
+        for (const entry of fs.readdirSync(heirInstrDir, { withFileTypes: true })) {
+            if (entry.name === 'local') continue;
+            if (!entry.isFile()) continue;
+            if (editionInstructions.has(entry.name)) continue;
+            const rel = `.github/instructions/${entry.name}`;
+            const newRel = `.github/instructions/local/${entry.name}`;
+            relocations.push({ from: rel, to: newRel });
+        }
+    }
+
+    // Check prompts: heir has prompt files that Edition doesn't ship
+    const heirPromptsDir = path.join(HEIR_ROOT, '.github', 'prompts');
+    if (fs.existsSync(heirPromptsDir)) {
+        for (const entry of fs.readdirSync(heirPromptsDir, { withFileTypes: true })) {
+            if (entry.name === 'local') continue;
+            if (!entry.isFile()) continue;
+            if (editionPrompts.has(entry.name)) continue;
+            const rel = `.github/prompts/${entry.name}`;
+            const newRel = `.github/prompts/local/${entry.name}`;
+            relocations.push({ from: rel, to: newRel });
+        }
+    }
+
+    // Check muscles: heir has muscle files that Edition doesn't ship
+    const editionMuscleDir = path.join(tmp, '.github', 'muscles');
+    const editionMuscles = new Set();
+    if (fs.existsSync(editionMuscleDir)) {
+        for (const f of walkDir(editionMuscleDir)) {
+            editionMuscles.add(path.relative(path.join(tmp, '.github', 'muscles'), f).replace(/\\/g, '/'));
+        }
+    }
+    const heirMuscleDir = path.join(HEIR_ROOT, '.github', 'muscles');
+    if (fs.existsSync(heirMuscleDir)) {
+        for (const entry of fs.readdirSync(heirMuscleDir, { withFileTypes: true })) {
+            if (entry.name === 'local' || entry.name === 'shared' || entry.name === 'lua-filters') continue;
+            if (!entry.isFile()) continue;
+            if (editionMuscles.has(entry.name)) continue;
+            const rel = `.github/muscles/${entry.name}`;
+            const newRel = `.github/muscles/local/${entry.name}`;
+            relocations.push({ from: rel, to: newRel });
+        }
+    }
+
+    if (relocations.length > 0) {
+        console.log(`Heir-added artifacts to relocate to local/: ${relocations.length}`);
+        relocations.slice(0, 10).forEach(r => console.log(`  ${r.from} -> ${r.to}`));
+        if (relocations.length > 10) console.log(`  ... and ${relocations.length - 10} more`);
+        console.log('');
+
+        // Add relocations to heir-owned recovery (with new paths)
+        for (const r of relocations) {
+            heirOwnedFiles.push(r.from); // so it gets copied to hold dir
+        }
+    }
+
     console.log(`Heir-owned files to recover: ${heirOwnedFiles.length}`);
     if (heirOwnedFiles.length > 0) {
         heirOwnedFiles.slice(0, 10).forEach(f => console.log(`  ${f}`));
@@ -190,6 +288,9 @@ if (isMajorBump && ALLOW_MAJOR) {
         console.log('DRY-RUN (major): would rename .github/ to ' + path.basename(backupDir));
         console.log('  Then install fresh Edition v' + newVersion);
         console.log('  Then recover ' + heirOwnedFiles.length + ' heir-owned files from backup');
+        if (relocations.length > 0) {
+            console.log('  Then relocate ' + relocations.length + ' heir-added artifacts to local/');
+        }
         process.exit(0);
     }
 
@@ -211,13 +312,24 @@ if (isMajorBump && ALLOW_MAJOR) {
     copyDirRecursive(editionGh, path.join(HEIR_ROOT, '.github'));
 
     // Step 4: Restore heir-owned files from holding area
+    // For relocations, copy to the NEW path (local/), not the original
+    const relocationMap = new Map();
+    for (const r of relocations) {
+        relocationMap.set(r.from, r.to);
+    }
+
     let recovered = 0;
+    let relocated = 0;
     for (const rel of heirOwnedFiles) {
         const src = path.join(holdDir, rel);
         if (!fs.existsSync(src)) continue;
-        const dst = path.join(HEIR_ROOT, rel);
+        const targetRel = relocationMap.has(rel) ? relocationMap.get(rel) : rel;
+        const dst = path.join(HEIR_ROOT, targetRel);
         fs.mkdirSync(path.dirname(dst), { recursive: true });
         fs.copyFileSync(src, dst);
+        if (relocationMap.has(rel)) {
+            relocated++;
+        }
         recovered++;
     }
 
@@ -234,7 +346,7 @@ if (isMajorBump && ALLOW_MAJOR) {
     if (registryResult2.ok) console.log(`Refreshed fleet registry: ${registryResult2.path}`);
 
     console.log(`Major upgrade complete: ${currentVersion} -> ${newVersion}`);
-    console.log(`Fresh brain installed. ${recovered} heir-owned files recovered.`);
+    console.log(`Fresh brain installed. ${recovered} heir-owned files recovered. ${relocated} relocated to local/.`);
     console.log(`Backup at: ${path.basename(backupDir)}`);
     console.log('');
     console.log('Next steps:');
