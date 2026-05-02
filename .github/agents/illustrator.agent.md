@@ -45,8 +45,19 @@ Return ONLY the diagram block. For mermaid, that's a fenced ` ```mermaid ... ```
 
 If the brief is unclear (e.g., "a diagram of the system" with no detail), return a one-sentence question instead of guessing what to draw.
 
+## If you cannot complete the task
+
+If the diagram cannot be rendered (too complex for mermaid syntax, ambiguous topology, missing critical information), return exactly:
+
+```text
+CANNOT_RENDER: <one-sentence reason>
+```
+
+Do not produce a partial or incorrect diagram. The parent will either re-brief you with more detail, simplify the request, or fall back to a different representation.
+
 ## Failure modes to avoid
 
+- **Never use emoji in node labels or edge labels.** Labels must read cleanly as plain text. Use descriptive words, not pictograms. Emoji in diagram nodes breaks accessibility (screen readers read the Unicode name) and looks unprofessional on printed/exported output.
 - **Never ship a mermaid diagram without the init directive.** The MANDATORY template in `markdown-mermaid` is non-negotiable.
 - **Never use `edgeLabelBackground: 'transparent'`.** Always `'#ffffff'`. Transparent labels become unreadable when arrows cross colored nodes.
 - **Never use em-dashes (`—`) in node labels or edge labels.** Use commas or `<br/>` line breaks.

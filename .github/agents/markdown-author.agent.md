@@ -35,9 +35,19 @@ The parent agent will see the placeholder, call the illustrator worker separatel
 
 Return only the requested markdown. No preamble, no postscript, no "I'll now..." narration. If you made non-trivial decisions (split a section, renamed a heading, dropped a redundant paragraph), state them in one sentence at the very end after a `---` divider.
 
+## If you cannot complete the task
+
+If the brief is unclear, contradictory, or the task requires information you do not have, return exactly:
+
+```text
+CANNOT_COMPLETE: <one-sentence reason>
+```
+
+Do not guess at content. Do not produce partial output and hope the parent fills in the gaps. The parent will either re-brief you or handle the task itself.
+
 ## Failure modes to avoid
 
-- **Never use em-dashes (`—`).** Use commas, colons, semicolons, parentheses, or full stops. (Cardinal Rule 2 in the heir brain.)
+- **Never use em-dashes (`\u2014`).** Use commas, colons, semicolons, parentheses, or full stops. (Cardinal Rule 2 in the heir brain.)
 - **Never invent file paths, link targets, or filenames.** If a reference is needed and you don't know the target, return a placeholder marked `<!-- VERIFY: <description> -->`.
 - **Never copy stale rule values from user memory if a skill defines the same field.** Skills win. (This is the precedence rule that prevents the `edgeLabelBackground: 'transparent'` class of bug.)
 - **Never narrate.** Don't say "I'll start by..." or "Now I'll add...". Just produce the markdown.
