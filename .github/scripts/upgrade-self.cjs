@@ -573,6 +573,7 @@ for (const rel of deprecated) {
 
 // Relocate heir-added artifacts to local/
 let relocated = 0;
+const relocatedDirs = new Set();
 for (const r of relocations) {
     const src = path.join(HEIR_ROOT, r.from);
     const dst = path.join(HEIR_ROOT, r.to);
@@ -580,8 +581,18 @@ for (const r of relocations) {
         fs.mkdirSync(path.dirname(dst), { recursive: true });
         fs.copyFileSync(src, dst);
         fs.unlinkSync(src);
+        // Track source directories for cleanup
+        relocatedDirs.add(path.dirname(src));
         relocated++;
     }
+}
+// Clean up empty source directories from relocations
+for (const dir of relocatedDirs) {
+    try {
+        if (fs.existsSync(dir) && fs.readdirSync(dir).length === 0) {
+            fs.rmdirSync(dir);
+        }
+    } catch { /* best-effort */ }
 }
 
 const now = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
