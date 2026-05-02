@@ -365,16 +365,46 @@ Exit criterion: All 59 capabilities have a verified artifact. Any gaps found are
 
 ### Phase 10: Heir Testing
 
-Deploy to 2-3 real heir projects for 2 weeks. Collect feedback via AI-Memory and fix regressions.
+Deploy to 3 real heir projects for 2 weeks. Collect feedback via AI-Memory and fix regressions.
 
-**Heir selection constraint**: Choose at least one heir from each of the three project types named in Success Criteria (code-heavy, docs-heavy, infra-heavy). If fewer than 3 heirs are available, prioritize code-heavy + one other -- code is the highest-traffic use case.
+**Heir selection constraint**: One from each project type: code-heavy, docs-heavy, infra-heavy.
 
-Semantic Check:
+#### Edition Brain Checks
 
 1. Each heir must complete at least one real work session (not just activate) -- verify the brain supports actual project work, not just self-referential brain tasks.
 2. Compare heir output quality (code, docs, decisions) against the Phase 0 baseline responses and v0.9.9 behavior -- look for regressions in reasoning depth, not just functional breakage.
-3. Check that heirs on different project types (code-heavy, docs-heavy, infrastructure) all perform adequately -- the refactor must not over-optimize for one workflow.
+3. Check that heirs on different project types all perform adequately -- the refactor must not over-optimize for one workflow.
 4. Any feedback item rated "critical" blocks the release until resolved.
+5. Verify the 5 conditionally-demoted instructions (`alternatives-and-tradeoffs`, `agent-delegation`, `partnership-charter`, `worldview`, `creative-loop`) fire when their context arises -- not just when filenames match.
+
+#### Plugin Mall Integration Checks
+
+Each test heir must also exercise the Plugin Mall v2 integration:
+
+1. **Search**: Run `/mall search <domain keyword>` relevant to the project (e.g., `azure`, `testing`, `mermaid`). Verify results show shape, tier, token_cost, and engines per plugin.
+2. **Evaluate**: Before installing, read the plugin's README from the results. Verify the README answers: what it does, what it installs, what Edition version it needs.
+3. **Install**: Run `/mall install <name>` for at least one plugin relevant to the project. Verify:
+   - `plugin.json` is read and install paths are correct (`local/` directories)
+   - Artifacts land in `.github/skills/local/<name>/` (and matching `local/` dirs for instructions/muscles)
+   - Token cost is reported before confirmation
+   - Plugin functions correctly after install (the SKILL.md fires when its `applyTo` pattern matches)
+4. **Upgrade survival**: Run `node .github/scripts/upgrade-self.cjs` (dry-run). Verify installed plugins are NOT listed in "would delete" -- `local/` paths must be preserved.
+5. **Catalog accuracy**: Verify CATALOG.json `engines` field matches the heir's AI host. If the heir uses Copilot, plugins marked `["copilot"]` should work; plugins marked `["claude"]` only should warn on install.
+
+#### Per-Heir Test Matrix
+
+| Heir | Type | Edition brain tasks | Mall tasks |
+| --- | --- | --- | --- |
+| Heir 1 | Code-heavy | ACT pass on architecture decision, debugging hypothesis, scope management | `/mall search` for relevant code-quality or security plugins; install one; verify it fires |
+| Heir 2 | Docs-heavy | Converter SA (`/convert` to Word), markdown authoring delegation, meditation | `/mall search` for documentation or publishing plugins; install one; verify it fires |
+| Heir 3 | Infra-heavy | Terminal safety with backticks, Azure deployment prompts, PII filter on memory writes | `/mall search` for cloud-infrastructure or devops plugins; install one; verify it fires |
+
+#### Exit Criteria
+
+- All 3 heirs complete at least one real work session (checks 1-4)
+- All 3 heirs complete the Mall integration sequence (checks 6-10)
+- 0 critical feedback items unresolved
+- Installed plugins survive a dry-run upgrade (check 9)
 
 ### Phase 11: Release v1.0.0
 
