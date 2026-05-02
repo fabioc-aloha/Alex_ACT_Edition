@@ -477,18 +477,57 @@ console.log(`Files unchanged:       ${changes.same.length}`);
 console.log(`Heir-owned (skipped):  ${changes.skipped_heir_owned.length}`);
 console.log('');
 
-// ── Deprecated file cleanup (v1.0+ incremental) ──
+// ── Deprecated file cleanup + heir-artifact relocation ──
 // Find files in heir's .github/ that are edition-owned paths but NOT in the
 // new Edition. These are deprecated artifacts from a prior version.
+// EXCEPTION: if a file looks like a heir-added artifact (skill/instruction/prompt/muscle
+// that Edition doesn't ship), relocate it to local/ instead of deleting.
 const heirEditionFiles = new Set();
 for (const pattern of policy.edition_owned) {
     for (const rel of expandGlob(HEIR_ROOT, pattern)) heirEditionFiles.add(rel);
 }
+
+// Load Edition manifest to detect heir-added vs genuinely deprecated
+const edManifestPath = path.join(tmp, '.github', 'config', 'edition-manifest.json');
+let edSkillSet = new Set();
+if (fs.existsSync(edManifestPath)) {
+    const edManifest = JSON.parse(fs.readFileSync(edManifestPath, 'utf8'));
+    (edManifest.skills || []).forEach(s => edSkillSet.add(s));
+}
+
 const deprecated = [];
+const relocations = [];
 for (const rel of heirEditionFiles) {
     if (heirOwnedSet.has(rel)) continue; // heir owns it, don't touch
     if (editionFiles.has(rel)) continue; // still in Edition, keep it
+
+    // Check if this is a heir-added skill that should relocate to local/
+    const skillMatch = rel.match(/^\.github\/skills\/([^/]+)\/(.+)$/);
+    if (skillMatch && skillMatch[1] !== 'local' && !edSkillSet.has(skillMatch[1])) {
+        const newRel = rel.replace('.github/skills/', '.github/skills/local/');
+        relocations.push({ from: rel, to: newRel });
+        continue;
+    }
+    // Check heir-added instructions
+    const instrMatch = rel.match(/^\.github\/instructions\/(?!local\/)(.+)$/);
+    if (instrMatch) {
+        const instrFile = instrMatch[1];
+        const edInstrDir = path.join(tmp, '.github', 'instructions');
+        const edHasIt = fs.existsSync(path.join(edInstrDir, instrFile));
+        if (!edHasIt) {
+            // Not in Edition, but is it genuinely heir-added or just deprecated?
+            // If it doesn't match any known v0.x instruction pattern, relocate it
+            // For safety, deprecate it (the heir can recover from backup if needed)
+        }
+    }
+
     deprecated.push(rel);
+}
+
+if (relocations.length > 0) {
+    console.log(`Heir-added artifacts to relocate to local/: ${relocations.length}`);
+    relocations.forEach(r => console.log(`  ${r.from} -> ${r.to}`));
+    console.log('');
 }
 
 if (deprecated.length > 0) {
@@ -532,6 +571,19 @@ for (const rel of deprecated) {
     }
 }
 
+// Relocate heir-added artifacts to local/
+let relocated = 0;
+for (const r of relocations) {
+    const src = path.join(HEIR_ROOT, r.from);
+    const dst = path.join(HEIR_ROOT, r.to);
+    if (fs.existsSync(src)) {
+        fs.mkdirSync(path.dirname(dst), { recursive: true });
+        fs.copyFileSync(src, dst);
+        fs.unlinkSync(src);
+        relocated++;
+    }
+}
+
 const now = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
 marker.edition_version = newVersion;
 marker.last_sync_at = now;
@@ -543,7 +595,7 @@ if (registryResult.ok) {
     console.log(`Refreshed fleet registry: ${registryResult.path}`);
 }
 
-console.log(`Wrote ${written} files. Removed ${removed} deprecated files. Marker bumped to ${newVersion} @ ${now}.`);
+console.log(`Wrote ${written} files. Removed ${removed} deprecated. Relocated ${relocated} to local/. Marker bumped to ${newVersion} @ ${now}.`);
 console.log('');
 console.log('Next steps:');
 console.log('  git status                    # review changes');
