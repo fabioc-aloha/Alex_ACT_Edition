@@ -24,7 +24,7 @@ target: Alex_ACT_Edition v1.0.0
 | 3 | Session & Memory + Boundary Guards | 13 | **Complete** (2026-05-02) |
 | 4 | Principles & Situational | 6 | **Complete** (2026-05-02) |
 | 5 | Rituals | 6 | **Complete** (2026-05-02) |
-| 6 | Converters (DRY SA) | 7 | Not started |
+| 6 | Converters (DRY SA) | 7 | **Complete** (2026-05-02) |
 | 7 | Formatting & Authoring (SAs) | 7 | Not started |
 | 8 | Infrastructure & Fleet | 6 | Not started |
 | 9 | Audit | -- | Not started |
@@ -257,6 +257,17 @@ Semantic Check:
 3. Convert a .docx back to markdown -- verify structure is preserved (headings, lists, tables).
 4. Run converter-qa on each output -- verify it catches real quality issues (broken tables, lost formatting), not just file-exists.
 5. Compare output quality of the consolidated SA against the old per-format instructions on the same input file.
+
+#### Phase 6 Results (2026-05-02)
+
+- [x] DRY refactor: 6 per-format instructions + 6 per-format prompts replaced by 1 `converter.instructions.md` + 1 `/convert` prompt
+- [x] 6 per-format skills kept (genuinely different domain logic)
+- [x] All converter muscles + shared/ + lua-filters/ migrated
+- [x] Artifact count reduction: 12 artifacts dropped, 2 created = net -10
+- [x] Converter SA (agent file) deferred to Phase 7 (ships with other worker SAs)
+- [x] All conditional. Always-on unchanged at **13,886**.
+- [x] Cumulative: 31 instructions, 10 skills, 12 prompts, 12 muscles + support files
+- [ ] Semantic checks 1-5: deferred to Phase 10
 
 ### Phase 7: Formatting & Authoring
 
