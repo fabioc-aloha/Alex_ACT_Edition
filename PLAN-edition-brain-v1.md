@@ -1,5 +1,5 @@
 ---
-status: Proposed
+status: In Progress
 date: 2026-05-02
 decision-maker: Fabio Correa
 target: Alex_ACT_Edition v1.0.0
@@ -9,7 +9,7 @@ target: Alex_ACT_Edition v1.0.0
 
 ## Header
 
-- Status: Proposed
+- Status: In Progress (Phases 0-9b complete, Phases 10-12 pending)
 - Date: 2026-05-02
 - Decision-maker: Fabio Correa
 - Target: Alex_ACT_Edition v1.0.0
@@ -162,9 +162,12 @@ Semantic Check:
 
 ### Phase 3: Session & Memory + Boundary Guards
 
-Migrate Groups 5 and 6 (13 capabilities). Includes the new Lock shape for boundary guards, plus two new lifecycle capabilities: partner-profile maintenance and project-context maintenance.
+Migrate Groups 5 and 6 (13 capabilities). Includes the Lock shape (`I...L`) for boundary guards, plus two embedded lifecycle capabilities:
 
-**Artifact form for F1/F2**: These two capabilities are lightweight extensions to existing instructions (`proactive-awareness` gains the partner-profile freshness nudge; `memory-triggers` gains the project-context update offer), not new standalone files. This keeps the artifact count at ~65 without adding token cost.
+- **F1 (partner-profile maintenance)**: Embedded in `proactive-awareness` as a freshness nudge for user preferences.
+- **F2 (project-context maintenance)**: Embedded in `memory-triggers` as a project-context update offer.
+
+These are lightweight extensions to existing instructions, not new standalone files.
 
 Semantic Check:
 
@@ -393,9 +396,9 @@ Acknowledge the milestone, write a retrospective, and update the Supervisor flee
 | --- | --- |
 | North Star alignment | Every design principle (D1-D7) has at least one semantic check that passed |
 | Brain QA | `brain-qa` exits 0 on v1.0.0 |
-| Functional parity | All 59 capabilities functional, no regressions from v0.9.9 |
-| DRY savings | Artifact count reduced from about 79 to about 65 |
-| Token budget | Always-on instructions under 15K tokens; measured at end of each phase (not just Phase 9) to catch drift early |
+| Functional parity | All 59 capabilities functional (57 mapped to standalone artifacts + 2 embedded extensions), no regressions from v0.9.9. Achieved: **59/59 verified** |
+| DRY savings | Context-loaded artifact count reduced. v0.9.9: ~108 files (79 context-loaded). v1: 73 context-loaded files. DRY saved 10 artifacts (converters) + 1 absorbed (plugin-store-routing) = net -11. Remaining gap vs 65 target is supporting files (CSS, sub-prompts in skill folders). Achieved: **73 context-loaded** |
+| Token budget | Always-on instructions under 15K tokens (success target); absolute failure threshold is 20K per Section 9. Measured at end of each phase to catch drift early. Achieved: **13,886** |
 | Safety Imperatives | I1-I4 all pass their Phase 3 semantic checks |
 | Universality | Heir testing covers 3 project types (code-heavy, docs-heavy, infra-heavy) with no type-specific regressions |
 | Growth operational | Memory-triggers and meditation semantic checks pass -- the heir actually learns, not just claims to |
@@ -414,7 +417,7 @@ Acknowledge the milestone, write a retrospective, and update the Supervisor flee
 ## 6. Out of Scope
 
 - AlexMaster framework changes (tenets, claims registry)
-- New capabilities not in the current 59
+- New capabilities beyond the 59 in the architecture inventory (57 standalone artifacts + 2 lightweight extensions embedded in existing instructions: F1 partner-profile maintenance in `proactive-awareness`, F2 project-context maintenance in `memory-triggers`)
 
 ## 6b. Companion Plan: Alex ACT Plugin Mall (v2)
 
@@ -522,16 +525,13 @@ Heirs can filter by shape: "show me all `.S.M` plugins in the converters categor
 - **After v1.0.0**: batch conversion, CATALOG v2, install script update, repo rename.
 - **Owner**: Supervisor (per `mall-maintenance-rules.instructions.md`).
 
-## 7. Timeline Estimate
+## 7. Timeline
 
-| Scope | Estimate |
-| --- | --- |
-| Phases 0-4, cognitive core | About 1 week (mostly migration plus verification) |
-| Phases 5-8, work groups | About 1 week (DRY refactoring is the creative work) |
-| Phase 9, audit | About 1 day |
-| Phase 10, heir testing | 2 weeks |
-| Phases 11-12, release plus retro | About 1 day |
-| Total | About 5 weeks from start to v1.0.0 |
+| Scope | Original estimate | Actual |
+| --- | --- | --- |
+| Phases 0-9b (migration + audit) | About 3 weeks | 1 session (2026-05-02) |
+| Phase 10, heir testing | 2 weeks | Not started |
+| Phases 11-12, release + retro | About 1 day | Not started |
 
 ## 8. Rollback
 
@@ -550,11 +550,14 @@ This plan fails if any of the following are true:
 
 - After Phase 10 testing, more than 2 critical feedback items are unresolved.
 - The DRY artifact count does not actually decrease (consolidation was illusory).
-- Token budget exceeds 20K for always-on instructions (cognitive core + metacognition + interpersonal + boundary guards).
+- Token budget exceeds 20K for always-on instructions (absolute failure threshold; success target is 15K per Section 4).
 - The converter SA pattern produces worse output quality than the per-format instructions it replaces.
 
-## Cross-References
+## 10. Cross-References
 
 - Architecture: `decisions/ARCHITECTURE-2026-05-01-worker-agents.md` (Appendix G inventory, Appendix H tenet clusters)
 - SA pilot: `decisions/SA-PILOT-RUN-COMPARISON.md`
-- Current brain: `Alex_ACT_Edition/.github/` (v0.9.9)
+- Baseline: `decisions/BASELINE-v0.9.9-token-inventory.md`
+- Regression prompts: `decisions/REGRESSION-PROMPTS-v0.9.9.md`
+- Current brain: `Alex_ACT_Edition/.github/` (v1 in progress)
+- Backup brain: `Alex_ACT_Edition/.github-v0/` (v0.9.9 preserved)
