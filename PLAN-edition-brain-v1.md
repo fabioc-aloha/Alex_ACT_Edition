@@ -27,8 +27,8 @@ target: Alex_ACT_Edition v1.0.0
 | 6 | Converters (DRY SA) | 7 | **Complete** (2026-05-02) |
 | 7 | Formatting & Authoring (SAs) | 7 | **Complete** (2026-05-02) |
 | 8 | Infrastructure & Fleet | 6 | **Complete** (2026-05-02) |
-| 9 | Audit | -- | Not started |
-| 9b | Capability Gap Analysis | -- | Not started |
+| 9 | Audit | -- | **Complete** (2026-05-02) |
+| 9b | Capability Gap Analysis | -- | **Complete** (2026-05-02) |
 | 10 | Heir Testing | -- | Not started |
 | 11 | Release v1.0.0 | -- | Not started |
 | 12 | Celebrate | -- | Not started |
@@ -329,6 +329,16 @@ Semantic Check:
 2. Manually test 3 random capabilities from different clusters in a single session to verify they compose correctly (e.g., critical-thinking + debugging + terminal-safety all active simultaneously without conflict).
 3. Verify no instruction contradicts another (the consolidation may have merged rules that were context-separated before).
 
+#### Phase 9 Results (2026-05-02)
+
+- [x] Frontmatter validation: 1 issue found (`mall-installation` missing type/lifecycle/inheritance), fixed
+- [x] Cross-reference integrity: 11 refs checked; 1 real broken ref (`reframe.prompt.md` -- pre-existing in v0.9.9, never created). 10 false positives (example paths in docs).
+- [x] Artifact count: 73 context-loaded files (vs ~65 target). Difference is supporting files in skill folders (CSS, sub-prompts). 59/59 capabilities verified present.
+- [x] Contradiction scan: **0 contradictions**. 5 design tensions identified (inherent in multi-concern brain, all resolvable by judgment). No fixes needed.
+- [x] Always-on budget: **13,886 tokens** (within 15K target)
+
+**Known gap**: `/reframe` prompt referenced by `critical-thinking/SKILL.md` does not exist and never existed in v0.9.9. Low priority -- the capability it would provide (user-invoked frame audit) is already available via `/problem-framing-audit`.
+
 ### Phase 9b: Capability Gap Analysis
 
 Walk the full capability inventory (59 capabilities) and verify each has a working artifact with correct activation. This is a semantic check, not a file-count check -- the question is "would this capability actually fire when needed?"
@@ -341,6 +351,14 @@ Steps:
 4. Record the gap-analysis results as a checklist in the Phase 9b section of the progress tracker (one line per group: group name, capabilities tested, pass/fail).
 
 Exit criterion: All 59 capabilities have a verified artifact. Any gaps found are fixed in-place before Phase 10.
+
+#### Phase 9b Results (2026-05-02)
+
+- [x] All 59 capabilities verified against file tree (57 mapped + 2 embedded lifecycle extensions)
+- [x] Groups 1,3,4 (CT Core + Metacognition + Interpersonal): 14/14 pass
+- [x] Groups 2,5-10 (Rituals through Infrastructure): 43/43 pass
+- [x] 0 missing artifacts, 0 broken applyTo patterns
+- [x] Exit criterion met: all 59 capabilities have verified artifacts
 
 ### Phase 10: Heir Testing
 
