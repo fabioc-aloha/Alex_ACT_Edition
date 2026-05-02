@@ -434,6 +434,9 @@ The v1 refactor changes what "coherent with Edition" means. The Skill Mall becom
 | P5 | **Token cost is the plugin's responsibility** -- every plugin.json should declare its approximate token cost so heirs can budget their context window | The Edition brain targets 15K always-on. Every installed plugin adds to that. A heir running 10 Mall plugins with no cost awareness will blow the budget. Transparency is the fix, not restriction. |
 | P6 | **One plugin, one capability** -- a plugin does one thing. If it does two things, it's two plugins. Bundles of related plugins are categories, not mega-plugins | Composability over completeness. A heir who needs `md-to-word` shouldn't have to install all 6 converters. Categories group related plugins for discovery; install granularity stays at the individual plugin level. |
 | P7 | **README is the storefront** -- the README sells the plugin to a human. It answers: what problem does this solve, when would I use it, what does it install, what Edition version do I need | The catalog provides search and filtering. The README provides the buy decision. Without a README, a plugin is a file dump with a frontmatter block. |
+| P8 | **Backward compatible with the MS Agency plugin spec** -- a plugin written to the `.claude-plugin/plugin.json` + `skills/` + `scripts/` convention lands in our Mall without refactoring. Our extensions (shape, token_cost, tier, requires_edition, engines) are additive metadata the Supervisor generates at curation time, not requirements the plugin author must satisfy. | The industry is converging on a plugin format. Fighting it wastes the author's time and ours. We build on top of the standard, not beside it. |
+| P9 | **Engines field declares host compatibility** -- `"engines": ["copilot", "claude", "cursor"]` in plugin.json tells heirs which AI hosts can consume the plugin. Default: `["copilot"]`. | Plugins are not universally consumable. A plugin that uses Claude Code hooks won't work in Copilot. Declaring engines prevents silent failures after install. Adopted from the MS Agency `agency.json` spec. |
+| P10 | **Curation generates what authors don't** -- shape, token_cost, tier, and requires_edition are computed by the Supervisor at import time from the plugin's actual file inventory. Authors bring content; the Supervisor adds catalog metadata. | Asking every plugin author to calculate token costs or learn shape notation creates friction. The Mall adds value by computing what machines can compute, freeing authors to focus on content quality. |
 
 ### Naming
 
@@ -461,14 +464,21 @@ category/plugin-name/
 
 ### Plugin Manifest Schema (`plugin.json`)
 
+Our manifest is a superset of the MS Agency `.claude-plugin/plugin.json`. A plugin author can bring their existing manifest; the Supervisor adds our extensions at curation time.
+
 ```json
 {
   "name": "md-to-word",
   "version": "1.0.0",
-  "shape": ".S.M",
   "description": "Convert Markdown to Word with style presets and professional features",
+  "author": { "name": "Author Name" },
+  "keywords": ["markdown", "word", "docx", "conversion"],
+  "engines": ["copilot", "claude"],
+
+  "shape": ".S.M",
   "category": "converters",
   "tier": "standard",
+  "token_cost": 4800,
   "requires_edition": ">=1.0.0",
   "requires_plugins": [],
   "artifacts": {
@@ -481,6 +491,17 @@ category/plugin-name/
   }
 }
 ```
+
+**Fields by origin:**
+
+| Field | Source | Who writes it |
+| --- | --- | --- |
+| name, version, description, author, keywords | MS Agency spec | Plugin author |
+| engines | MS Agency spec (`agency.json`) | Plugin author (default: `["copilot"]`) |
+| shape, token_cost, tier | ACT Plugin Mall extensions | Supervisor computes at curation time |
+| category | ACT Plugin Mall | Supervisor assigns at curation time |
+| requires_edition, requires_plugins | ACT Plugin Mall extensions | Supervisor assigns; author can override |
+| artifacts, install_paths | ACT Plugin Mall | Supervisor generates from file inventory |
 
 ### CATALOG.json v2 Schema
 
