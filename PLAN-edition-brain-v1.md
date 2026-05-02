@@ -520,7 +520,37 @@ Shape tells you what you're getting before you open the folder:
 
 Heirs can filter by shape: "show me all `.S.M` plugins in the converters category" or "what `ISP.` trifectas are available for security?"
 
-### Migration Path (302 skills to plugins)
+### Plugin Categories (proposed)
+
+Consolidate from 35 categories to 16. Every category has 7+ plugins. Tiny categories (1-5 items) absorbed into related larger ones.
+
+| # | Category | Plugins | Merges from | Rationale |
+| --- | --- | ---: | --- | --- |
+| 1 | **Security & Privacy** | 50 | security, privacy | Largest coherent domain; privacy is a natural subset |
+| 2 | **Code Quality** | 27 | quality, testing, performance | All facets of "is the code good?" |
+| 3 | **DevOps & Process** | 26 | process, build, operations, productivity, github, github-actions | Build, ship, and manage software lifecycle |
+| 4 | **Documentation** | 25 | documentation, publishing, vitepress | Authoring, publishing, and doc-site tooling |
+| 5 | **Cloud & Infrastructure** | 24 | azure, infrastructure, cloud | Where it runs at scale; Azure dominates but generalizes |
+| 6 | **AI & Agents** | 19 | ai-llm | Agent design, MCP, prompt engineering, evals |
+| 7 | **Media & Graphics** | 19 | media, design, visual | Visual/audio artifact creation: images, slides, video, SVG |
+| 8 | **Data & Analytics** | 17 | data | Dashboards, KQL, Power BI, data modeling, visualization |
+| 9 | **Reasoning & Metacognition** | 15 | critical-thinking | Installable reasoning plugins (complements Edition's CT Core) |
+| 10 | **Supervisor & Fleet** | 14 | supervisor | Fleet operator tooling (distinct audience from project heirs) |
+| 11 | **Platform & Tooling** | 14 | cross-platform, frontend, vscode, windows-node, javascript | Platform/runtime targeting: VS Code, cross-platform, Node |
+| 12 | **Architecture & Patterns** | 13 | architecture | API design, microservices, saga, workflow orchestration |
+| 13 | **Domain Expertise** | 12 | domain | Vertical domains (healthcare, legal, finance, game design) |
+| 14 | **Converters** | 11 | converters | Format A to format B; matches Edition's Converter group |
+| 15 | **Communication & People** | 9 | communication, people | Interpersonal: collaboration, stakeholder comms, coaching |
+| 16 | **Academic & Research** | 7 | academic | Citation, lit reviews, paper drafting, survey verification |
+
+**Design decisions**:
+
+- Security stays monolithic at 50 rather than fragmenting by sub-type.
+- Academic stays separate from Domain Expertise: research workflows (cite, review, draft) don't map to domain knowledge plugins.
+- "Reasoning & Metacognition" avoids name collision with Edition's built-in "Critical Thinking Core" brain group.
+- Converters stays standalone despite being 11 items: developers browse converters by intent (format to format), not by topic.
+
+### Migration Path (302 plugins)
 
 | Task | Description | Priority |
 | --- | --- | --- |
