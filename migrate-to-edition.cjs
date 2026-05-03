@@ -167,7 +167,7 @@ const oldFiles = listFiles(GH);
 
 // Buckets: what to do with each file in the old brain
 const triage = {
-    dropExtensionOnly: [],   // agents/, hooks/, episodic/, extension-UI configs
+    dropExtensionOnly: [],   // agents/, hooks/, extension-UI configs
     dropReplacedByEdition: [], // standard instructions Edition ships
     dropMasterContent: [],   // AlexMaster files marked inheritance: inheritable | master-only
     extractIdentity: [],     // copilot-instructions.md (cherry-pick identity sections)
@@ -178,7 +178,6 @@ const triage = {
 const EXTENSION_ONLY_PATTERNS = [
     /^agents\//,
     /^hooks\//,
-    /^episodic\//,
     /^muscles\/hooks\//,
     /^config\/(loop-menu|taglines|review-rules|review-cadence|token-budget|rai-reliance-metrics|cognitive-config|MASTER-ALEX-PROTECTED|config-layers|context-discovery|goals|assignment-log|correlation-vector|session-metrics|session-tool-log|knowledge-artifacts|unknowns)\.json/,
     /^config\/.*\.schema\.json/,
