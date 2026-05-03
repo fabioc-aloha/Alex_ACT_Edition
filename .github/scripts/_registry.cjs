@@ -14,31 +14,61 @@ const os = require('os');
 
 const HOME = os.homedir();
 
-// Cloud drive folder names to scan (order = priority).
-// The first existing <HOME>/<name>/AI-Memory wins.
-const CLOUD_DRIVE_NAMES = [
-    'OneDrive - Correa Family',
-    'OneDrive',
-    'iCloudDrive',
-    'iCloud Drive',
-    'iCloud~com~apple~CloudDocs',
-    'Dropbox',
-];
-const CANDIDATES = [
-    ...CLOUD_DRIVE_NAMES.map(n => path.join(HOME, n, 'AI-Memory')),
-    path.join(HOME, 'AI-Memory'),
+// Known cloud drive folder name patterns (order = priority for auto-selection).
+// Discovery also scans for any OneDrive* folder not in this list.
+const KNOWN_CLOUD_PATTERNS = [
+    // OneDrive variants (personal, family, business) -- "OneDrive" or "OneDrive - *"
+    { pattern: /^OneDrive/i, provider: 'OneDrive' },
+    // iCloud variants (macOS, Windows)
+    { pattern: /^iCloud/i, provider: 'iCloud' },
+    // Dropbox
+    { pattern: /^Dropbox/i, provider: 'Dropbox' },
+    // Google Drive (Drive for desktop)
+    { pattern: /^Google Drive/i, provider: 'Google Drive' },
+    { pattern: /^My Drive/i, provider: 'Google Drive' },
+    // Box
+    { pattern: /^Box( Sync)?$/i, provider: 'Box' },
+    // MEGA
+    { pattern: /^MEGA/i, provider: 'MEGA' },
+    // pCloud
+    { pattern: /^pCloud/i, provider: 'pCloud' },
+    // Nextcloud
+    { pattern: /^Nextcloud/i, provider: 'Nextcloud' },
 ];
 
-function resolveAiMemoryRoot() {
-    for (const candidate of CANDIDATES) {
-        try {
-            if (fs.existsSync(candidate) && fs.statSync(candidate).isDirectory()) {
-                return candidate;
-            }
-        } catch {
-            // continue
+/**
+ * Resolve AI-Memory root, honoring cognitive-config.json overrides.
+ * @param {string} [heirRoot] - heir repo root to find cognitive-config.json
+ */
+function resolveAiMemoryRoot(heirRoot) {
+    // 1. Check cognitive-config.json override
+    if (heirRoot) {
+        const configPath = path.join(heirRoot, '.github', 'config', 'cognitive-config.json');
+        if (fs.existsSync(configPath)) {
+            try {
+                const cfg = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+                if (cfg.ai_memory_root) {
+                    const pinned = path.join(HOME, cfg.ai_memory_root, 'AI-Memory');
+                    if (fs.existsSync(pinned) && fs.statSync(pinned).isDirectory()) {
+                        return pinned;
+                    }
+                }
+            } catch { /* fall through to candidate scan */ }
         }
     }
+
+    // 2. Candidate scan: discover all cloud drives, return first with AI-Memory
+    const drives = discoverCloudDrives(heirRoot);
+    for (const d of drives) {
+        if (d.hasAiMemory) return path.join(d.path, 'AI-Memory');
+    }
+
+    // 3. Local fallback
+    const local = path.join(HOME, 'AI-Memory');
+    if (fs.existsSync(local) && fs.statSync(local).isDirectory()) {
+        return local;
+    }
+
     return null;
 }
 
@@ -94,27 +124,71 @@ function upsertHeir(marker, repoPath) {
 }
 
 /**
- * Discover which cloud drive folders exist on this machine.
- * Returns an array of { name, path, hasAiMemory } objects.
+ * Discover cloud drive folders on this machine by scanning HOME directory.
+ * Returns an array of { name, path, provider, hasAiMemory } sorted by provider priority.
+ * Honors ai_memory_exclude from cognitive-config.json.
+ * @param {string} [heirRoot] - heir repo root for reading cognitive-config.json
  */
-function discoverCloudDrives() {
-    const drives = [];
-    for (const name of CLOUD_DRIVE_NAMES) {
-        const driveDir = path.join(HOME, name);
-        if (fs.existsSync(driveDir) && fs.statSync(driveDir).isDirectory()) {
-            const aiMemDir = path.join(driveDir, 'AI-Memory');
-            drives.push({
-                name,
-                path: driveDir,
-                hasAiMemory: fs.existsSync(aiMemDir) && fs.statSync(aiMemDir).isDirectory(),
-            });
+function discoverCloudDrives(heirRoot) {
+    // Read exclusion list from cognitive-config
+    let excludeSet = new Set();
+    if (heirRoot) {
+        const configPath = path.join(heirRoot, '.github', 'config', 'cognitive-config.json');
+        if (fs.existsSync(configPath)) {
+            try {
+                const cfg = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+                if (Array.isArray(cfg.ai_memory_exclude)) {
+                    excludeSet = new Set(cfg.ai_memory_exclude.map(s => s.toLowerCase()));
+                }
+            } catch { /* ignore */ }
         }
     }
-    // Also check ~/AI-Memory (local fallback, no cloud drive)
-    const localFallback = path.join(HOME, 'AI-Memory');
-    if (fs.existsSync(localFallback) && fs.statSync(localFallback).isDirectory()) {
-        drives.push({ name: '~/AI-Memory', path: localFallback, hasAiMemory: true });
+
+    const drives = [];
+    let entries;
+    try {
+        entries = fs.readdirSync(HOME, { withFileTypes: true });
+    } catch {
+        return drives;
     }
+
+    for (const entry of entries) {
+        // Use statSync to resolve reparse points (OneDrive folders on Windows
+        // are often ReparsePoints that readdirSync.isDirectory() misses)
+        let isDir = false;
+        try {
+            isDir = entry.isDirectory() || fs.statSync(path.join(HOME, entry.name)).isDirectory();
+        } catch { continue; }
+        if (!isDir) continue;
+        if (excludeSet.has(entry.name.toLowerCase())) continue;
+
+        // Match against known patterns
+        let provider = null;
+        for (const kp of KNOWN_CLOUD_PATTERNS) {
+            if (kp.pattern.test(entry.name)) {
+                provider = kp.provider;
+                break;
+            }
+        }
+        if (!provider) continue;
+
+        const driveDir = path.join(HOME, entry.name);
+        const aiMemDir = path.join(driveDir, 'AI-Memory');
+        drives.push({
+            name: entry.name,
+            path: driveDir,
+            provider,
+            hasAiMemory: fs.existsSync(aiMemDir) && fs.statSync(aiMemDir).isDirectory(),
+        });
+    }
+
+    // Sort: drives with AI-Memory first, then by provider priority
+    const providerOrder = ['OneDrive', 'iCloud', 'Dropbox', 'Google Drive', 'Box', 'MEGA', 'pCloud', 'Nextcloud'];
+    drives.sort((a, b) => {
+        if (a.hasAiMemory !== b.hasAiMemory) return a.hasAiMemory ? -1 : 1;
+        return providerOrder.indexOf(a.provider) - providerOrder.indexOf(b.provider);
+    });
+
     return drives;
 }
 
@@ -163,3 +237,46 @@ function initAiMemory(driveName) {
 }
 
 module.exports = { resolveAiMemoryRoot, upsertHeir, discoverCloudDrives, initAiMemory };
+
+// ── CLI mode ───────────────────────────────────────────────────────
+// node _registry.cjs --discover          List cloud drives
+// node _registry.cjs --init <name>       Create AI-Memory in named drive
+// node _registry.cjs --resolve [dir]     Resolve AI-Memory root
+if (require.main === module) {
+    const args = process.argv.slice(2);
+    if (args.includes('--discover')) {
+        const drives = discoverCloudDrives();
+        if (drives.length === 0) {
+            console.log('No cloud drives found.');
+        } else {
+            console.log('Cloud drives found:\n');
+            drives.forEach((d, i) => {
+                const tag = d.hasAiMemory ? ' [AI-Memory exists]' : '';
+                console.log(`  ${i + 1}. ${d.name} (${d.provider})${tag}`);
+            });
+        }
+        console.log(`\n  Local fallback: ~/AI-Memory ${fs.existsSync(path.join(HOME, 'AI-Memory')) ? '[exists]' : '[not created]'}`);
+    } else if (args.includes('--init')) {
+        const idx = args.indexOf('--init');
+        const name = args[idx + 1];
+        if (!name) { console.error('Usage: --init <drive-name>'); process.exit(1); }
+        const result = initAiMemory(name);
+        if (result.ok) {
+            console.log(`Created AI-Memory at: ${result.root}`);
+            console.log(`Items: ${result.created.join(', ')}`);
+        } else {
+            console.error('Failed to create AI-Memory');
+            process.exit(1);
+        }
+    } else if (args.includes('--resolve')) {
+        const idx = args.indexOf('--resolve');
+        const dir = args[idx + 1] || process.cwd();
+        const root = resolveAiMemoryRoot(dir);
+        console.log(root || '(not found)');
+    } else {
+        console.log('Usage:');
+        console.log('  node _registry.cjs --discover          List cloud drives');
+        console.log('  node _registry.cjs --init <name>       Create AI-Memory in named drive');
+        console.log('  node _registry.cjs --resolve [dir]     Resolve AI-Memory root');
+    }
+}
