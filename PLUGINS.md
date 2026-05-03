@@ -6,7 +6,7 @@
 
 Optional plugins that extend the Edition baseline with multi-agent orchestration. Register them locally via `.vscode/settings.json` — they require local clones of the plugin stores.
 
-Individual skills from these plugins are also available in the [Alex Skill Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall). Use `/install-from-mall` for individual skills; use plugin registration for the full agent experience.
+Individual skills from these plugins are also available in the [Alex Skill Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall). Use `/mall install` for individual skills; use plugin registration for the full agent experience.
 
 ## How to Register Plugins
 
