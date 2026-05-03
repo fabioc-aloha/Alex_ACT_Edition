@@ -343,7 +343,7 @@ let registryResult = upsertHeir(marker, targetAbs);
 
 // AI-Memory setup: if no AI-Memory folder exists, discover cloud drives and
 // create the folder structure. Honors --ai-memory <name> flag for explicit choice.
-const aiMemFlag = (function() {
+const aiMemFlag = (function () {
     const i = process.argv.indexOf('--ai-memory');
     return i >= 0 && process.argv[i + 1] ? process.argv[i + 1] : null;
 })();

@@ -81,7 +81,7 @@ function upsertHeir(marker, repoPath) {
         if (marker && marker.opt_in && marker.opt_in.fleet_inventory === false) {
             return { ok: false, reason: 'opted-out' };
         }
-        const root = resolveAiMemoryRoot();
+        const root = resolveAiMemoryRoot(repoPath);
         if (!root) {
             return { ok: false, reason: 'no-ai-memory' };
         }
