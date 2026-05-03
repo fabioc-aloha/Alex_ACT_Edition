@@ -10,7 +10,7 @@ ACT Edition changes that. Not by making AI "smarter," but by making it **honest*
 
 A confident wrong answer is worse than an uncertain correct answer. ACT shifts the default from "sound authoritative" to "show your work." When the AI doesn't know, it says "I don't know." When it's uncertain, it quantifies the uncertainty. When it challenges your framing, it explains why. Debugging a confident hallucination takes hours. Verifying a well-reasoned hypothesis takes minutes.
 
-This is a **cognitive architecture** — 11 skills, 37 instructions, 19 prompts, and automation muscles that teach your AI assistant to think critically about its own reasoning. Built for GitHub Copilot's `.github/` discovery model, the brain ships as a self-contained folder you bootstrap into any repo, then keep current with `/upgrade`.
+This is a **cognitive architecture** -- 17 skills, 33 instructions, 20 prompts, 3 worker agents, and 20 muscles that teach your AI assistant to think critically about its own reasoning. Built for GitHub Copilot's `.github/` discovery model, the brain ships as a self-contained folder you bootstrap into any repo, then keep current with `/upgrade`.
 
 ## Commands
 
@@ -72,9 +72,9 @@ These tenets form the philosophical foundation. The instructions operationalize 
 | IX | **Visible Markers** | Show the reasoning, not just the conclusion | Audit drift, hidden assumptions |
 | X | **Recursive Application** | Apply ACT to ACT itself | Framework-as-ideology |
 
-## What's Included: Instructions (37)
+## What's Included: Instructions (33)
 
-ACT Edition ships 37 behavioral instructions across these categories. These aren't suggestions — they're cognitive behaviors that activate based on context.
+ACT Edition ships 33 behavioral instructions across these categories. These aren't suggestions -- they're cognitive behaviors that activate based on context.
 
 ### Critical Thinking Core (7)
 
@@ -139,28 +139,23 @@ Behavioral rules for everyday work.
 | `scope-management` | Feature creep prevention; ship the right thing |
 | `meditation` | Session-end knowledge consolidation |
 
-### Converters (7)
+### Converters (3)
 
-Document conversion trifectas — each paired with a muscle script.
+Document conversion: one routing instruction, one rendering skill, one session-start check.
 
-| Instruction | Converts |
+| Instruction | What It Does |
 | --- | --- |
-| `docx-to-md` | Word → Markdown |
-| `html-to-md` | HTML → Markdown |
-| `md-to-html` | Markdown → HTML |
-| `md-to-txt` | Markdown → plain text |
-| `md-to-word` | Markdown → Word (.docx) |
+| `converter` | Routes `/convert` to the right format muscle |
 | `markdown-mermaid` | Markdown + Mermaid rendering rules |
 | `greeting-checkin` | Session-start version check + announcement reader |
 
 ### Infrastructure (2)
 
-Mall integration and plugin routing.
+Mall integration and fleet communication.
 
 | Instruction | What It Does |
 | --- | --- |
-| `mall-installation` | How projects install skills from the [Alex Skill Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall) |
-| `plugin-store-routing` | Connect browse/install requests to Mall or plugins |
+| `mall-installation` | How projects install plugins from the [Alex Skill Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall) |
 
 ## Quick Start
 
@@ -186,8 +181,8 @@ Beyond the instructions, the brain bundles:
 
 | Surface | Purpose |
 | --- | --- |
-| **Skills** (`.github/skills/`) | 11 core skills — document conversion, markdown-mermaid, banner generation, greeting check-in, meditation, sanitization |
-| **Prompts** (`.github/prompts/`) | 19 slash-commands for setup, daily ops, skill discovery, memory, and maintenance (see [Commands](#commands)) |
+| **Skills** (`.github/skills/`) | 17 skills -- critical thinking, document conversion (6 formats), markdown-mermaid, banner generation, greeting check-in, meditation, AI-Memory setup, sanitization, creative writing, academic paper drafting |
+| **Prompts** (`.github/prompts/`) | 20 slash-commands for setup, daily ops, skill discovery, memory, and maintenance (see [Commands](#commands)) |
 | **Muscles** (`.github/muscles/`) | Converter executables, `heir-doctor.cjs` (health check), `audit-api-drift.cjs` (external-API freshness), `generate-banner.cjs` (SVG banners) |
 | **Configs** (`.github/config/`) | `sync-policy.json`, `edition-manifest.json` (release-time allowlist), `markdown-light.css`, project-owned `cognitive-config.json` + `goals.json` |
 | **Scripts** (`.github/scripts/`) | `bootstrap-heir.cjs`, `upgrade-self.cjs`, `build-edition-manifest.cjs` (regenerates the allowlist), shared `_registry.cjs` |

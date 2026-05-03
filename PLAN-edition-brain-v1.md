@@ -30,7 +30,7 @@ target: Alex_ACT_Edition v1.0.0
 | 9 | Audit | -- | **Complete** (2026-05-02) |
 | 9b | Capability Gap Analysis | -- | **Complete** (2026-05-02) |
 | 10 | Heir Testing | -- | **Complete** (2026-05-02) |
-| 11 | Release v1.0.0 | -- | Not started |
+| 11 | Release v1.0.0 | -- | **Complete** (2026-05-02) |
 | 12 | Celebrate | -- | Not started |
 
 ## 1. Goal
