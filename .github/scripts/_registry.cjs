@@ -189,6 +189,23 @@ function discoverCloudDrives(heirRoot) {
         return providerOrder.indexOf(a.provider) - providerOrder.indexOf(b.provider);
     });
 
+    // macOS: check ~/Library/Mobile Documents/com~apple~CloudDocs (real iCloud path)
+    // if no iCloud* folder was found in HOME
+    if (!drives.some(d => d.provider === 'iCloud')) {
+        const macICloud = path.join(HOME, 'Library', 'Mobile Documents', 'com~apple~CloudDocs');
+        try {
+            if (fs.existsSync(macICloud) && fs.statSync(macICloud).isDirectory()) {
+                const aiMemDir = path.join(macICloud, 'AI-Memory');
+                drives.push({
+                    name: 'Library/Mobile Documents/com~apple~CloudDocs',
+                    path: macICloud,
+                    provider: 'iCloud',
+                    hasAiMemory: fs.existsSync(aiMemDir) && fs.statSync(aiMemDir).isDirectory(),
+                });
+            }
+        } catch { /* not macOS or no iCloud */ }
+    }
+
     return drives;
 }
 
