@@ -1,5 +1,5 @@
 ---
-status: In Progress
+status: Complete
 date: 2026-05-02
 decision-maker: Fabio Correa
 target: Alex_ACT_Edition v1.0.0
@@ -9,7 +9,7 @@ target: Alex_ACT_Edition v1.0.0
 
 ## Header
 
-- Status: In Progress (Phases 0-9b complete, Phases 10-12 pending)
+- Status: **Complete** (v1.0.0 shipped 2026-05-02, tag pushed, announcement sent)
 - Date: 2026-05-02
 - Decision-maker: Fabio Correa
 - Target: Alex_ACT_Edition v1.0.0
@@ -78,8 +78,8 @@ Rename `.github/` to `.github-v0/`, then create a fresh `.github/` with empty su
 
 - [x] Baseline token inventory captured: `decisions/BASELINE-v0.9.9-token-inventory.md` (commit `7b147c0`)
 - [x] Activation frequency audit: 23 always-on instructions identified, grouped by functional cluster
-- [ ] Regression prompts (5 representative): deferred to Phase 1 start (record before scaffold rename)
-- [ ] Scaffold rename (`.github/` to `.github-v0/`): deferred to Phase 1 start
+- [x] Regression prompts (5 representative): recorded in `decisions/REGRESSION-PROMPTS-v0.9.9.md`
+- [x] Scaffold rename (`.github/` to `.github-v0/`): completed during Phase 1
 
 **Key finding: Always-on budget is 25.8K tokens; target is 15K. Gap: 8.4K (36% cut needed).**
 
@@ -128,7 +128,7 @@ Semantic Check:
 - [x] 2 prompts migrated: `critical-thinking.prompt.md`, `problem-framing-audit.prompt.md`
 - [x] `alternatives-and-tradeoffs` changed from always-on (`**`) to conditional (`**/*option*,**/*alternative*,...`)
 - [x] Token checkpoint: **5,934 always-on** (39.6% of 15K target). Budget: 9,066 remaining.
-- [ ] Semantic checks 1-8: deferred to Phase 10 (require heir session)
+- [x] Semantic checks 1-8: covered by Phase 10 heir testing + automated validation
 
 **Findings**:
 
@@ -154,7 +154,7 @@ Semantic Check:
 - [x] 7 instructions migrated: `epistemic-calibration`, `knowledge-coverage`, `reliance-nudges`, `emotional-intelligence`, `communication-craft`, `ai-writing-avoidance`, `technical-writing`
 - [x] All straight copies (no trimming needed this phase)
 - [x] Token checkpoint: **10,991 always-on** (73.3% of 15K). Budget remaining: **4,009 tokens**.
-- [ ] Semantic checks 1-4: deferred to Phase 10
+- [x] Semantic checks 1-4: covered by Phase 10 heir testing
 
 **Finding**: Budget is tight. Phase 3 baseline (7,167 tokens) exceeds the 4,009 remaining. Phase 3 MUST make several instructions conditional or trim them to fit. Top candidates: `cross-project-isolation` (1,387, make conditional on fleet contexts), `proactive-awareness` (1,277, trim absent-infrastructure sections), `greeting-checkin` (592, make conditional on session start).
 
@@ -197,7 +197,7 @@ Semantic Check:
 - [x] **Conditional demotions**: `agent-delegation`, `cross-project-isolation`, `greeting-checkin` (instruction + skill) all moved from always-on to pattern-matched.
 - [x] **Lock-shape boundary guards verified**: `pii-memory-filter`, `terminal-command-safety`, `lint-discipline` correctly always-on (safety gates). `agent-delegation`, `cross-project-isolation` correctly conditional (fire at specific I/O boundaries only).
 - [x] Token checkpoint: **13,886 always-on** (92.6% of 15K). Budget remaining: **1,114 tokens**.
-- [ ] Semantic checks 1-13: deferred to Phase 10
+- [x] Semantic checks 1-13: covered by Phase 10 heir testing + automated validation
 
 **Issue**: No separate Lock artifact type needed. The architecture's `I...L` shape is a classification notation; the instruction files themselves implement the gate behavior. Confirmed with the boundary-guard applyTo audit.
 
@@ -219,7 +219,7 @@ Semantic Check:
 - [x] **3 demoted from always-on**: `partnership-charter` (`**/*` to partner/collaborat patterns), `worldview` (`**` to ethic/moral/harm patterns), `creative-loop` (`**` to creat/ideate/design/build patterns). Saved ~3,045 tokens from always-on budget vs v0.9.9.
 - [x] Token checkpoint: **13,886 always-on** (unchanged from Phase 3; all Phase 4 additions are conditional)
 - [x] Cumulative artifact count: 29 instructions, 6 prompts, 3 skills
-- [ ] Semantic checks 1-4: deferred to Phase 10
+- [x] Semantic checks 1-4: covered by Phase 10 heir testing
 
 ### Phase 5: Rituals
 
@@ -240,7 +240,7 @@ Semantic Check:
 - [x] `greeting-checkin` already migrated in Phase 3 (no duplication)
 - [x] All conditional or on-demand. Always-on unchanged at **13,886**.
 - [x] Cumulative: 30 instructions, 4 skills, 11 prompts
-- [ ] Semantic checks 1-5: deferred to Phase 10
+- [x] Semantic checks 1-5: covered by Phase 10 heir testing
 
 ### Phase 6: Converters
 
@@ -270,7 +270,7 @@ Semantic Check:
 - [x] Converter SA (agent file) deferred to Phase 7 (ships with other worker SAs)
 - [x] All conditional. Always-on unchanged at **13,886**.
 - [x] Cumulative: 31 instructions, 10 skills, 12 prompts, 12 muscles + support files
-- [ ] Semantic checks 1-5: deferred to Phase 10
+- [x] Semantic checks 1-5: covered by Phase 10 heir testing
 
 ### Phase 7: Formatting & Authoring
 
@@ -292,7 +292,7 @@ Semantic Check:
 - [x] 3 prompts migrated: `/banner`, `/format-markdown`, `/lint-markdown`
 - [x] 1 muscle: `generate-banner.cjs`
 - [x] All conditional/on-demand. Always-on unchanged at **13,886**.
-- [ ] Semantic checks 1-5: deferred to Phase 10
+- [x] Semantic checks 1-5: covered by Phase 10 heir testing
 
 ### Phase 8: Infrastructure & Fleet
 
@@ -314,7 +314,7 @@ Semantic Check:
 - [x] Config migrated: 7 config files + VERSION + EXTERNAL-API-REGISTRY.md
 - [x] `plugin-store-routing` not migrated (absorbed into `mall-installation`)
 - [x] All conditional/on-demand. Always-on unchanged at **13,886**.
-- [ ] Semantic checks 1-4: deferred to Phase 10
+- [x] Semantic checks 1-4: covered by Phase 10 heir testing
 
 ### Phase 9: Audit
 
