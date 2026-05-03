@@ -36,8 +36,8 @@ The brain ships slash-prompts grouped by lifecycle stage. Type `/` in Copilot Ch
 
 | Command | When | What it does |
 | --- | --- | --- |
-| `/find-skill` | Need capability not in Edition | Searches Alex_Skill_Mall catalog, shows matches with install paths |
-| `/install-from-mall` | Found a Mall skill to adopt | Copies skill/config/MCP into `local/` slots, preserving upgrade safety |
+| `/mall search` | Need capability not in Edition | Searches Plugin Mall catalog, shows matches with shape, tokens, install path |
+| `/mall install` | Found a Mall plugin to adopt | Copies skill/config into `local/` slots, preserving upgrade safety |
 
 ### Memory & Feedback
 
@@ -219,11 +219,11 @@ The script clones Edition into a temp dir, diffs edition-owned paths, never touc
 Two shared surfaces complete the architecture:
 
 - **AI-Memory** (OneDrive shared folder) — your fleet registry, feedback channel to Edition, and announcement inbox. Bootstrapped automatically on first install.
-- **[Alex Skill Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall)** — public catalog of 303 optional skills across 35 domains. Browse, search, install what you need into `local/` slots.
+- **[Alex Skill Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall)** -- public catalog of 284 optional plugins across 16 categories. Browse, search, install what you need into `local/` slots.
 
 ### The Skill Mall
 
-Edition ships lean (11 skills, 37 instructions). The [Alex Skill Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall) extends it with 303 curated skills across security, Azure, data, healthcare, architecture, publishing, and 29 more categories. Use `/find-skill`, `/install-from-mall`, and `/feedback` from the [Commands](#commands) section to shop.
+Edition ships lean (17 skills, 33 instructions). The [Alex Skill Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall) extends it with 284 curated plugins across security, Azure, data, healthcare, architecture, publishing, and more. Use `/mall search`, `/mall install`, and `/feedback` from the [Commands](#commands) section to shop.
 
 Skills install into `.github/skills/local/` so they survive Edition upgrades. The Mall also offers patterns, scaffolds, and a complete [Supervisor package](https://github.com/fabioc-aloha/Alex_Skill_Mall/tree/main/skills/supervisor) for users who want to run their own fleet governance.
 

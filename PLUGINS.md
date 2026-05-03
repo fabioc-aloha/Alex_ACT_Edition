@@ -127,4 +127,4 @@ Individual skills from these plugins are available in the Mall without needing p
 | `autocoverage` | autocoverage | quality |
 | 10 skills | ai-starter-pack | quality, process, critical-thinking, documentation, operations |
 
-Install via `/install-from-mall` or `/find-skill`.
+Install via `/mall install` or `/mall search`.
