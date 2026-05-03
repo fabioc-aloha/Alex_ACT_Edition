@@ -13,13 +13,19 @@ const path = require('path');
 const os = require('os');
 
 const HOME = os.homedir();
+
+// Cloud drive folder names to scan (order = priority).
+// The first existing <HOME>/<name>/AI-Memory wins.
+const CLOUD_DRIVE_NAMES = [
+    'OneDrive - Correa Family',
+    'OneDrive',
+    'iCloudDrive',
+    'iCloud Drive',
+    'iCloud~com~apple~CloudDocs',
+    'Dropbox',
+];
 const CANDIDATES = [
-    path.join(HOME, 'OneDrive - Correa Family', 'AI-Memory'),
-    path.join(HOME, 'OneDrive', 'AI-Memory'),
-    path.join(HOME, 'iCloudDrive', 'AI-Memory'),
-    path.join(HOME, 'iCloud Drive', 'AI-Memory'),
-    path.join(HOME, 'iCloud~com~apple~CloudDocs', 'AI-Memory'),
-    path.join(HOME, 'Dropbox', 'AI-Memory'),
+    ...CLOUD_DRIVE_NAMES.map(n => path.join(HOME, n, 'AI-Memory')),
     path.join(HOME, 'AI-Memory'),
 ];
 
@@ -87,4 +93,73 @@ function upsertHeir(marker, repoPath) {
     }
 }
 
-module.exports = { resolveAiMemoryRoot, upsertHeir };
+/**
+ * Discover which cloud drive folders exist on this machine.
+ * Returns an array of { name, path, hasAiMemory } objects.
+ */
+function discoverCloudDrives() {
+    const drives = [];
+    for (const name of CLOUD_DRIVE_NAMES) {
+        const driveDir = path.join(HOME, name);
+        if (fs.existsSync(driveDir) && fs.statSync(driveDir).isDirectory()) {
+            const aiMemDir = path.join(driveDir, 'AI-Memory');
+            drives.push({
+                name,
+                path: driveDir,
+                hasAiMemory: fs.existsSync(aiMemDir) && fs.statSync(aiMemDir).isDirectory(),
+            });
+        }
+    }
+    // Also check ~/AI-Memory (local fallback, no cloud drive)
+    const localFallback = path.join(HOME, 'AI-Memory');
+    if (fs.existsSync(localFallback) && fs.statSync(localFallback).isDirectory()) {
+        drives.push({ name: '~/AI-Memory', path: localFallback, hasAiMemory: true });
+    }
+    return drives;
+}
+
+/**
+ * Create the AI-Memory folder structure in the given cloud drive.
+ * @param {string} driveName - cloud drive folder name (e.g. 'OneDrive - Correa Family') or full path
+ * @returns {{ ok: boolean, root: string, created: string[] }}
+ */
+function initAiMemory(driveName) {
+    const root = driveName.includes(path.sep)
+        ? path.join(driveName, 'AI-Memory')
+        : path.join(HOME, driveName, 'AI-Memory');
+    const dirs = [
+        '',
+        'feedback',
+        path.join('feedback', 'alex-act'),
+        'announcements',
+        path.join('announcements', 'alex-act'),
+        'heirs',
+        'knowledge',
+        'insights',
+    ];
+    const created = [];
+    for (const d of dirs) {
+        const full = path.join(root, d);
+        if (!fs.existsSync(full)) {
+            fs.mkdirSync(full, { recursive: true });
+            created.push(d || 'AI-Memory/');
+        }
+    }
+    // Create README files in key directories (only if missing)
+    const readmes = {
+        'README.md': '# AI-Memory\n\nShared fleet communication channel for ACT-Edition heirs.\n\n- `feedback/alex-act/` -- heirs write friction reports here\n- `announcements/alex-act/` -- Supervisor writes fleet-wide notes here\n- `heirs/` -- registry.json tracks deployed heirs\n- `knowledge/` -- shared knowledge base\n',
+        [path.join('feedback', 'README.md')]: '# Feedback\n\nHeirs drop one markdown file per feedback item in `alex-act/`.\nThe Supervisor triages, ships fixes, and deletes processed files.\n',
+        [path.join('feedback', 'alex-act', 'README.md')]: '# ACT Heir Feedback Inbox\n\nDrop feedback here. One markdown file per item.\nSupervisor triages and deletes after processing.\n',
+        [path.join('announcements', 'alex-act', 'README.md')]: '# ACT Fleet Announcements\n\nRelease notes, breaking changes, and fleet-wide guidance.\nHeirs read on session start.\n',
+    };
+    for (const [rel, content] of Object.entries(readmes)) {
+        const full = path.join(root, rel);
+        if (!fs.existsSync(full)) {
+            fs.writeFileSync(full, content);
+            created.push(rel);
+        }
+    }
+    return { ok: true, root, created };
+}
+
+module.exports = { resolveAiMemoryRoot, upsertHeir, discoverCloudDrives, initAiMemory };

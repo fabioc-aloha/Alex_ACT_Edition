@@ -23,7 +23,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
-const { upsertHeir } = require('./_registry.cjs');
+const { upsertHeir, resolveAiMemoryRoot, discoverCloudDrives, initAiMemory } = require('./_registry.cjs');
 
 const IDENTITY_TEMPLATE = `# Identity (heir-owned)
 
@@ -339,7 +339,42 @@ if (!fs.existsSync(identityPath)) {
 }
 
 // Best-effort: register this heir in shared AI-Memory/heirs/registry.json.
-const registryResult = upsertHeir(marker, targetAbs);
+let registryResult = upsertHeir(marker, targetAbs);
+
+// AI-Memory setup: if no AI-Memory folder exists, discover cloud drives and
+// create the folder structure. This is a one-time operation on first bootstrap.
+if (registryResult.reason === 'no-ai-memory') {
+    const drives = discoverCloudDrives();
+    if (drives.length > 0) {
+        // Pick the first cloud drive that exists (matches CANDIDATES priority order)
+        const target = drives[0];
+        console.log('');
+        console.log(`No AI-Memory folder found. Creating in: ${target.name}/AI-Memory`);
+        const result = initAiMemory(target.name);
+        if (result.ok) {
+            console.log(`Created AI-Memory structure (${result.created.length} items) at: ${result.root}`);
+            // Persist the choice in cognitive-config.json
+            const cogConfigPath = path.join(targetAbs, '.github', 'config', 'cognitive-config.json');
+            if (fs.existsSync(cogConfigPath)) {
+                try {
+                    const cfg = JSON.parse(fs.readFileSync(cogConfigPath, 'utf8'));
+                    if (!cfg.ai_memory_root) {
+                        cfg.ai_memory_root = target.name;
+                        fs.writeFileSync(cogConfigPath, JSON.stringify(cfg, null, 4) + '\n');
+                        console.log(`Pinned ai_memory_root: "${target.name}" in cognitive-config.json`);
+                    }
+                } catch { /* best-effort */ }
+            }
+            // Retry registry upsert now that AI-Memory exists
+            registryResult = upsertHeir(marker, targetAbs);
+        }
+    } else {
+        console.log('');
+        console.log('No cloud drive found (OneDrive, iCloud, Dropbox).');
+        console.log('To enable fleet communication, create ~/AI-Memory/ manually');
+        console.log('or run: node .github/scripts/_registry.cjs --init <cloud-drive-name>');
+    }
+}
 
 // Generate ACT.md onboarding note with project-aware recommendations.
 const actMdPath = path.join(targetAbs, 'ACT.md');
