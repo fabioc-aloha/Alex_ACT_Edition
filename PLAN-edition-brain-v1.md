@@ -29,7 +29,7 @@ target: Alex_ACT_Edition v1.0.0
 | 8 | Infrastructure & Fleet | 6 | **Complete** (2026-05-02) |
 | 9 | Audit | -- | **Complete** (2026-05-02) |
 | 9b | Capability Gap Analysis | -- | **Complete** (2026-05-02) |
-| 10 | Heir Testing | -- | **In progress** (2026-05-02) |
+| 10 | Heir Testing | -- | **Complete** (2026-05-02) |
 | 11 | Release v1.0.0 | -- | Not started |
 | 12 | Celebrate | -- | Not started |
 
