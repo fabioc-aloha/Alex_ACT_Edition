@@ -2,6 +2,14 @@
 
 All notable changes to Alex ACT Edition.
 
+## [Unreleased]
+
+### Fixed
+
+- **23 epistemic-integrity findings resolved** across 19 brain files (ABS01x4, OVR01x1, REV01x18): added revision conditions, qualified absolute claims, and sourced authority claims. Epistemic integrity score: 91 to 100/100.
+
+---
+
 ## [1.0.0] - 2026-05-02
 
 The v1 brain refactor: a complete restructure of the cognitive architecture for clarity, token efficiency, and maintainability. Every instruction, skill, prompt, and muscle was re-evaluated, clustered, trimmed, or consolidated.
