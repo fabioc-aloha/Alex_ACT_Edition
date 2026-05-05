@@ -4,9 +4,27 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+---
+
+## [1.1.0] - 2026-05-05
+
+### Added
+
+- **Tool awareness instruction**: New `tool-awareness.instructions.md` documents deferred tools (require `tool_search` before use) and external ingest for remote/virtual workspaces (VS Code 1.118/1.119).
+- **VS Code 1.118 agentic execution sub-tool note** in `terminal-command-safety.instructions.md`: documents output pre-filtering behavior and when redirect-to-file fallback is still needed.
+- **AI-Memory knowledge index**: Heirs now pointed to `AI-Memory/knowledge/index.json` for on-demand reference material.
+- **Extension scaffold relocated**: VS Code extension moved to independent repo `Alex_ACT_Extension`.
+
 ### Fixed
 
 - **23 epistemic-integrity findings resolved** across 19 brain files (ABS01x4, OVR01x1, REV01x18): added revision conditions, qualified absolute claims, and sourced authority claims. Epistemic integrity score: 91 to 100/100.
+- **Stale references**: `/find-skill` to `/mall search`, `/install-from-mall` to `/mall install`, corrected skill/instruction counts.
+- **Cross-platform improvements**: Path resolution and file handling.
+
+### Changed
+
+- Removed `.github-v0` pre-refactor brain backup (no longer needed post-v1.0.0).
+- Project docs (PLAN, decisions/) relocated to `Alex_ACT_Supervisor`.
 
 ---
 
