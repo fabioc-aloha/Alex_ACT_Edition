@@ -6,6 +6,24 @@ All notable changes to Alex ACT Edition.
 
 ---
 
+## [1.2.0] - 2026-05-05
+
+### Added
+
+- **Mall contribute prompt**: New `/mall contribute` command for submitting plugins to the Plugin Mall.
+- **Tool awareness instruction**: New `tool-awareness.instructions.md` documenting deferred tools and external ingest.
+
+### Fixed
+
+- **Instruction count**: 33 → 34 across documentation (README, copilot-instructions).
+- **converter-qa stale currency tag**: Updated to current date.
+
+### Removed
+
+- **`/fleet` prompt**: Moved to Supervisor scope (not heir-relevant).
+
+---
+
 ## [1.1.0] - 2026-05-05
 
 ### Added
