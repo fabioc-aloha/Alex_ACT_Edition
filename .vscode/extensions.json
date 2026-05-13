@@ -2,7 +2,7 @@
     "recommendations": [
         "yzhang.markdown-all-in-one",
         "davidanson.vscode-markdownlint",
-        "mermaidchart.vscode-mermaid-chart",
+        "bierner.markdown-mermaid",
         "editorconfig.editorconfig",
         "streetsidesoftware.code-spell-checker",
         "redhat.vscode-yaml",

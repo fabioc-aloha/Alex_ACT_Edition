@@ -1,8 +1,18 @@
+<!-- markdownlint-configure-file {"MD024": {"siblings_only": true}} -->
+
 # Changelog
 
 All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
+
+---
+
+## [1.2.1] - 2026-05-13
+
+### Changed
+
+- Version bump release.
 
 ---
 
