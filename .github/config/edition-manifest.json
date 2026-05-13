@@ -43,6 +43,7 @@
     "save-session-note.prompt.md",
     "status.prompt.md",
     "upgrade.prompt.md",
+    "welcome-verify.prompt.md",
     "welcome.prompt.md"
   ],
   "agents": [
