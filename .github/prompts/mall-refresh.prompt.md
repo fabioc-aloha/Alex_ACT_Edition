@@ -26,6 +26,7 @@ Audit this heir's installed Mall plugins for upstream drift, then apply updates 
    - Report "all local Mall plugins are in sync" and stop.
 
 3. **Summarize proposed actions**:
+   - `CURATED_SUBSET`: plugin is intentionally a reduced local subset with tracked upstream snapshot (informational, no action).
    - `UPDATED_UPSTREAM`: plugin metadata changed upstream.
    - `DEPRECATED_UPSTREAM`: plugin removed/deprecated upstream; candidate for removal.
    - `UNMANAGED_LOCAL_PLUGIN`: local folder without plugin.json; manual review needed.

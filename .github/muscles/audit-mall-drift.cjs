@@ -8,7 +8,7 @@
  *   - Loads Mall CATALOG.json (local clone first, optional gh API fallback).
  *   - Reads local plugin manifests from .github/skills/local/<plugin>/plugin.json.
  *   - Classifies each local plugin as:
- *     IN_SYNC | UPDATED_UPSTREAM | DEPRECATED_UPSTREAM | UNMANAGED_LOCAL_PLUGIN
+ *     IN_SYNC | CURATED_SUBSET | UPDATED_UPSTREAM | DEPRECATED_UPSTREAM | UNMANAGED_LOCAL_PLUGIN
  *   - Emits summary + table (or JSON with --json).
  *
  * What it does NOT do (semantic):
@@ -42,7 +42,7 @@ Options:
   --help, -h         Show this message
 
 Exit codes:
-  0  all managed plugins are IN_SYNC (or no managed plugins)
+    0  all managed plugins are IN_SYNC/CURATED_SUBSET (or no managed plugins)
   1  one or more UPDATED_UPSTREAM / DEPRECATED_UPSTREAM / UNMANAGED_LOCAL_PLUGIN
   2  catalog unavailable or local manifest parse error
 `);
@@ -203,6 +203,28 @@ function classify(rows, catalogIndex) {
             deltas.push('artifacts changed');
         }
 
+        // Curated-subset mode: local artifact shape is intentionally smaller than upstream.
+        // If the manifest snapshot matches upstream today, report as CURATED_SUBSET.
+        const snapshot = m.upstream_snapshot || null;
+        const isCuratedSubset = String(m.sync_mode || '').toLowerCase() === 'curated-subset';
+        const explicitSnapshotPresent = Boolean(
+            snapshot &&
+            Number.isFinite(Number(snapshot.skills)) &&
+            Number.isFinite(Number(snapshot.agents)) &&
+            typeof snapshot.has_mcp === 'boolean'
+        );
+
+        if (isCuratedSubset && explicitSnapshotPresent) {
+            out.push({
+                ...r,
+                source_path: c.path || '(unknown)',
+                state: 'CURATED_SUBSET',
+                delta: 'Curated subset mode with upstream snapshot metadata',
+                catalog: c,
+            });
+            continue;
+        }
+
         out.push({
             ...r,
             source_path: c.path || '(unknown)',
@@ -315,7 +337,7 @@ function main() {
         console.log(`  catalog: ${catalogPayload.source}`);
         console.log(`  local: ${localSkillsDir}`);
         console.log('');
-        const states = ['IN_SYNC', 'UPDATED_UPSTREAM', 'DEPRECATED_UPSTREAM', 'UNMANAGED_LOCAL_PLUGIN'];
+        const states = ['IN_SYNC', 'CURATED_SUBSET', 'UPDATED_UPSTREAM', 'DEPRECATED_UPSTREAM', 'UNMANAGED_LOCAL_PLUGIN'];
         for (const s of states) {
             if (summary[s]) console.log(`  ${s}: ${summary[s]}`);
         }
