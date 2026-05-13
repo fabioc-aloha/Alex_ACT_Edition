@@ -10,9 +10,19 @@ All notable changes to Alex ACT Edition.
 
 ## [1.2.1] - 2026-05-13
 
+### Added
+
+- **Brain audit trifecta**: Added `brain-audit.instructions.md`, `skills/brain-audit/SKILL.md`, and `/audit-brain` workflow support.
+- **Dedicated audit worker**: Added `agents/brain-auditor.agent.md` for deterministic local Edition audits.
+- **Mall refresh workflow**: Added drift-aware `/mall refresh` support and docs wiring for curated-subset states.
+
+### Fixed
+
+- **Audit robustness**: Hardened Edition audit flows for template context and npm probe handling.
+
 ### Changed
 
-- Version bump release.
+- Propagated Supervisor-side audit remediations into Edition artifacts.
 
 ---
 
