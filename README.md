@@ -53,7 +53,7 @@ The brain ships slash-prompts grouped by lifecycle stage. Type `/` in Copilot Ch
 | Command | When | What it does |
 | --- | --- | --- |
 | `/audit-apis` | Quarterly or before shipping skills that touch external APIs | Reads `EXTERNAL-API-REGISTRY.md`, flags stale entries via `audit-api-drift.cjs` |
-| `/audit-brain` | Before release, after broad brain edits, or when behavior drifts | Runs local deterministic brain QA, reports severity-ranked findings, and proposes minimal fixes |
+| `/audit-brain` | Before release, after broad brain edits, or when behavior drifts | Runs the `brain-auditor` workflow with local deterministic checks, severity-ranked findings, and minimal fixes |
 
 New to Edition? Jump to [Quick Start](#quick-start) to bootstrap your project.
 
@@ -157,7 +157,7 @@ Mall integration, tool awareness, fleet communication, and local brain audit rou
 
 | Instruction | What It Does |
 | --- | --- |
-| `brain-audit` | Routes brain-audit requests to local deterministic QA and severity-first remediation |
+| `brain-audit` | Routes brain-audit requests to the `brain-auditor` trifecta and severity-first remediation |
 | `mall-installation` | How projects install plugins from the [Alex Skill Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall) |
 | `tool-awareness` | Platform awareness for deferred tools and external ingest |
 
