@@ -186,6 +186,12 @@ If a `images/sample.png` file exists in the same directory, this will render. Ot
 
 ![Sample PNG](images/sample.png)
 
+### SVG image reference
+
+If a `images/sample.svg` file exists in the same directory, this should be auto-converted to PNG (md-to-word via svgexport), embedded inline or referenced (md-to-html), or preserved as a reference (html-to-md).
+
+![Sample SVG](images/sample.svg)
+
 ### Mermaid flowchart (left-right)
 
 ```mermaid

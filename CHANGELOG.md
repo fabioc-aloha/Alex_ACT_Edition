@@ -8,6 +8,45 @@ All notable changes to Alex ACT Edition.
 
 ---
 
+## [1.5.0] - 2026-05-18
+
+Minor — converter-qa harness restoration + complete-coverage tests for all converters (PNG + SVG image handling verified end-to-end).
+
+### Added
+
+- **converter-qa suites for previously uncovered converters**:
+  - `md-to-html.cjs: end-to-end + image handling` — structural HTML (DOCTYPE, CSS, headings, lists, tables, links, blockquotes, code), PNG embedding (data URI or referenced), SVG handling (inline / data URI / `<img>` ref)
+  - `md-to-txt.cjs: strip formatting + preserve image alt text` — formatting markers removed (`**`, `*`, backticks, `#`, `|`), content + image alt text preserved
+  - `html-to-md.cjs: structure + image preservation` — headings (ATX or setext), bold/italic, bullet + numbered lists, tables (pipe / simple / grid form), links, blockquotes, code, PNG + SVG image refs preserved with alt text
+  - `docx-to-md.cjs: round-trip + image extraction` — md → docx → md via md-to-word leg + docx-to-md leg; headings, lists, tables, and image extraction (or inline ref preservation) verified
+- **`md-to-word.cjs: [toc] marker warn-and-ignore` suite** — confirms v1.4.0 behavior (warning logged when `[toc]` marker found without `--toc`, marker stripped from body, output docx has no TOC field)
+- **Font + margin value assertions** added to `md-to-word.cjs: table styling regression` suite — header `w:sz="18"` (9pt), data `w:sz="17"` (8.5pt), cell margins `w:w="20"` (1pt T/B) + `w:w="60"` (3pt L/R). Catches the v1.4.0 numeric changes that previously flowed through silently
+- **`createImageFixtures` helper** in converter-qa — generates a minimal 1x1 PNG (67 bytes, embedded as binary literal) + a labeled SVG fixture for use across the new converter suites
+- **SVG image section** added to `docs/testing/md-to-word-coverage.md` regression corpus
+
+### Removed
+
+- **4 dead test suites** referencing modules that no longer exist:
+  - `Shared: replicate-core.cjs` (3 suites: base, batch retry & validation, negative-prompt & prompt-file)
+  - `Shared: svg-pipeline.cjs`
+  - These were pre-Edition artifacts from a Replicate AI image-gen + SVG pipeline that has been out of the brain for some time. The harness FATALed on the first missing module, blocking the entire test run
+- **2 obsolete callout assertions** in `Shared: markdown-preprocessor.cjs` suite — `::: tip` and `> [!WARNING]` callout transformation tests. The preprocessor never implemented these (always returned input unchanged), and the syntaxes aren't part of any active Edition workflow. If callout rendering is needed in the future, separate feature request
+- **2 file-inventory checks** for `shared/replicate-core.cjs` and `visual-memory.json` (also no longer exist)
+
+### Changed
+
+- `converter-qa.cjs` internal version 1.2.0 → 1.3.0; JSDoc updated to reflect new suite list and assertion count (284 → 256 after dead-suite removal + new-suite additions; net: cleaner)
+
+### Why
+
+User request: "make sure all other converters do a complete job" with explicit "mds can contain svg and png images, make sure they are supported by the converters." Before this release, only `md-to-word` and `md-to-eml` had dedicated suites; the other 4 converters had zero coverage, and the harness FATALed at startup so even existing suites couldn't run end-to-end. Result: **256 PASS, 0 FAIL, 4 SKIP** (skips are pandoc-availability checks when pandoc is missing in CI, plus adm-zip on systems without it).
+
+### Falsifiability
+
+If a converter regresses on PNG or SVG handling in a future change, the new suites will catch it. If callout syntax becomes a real requirement, add the feature to `markdown-preprocessor.cjs` and re-add the assertions (or new ones) — the prior version is in git history.
+
+---
+
 ## [1.4.0] - 2026-05-18
 
 Minor — `md-to-word` table tightening + `[toc]` marker honors documented default.
