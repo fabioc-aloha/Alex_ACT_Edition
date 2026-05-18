@@ -42,4 +42,4 @@ VS Code does not expose token counts. Estimate via:
 
 ## Graceful Handoff
 
-When approaching session limits or switching topics, write `/memories/session/[name].md` with: state, completed work, next steps, pending decisions. Suggest: "New session can read `/memories/session/[file].md` to continue."
+When approaching session limits or switching topics, write the cross-session handoff to **repo-root `HANDOFF.md`** (state, completed work, next steps, pending decisions). `/memories/session/` is for in-conversation scratch only — it clears at conversation end and is the wrong tier for handoff content. Suggest: "New session can read `HANDOFF.md` at repo root to continue."

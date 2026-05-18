@@ -8,6 +8,24 @@ All notable changes to Alex ACT Edition.
 
 ---
 
+## [1.3.2] - 2026-05-18
+
+Internal consistency fix for the handoff-tier convention shipped in v1.2.2 + v1.3.1. Two files still routed handoff content to ephemeral session memory — the exact pattern s360 originally flagged.
+
+### Fixed
+
+- **`skills/meditation/SKILL.md`** Extract routing table: replaced `Session continuity for next chat → /memories/session/<name>.md` with `Cross-session handoff (next session needs to know) → repo file (HANDOFF.md at repo root) — NOT session memory`. The skill's Extract step now agrees with its Handoff step (Step 5) and with `memory-triggers.instructions.md` / `save-session-note.prompt.md`.
+- **`skills/meditation/SKILL.md`** Step 5 (Handoff): renamed `SESSION-HANDOFF.md` → `HANDOFF.md`. v1.3.1's rename had missed this SKILL.md file (caught in heir-aware spot-check).
+- **`instructions/session-health-monitoring.instructions.md`** Graceful Handoff section: was telling the agent to write state + completed work + next steps + pending decisions to `/memories/session/[name].md` (which clears at conversation end). Now routes to repo-root `HANDOFF.md` with an explicit "session memory is for in-conversation scratch only" clarifier.
+
+### Verification
+
+- brain-qa exit 0 (58 Edition files)
+- test-edition-applyto-coverage 18/18 PASS, 0 gaps
+- Zero `write /memories/session/...` handoff misroutings remaining in the live brain tree (verified via grep)
+
+---
+
 ## [1.3.1] - 2026-05-18
 
 Naming clarity + zero-behavior-change refactor. Per proposal `docs/proposals/prompt-overlap-audit-2026-05-18.md` (Supervisor side).
