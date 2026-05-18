@@ -8,6 +8,25 @@ All notable changes to Alex ACT Edition.
 
 ---
 
+## [1.3.3] - 2026-05-18
+
+Final cleanup of the handoff-tier convention introduced in v1.2.2. Reading side now agrees with the writing side: prior-session context comes from repo-root `HANDOFF.md` first, session memory only as legacy fallback.
+
+### Fixed
+
+- **`instructions/proactive-awareness.instructions.md`** Cross-Session Context Recovery (PA1): Step 1 now checks repo-root `HANDOFF.md` first (the canonical cross-session handoff per `memory-triggers.instructions.md`). Session memory becomes Step 2, labeled as "legacy/secondary signal" with an explicit note that any handoff content there predates the v1.2.2 tier convention. Surface-context table updated to recognize `HANDOFF.md present with recent content` as the primary trigger.
+
+### Why
+
+v1.2.2 + v1.3.1 + v1.3.2 fixed the *write* side (where handoff content goes). The *read* side (`proactive-awareness` Step 1) was still pointing at `/memories/session/` as the primary source for prior-session context. Symmetry now holds: write to `HANDOFF.md`, read from `HANDOFF.md`.
+
+### Verification
+
+- brain-qa exit 0 (58 Edition files)
+- test-edition-applyto-coverage 18/18 PASS, 0 gaps
+
+---
+
 ## [1.3.2] - 2026-05-18
 
 Internal consistency fix for the handoff-tier convention shipped in v1.2.2 + v1.3.1. Two files still routed handoff content to ephemeral session memory — the exact pattern s360 originally flagged.
