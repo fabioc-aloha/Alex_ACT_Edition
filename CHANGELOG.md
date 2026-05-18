@@ -8,6 +8,27 @@ All notable changes to Alex ACT Edition.
 
 ---
 
+## [1.4.0] - 2026-05-18
+
+Minor — `md-to-word` table tightening + `[toc]` marker honors documented default.
+
+### Changed
+
+- **`muscles/md-to-word.cjs` table styling** (internal muscle version 5.4.0 → 5.5.0):
+  - Header font: 10pt → **9pt** (`w:sz` 20 → 18) — still bold white on Microsoft blue
+  - Data cell font: 9pt → **8.5pt** (`w:sz` 18 → 17)
+  - Cell margins: T/B 40 twips (2pt) → **20 twips (1pt)**, L/R 80 twips (4pt) → **60 twips (3pt)**
+  - Visible effect: denser, more reference-document-style tables; same colors, borders, and zebra striping
+- **`muscles/md-to-word.cjs` `[toc]` marker semantic**: previously, a `[toc]` line in the source silently set `args.toc = true`. Now the marker line is still stripped from the source, but TOC is **not** auto-enabled. A warning is logged so the heir can either pass `--toc` explicitly or remove the marker. Aligns the skill with its documented default (`--toc | off`).
+  - Version-management note: classified as **minor** rather than major because the `[toc]` auto-detect was never in the skill's documented Options table — it was a side-effect of the preprocessor. Removing an undocumented side-effect to honor the documented default is a quality fix, not a breaking change to the documented contract. Heirs whose source files use `[toc]` AND who don't pass `--toc` will see the warning in their next conversion run and can adjust trivially. If a heir reports regression within 14 days, fallback is v1.4.1 reverting just the `[toc]` semantic.
+- `skills/md-to-word/SKILL.md` — Options table notes new `[toc]` marker behavior; Table Formatting section reflects 9pt/8.5pt fonts and 1pt/3pt padding; Version History gains v5.5.0 row; currency + lastReviewed stamped 2026-05-18.
+
+### Added
+
+- `docs/testing/md-to-word-coverage.md` — regression corpus exercising every markdown feature the skill claims to support (H1-H6, inline formatting, all list types, tables with alignment and pagination, code blocks in multiple languages, blockquotes including nested, horizontal rules, footnotes, PNG image refs, Mermaid flowchart / sequence / state / class diagrams). Includes a 21-item verification checklist for post-conversion spot-check, and a TOC-marker behavior test procedure.
+
+---
+
 ## [1.3.4] - 2026-05-18
 
 Patch — heir discoverability of the AI-Memory formal contract.
