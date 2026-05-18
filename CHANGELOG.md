@@ -8,6 +8,19 @@ All notable changes to Alex ACT Edition.
 
 ---
 
+## [1.3.4] - 2026-05-18
+
+Patch — heir discoverability of the AI-Memory formal contract.
+
+### Changed
+
+- `skills/ai-memory-setup/SKILL.md` — added "Formal contract" subsection pointing heirs at `AI-Memory/SCHEMA.md` (the Supervisor-maintained contract document covering subfolder ownership, frontmatter, and lifecycle rules). Folder Structure tree updated to show `SCHEMA.md` at root.
+- `skills/ai-memory-setup/SKILL.md` § Write Feedback — aligned filename format and frontmatter description to the canonical shape in SCHEMA.md (filename now `YYYY-MM-DD-<heir-id>-<short-slug>.md`; frontmatter keys `date`, `heir_id`, `severity`, `category` — lowercase, matches what Supervisor expects when triaging).
+
+No behavior change. Purely heir-facing documentation alignment so the deployed spec and the Supervisor-side contract agree.
+
+---
+
 ## [1.3.3] - 2026-05-18
 
 Final cleanup of the handoff-tier convention introduced in v1.2.2. Reading side now agrees with the writing side: prior-session context comes from repo-root `HANDOFF.md` first, session memory only as legacy fallback.
