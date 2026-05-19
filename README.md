@@ -20,6 +20,37 @@ This is a **cognitive architecture** -- 18 skills, 35 instructions, 23 prompts, 
 
 The v1.5.0 reasoning baseline and the v2.0.0 release benchmark (Compose verification, 15/15 composite, -22.5% credits) were both run on **Claude Opus 4.7 (1M context)**. Real-world heir adoption (S360) succeeded on Copilot's default model surface; specific model used was not recorded.
 
+### Snapshot: Copilot Language Models (2026-05-19)
+
+The table below is a factual snapshot of the Copilot model surface visible in VS Code 1.121 (`Settings → GitHub Copilot → Language Models`). Costs are **credits per 1M tokens** (Copilot internal accounting — different from the GitHub Docs *premium request multiplier* surface). **Verify against your own picker** before depending on these values; model availability and pricing can change between releases.
+
+| Model | Context | Tools | Vision | In (cr/1M) | Out (cr/1M) | Cache (cr/1M) |
+| --- | ---: | :---: | :---: | ---: | ---: | ---: |
+| Claude Haiku 4.5 | 200K | ✓ | ✓ | 100 | 500 | 10 |
+| Claude Opus 4.5 | 200K | ✓ | ✓ | 500 | 2500 | 50 |
+| Claude Opus 4.6 | 200K | ✓ | ✓ | 500 | 2500 | 50 |
+| Claude Opus 4.6 (Internal only) | 1000K | ✓ | ✓ | 500 | 2500 | 50 |
+| Claude Opus 4.7 | 200K | ✓ | ✓ | 500 | 2500 | 50 |
+| Claude Opus 4.7 (Extra high reasoning)(Internal only) | 200K | ✓ | ✓ | 500 | 2500 | 50 |
+| Claude Opus 4.7 (High reasoning)(Internal only) | 200K | ✓ | ✓ | 500 | 2500 | 50 |
+| Claude Opus 4.7 (Internal only) | 1000K | ✓ | ✓ | 500 | 2500 | 50 |
+| Claude Sonnet 4.5 | 200K | ✓ | ✓ | 300 | 1500 | 30 |
+| Claude Sonnet 4.6 | 200K | ✓ | ✓ | 300 | 1500 | 30 |
+| Gemini 2.5 Pro | 173K | ✓ | ✓ | 125 | 1000 | 12.5 |
+| Gemini 3 Flash (Preview) | 173K | ✓ | ✓ | 50 | 300 | 5 |
+| Gemini 3.1 Pro (Preview) | 200K | ✓ | ✓ | 200 | 1200 | 20 |
+| GPT-4.1 ⚠️ *(retiring 2026-06-01)* | 128K | ✓ | ✓ | 200 | 800 | 50 |
+| GPT-4o | 68K | ✓ | ✓ | 250 | 1000 | 125 |
+| GPT-5 mini | 192K | ✓ | ✓ | 25 | 200 | 2.5 |
+| GPT-5.2 ⚠️ *(retiring 2026-06-01)* | 400K | ✓ | ✓ | 175 | 1400 | 17.5 |
+| GPT-5.2-Codex *(retiring 2026-06-01)* | 400K | ✓ | ✓ | 175 | 1400 | 17.5 |
+| GPT-5.3-Codex | 400K | ✓ | ✓ | 175 | 1400 | 17.5 |
+| GPT-5.4 | 400K | ✓ | ✓ | 175 | 1400 | 17.5 |
+| GPT-5.4 mini | 400K | ✓ | ✓ | 75 | 450 | 7.5 |
+| GPT-5.5 | 400K | ✓ | ✓ | 500 | 3000 | 50 |
+
+**Universal**: every Copilot model in this lineup exposes Tools + Vision — those capability flags are not differentiators within this surface. **Variable**: context window (68K → 1M), input cost (25 → 500), output cost (200 → 3000), and cache cost (2.5 → 125). The capability-floor benchmark (`MAN.8.3`, tracked in Supervisor `HANDOFF.md`) will measure ACT-discipline performance across a subset of these models; the data above is the factual spec sheet that feeds that benchmark, not a recommendation.
+
 ### What the brain needs from a model
 
 ACT discipline depends on the model meeting all four:
