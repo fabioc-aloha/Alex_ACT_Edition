@@ -8,6 +8,39 @@ All notable changes to Alex ACT Edition.
 
 ---
 
+## [2.0.2] - 2026-05-19
+
+**Patch — welcome baseline gains three VS Code 1.120/1.121 settings.** Three keys added to `.github/config/welcome-baseline.json` so all heirs get them on next `/welcome` (or fresh setup). Companion to v2.0.1 (which updated the brain rules describing these capabilities); v2.0.2 wires the matching settings into the heir bootstrap.
+
+### Changed
+
+- **`.github/config/welcome-baseline.json`** — added three keys to the `settings` object:
+  - `chat.tools.compressOutput.enabled: true` (1.120 Preview) — enables terminal output compression for `git diff` / `ls -l` / `npm install` and the 1.121 expansion (test runners, build tools, linters, Docker, package managers). The brain's file-redirect fallback remains valid for cases where compression strips data the agent needs.
+  - `chat.utilityModel: "gpt-4o-mini"` (1.121) — routes title generation, rename suggestions, and settings search to a smaller cheap model. Heirs can override locally if `gpt-4o-mini` isn't in their model surface (VS Code falls back to default).
+  - `chat.utilitySmallModel: "gpt-4o-mini"` (1.121) — same rationale for the small-model slot.
+- **Baseline `$comment`** updated to acknowledge that preview/experimental toggles can be included when explicitly requested by user policy and noted in CHANGELOG (was: "Stable settings only — keep preview/experimental toggles off unless explicitly requested"). `chat.tools.compressOutput.enabled` is the first such inclusion.
+
+### Heir impact
+
+Heirs running `/welcome` (first-session bootstrap or new-machine setup) get all three settings. Heirs running `/welcome-verify` will see the three keys flagged as `missing` until they re-run `/welcome`. Existing user-level overrides for these keys are preserved by the merge step in `/welcome` (it merges, doesn't overwrite values that already differ — well, actually it does overwrite to match baseline; heirs who want a different utility model should set it AFTER `/welcome`). No `--allow-major` needed; standard `/upgrade` covers the baseline file.
+
+### Override guidance
+
+Heirs who want a different utility model (e.g. running on BYOK with a different small-model name) should set their override in personal `settings.json` AFTER running `/welcome`. The `/welcome` merge is overwrite-to-baseline, so the override needs to be re-applied if `/welcome` runs again.
+
+### Validation
+
+Dogfooded the `/welcome` reference command (verbatim from `welcome.prompt.md`) against the curator's personal `settings.json` before shipping — all three keys landed correctly as JSON booleans/strings (lowercase `true`, quoted model names). No existing keys disturbed.
+
+### Audit trail
+
+- Companion to v2.0.1 (brain rules) — commits `b6dafc3` (Supervisor) + `f9aaffd` (Edition)
+- Proposal: original `vscode-1.120-1.121-adoption-2026-05-19.md` recommended these as personal-settings-only; user directed (2026-05-19) to bake into the heir baseline instead
+- Brain-qa: exit 0 across 79 Supervisor + 58 Edition files (no brain file changes in v2.0.2)
+- `test-edition-applyto-coverage`: 18/18 PASS, 0 capability gaps (no `applyTo` changes)
+
+---
+
 ## [2.0.1] - 2026-05-19
 
 **Patch — VS Code 1.120/1.121 feature adoption.** Three brain files updated to reflect VS Code capabilities that shipped between 2026-05-13 and 2026-05-19. Mirrored byte-for-byte from Supervisor per the shared-core direction-of-edit rule. Zero behavior change for heirs — additive informational text + one factual correction + one extension-recommendation update.
