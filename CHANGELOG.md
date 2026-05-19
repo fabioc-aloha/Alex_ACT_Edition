@@ -8,6 +8,37 @@ All notable changes to Alex ACT Edition.
 
 ---
 
+## [2.0.1] - 2026-05-19
+
+**Patch — VS Code 1.120/1.121 feature adoption.** Three brain files updated to reflect VS Code capabilities that shipped between 2026-05-13 and 2026-05-19. Mirrored byte-for-byte from Supervisor per the shared-core direction-of-edit rule. Zero behavior change for heirs — additive informational text + one factual correction + one extension-recommendation update.
+
+### Changed
+
+- **`terminal-command-safety.instructions.md`** — documents two new VS Code mechanisms that work alongside the existing rules:
+  - NEW section *VS Code 1.120 + 1.121 Terminal Output Compression (Preview)* names `chat.tools.compressOutput.enabled` and the 1.121 expansion to `pytest` / `jest` / `cargo test` / `tsc` / `cargo build` / `make` / linters / Docker / package managers, plus auto-dispose of background terminals.
+  - *Terminal Hanging* rule #1 now notes that VS Code 1.121+ auto-promotes sync→background after a configurable idle-silence period; the agent-intent rule remains correct and is still required on older builds.
+  - *Falsifier — Backtick Hazard* watermark bumped from "through 1.118" to "through 1.121" with note that 1.120/1.121 ship no fix for `microsoft/vscode#295620`. The temp-file pattern remains mandatory.
+- **`session-health-monitoring.instructions.md`** — *Proxy Heuristics* opener corrected: VS Code 1.120 made BYOK token counts visible in the Chat-view context-window control. Opener now distinguishes BYOK (ground truth available) from non-BYOK / older builds (proxy heuristics still apply). Table below unchanged.
+- **`markdown-mermaid/SKILL.md`** — *VS Code Extension Setup* updated: VS Code 1.121 ships built-in Mermaid rendering in Markdown previews per `microsoft/vscode#293028`. Recommendation list keeps mermaidchart (chart authoring), vstirbu (standalone preview tab), and non-Mermaid tools (PlantUML, Graphviz, D2). `bierner.markdown-mermaid` removed — the built-in renderer covers its use case.
+
+### Out of scope (deliberate)
+
+Three 1.120/1.121 features documented in the proposal but **not adopted** pending field data: `chat.tools.riskAssessment.enabled` (overlaps act-pass severity), Claude auto-permission mode (overlaps act-pass), and workspace-level forcing of `chat.tools.compressOutput.enabled` (still preview).
+
+### Heir impact
+
+None for the contract. Heirs on v2.0.0 reading the updated rules gain awareness of upstream-handled mechanisms; the rules themselves continue to fire correctly. No `--allow-major` needed; standard `/upgrade` covers it.
+
+### Proposal + audit trail
+
+- Proposal: `Alex_ACT_Supervisor/docs/proposals/vscode-1.120-1.121-adoption-2026-05-19.md`
+- Supervisor commit: `b6dafc3` (origin/main)
+- Brain-qa: exit 0 across 79 Supervisor + 58 Edition files
+- `test-applyto-coverage`: 15/15 PASS, 0 capability gaps
+- `test-edition-applyto-coverage`: 18/18 PASS, 0 capability gaps
+
+---
+
 ## [2.0.0] - 2026-05-19
 
 **Major — reasoning-quality release.** Same brain shape (36 instructions, 18 skills, 23 prompts, 16 muscles, 4 agents), same heir API surface, same `/upgrade` mechanism. Behavior changes are improvements to always-on reasoning disciplines that close measured coverage gaps in benchmark scenarios while reducing total credits-per-solved-problem. Major version bump signals that heirs upgrade via `--allow-major` and acknowledges that v2 reasoning IS measurably different from v1.5.0 (sharper verify-before-report, frame audits on explain frames, output-discipline gates).
