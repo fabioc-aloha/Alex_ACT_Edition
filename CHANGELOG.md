@@ -8,6 +8,85 @@ All notable changes to Alex ACT Edition.
 
 ---
 
+## [2.0.0] - 2026-05-19
+
+**Major — reasoning-quality release.** Same brain shape (36 instructions, 18 skills, 23 prompts, 16 muscles, 4 agents), same heir API surface, same `/upgrade` mechanism. Behavior changes are improvements to always-on reasoning disciplines that close measured coverage gaps in benchmark scenarios while reducing total credits-per-solved-problem. Major version bump signals that heirs upgrade via `--allow-major` and acknowledges that v2 reasoning IS measurably different from v1.5.0 (sharper verify-before-report, frame audits on explain frames, output-discipline gates).
+
+Validated by:
+
+- Compose verification benchmark (5 scenarios): **13/15 → 15/15 composite**, **-22.5% credits** (228.5 → 177.0)
+- S360 real-world adoption: heir adopted on `main` 2026-05-19 and self-promoted `.act-heir.json` from `2.0.0-candidate` → `2.0.0` after multi-commit follow-through validation
+- Tenet X demonstration in S360: v2 brain refused a stale templated instruction from Supervisor (exactly the failure mode the new rules were designed to catch)
+- Terminal-safety fix empirical validation: 3 post-fix commits in S360 with `$env:TEMP` pattern, zero `.commit-msg.tmp` leaks (verified via `git show --stat`)
+
+### Breaking
+
+- **None for the heir contract.** File inventory unchanged. Heir-side `.act-heir.json`, scripts, `local/` skills, `HANDOFF.md`, `episodic/`, `workflows/` all preserved on upgrade.
+- **Behavior changes are intentional** and visible: heirs will notice more verify-before-report patterns firing on search/summary work, more explicit frame-audit markers on "explain X" / "tell me how Y works" prompts, more by-name citations during disagreement-mode refusals. Net effect per benchmark + S360: better outcomes at lower cost, but takes a session to feel natural.
+- **`--allow-major` required** on `node .github/scripts/upgrade-self.cjs` for heirs upgrading from any v1.x to v2.0.0.
+
+### Added
+
+- **`epistemic-calibration.instructions.md` Output-discipline subsection** (Phase 3.3) — Anti-Hallucination Signals table split into Input-discipline (existing 5 rows: claims about generation) and Output-discipline (3 new rows: claims about reporting):
+  - `"No matches found"` / `"Verified clean"` / `"Nothing returned"` → verify search scope before reporting absence; cite paths/globs/file-count
+  - `"The doc says X"` / `"Per README"` / `"According to spec"` → cross-check doc against filesystem; cite both
+  - `"I checked and..."` / `"Verified that..."` → name what was actually checked; unattributed verification is theatre
+  - Plus 4th Core Principle: *"A search that didn't run looks identical to a search that found nothing — verify the scope before reporting absence."*
+- **`problem-framing-audit.instructions.md` Explain/Summarize Frame subsection** (Phase 5 Option C) — complementary discipline for summarization patterns the Output-discipline literal triggers don't catch:
+  - Literal trigger phrases: `"Explain X"`, `"Tell me how Y works"`, `"Describe Z"`, `"Summarize <doc>"`, `"Read <file> and..."`, `"Walk me through..."`, `"What does <doc> say about..."`
+  - Required action: name source file(s) read + cross-check ≥1 structural claim against filesystem; if doc and filesystem disagree, surface the gap and report both
+  - Visible marker: `**Verified against**: <doc path> + <filesystem check>`
+- **`terminal-command-safety.instructions.md` temp-file location guidance** — closes a heir-reported defect (the `git commit -F tmpfile` + `git add -A` interaction silently committed temp message files into commits):
+  - Warning paragraph: place temp files outside the working tree (`$env:TEMP\<slug>.txt` on Windows, `/tmp/<slug>.txt` on Unix) OR add the pattern to `.gitignore` before staging
+  - Preferred PowerShell template using `Join-Path $env:TEMP` + `Set-Content -NoNewline` + `git commit -F` + `Remove-Item`
+
+### Changed
+
+- **3 instruction files** updated (see Added above for the substantive changes):
+  - `.github/instructions/epistemic-calibration.instructions.md`
+  - `.github/instructions/problem-framing-audit.instructions.md`
+  - `.github/instructions/terminal-command-safety.instructions.md`
+- **`.github/VERSION`** bumped 1.5.0 → 2.0.0.
+- **File inventory unchanged** at 36 instructions / 18 skills / 23 prompts / 16 muscles / 4 agents.
+- **Always-on token growth: ~+908 tokens/session** (~+3632 bytes across the 3 instruction files). Trade is net-positive per benchmark: -22.5% credits across the 5-scenario Compose set; breakeven at ~1 avoided corrective turn per 10 sessions; observed rate in benchmark + S360 is 2-3+ per 10.
+
+### Scope correction
+
+A pre-flight diff during release prep reported 46 files differing between Edition v1.5.0 and the v2 candidate workspace. On verification (parent-commit checkout + spot-check) the 43 "accumulated v2-candidate dev" files were already byte-identical to Edition v1.5.0; the apparent difference was line-ending normalization (CRLF in Edition vs LF in the v2 candidate scratch workspace) that git smooths over at commit time. The **actual v2.0.0 release scope is 3 instruction files** (Phase 3.3 + Phase 5 + terminal-safety) plus VERSION + CHANGELOG. This entry was corrected before push.
+
+### Upgrade
+
+```pwsh
+node .github/scripts/upgrade-self.cjs --allow-major
+```
+
+Heirs preserve all of: `skills/local/`, `.act-heir.json`, `HANDOFF.md`, `episodic/`, `workflows/`, `scripts/` (heir-specific), `docs/`, all non-`.github/` content. Heir-doctor may surface cosmetic warnings on first run if the heir's `edition-manifest.json` is stale; they clear after upgrade completes.
+
+### Why
+
+The v1 line optimized brain size; v2 optimizes brain *outcomes*. The Phase 1 baseline benchmark surfaced one real coverage gap (output-verification — verify before reporting search/doc claims, scored 2/3 not 3/3 in S4 and S7). Phase 2 dual audit of all 17 always-on rules produced 1 Grow / 8 Compose / 8 Unchanged / 0 Shrink / 0 Restructure — confirming the brain isn't bloated, it's a tightly composed system where every rule earns its cost. Phase 3 applied the Grow (epistemic-calibration Output-discipline). Phase 5 added the complementary Explain/Summarize frame for surface patterns the Phase 3 literal triggers miss. Terminal-safety added the temp-file location guidance to close a heir-reported defect that hit S360 twice.
+
+The release reaches Edition because S360 adopted v2 candidate in real-world product work on 2026-05-19 and demonstrated all the predicted improvements PLUS a real Tenet X self-correction moment (v2 brain refused a stale Supervisor instruction). Real-world signal outweighs synthetic benchmark for ship/no-ship decisions.
+
+### Falsifiability
+
+This release is wrong if any of the following occur within 14 days:
+
+- ≥2 heirs report behavior regressions traceable to Phase 3.3 or Phase 5 changes (triggers partial rollback or v2.0.1 fix-forward)
+- The terminal-safety fix doesn't prevent a `.commit-msg.tmp`-class leak in a heir that upgrades to v2.0.0
+- S360 reverts its `.act-heir.json` marker from `2.0.0` back to `2.0.0-candidate` or below (the bellwether heir)
+- A fleet-cost regression appears that wasn't visible in the 5-scenario benchmark (triggers the Phase 6.2 light re-baseline that was deferred)
+
+If any fire: cut v2.0.1 with fix; document in Supervisor's `brain-qa-changelog.md` tagged `[V2-REGRESSION]`.
+
+### References
+
+- Launch proposal: [`Alex_ACT_Supervisor/docs/proposals/edition-v2-launch-2026-05-19.md`](https://github.com/fabioc-aloha/Alex_ACT_Supervisor/blob/main/docs/proposals/edition-v2-launch-2026-05-19.md)
+- Benchmark data: `Alex_ACT_Supervisor/benchmark/v2-candidate-baseline.md`
+- Plan: `Alex_ACT_Edition_v2/PLAN-v2-REASONING.md`
+
+---
+
 ## [1.5.0] - 2026-05-18
 
 Minor — converter-qa harness restoration + complete-coverage tests for all converters (PNG + SVG image handling verified end-to-end).

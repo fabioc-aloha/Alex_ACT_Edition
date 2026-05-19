@@ -5,8 +5,8 @@ inheritance: inheritable
 description: "Prevent terminal command failures from shell metacharacter interpretation, output capture issues, and hanging commands"
 application: "When running terminal commands, especially those with special characters or long output"
 applyTo: "**"
-currency: 2026-04-30
-lastReviewed: 2026-04-30
+currency: 2026-05-19
+lastReviewed: 2026-05-19
 ---
 
 # Terminal Command Safety
@@ -24,6 +24,19 @@ Backticks break in ALL shells (bash=command substitution, PowerShell=escape char
 | Plain text only | Inline is safe |
 
 Rules: `gh` → `--body-file`, `git commit` → `-F <file>`, any CLI → file-based input over inline.
+
+**Temp file location matters**: place temp files **outside the working tree** (`$env:TEMP\<slug>.txt` on Windows, `/tmp/<slug>.txt` on Unix) OR add the pattern to `.gitignore` before staging. Otherwise `git add -A` will stage and commit the message file itself. S360 hit this twice in 2026-05 (commits `26631b4` then caught mid-flight on the next leak via Tenet X self-review).
+
+Preferred PowerShell template for multi-line commit messages:
+
+```pwsh
+$m = Join-Path $env:TEMP "<slug>.txt"
+Set-Content -Path $m -Value $msg -NoNewline
+git commit -F $m
+Remove-Item $m
+```
+
+Filesystem isolation prevents the leak by construction.
 
 ## Output Capture Failures
 
