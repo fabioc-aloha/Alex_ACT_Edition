@@ -8,6 +8,36 @@ All notable changes to Alex ACT Edition.
 
 ---
 
+## [2.0.3] - 2026-05-19
+
+**Patch — README gains an honest Model Compatibility section.** Adds explicit guidance for heirs about which Copilot models the brain is known to work with, what architectural needs the brain has, and what we have **not** measured. Closes a documentation gap; does not change any brain behavior or settings.
+
+### Added
+
+- **`README.md`** — new top-level section **Model Compatibility** between the cognitive-architecture intro and the Commands table. Contents:
+  - Explicit "we have not characterised the minimum model" disclaimer citing `MAN.8.3` in the Claims Registry
+  - What we tested with: Claude Opus 4.7 (1M context) for v1.5.0 reasoning baseline + v2.0.0 release benchmark
+  - Architectural needs: tool calling, long context (≥ 64K, ideally ≥ 128K), instruction adherence, multi-step reasoning
+  - Practical recommendation: reasoning-class models (Claude Sonnet 4+, Claude Opus, GPT-4.1, GPT-4o or equivalent) for primary agent work; `gpt-4o-mini` reserved for the `chat.utilityModel` / `chat.utilitySmallModel` slots per v2.0.2 baseline (NOT for primary agent work)
+  - Open question: call for heir feedback with reports of "this worked on X" / "this failed on Y" routed to `AI-Memory/feedback/alex-act/`
+
+### Heir impact
+
+Documentation-only. No behavior change. Heirs on v2.0.2 reading the new section will learn what model class is recommended; no `/upgrade` reconfiguration is needed beyond pulling the new README.
+
+### What this is not
+
+This release does **not** establish a measured minimum model. The `MAN.8.3` claim remains open. The architectural-needs framing is the honest current state. A planned capability-floor benchmark (tracked in Supervisor `HANDOFF.md` outstanding item #8) will replace this guidance with measured floor on a future Edition release.
+
+### Audit trail
+
+- Companion to v2.0.2 baseline (`178cb76`) and v2.0.1 brain rules (`f9aaffd`)
+- Supervisor README updated in parallel with curator-facing framing
+- Provenance: user directed 2026-05-19 evening "A and then another day we refine it with B" — this is Option A (ship honest architectural-needs guidance now); Option B (run capability-floor benchmark to close `MAN.8.3`) deferred to a future session
+- `test-edition-applyto-coverage`: 18/18 PASS (unaffected — no `applyTo` or brain-file changes)
+
+---
+
 ## [2.0.2] - 2026-05-19
 
 **Patch — welcome baseline gains three VS Code 1.120/1.121 settings.** Three keys added to `.github/config/welcome-baseline.json` so all heirs get them on next `/welcome` (or fresh setup). Companion to v2.0.1 (which updated the brain rules describing these capabilities); v2.0.2 wires the matching settings into the heir bootstrap.

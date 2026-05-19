@@ -12,6 +12,36 @@ A confident wrong answer is worse than an uncertain correct answer. ACT shifts t
 
 This is a **cognitive architecture** -- 18 skills, 35 instructions, 23 prompts, 4 worker agents, and 21 muscles that teach your AI assistant to think critically about its own reasoning. Built for GitHub Copilot's `.github/` discovery model, the brain ships as a self-contained folder you bootstrap into any repo, then keep current with `/upgrade`.
 
+## Model Compatibility
+
+**Honest framing**: we have **not** characterised the minimum model size that supports ACT compliance. The `MAN.8.3` claim in the [Claims Registry](https://github.com/fabioc-aloha/Alex_ACT_Supervisor/blob/main/ACT/CLAIMS-REGISTRY.md) explicitly tags this as an open empirical question. The guidance below is based on **architectural needs**, not measured floor.
+
+### What we tested with
+
+The v1.5.0 reasoning baseline and the v2.0.0 release benchmark (Compose verification, 15/15 composite, -22.5% credits) were both run on **Claude Opus 4.7 (1M context)**. Real-world heir adoption (S360) succeeded on Copilot's default model surface; specific model used was not recorded.
+
+### What the brain needs from a model
+
+ACT discipline depends on the model meeting all four:
+
+| Need | Why |
+| --- | --- |
+| **Strong tool calling** | Most behaviours invoke tools; brittle tool calling breaks the act-pass loop |
+| **Long context (≥ 64K, ideally ≥ 128K)** | Always-on instructions + workspace files + tool output add up fast |
+| **Instruction adherence** | Tenet IV (system-prompt-skepticism) and visible markers need the model to actually follow structured rules under pressure |
+| **Multi-step reasoning** | Disconfirmer search, alternative-hypothesis generation, frame audits all chain reasoning steps |
+
+### Practical recommendation
+
+| Slot | Recommendation |
+| --- | --- |
+| **Primary agent model** (the chat conversation) | Reasoning-class model from Copilot's lineup — Claude Sonnet 4+ / Claude Opus / GPT-4.1 / GPT-4o or equivalent. Smaller models (e.g. gpt-4o-mini) may work for routine tasks but **have not been validated** against the full act-pass discipline. |
+| **`chat.utilityModel` / `chat.utilitySmallModel`** (title generation, rename suggestions, settings search) | `gpt-4o-mini` is set as the default in `welcome-baseline.json` (v2.0.2+). These slots are deliberately routed to a cheap model for token economy; they don't run ACT discipline. |
+
+### Open question (tracked)
+
+If you run Edition on a specific model and observe what works or breaks, file feedback to `AI-Memory/feedback/alex-act/`. The capability-floor study (MAN.8.3) needs evidence from multiple models. Reports of "this worked on X" / "this failed on Y" both count.
+
 ## Commands
 
 The brain ships slash-prompts grouped by lifecycle stage. Type `/` in Copilot Chat to see the full list.
