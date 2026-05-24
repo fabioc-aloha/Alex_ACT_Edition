@@ -8,6 +8,46 @@ All notable changes to Alex ACT Edition.
 
 ---
 
+## [2.1.0] - 2026-05-24
+
+**Minor — two new always-on instructions for severity-tagged brain commits and falsifiability deadlines.** Lifted from Karpathy_Loop's Phase 3 operational discipline (2026-05-23) and adopted as fleet-wide always-on per [Supervisor brain-qa proposal 2026-05-24-02](https://github.com/fabioc-aloha/Alex_ACT_Supervisor/blob/main/docs/proposals/brain-qa-2026-05-24-02.md). These two rules sit underneath the existing brain-curation flow as additional gates — they don't replace the proposal-first protocol, they tighten it.
+
+`[constitutional]` change: both new instructions are rules other rules now depend on. `brain-curation-rules` (Supervisor only) gained a Severity + Falsifiability Gate subsection that references both.
+
+### Added
+
+- **`.github/instructions/severity-tagged-commits.instructions.md`** — every brain-touching commit must carry one of `[typo | clarification | behaviour | constitutional]` in the subject line. `[behaviour]` requires the trimmed ACT pass; `[constitutional]` requires the full pass. Mixed commits get the highest tier. Self-falsified at 30 brain-touching commits or 2026-08-23, whichever fires first.
+- **`.github/instructions/falsifiability-deadlines.instructions.md`** — every new or materially edited brain artefact (instruction / skill / prompt / muscle / agent) must declare a specific falsification deadline: date, event, or count+time. "After N passes" without a date is not sufficient. Two-step lifecycle transition `provisional → sinking → archived`. Self-falsified at 5 new artefacts adopting deadlines or 2026-08-23, whichever fires first.
+
+### Why this matters
+
+Severity tags restore credit-assignment fidelity that flat commit lists destroy — a typo fix and a Cardinal Rule change had identical weight in `git log` before. Falsifiability deadlines prevent provisional artefacts from accumulating in the brain indefinitely while their authors hope future evidence will materialise. Both disciplines proved operational in Karpathy_Loop (a live daughter heir) over the prior 24 hours; this release promotes them to the fleet baseline.
+
+### Upgrade command
+
+```pwsh
+node .github/scripts/upgrade-self.cjs
+```
+
+No `--allow-major` needed. The new instructions activate automatically — they apply to all commits and all new artefacts going forward, not retroactively.
+
+### Gates verified
+
+| Gate | Result |
+|---|---|
+| Supervisor `brain-qa.cjs` | exit 0, 0 stale of 139 files |
+| Supervisor `test-applyto-coverage.cjs` | 15/15 PASS, 0 capability gaps |
+| Supervisor always-on set | 17 files, 16,760 tokens (was 16 files, ~16,000 tokens — +760 net) |
+| Edition `test-edition-applyto-coverage.cjs` | 18/18 PASS, 0 capability gaps |
+
+### References
+
+- Karpathy_Loop sources: `local/severity-tagged-commits.instructions.md`, `local/add-falsifiability-deadlines.instructions.md`
+- Supervisor commit: `[constitutional]` tag on the shipping commit
+- Tracker: FOUR-REPOS-COMPARISON.md §0.1 Tier A rows 1 + 2 → status "shipped (Edition v2.1.0)"
+
+---
+
 ## [2.0.5] - 2026-05-21
 
 **Patch — 25 shared-core brain files gain `## Would Revise If` falsifier sections.** Mirror of Supervisor D2(a) commit `c6327bb`. Each WRI names specific failure modes that would invalidate the file's advice — not boilerplate. Brain epistemic-qa coverage rises 45.5% → ~91% in Edition. No behavioral change for heirs: the files still direct the same actions; the WRI is an epistemic addition that names the conditions under which each rule should be revisited.
