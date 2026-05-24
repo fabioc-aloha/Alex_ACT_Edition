@@ -10,6 +10,15 @@ All notable changes to Alex ACT Edition.
 
 - **`.github/instructions/no-deferred-debt.instructions.md`** — always-on rule: when a turn surfaces tech debt, dead links, stale references, or outdated content, fix it in the same turn. Composes with `lint-discipline` (which covers files I touched) by covering debt I surfaced regardless of authorship. Lifted from Alyva_Master heir-side discipline and adopted as Supervisor + Edition shared-core per FOUR-REPOS-COMPARISON.md Tier A §0.1 row 3. Lifecycle `provisional`; self-falsified at 10 opportunity-turns or 2026-08-23.
 
+### Removed
+
+- **6 always-on instructions that were not earning their tokens** — `debugging.instructions.md`, `creative-loop.instructions.md`, `partnership-charter.instructions.md`, `alternatives-and-tradeoffs.instructions.md`, `scope-management.instructions.md`, `technical-writing.instructions.md`. Removal rationale: zero or near-zero cross-references in heir-facing brain; broad `applyTo` patterns firing on common conversational words (debug/build/scope/option/doc) for content already covered by stronger files (`critical-thinking` + Two-Hypothesis Floor, `act-pass` Step 3 Alternatives, `problem-framing-audit` root-cause reframe, `no-deferred-debt`, `lint-discipline`, `communication-craft`, `markdown-mermaid`, `ai-writing-avoidance`). Each removal was approved file-by-file by user after audit; mirror-deleted from Supervisor as canonical source.
+- **`migrate-to-edition.cjs` + `MIGRATION.md` + `.github/prompts/finalize-migration.prompt.md`** — heir migration tooling for moving pre-Edition Alex heirs to Edition. Fleet inventory shows all heirs on Edition v1.x+ for months; the migration path is historical. `init-edition.cjs` remains as the path for new heirs. Cross-refs cleaned up in `README.md`, `init-edition.cjs`, `.github/muscles/heir-doctor.cjs` (template-detector signal simplified to require only `init-edition.cjs`), `.github/config/edition-manifest.json`, `.github/prompts/checkin.prompt.md`, `.github/prompts/initialize.prompt.md`.
+
+### Why this matters
+
+Token economy and signal-to-noise. The 6 removed instructions averaged ~4KB each with broad `applyTo` patterns that fired on common project-conversation words. Their content was generic ("be hypothesis-driven", "consider alternatives", "manage scope") and covered by load-bearing rules elsewhere in the brain. Removing them sharpens what loads when. The migration tooling removal cuts ~40KB of heir-template payload that no longer corresponds to a live use case.
+
 ---
 
 ## [2.1.0] - 2026-05-24

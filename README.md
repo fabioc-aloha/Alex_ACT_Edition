@@ -95,7 +95,6 @@ The brain ships slash-prompts grouped by lifecycle stage. Type `/` in Copilot Ch
 | --- | --- | --- |
 | `/initialize` | Workspace has Edition content but isn't registered | Detects state (fresh / partial-clean / partial-dirty / full) and runs the right bootstrap path |
 | `/welcome` | First session after bootstrap | Orientation tour — identity, tenets, surfaces, what to try next |
-| `/finalize-migration` | After `migrate-to-edition.cjs` | Semantic pass over `local/` — review classified files, prune stale custom content |
 
 ### Daily Operations
 
@@ -236,19 +235,17 @@ Mall integration, tool awareness, fleet communication, and local brain audit rou
 
 ## Quick Start
 
-Two scripts ship at the repo root. Copy them to your development root directory once:
+One script ships at the repo root. Copy it to your development root directory once:
 
 ```bash
 cp Alex_ACT_Edition/init-edition.cjs ~/Development/
-cp Alex_ACT_Edition/migrate-to-edition.cjs ~/Development/
 ```
 
 | Script | When to use | What it does |
 | --- | --- | --- |
 | `init-edition.cjs` | **New project** | Creates `.github/` brain, registers the project, sets up upgrade channel. Auto-derives identity from `git remote`. Run without `--apply` for dry-run. |
-| `migrate-to-edition.cjs` | **Existing Alex project** | Snapshots old brain, classifies files via frontmatter, installs Edition, routes custom content to `local/`. Then run `/finalize-migration` in Copilot Chat for the semantic pass. See [MIGRATION.md](MIGRATION.md) for the full two-phase guide. |
 
-After either script, open the project in VS Code with Copilot and run `/welcome`.
+After the script runs, open the project in VS Code with Copilot and run `/welcome`.
 
 If you already have Edition content but never ran the init script, run `/initialize` in Copilot Chat to detect state and register.
 

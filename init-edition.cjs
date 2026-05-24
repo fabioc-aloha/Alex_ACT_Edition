@@ -4,9 +4,7 @@
  * (empty or near-empty) project workspace.
  *
  * Run from the project's repo root (cwd). Clones Edition to a temp dir,
- * runs bootstrap-heir against the cwd, then heir-doctor. Use this for a
- * fresh project. For an existing Alex heir with an old .github/, use
- * migrate-to-edition.cjs instead.
+ * runs bootstrap-heir against the cwd, then heir-doctor.
  *
  * Identity (heir-id, owner, repo-url, heir-name) is auto-derived from
  * `git remote get-url origin` when the project has a GitHub remote.
@@ -121,7 +119,7 @@ if (fs.existsSync(GH)) {
   errors.push(
     `.github/ already exists at ${GH}. ` +
     `init-edition is for fresh projects. ` +
-    `If this is an old Alex heir, use migrate-to-edition.cjs instead.`
+    `If this project is already an Edition heir, use upgrade-self.cjs instead.`
   );
 }
 if (!HEIR_ID) {
