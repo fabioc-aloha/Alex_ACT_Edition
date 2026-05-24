@@ -6,6 +6,10 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+### Added
+
+- **`.github/instructions/no-deferred-debt.instructions.md`** — always-on rule: when a turn surfaces tech debt, dead links, stale references, or outdated content, fix it in the same turn. Composes with `lint-discipline` (which covers files I touched) by covering debt I surfaced regardless of authorship. Lifted from Alyva_Master heir-side discipline and adopted as Supervisor + Edition shared-core per FOUR-REPOS-COMPARISON.md Tier A §0.1 row 3. Lifecycle `provisional`; self-falsified at 10 opportunity-turns or 2026-08-23.
+
 ---
 
 ## [2.1.0] - 2026-05-24
