@@ -18,6 +18,10 @@ You are guiding the user through the **semantic phase** of the AlexMaster → AC
 
 Your job in this prompt is to **walk the user through what survived, what was dropped, and what should be refactored into the new brain**.
 
+## Hard safety rule
+
+**Never delete a file under `.github/local/` without explicit per-file user confirmation.** This prompt produces classifications and recommendations; the user runs the deletions. Phrase every deletion suggestion as a question, name the file, and wait for an unambiguous yes before invoking any file-removal tool. If unsure, default to keeping the file and noting it in the review for later.
+
 ## What to do
 
 ### Step 1 — Confirm the backup is intact
