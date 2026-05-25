@@ -230,7 +230,7 @@ Mall integration, tool awareness, fleet communication, and local brain audit rou
 | Instruction | What It Does |
 | --- | --- |
 | `brain-audit` | Routes brain-audit requests to the `brain-auditor` trifecta and severity-first remediation |
-| `mall-installation` | How projects install plugins from the [Alex Skill Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall) |
+| `mall-installation` | How projects install plugins from the [Alex ACT Plugin Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall) |
 | `tool-awareness` | Platform awareness for deferred tools and external ingest |
 
 ## Quick Start
@@ -293,13 +293,13 @@ The script clones Edition into a temp dir, diffs edition-owned paths, never touc
 Two shared surfaces complete the architecture:
 
 - **AI-Memory** (OneDrive shared folder) — your fleet registry, feedback channel to Edition, and announcement inbox. Bootstrapped automatically on first install.
-- **[Alex Skill Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall)** -- public catalog of 297 optional plugins across 16 categories. Browse, search, install what you need into `local/` slots.
+- **[Alex ACT Plugin Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall)** -- public catalog of optional plugins across many categories. Browse, search, install what you need into `local/` slots.
 
-### The Skill Mall
+### The Plugin Mall
 
-Edition ships lean (18 skills, 36 instructions). The [Alex Skill Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall) extends it with 297 curated plugins across security, Azure, data, healthcare, architecture, publishing, and more. Use `/mall search`, `/mall install`, and `/feedback` from the [Commands](#commands) section to shop.
+Edition ships lean. The [Alex ACT Plugin Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall) extends it with curated plugins across security, Azure, data, healthcare, architecture, publishing, and more. Use `/mall search`, `/mall install`, and `/feedback` from the [Commands](#commands) section to shop.
 
-Skills install into `.github/skills/local/` so they survive Edition upgrades. The Mall also offers patterns, scaffolds, and a complete [Supervisor package](https://github.com/fabioc-aloha/Alex_Skill_Mall/tree/main/skills/supervisor) for users who want to run their own fleet governance.
+Skills install into `.github/skills/local/` so they survive Edition upgrades. The Mall also offers patterns, scaffolds, and a complete Supervisor package for users who want to run their own fleet governance.
 
 **Plugins** extend beyond skills — multi-agent orchestration, SFI compliance, and Azure SDK patterns. See [PLUGINS.md](PLUGINS.md) for registration instructions.
 
