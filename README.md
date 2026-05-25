@@ -4,6 +4,18 @@
 
 > Artificial Critical Thinking for AI Assistants.
 
+## Quick Start (3 lines)
+
+```bash
+git clone https://github.com/fabioc-aloha/Alex_ACT_Edition.git ~/Development/Alex_ACT_Edition
+cp ~/Development/Alex_ACT_Edition/init-edition.cjs ~/Development/ && cd <your-project> && node ~/Development/init-edition.cjs --apply
+# open the project in VS Code → run /welcome in Copilot Chat
+```
+
+Three other paths exist (clone-and-`/initialize`, VS Code Marketplace extension, or the full [Quick Start](#quick-start) section below). The 3-line block above is the fastest happy path.
+
+---
+
 Most AI assistants are helpful, fast, and confidently wrong in subtle ways. They confirm your assumptions instead of challenging them. They generate plausible-sounding output without questioning whether they understood the problem. They sound certain when they should hedge.
 
 ACT Edition changes that. Not by making AI "smarter," but by making it **honest**.
@@ -94,7 +106,9 @@ The brain ships slash-prompts grouped by lifecycle stage. Type `/` in Copilot Ch
 | Command | When | What it does |
 | --- | --- | --- |
 | `/initialize` | Workspace has Edition content but isn't registered | Detects state (fresh / partial-clean / partial-dirty / full) and runs the right bootstrap path |
-| `/welcome` | First session after bootstrap | Orientation tour — identity, tenets, surfaces, what to try next |
+| `/welcome` | First session after bootstrap, or whenever you want a reorientation | Read-only orientation tour — who you are in this project, what's loaded, three good first prompts, and where to go next. No writes. |
+| `/configure-vscode` | First machine setup, or moving to a new machine | Applies the fleet-baseline VS Code user-scope settings (Copilot model defaults, agent behaviors). Was `/welcome` in Edition ≤ v2.2.x. |
+| `/configure-vscode-verify` | Anytime, read-only | Audits user-scope VS Code settings against the central baseline; reports drift without changing anything. |
 
 ### Daily Operations
 
@@ -235,19 +249,56 @@ Mall integration, tool awareness, fleet communication, and local brain audit rou
 
 ## Quick Start
 
+Four entry paths. Pick the one that matches your setup:
+
+### Path 1 — CLI (recommended for dev workstations)
+
 One script ships at the repo root. Copy it to your development root directory once:
 
 ```bash
-cp Alex_ACT_Edition/init-edition.cjs ~/Development/
+git clone https://github.com/fabioc-aloha/Alex_ACT_Edition.git ~/Development/Alex_ACT_Edition
+cp ~/Development/Alex_ACT_Edition/init-edition.cjs ~/Development/
+```
+
+Then from any project directory:
+
+```bash
+node ~/Development/init-edition.cjs            # dry-run, shows what would change
+node ~/Development/init-edition.cjs --apply    # actually writes
 ```
 
 | Script | When to use | What it does |
 | --- | --- | --- |
 | `init-edition.cjs` | **New project** | Creates `.github/` brain, registers the project, sets up upgrade channel. Auto-derives identity from `git remote`. Run without `--apply` for dry-run. |
 
-After the script runs, open the project in VS Code with Copilot and run `/welcome`.
+### Path 2 — Already have Edition content, no marker
 
-If you already have Edition content but never ran the init script, run `/initialize` in Copilot Chat to detect state and register.
+If the workspace has `.github/copilot-instructions.md` from a previous attempt but no `.github/.act-heir.json` marker, open the project in VS Code with Copilot and run `/initialize`. It detects the workspace state (fresh / partial-clean / partial-dirty / full) and runs the right path.
+
+### Path 3 — VS Code Marketplace extension
+
+Install the **Alex ACT** extension from the VS Code Marketplace, then run `Alex ACT: Bootstrap This Workspace` from the Command Palette. No CLI needed.
+
+### After bootstrap (all paths)
+
+Open a Copilot chat and follow this checklist in order:
+
+```text
+✓ Brain installed at .github/
+✓ Heir marker rendered at .github/.act-heir.json
+✓ heir-doctor passed (run again anytime with: node .github/muscles/heir-doctor.cjs)
+
+Next:
+  1. Edit .github/copilot-instructions.local.md
+     — fill in the ## Project Context paragraph (1-2 sentences about what this repo does).
+     Identity grounding from session 1 beats identity grounding at session 10.
+
+  2. /welcome              — orientation tour (~2 min, read-only)
+  3. /configure-vscode     — apply user-scope VS Code settings (once per machine)
+  4. Start a real chat — describe what you actually want to build.
+
+Future upgrades:  /upgrade  (or extension command: "Alex ACT: Upgrade Brain")
+```
 
 ## What Else Ships
 

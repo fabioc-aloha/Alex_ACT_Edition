@@ -6,6 +6,38 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+## [2.3.0] - 2026-05-25
+
+**Minor [behaviour] — init UX unified across CLI, README, and Extension; `/welcome` rebuilt as a true orientation tour.** Three previously divergent post-bootstrap paths now hand the user the same next-step checklist, and the `/welcome` slash-command finally matches its name. Heirs auto-update via `node .github/scripts/upgrade-self.cjs`; no `--allow-major` required.
+
+### Changed
+
+- **`/welcome` rebuilt as a read-only orientation tour.** Previously, `/welcome` applied baseline VS Code user-scope settings — useful, but mis-named and surprising on first run. The settings logic moved to a new `/configure-vscode` command (verbatim port, no behavior change). The new `/welcome` is read-only: identity summary from `.act-heir.json` + `copilot-instructions.local.md`, three always-on capabilities worth knowing, Mall discovery, three good first-prompt examples, and where to go next. No writes.
+- **Post-bootstrap next-step block is now shared across all three init paths** (CLI `init-edition.cjs`, README Quick Start, Extension toast — Extension portion lands in the next Extension release). All three render the same checklist: edit `copilot-instructions.local.md` first, then `/welcome`, then `/configure-vscode`, then start a real chat. Removes the previous mismatch where the CLI suggested customizing identity *after* `/welcome` but the README didn't mention it at all.
+- **README Quick Start expanded.** Top-of-file gains a 3-line happy-path block for skimmers; the main Quick Start section now enumerates four entry paths (CLI, /initialize, Marketplace extension, after-bootstrap checklist) instead of one. Adds an explicit pointer to fill in `## Project Context` before the first chat — identity grounding from session 1 beats session 10.
+- **`heir-doctor.cjs`** warning text for missing `copilot-instructions.local.md` updated to point at the new `/welcome` for guided orientation rather than the renamed settings command.
+
+### Added
+
+- **`.github/prompts/configure-vscode.prompt.md`** — applies baseline VS Code user-scope settings for fleet policy compliance. Identical behavior to the prior `/welcome` (loads from `.github/config/welcome-baseline.json`, which keeps its filename for backward compatibility).
+- **`.github/prompts/configure-vscode-verify.prompt.md`** — read-only audit of user-scope VS Code settings against the central baseline. Identical behavior to the prior `/welcome-verify`.
+
+### Removed
+
+- **`.github/prompts/welcome-verify.prompt.md`** — renamed to `configure-vscode-verify.prompt.md`. Heirs that bookmarked `/welcome-verify` should switch to `/configure-vscode-verify`; no aliasing layer ships (Edition slash-commands are read directly by the VS Code chat surface, so deprecation aliases would require shipping a stub-prompt which is itself friction).
+
+### Migration notes for heirs
+
+Run `node .github/scripts/upgrade-self.cjs`. The upgrade copies the two new `configure-vscode*.prompt.md` files, overwrites `welcome.prompt.md` with the new orientation tour content (Edition-owned, safe), and deletes the old `welcome-verify.prompt.md`. If you wrote local overrides of `welcome.prompt.md`, move them to `.github/prompts/local/` before upgrading or they'll be replaced.
+
+### Upgrade command
+
+```pwsh
+node .github/scripts/upgrade-self.cjs
+```
+
+`Bump: minor · Breaks: none (one command renamed, behaviour preserved) · Deprecated: /welcome-verify (use /configure-vscode-verify) · Removed: welcome-verify.prompt.md`
+
 ## [2.2.1] - 2026-05-25
 
 **Patch — version bump only, no artifact changes.** Cuts a new Edition release so the heir-side `upgrade-self.cjs` flow can be exercised end-to-end against a real version delta. No skills, instructions, prompts, agents, muscles, or config schemas changed since 2.2.0. Extension/overall surface remains at v9.0.0 (unchanged).
