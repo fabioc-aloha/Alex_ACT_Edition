@@ -6,6 +6,18 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+## [2.2.1] - 2026-05-25
+
+**Patch — version bump only, no artifact changes.** Cuts a new Edition release so the heir-side `upgrade-self.cjs` flow can be exercised end-to-end against a real version delta. No skills, instructions, prompts, agents, muscles, or config schemas changed since 2.2.0. Extension/overall surface remains at v9.0.0 (unchanged).
+
+### Upgrade command
+
+```pwsh
+node .github/scripts/upgrade-self.cjs
+```
+
+`Bump: patch · Breaks: none · Deprecated: none · Removed: none`
+
 ## [2.2.0] - 2026-05-24
 
 **Minor — adds one always-on rule (`no-deferred-debt`), removes 6 always-on instructions that were not earning their tokens, retires heir migration tooling, and documents VS Code 1.118+ skill picker surfacing in `tool-awareness`.** Net effect: leaner always-on set with sharper firing patterns. Heirs auto-update via `node .github/scripts/upgrade-self.cjs`; no `--allow-major` required.
