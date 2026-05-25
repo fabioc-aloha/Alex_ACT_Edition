@@ -3,8 +3,8 @@ type: instruction
 lifecycle: provisional
 inheritance: inheritable
 description: "Every commit touching brain artefacts (instructions / skills / prompts / agents / muscles / config / docs/ledgers / HANDOFF) must carry a severity tag in the commit subject: [typo | clarification | behaviour | constitutional]. [behaviour] and [constitutional] require an ACT pass before commit."
-application: "Always active for commits in Supervisor and Edition; severity tag goes in commit subject line"
-applyTo: "**"
+application: "Loads when editing brain artefacts; rule fires at commit time. Narrow applyTo prevents idle-token cost on non-brain sessions."
+applyTo: "**/.github/**,**/docs/**,**/HANDOFF.md,**/CHANGELOG.md,**/VERSION,**/README.md"
 currency: 2026-05-24
 lastReviewed: 2026-05-24
 ---
