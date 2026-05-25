@@ -1,8 +1,0 @@
-{
-    "recommendations": [
-        "davidanson.vscode-markdownlint",
-        "bierner.markdown-mermaid",
-        "redhat.vscode-yaml",
-        "editorconfig.editorconfig"
-    ]
-}

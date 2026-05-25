@@ -6,9 +6,17 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+## [2.2.0] - 2026-05-24
+
+**Minor — adds one always-on rule (`no-deferred-debt`), removes 6 always-on instructions that were not earning their tokens, retires heir migration tooling, and documents VS Code 1.118+ skill picker surfacing in `tool-awareness`.** Net effect: leaner always-on set with sharper firing patterns. Heirs auto-update via `node .github/scripts/upgrade-self.cjs`; no `--allow-major` required.
+
 ### Added
 
 - **`.github/instructions/no-deferred-debt.instructions.md`** — always-on rule: when a turn surfaces tech debt, dead links, stale references, or outdated content, fix it in the same turn. Composes with `lint-discipline` (which covers files I touched) by covering debt I surfaced regardless of authorship. Lifted from Alyva_Master heir-side discipline and adopted as Supervisor + Edition shared-core per FOUR-REPOS-COMPARISON.md Tier A §0.1 row 3. Lifecycle `provisional`; self-falsified at 10 opportunity-turns or 2026-08-23.
+
+### Changed
+
+- **`.github/instructions/tool-awareness.instructions.md`** — new section documenting VS Code 1.118+ skill picker surfacing (`.github/skills/<name>/SKILL.md` files with non-empty `description` now appear in the chat slash-command picker alongside prompts). Explains the verb-prompt / noun-skill pairing is intentional and the lever (`github.copilot.chat.skillTool.enabled`) is user-scoped, not a brain defect. Falsifier: revise by 2026-08-24 or sooner on first observed contradiction.
 
 ### Removed
 
@@ -18,6 +26,19 @@ All notable changes to Alex ACT Edition.
 ### Why this matters
 
 Token economy and signal-to-noise. The 6 removed instructions averaged ~4KB each with broad `applyTo` patterns that fired on common project-conversation words. Their content was generic ("be hypothesis-driven", "consider alternatives", "manage scope") and covered by load-bearing rules elsewhere in the brain. Removing them sharpens what loads when. The migration tooling removal cuts ~40KB of heir-template payload that no longer corresponds to a live use case.
+
+### Upgrade command
+
+```pwsh
+node .github/scripts/upgrade-self.cjs
+```
+
+### Gates verified
+
+| Gate | Result |
+|---|---|
+| Supervisor `brain-qa.cjs` | exit 0, 0 hard failures, 0 stale of 132 files |
+| Edition `test-edition-applyto-coverage.cjs` | 18/18 PASS, 0 capability gaps |
 
 ---
 
