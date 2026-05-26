@@ -37,7 +37,7 @@ Drives both the slash picker tooltip AND the agent's L1 discovery (loaded into e
 
 | Good | Bad |
 |---|---|
-| `"Author skills that pass skill-review's four gates by construction. Use when authoring or refactoring a skill, or promoting a Mall unit."` | `"This skill is about creating new skills."` |
+| `"Author skills that pass skill-review's five gates by construction. Use when authoring or refactoring a skill, or promoting a Mall unit."` | `"This skill is about creating new skills."` |
 | `"Detect stale Mall stores via deterministic freshness checks. Use during /audit-mall or when triaging upstream drift."` | `"Helper for skill authors."` |
 
 ## ACT discipline fields

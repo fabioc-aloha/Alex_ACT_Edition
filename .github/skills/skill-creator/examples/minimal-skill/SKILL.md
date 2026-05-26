@@ -6,7 +6,7 @@ lastReviewed: 2026-05-26
 
 # Log Curation Change (Example)
 
-> **This is a worked example demonstrating a skill that passes all four gates.** See `../../SKILL.md` for the authoring guide.
+> **This is a worked example demonstrating a skill that passes all five gates.** See `../../SKILL.md` for the authoring guide.
 
 Every brain edit produces a one-line entry in `docs/ledgers/curation-log.md`. The log is the audit trail for curation decisions.
 

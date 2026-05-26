@@ -1,12 +1,12 @@
 ---
 name: skill-creator
-description: "Create skills that pass skill-review's four gates by construction — intent capture, prior-art scan, draft against gates, dogfood self-review. Use when authoring a new skill, refactoring an existing one, or adopting a Mall unit into this brain."
+description: "Create skills that pass skill-review's five gates by construction — intent capture, prior-art scan, draft against gates, dogfood self-review. Use when authoring a new skill, refactoring an existing one, or adopting a Mall unit into this brain."
 lastReviewed: 2026-05-26
 ---
 
 # Skill Creator
 
-Author skills that pass [`skill-review`](../skill-review/SKILL.md)'s four gates by construction. The four gates are the quality bar; invert them, and you build to standard the first time.
+Author skills that pass [`skill-review`](../skill-review/SKILL.md)'s five gates by construction. The five gates are the quality bar; invert them, and you build to standard the first time.
 
 This skill teaches the spec-aligned shape — agentskills.io / Anthropic / Microsoft converge on `name` + `description` as the only required fields, with ACT discipline fields layered alongside.
 
@@ -36,7 +36,7 @@ Implication: every line in SKILL.md competes with conversation context once the 
 
 ## The Seven Phases
 
-Each phase inverts one of the four gates. Author against the phase, pass the gate.
+Each phase inverts one of the five gates. Author against the phase, pass the gate.
 
 ### Phase 1 — Intent capture + evals
 
@@ -103,7 +103,7 @@ File location: `.github/skills/<kebab-name>/SKILL.md`. Folder name matches `name
 | Visible markers / falsifiability | Include a `## Would Revise If` block with at least one concrete falsifier (date, count, observable event). |
 | ≤500 lines | Anthropic spec cap. Bundle long reference content into `references/<topic>.md` rather than inlining (see Phase 6). |
 | Single responsibility | One verb in the title. If you need "and", split. |
-| No duplicate content | Cross-reference, don't restate. Link to the four-gates checklist; don't paste it. |
+| No duplicate content | Cross-reference, don't restate. Link to the five-gates checklist; don't paste it. |
 | Consistent terminology | Pick one term per concept ("field" / "box" / "element" — pick one), use it throughout. |
 | Time-sensitive info | Avoid "as of August 2025" phrasing. Use "Current method" + collapsed "Old patterns" sections instead. |
 
@@ -147,7 +147,7 @@ See [`references/bundled-resources.md`](references/bundled-resources.md) for the
 
 ### Phase 7 — Dogfood self-audit
 
-Before committing, run [`skill-review`](../skill-review/SKILL.md)'s four gates on your own draft. For routine self-audit the verdict lives in the commit message; for an external candidate (Mall unit, store skill) write the verdict per `skill-review/SKILL.md § Recording the Verdict`. Writing it down, not just thinking it, is what surfaces the gaps. If any gate fails, fix and re-run.
+Before committing, run [`skill-review`](../skill-review/SKILL.md)'s five gates on your own draft. For routine self-audit the verdict lives in the commit message; for an external candidate (Mall unit, store skill) write the verdict per `skill-review/SKILL.md § Recording the Verdict`. Writing it down, not just thinking it, is what surfaces the gaps. If any gate fails, fix and re-run.
 
 Also write 2-3 test prompts:
 
@@ -167,7 +167,7 @@ After the skill has been used ≥3 times, revisit the `description` field. If th
 | Writing the skill before the intent capture | Phase 1 is cheap and prevents wasted Phase 3-6 work |
 | Skipping evals before drafting | Anthropic's strongest rule. Without evals, the body solves imagined problems. |
 | Skipping the prior-art scan because "I know what's there" | The Mall has 14k units. You don't know what's there. |
-| Restating the four gates inside the new skill | Cross-link to `skill-review`. Single source of truth. |
+| Restating the five gates inside the new skill | Cross-link to `skill-review`. Single source of truth. |
 | Bundling resources prematurely (empty `references/` folder) | Add a subfolder only when there's real content to put in it. Empty bundling is decoration. |
 | Self-auditing without writing the verdict | The verdict template forces honesty. Skipping it lets fuzzy self-assessment slip through. |
 | Author and dogfood in the same pass without a break | Read the draft cold. If you wrote it five minutes ago, you can't audit it fairly. |
@@ -187,6 +187,9 @@ This skill's design has failed if any of the following occur within 90 days of s
 
 ## Related
 
-- [skill-review](../skill-review/SKILL.md) — the four gates this skill inverts (single source of truth)
+- [skill-review](../skill-review/SKILL.md) — the five gates this skill inverts (single source of truth)
+- [instruction-creator](../instruction-creator/SKILL.md) — sibling for instructions
+- [prompt-creator](../prompt-creator/SKILL.md) — sibling for prompts
+- [agent-creator](../agent-creator/SKILL.md) — sibling for agents
 - [meditation](../meditation/SKILL.md) — extracting patterns *from* session work into new skills
 - [act-pass](../../instructions/act-pass.instructions.md) — required for medium-stakes skill authoring

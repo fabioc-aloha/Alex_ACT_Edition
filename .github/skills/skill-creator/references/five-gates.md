@@ -1,8 +1,8 @@
-# Four Gates — Quick Reference
+# Five Gates — Quick Reference
 
 > **Single source of truth: [`.github/skills/skill-review/SKILL.md`](../../skill-review/SKILL.md).** This file is the author-facing quick-ref. If the two disagree, `skill-review` wins.
 
-Inversion of the four gates. Use as a pre-commit self-audit checklist.
+Inversion of the five gates. Use as a pre-commit self-audit checklist.
 
 ## Gate 1 — Spec compliance
 
@@ -24,7 +24,7 @@ Inversion of the four gates. Use as a pre-commit self-audit checklist.
 
 ## Gate 3 — Scope fit
 
-- [ ] Not framework-level (manifesto, tenets, claims registry) — those route to ADRs
+- [ ] Not framework-level (manifesto, tenets, claims registry) — those route to your decision-record location
 - [ ] Generalizes to ≥2 projects or ≥2 sessions of use (otherwise it's a one-off script/prompt)
 - [ ] Not redundant with a Mall unit — if a Mall unit covers this, adopt instead of reauthor
 - [ ] Routing decision documented in the skill itself or its `Related` section
@@ -36,10 +36,23 @@ Inversion of the four gates. Use as a pre-commit self-audit checklist.
 - [ ] External-content reads specify sanitization
 - [ ] Reversible — disabling the skill (deleting its folder, or moving it out of `.github/skills/`) does not break the brain
 
+## Gate 5 — Currency & Coherence
+
+- [ ] Description's "what + when" claims match what the body actually delivers (deep read, not skim)
+- [ ] No retired-entity references without a per-file `<!-- brain-qa: allow <Entity> -->` marker AND a justified reason for the mention
+- [ ] Every relative markdown link `[text](path)` resolves to a live file on disk (and the target adds value, isn't decorative)
+- [ ] `lastReviewed` reflects an honest re-verification of the body, not a rubber-stamp
+- [ ] H1 reflects the skill's actual scope per `name` + `description`
+- [ ] Description has both halves: what the skill does AND when to use it (no slogans)
+- [ ] Body free of slogans, marketing prose, and graveyard sections ("removed/dropped/used-to-have")
+- [ ] `Related` section lists live artifacts that add value beyond cross-linking for its own sake
+
+Gate 5 has both a mechanical layer (broken links, stale dates, H1/name divergence — typically caught by a brain-qa validator if your heir ships one) and a semantic layer (this checklist). The checklist above is the semantic layer the author owns.
+
 ## Verdict matrix
 
 | Gates passed | Verdict |
 | --- | --- |
-| 4 of 4 | **Accept** |
-| 3 of 4 | **Request revision** — specify which gate and what fix |
-| ≤2 of 4 | **Reject** — fundamental issue; rework or abandon |
+| 5 of 5 | **Accept** |
+| 4 of 5 | **Request revision** — specify which gate and what fix |
+| ≤3 of 5 | **Reject** — fundamental issue; rework or abandon |

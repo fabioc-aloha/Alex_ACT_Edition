@@ -72,7 +72,7 @@ Files the skill *produces* or files it copies into the workspace. Examples:
 
 Concrete cases of the skill applied. Examples:
 
-- A minimal-but-complete output (e.g. a 30-line skill that passes all four gates)
+- A minimal-but-complete output (e.g. a 30-line skill that passes all five gates)
 - A before/after refactor demonstrating the skill's transformation
 
 **Anti-pattern**: test fixtures (those belong with the script that tests them).
@@ -102,7 +102,7 @@ This is reversible — if a `references/` file is never consulted in real use, i
 The `skill-creator` skill itself uses the pattern:
 
 - `SKILL.md` (~180 lines): the seven phases, anti-patterns, falsifier
-- `references/four-gates.md`: pre-commit self-audit checklist (consulted in Phase 7)
+- `references/five-gates.md`: pre-commit self-audit checklist (consulted in Phase 7)
 - `references/frontmatter-spec.md`: field-by-field reference (consulted in Phase 3)
 - `references/bundled-resources.md`: this file (consulted in Phase 6)
 - `assets/skill-skeleton/SKILL.md`: starter template (consulted in Phase 3)

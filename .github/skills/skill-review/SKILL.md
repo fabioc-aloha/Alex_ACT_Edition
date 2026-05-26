@@ -1,12 +1,14 @@
 ---
 name: skill-review
-description: "Audits a candidate skill, instruction, or prompt against four gates (spec compliance, content quality, scope fit, safety). Use when reviewing a new draft before commit, evaluating a Mall unit or store skill for adoption, or re-auditing existing artifacts during currency-audit or quarterly retraining."
+description: "Audits a candidate skill (.github/skills/<name>/SKILL.md) against five gates (spec compliance, content quality, scope fit, safety, currency & coherence). Use when reviewing a new skill draft before commit, evaluating a Mall unit or store skill for adoption, or re-auditing existing skills on a periodic cadence. For instructions, prompts, agents — use the matching per-type review skill."
 lastReviewed: 2026-05-26
 ---
 
 # Skill Review
 
-Audit a candidate skill, instruction, or prompt against four gates. This brain accepts only what passes all four.
+Audit a candidate skill against five gates. This brain accepts only what passes all five.
+
+For other artifact types: [instruction-review](../instruction-review/SKILL.md), [prompt-review](../prompt-review/SKILL.md), [agent-review](../agent-review/SKILL.md). All four pairs share the same five-gate contract; per-type criteria differ.
 
 ## When to Use
 
@@ -18,9 +20,9 @@ Three fire contexts:
 
 This skill carries the judgment checks a brain-qa validator cannot do (mechanical regex/date validation vs. content-quality judgment). Gate 1 partially overlaps with brain-qa where present; Gates 2–4 are judgment-only.
 
-## The Four Gates
+## The Five Gates
 
-A candidate must pass **all four** to ship. Failure on any gate = decline or revise.
+A candidate must pass **all five** to ship. Failure on any gate = decline or revise.
 
 These gates are the canonical source of truth. [skill-creator](../skill-creator/SKILL.md) inverts them into authoring phases — if the two ever disagree, this file wins and skill-creator must follow.
 
@@ -28,11 +30,10 @@ These gates are the canonical source of truth. [skill-creator](../skill-creator/
 
 | Check | Pass criterion |
 |---|---|
-| Frontmatter present | YAML block with `name` + `description` + `lastReviewed` (skills) or `description` + `applyTo` + `lastReviewed` (instructions) |
-| `name` valid (skills) | kebab-case, ≤64 chars, matches folder name |
-| `description` valid | Third-person, ≤1024 chars, names what the skill does AND when to use it |
-| `applyTo` glob non-empty (instructions only) | At least one path pattern; avoid `**/*` unless justified |
-| File location matches type | `*.instructions.md` in `instructions/`, `SKILL.md` in `skills/<name>/`, `*.prompt.md` in `prompts/` |
+| Frontmatter present AND minimal | YAML block carries exactly the canonical fields. Skills: `name` + `description` + `lastReviewed`. Reject any legacy extras (`type`, `application`, `applyTo`, `inheritance`, `tier`, `currency`, `lifecycle`, `user-invokable`, `evidence`). |
+| `name` valid | kebab-case, ≤64 chars, matches folder name |
+| `description` valid | Third-person, ≤1024 chars, names what the skill does AND when to use it (avoid slogans like "Clear documentation through visual excellence") |
+| File location matches type | `SKILL.md` in `skills/<name>/` |
 | Markdown lints clean | No broken links, no missing code-fence languages |
 
 This gate overlaps with a brain-qa validator where present. If brain-qa passes, Gate 1 is presumptively met; spot-check the judgment items (description third-person/trigger phrases).
@@ -65,13 +66,28 @@ This gate overlaps with a brain-qa validator where present. If brain-qa passes, 
 | No prompt-injection vectors | If the artifact reads external content (URLs, files), it sanitizes or quotes it |
 | Reversible | A user can disable or remove the artifact without breaking the brain |
 
+### Gate 5 — Currency & Coherence
+
+The semantic layer of currency-and-coherence judgment. A mechanical validator (brain-qa script) typically catches the obvious cases (broken links, missing allow markers, stale dates, H1/name divergence); this gate covers the subtler ones that require deep reading.
+
+| Check | Pass criterion |
+|---|---|
+| Frontmatter matches body | Description's "what + when" claims survive a deep read of the body. No drift between advertised scope and actual content. |
+| No stale entity references (semantic) | References to retired entities carry a per-file `<!-- brain-qa: allow <Entity> -->` marker AND the marker is justified — the reference adds historical or operational value, isn't fossil. |
+| Cross-references resolve and add value | Every `[text](path)` link points to a live artifact AND the target adds something the reader needs. Dead links and decorative xrefs both fail. |
+| `lastReviewed` is honest | The date reflects when the file was actually re-verified, not a rubber-stamp. Body content must be consistent with what was true at that date. |
+| H1 matches advertised scope | The H1 reflects the skill's actual scope per `name` + `description`. "MCP Server Development Guide" vs name "mcp-builder" fails this gate. |
+| Description has "what" AND "when" | Third-person; names the operation AND the trigger phrases. No slogans, no missing trigger clauses. |
+| Body free of slogans / marketing prose | Plain operational language. No "powerful", "comprehensive", "seamless", "unleash". No graveyard prose ("removed/dropped/used-to-have" sections). |
+| `Related` section is live | Linked-to artifacts exist AND each adds material value beyond cross-linking for the sake of it. |
+
 ## Decision Matrix
 
 | Gates passed | Action |
 |---|---|
-| All 4 | **Accept** — land the change |
-| 3 of 4 | **Revise** — name the failing gate and patch the candidate |
-| 2 of 4 or fewer | **Decline** — name the rationale; if the decline sets precedent, draft an ADR |
+| All 5 | **Accept** — land the change |
+| 4 of 5 | **Revise** — name the failing gate and patch the candidate |
+| 3 of 5 or fewer | **Decline** — name the rationale; if the decline sets precedent, record it where your heir tracks framework-level decisions |
 
 ## Recording the Verdict
 
@@ -83,7 +99,7 @@ For external adoption (Mall unit, store skill) or any decline that sets preceden
 
 | Anti-pattern | Correction |
 |---|---|
-| Accepting because the author is confident | Confidence ≠ quality. Run all four gates regardless of authorship |
+| Accepting because the author is confident | Confidence ≠ quality. Run all five gates regardless of authorship |
 | Declining without naming the gate | Always cite the specific gate; vague declines waste cycles |
 | Accepting "trivial" candidates without audit | Trivial-looking changes are where regressions hide |
 | Skipping the act-pass trail on non-trivial audits | Medium-stakes audits (new artifact, external adoption) require the trimmed pass; routine re-audits of unchanged artifacts do not |
@@ -91,15 +107,21 @@ For external adoption (Mall unit, store skill) or any decline that sets preceden
 
 ## Falsifiability
 
-This skill's four-gate model has failed if any of the following occur within 90 days:
+This skill's five-gate model has failed if any of the following occur within 90 days:
 
-- An accepted candidate (all 4 gates passed) is reported broken by 2+ heirs
+- An accepted candidate (all 5 gates passed) is reported broken by 2+ heirs
 - Declines cluster on one gate and are later reversed during re-audit (gate too strict or unclear)
 - Repeated audits of equivalent candidates produce contradictory gate outcomes
+- Gate 5 produces a false-positive rate >20% over a quarter (the semantic layer is too aggressive)
+- A defect that Gate 5 was supposed to catch ships through an accepted review
 
 Track these as you would any falsified discipline (commit log, retraining notes, or curation ledger if your repo ships one) tagged `[GATE-FAILURE]`.
 
 ## Related
 
 - [skill-creator](../skill-creator/SKILL.md) — inverts these gates to author candidates that pass by construction
+- [instruction-review](../instruction-review/SKILL.md) — sibling for instructions
+- [prompt-review](../prompt-review/SKILL.md) — sibling for prompts
+- [agent-review](../agent-review/SKILL.md) — sibling for agents
 - [act-pass](../../instructions/act-pass.instructions.md) — required for medium-stakes audits
+- `/review-skill` prompt — slash-command entry point
