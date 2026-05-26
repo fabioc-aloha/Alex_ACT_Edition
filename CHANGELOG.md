@@ -81,6 +81,7 @@ All notable changes to Alex ACT Edition.
 - **Audit method**: 4 parallel subagent audits (skill-review, instruction-review, prompt-review, agent-review per ADR-007) surfaced 39 Revise findings across 27 skills / 33 instructions / 28 prompts / 4 agents. All 39 resolved in 5 fix batches.
 - **Tier C decisions** (judgment per Supervisor precedent): `act-foundations` + `memory-triggers` Gate 6 overages ACCEPTED as framework exception; `falsifiability-deadlines` Edition scope KEPT (heirs DO author brain artifacts when extending baseline).
 - **brain-qa Edition findings**: 0 after every batch. SHA-256 byte-identity verified on all mirrored artifacts.
+- **`edition-manifest.json` spec_version bumped 1.0 → 1.1** — manifest is now the full bill-of-materials for every EDITION_OWNED category. Adds `instructions` (36), `scripts` (15 incl. shared/), `copilot_instructions`, `configs` (3), `version_file`, `vscode_assets` (1). `skills`/`prompts`/`agents` unchanged. Additive: existing consumers reading 1.0 fields work unchanged; `heir-doctor.cjs` verified still healthy. Closes the gap between EDITION_OWNED install policy (in `_registry.cjs`) and shipped inventory.
 
 ## [2.3.0] - 2026-05-25
 
