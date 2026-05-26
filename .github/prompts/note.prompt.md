@@ -12,3 +12,5 @@ See `.github/prompts/save-session-note.prompt.md` for the full steps.
 ## Quick Form
 
 If the user's request already includes the note text, skip the "what should I capture?" question and write it directly. Resolve repo root, append checkbox item to `HANDOFF.md`, optionally mirror to AI-Memory with stripping, confirm.
+
+**Would revise if**: the [save-session-note](save-session-note.prompt.md) prompt changes its capture protocol, or `HANDOFF.md` is no longer the canonical pending-action surface. Re-evaluate 2026-08-26.

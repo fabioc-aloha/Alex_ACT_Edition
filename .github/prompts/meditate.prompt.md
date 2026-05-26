@@ -21,3 +21,5 @@ Run the meditation protocol. Transform working memory into permanent architectur
 ## Anti-pattern guard
 
 If after step 2 nothing new emerged, say so, then still run `/compact` at step 8. Routine execution is exactly what a session-end compact is for — the system working as intended is not a reason to skip the cleanup.
+
+**Would revise if**: the [meditation](../skills/meditation/SKILL.md) skill changes its consolidation protocol, or the `/compact` step becomes optional. Re-evaluate 2026-08-26.

@@ -22,6 +22,7 @@ All notable changes to Alex ACT Edition.
 ### Fixed (2026-05-26 cleanup pass)
 
 - **`init-edition.cjs` heir-doctor path** — bootstrap step 3 referenced `.github/muscles/heir-doctor.cjs`, a path that no longer exists after the muscles → scripts folder collapse documented in this same Unreleased section. Every fresh init silently warned *"heir-doctor.cjs not found at ... (skipping)"* and never ran the doctor. Path corrected to `.github/skills/greeting-checkin/scripts/heir-doctor.cjs` (canonical location, matches the path documented in README's after-bootstrap checklist). Fresh inits will now actually run heir-doctor instead of skipping it.
+- **3 alias prompts gain inline falsifier** — `checkin.prompt.md`, `meditate.prompt.md`, `note.prompt.md` had no `## Would Revise If` section, surfaced by the brain-review-playbook sweep run after the cleanup pass. These are thin (≤20 line) wrappers that delegate to a skill or another prompt; the prior 20-prompt falsifier batch (per ADR/CHANGELOG above) didn't cover them. Added one-line inline `**Would revise if**: <underlying-artifact-change>; Re-evaluate 2026-08-26.` to each per the falsifiability-deadlines rule. Inline form (vs `## ` heading) is appropriate for thin delegating prompts where the substantive falsifier lives on the delegated artifact.
 
 ### Changed
 - **3 converter skills gain `## Would Revise If`** — `html-to-md`, `markdown-sanitization-chain`, `md-to-txt` previously had no falsifier section per `falsifiability-deadlines.instructions.md`. Added 90-day windows + specific trigger conditions for each.
