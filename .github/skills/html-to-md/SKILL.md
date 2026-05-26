@@ -1,7 +1,6 @@
 ---
 name: "html-to-md"
 description: "Convert HTML documents to clean Markdown via pandoc"
-muscle: .github/muscles/html-to-md.cjs
 lastReviewed: 2026-04-30
 ---
 

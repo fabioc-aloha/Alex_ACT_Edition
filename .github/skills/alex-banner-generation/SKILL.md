@@ -1,7 +1,6 @@
 ---
 name: "alex-banner-generation"
 description: "Generate on-brand Alex — ACT Edition SVG banners for documents (READMEs, plans, notes, release artifacts)"
-muscle: .github/muscles/generate-banner.cjs
 lastReviewed: 2026-04-30
 ---
 

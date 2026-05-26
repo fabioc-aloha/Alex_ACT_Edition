@@ -1,7 +1,6 @@
 ---
 name: "md-to-word"
 description: "Convert Markdown with Mermaid diagrams and SVG illustrations to professional Word documents"
-muscle: .github/muscles/md-to-word.cjs
 lastReviewed: 2026-05-18
 ---
 

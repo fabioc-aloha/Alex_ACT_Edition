@@ -1,7 +1,6 @@
 ---
 name: "md-to-html"
 description: "Convert Markdown to standalone HTML pages with embedded CSS, images, and Mermaid diagrams"
-muscle: .github/muscles/md-to-html.cjs
 lastReviewed: 2026-04-30
 ---
 

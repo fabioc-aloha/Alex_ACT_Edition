@@ -1,7 +1,6 @@
 ---
 name: "md-to-txt"
 description: "Strip Markdown formatting and produce clean plain text via pandoc"
-muscle: .github/muscles/md-to-txt.cjs
 lastReviewed: 2026-04-30
 ---
 
@@ -46,4 +45,4 @@ Override via flags above.
 ## Related
 
 - [lint-clean-markdown](../lint-clean-markdown/SKILL.md) — pre-flight the source
-- - [md-to-word](../md-to-word/SKILL.md) — for formatted output
+- [md-to-word](../md-to-word/SKILL.md) — for formatted output

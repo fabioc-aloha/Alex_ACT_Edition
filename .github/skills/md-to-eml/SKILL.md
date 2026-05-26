@@ -1,15 +1,12 @@
 ---
 name: "md-to-eml"
 description: Convert Markdown to RFC 5322 email (.eml) with inline CSS and CID images
-lastReviewed: 2026-04-30
+lastReviewed: 2026-05-26
 ---
 
 # Markdown to Email Conversion
 
-
 > Write in Markdown, send as professional email — works in any email client
-
-> **Staleness Watch**: If the heir maintains an `EXTERNAL-API-REGISTRY.md` (e.g. the Extension surface ships one), check it for source URLs and recheck cadence.
 
 Convert Markdown documents with YAML frontmatter into RFC 5322-compliant `.eml` files ready for governance, newsletter, and stakeholder communication workflows.
 
