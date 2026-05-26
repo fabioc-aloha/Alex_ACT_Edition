@@ -32,7 +32,7 @@ const allowGh = args.includes('--allow-gh');
 const catalogArg = args.find((a) => a.startsWith('--catalog='));
 
 function usage() {
-    console.log(`Usage: node .github/muscles/audit-mall-drift.cjs [options]
+    console.log(`Usage: node .github/scripts/audit-mall-drift.cjs [options]
 
 Options:
   --catalog=<path>   Use specific CATALOG.json path

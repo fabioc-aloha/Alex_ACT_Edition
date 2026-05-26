@@ -13,13 +13,13 @@ Audit this heir's installed Mall plugins for upstream drift, then apply updates 
 1. **Run mechanical drift check**:
 
    ```bash
-   node .github/muscles/audit-mall-drift.cjs --json
+   node .github/scripts/audit-mall-drift.cjs --json
    ```
 
    If the command fails because catalog is not found, retry with:
 
    ```bash
-   node .github/muscles/audit-mall-drift.cjs --allow-gh --json
+   node .github/scripts/audit-mall-drift.cjs --allow-gh --json
    ```
 
 2. **If no actionable drift** (`UPDATED_UPSTREAM`, `DEPRECATED_UPSTREAM`, `UNMANAGED_LOCAL_PLUGIN` all zero):
@@ -54,7 +54,7 @@ Audit this heir's installed Mall plugins for upstream drift, then apply updates 
 8. **Re-run drift check and report final state**:
 
    ```bash
-   node .github/muscles/audit-mall-drift.cjs
+   node .github/scripts/audit-mall-drift.cjs
    ```
 
    Include counts by state and list any remaining action items.

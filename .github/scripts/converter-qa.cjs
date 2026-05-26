@@ -24,10 +24,10 @@
  * - Output format verification
  *
  * Usage:
- *   node .github/muscles/converter-qa.cjs                # Run all tests
- *   node .github/muscles/converter-qa.cjs --suite=word   # Run word converter tests only
- *   node .github/muscles/converter-qa.cjs --suite=shared # Run shared module tests only
- *   node .github/muscles/converter-qa.cjs --verbose      # Show detailed output
+ *   node .github/scripts/converter-qa.cjs                # Run all tests
+ *   node .github/scripts/converter-qa.cjs --suite=word   # Run word converter tests only
+ *   node .github/scripts/converter-qa.cjs --suite=shared # Run shared module tests only
+ *   node .github/scripts/converter-qa.cjs --verbose      # Show detailed output
  * @currency 2026-05-18
  */
 'use strict';
@@ -80,7 +80,6 @@ function suite(name, fn) {
 // -----------------------------------------------------------------------------
 
 const ROOT = path.join(__dirname, '..', '..');
-const MUSCLES = path.join(ROOT, '.github', 'muscles');
 const SKILLS = path.join(ROOT, '.github', 'skills');
 const SCRIPTS_SHARED = path.join(ROOT, '.github', 'scripts', 'shared');
 const LUA = path.join(SKILLS, 'md-to-word', 'scripts', 'lua-filters');
@@ -1104,7 +1103,7 @@ function createImageFixtures(dir) {
 // md-to-html.cjs: standalone HTML with embedded CSS, PNG, and SVG
 // -----------------------------------------------------------------------------
 
-const MD_TO_HTML = path.join(MUSCLES, 'md-to-html.cjs');
+const MD_TO_HTML = path.join(SKILLS, 'md-to-html', 'scripts', 'md-to-html.cjs');
 
 suite('md-to-html.cjs: end-to-end + image handling', () => {
   if (!fileExists(MD_TO_HTML)) {
@@ -1190,7 +1189,7 @@ const x = 1;
 // md-to-txt.cjs: strip formatting, preserve alt text for images
 // -----------------------------------------------------------------------------
 
-const MD_TO_TXT = path.join(MUSCLES, 'md-to-txt.cjs');
+const MD_TO_TXT = path.join(SKILLS, 'md-to-txt', 'scripts', 'md-to-txt.cjs');
 
 suite('md-to-txt.cjs: strip formatting + preserve image alt text', () => {
   if (!fileExists(MD_TO_TXT)) {
@@ -1252,7 +1251,7 @@ A paragraph with **bold** and *italic* and \`inline code\`.
 // html-to-md.cjs: HTML -> Markdown, preserving structure and image refs
 // -----------------------------------------------------------------------------
 
-const HTML_TO_MD = path.join(MUSCLES, 'html-to-md.cjs');
+const HTML_TO_MD = path.join(SKILLS, 'html-to-md', 'scripts', 'html-to-md.cjs');
 
 suite('html-to-md.cjs: structure + image preservation', () => {
   if (!fileExists(HTML_TO_MD)) {
@@ -1315,7 +1314,7 @@ suite('html-to-md.cjs: structure + image preservation', () => {
 // docx-to-md.cjs: round-trip via md-to-word + image extraction
 // -----------------------------------------------------------------------------
 
-const DOCX_TO_MD = path.join(MUSCLES, 'docx-to-md.cjs');
+const DOCX_TO_MD = path.join(SKILLS, 'docx-to-md', 'scripts', 'docx-to-md.cjs');
 
 suite('docx-to-md.cjs: round-trip + image extraction', () => {
   if (!fileExists(DOCX_TO_MD)) {

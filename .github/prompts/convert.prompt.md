@@ -18,7 +18,7 @@ Convert a document to another format.
    ```
 4. **Validate**: Run converter-qa on the output:
    ```
-   node .github/muscles/converter-qa.cjs <output>
+   node .github/scripts/converter-qa.cjs <output>
    ```
 5. **Report**: Show the output path, file size, and any QA findings.
 
