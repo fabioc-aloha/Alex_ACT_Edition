@@ -1,6 +1,5 @@
 ---
 description: "Audit installed Mall plugins for upstream drift, then update or remove with explicit user consent"
-mode: agent
 lastReviewed: 2026-05-26
 ---
 

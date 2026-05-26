@@ -1,6 +1,5 @@
 ---
 description: "Validate Markdown files against converter requirements — frontmatter, mermaid syntax, SVG presence, structural rules — before running converters"
-mode: agent
 lastReviewed: 2026-05-26
 ---
 

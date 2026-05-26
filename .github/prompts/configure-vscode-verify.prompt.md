@@ -1,6 +1,5 @@
 ---
 description: "Read-only audit of user-level VS Code/Copilot settings compliance"
-mode: agent
 lastReviewed: 2026-05-26
 ---
 

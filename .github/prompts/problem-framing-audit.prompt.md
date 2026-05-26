@@ -1,6 +1,5 @@
 ---
 description: "Audit the framing of a problem before solving — restate, generalise, specialise, invert, ask why, pre-mortem, check stakeholders, surface alternative framings"
-mode: agent
 lastReviewed: 2026-05-26
 ---
 

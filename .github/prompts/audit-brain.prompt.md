@@ -1,6 +1,5 @@
 ---
 description: "Run a local ACT Edition brain audit via the brain-auditor worker and return severity-ranked fixes"
-mode: agent
 agent: brain-auditor
 lastReviewed: 2026-05-26
 ---

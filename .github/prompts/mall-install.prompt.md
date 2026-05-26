@@ -1,6 +1,5 @@
 ---
 description: "Install a plugin from the Alex ACT Plugin Mall into local/ paths"
-mode: agent
 lastReviewed: 2026-05-26
 ---
 

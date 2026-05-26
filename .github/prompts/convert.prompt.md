@@ -1,5 +1,4 @@
 ---
-mode: agent
 description: "Convert a document between formats (md/html/word/eml/txt). Detects source and target format, runs the appropriate per-skill script, validates with converter-qa."
 lastReviewed: 2026-05-26
 ---

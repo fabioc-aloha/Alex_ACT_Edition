@@ -1,7 +1,6 @@
 ---
 description: "Short alias for /save-session-note — write a quick pending-action note to repo-root HANDOFF.md"
-mode: agent
-lastReviewed: 2026-05-13
+lastReviewed: 2026-05-26
 ---
 
 # Note

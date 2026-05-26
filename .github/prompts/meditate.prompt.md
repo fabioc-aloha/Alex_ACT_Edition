@@ -1,7 +1,6 @@
 ---
-mode: agent
 description: "Consolidate session learning — extract new patterns into skills, instructions, prompts, or memory"
-lastReviewed: 2026-05-13
+lastReviewed: 2026-05-26
 ---
 
 # /meditate

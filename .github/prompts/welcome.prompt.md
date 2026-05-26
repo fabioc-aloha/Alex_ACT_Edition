@@ -1,6 +1,5 @@
 ---
 description: "First-session orientation tour — what's loaded, what to try next, how to extend"
-mode: agent
 lastReviewed: 2026-05-26
 ---
 
@@ -28,7 +27,7 @@ Three things worth knowing, framed as capabilities not files:
 
 ### 3. Where capability comes from
 
-The brain ships with **36 instructions, 30 skills, 26 prompts, 4 agents** baked in (the kernel). For anything beyond that, the **Alex ACT Plugin Mall** is the live capability surface — hundreds of skills available on demand, install one at a time:
+The brain ships with **37 instructions, 31 skills, 26 prompts, 4 agents** baked in (the kernel). For anything beyond that, the **Alex ACT Plugin Mall** is the live capability surface — hundreds of skills available on demand, install one at a time:
 
 ```text
 /mall search <topic>     # find a plugin

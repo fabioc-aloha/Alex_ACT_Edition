@@ -1,6 +1,5 @@
 ---
 description: "Apply baseline VS Code user-scope settings for fleet policy compliance"
-mode: agent
 lastReviewed: 2026-05-26
 ---
 

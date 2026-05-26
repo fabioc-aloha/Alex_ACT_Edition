@@ -1,7 +1,7 @@
 ---
 name: "md-to-txt"
 description: "Strip Markdown formatting and produce clean plain text via pandoc"
-lastReviewed: 2026-04-30
+lastReviewed: 2026-05-26
 ---
 
 # Markdown to Plain Text
@@ -46,3 +46,7 @@ Override via flags above.
 
 - [lint-clean-markdown](../lint-clean-markdown/SKILL.md) — pre-flight the source
 - [md-to-word](../md-to-word/SKILL.md) — for formatted output
+
+## Would Revise If
+
+Revisit this skill by **2026-08-26** (90 days) or sooner if any of the following fires: pandoc upstream changes plain-text output in a way that breaks the documented "stripped" list; the heuristic for indentation preservation produces wrong output on a real source the user converts; or a heir needs a stripped-but-not-plain output (e.g., RTF, SRT) that this skill doesn't cover — split into a sibling skill instead.

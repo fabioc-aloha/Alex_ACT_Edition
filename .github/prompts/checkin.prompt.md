@@ -1,7 +1,6 @@
 ---
 description: "Run the greeting check-in on demand — Edition version + AI-Memory announcements"
-mode: agent
-lastReviewed: 2026-04-30
+lastReviewed: 2026-05-26
 ---
 
 # Check-in

@@ -1,6 +1,5 @@
 ---
 description: "Run the full critical-thinking pass on a decision, claim, or recommendation — generate alternatives, check evidence, detect bias, test falsifiability"
-mode: agent
 lastReviewed: 2026-05-26
 ---
 

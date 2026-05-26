@@ -1,6 +1,5 @@
 ---
 description: "Save session state for handoff in repo-root HANDOFF.md (and mirror to AI-Memory)"
-mode: agent
 lastReviewed: 2026-05-26
 ---
 

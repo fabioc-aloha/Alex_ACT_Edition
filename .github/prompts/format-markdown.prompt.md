@@ -1,6 +1,5 @@
 ---
 description: "Format Markdown files for professional appearance — whitespace cleanup, blockquote continuity, ATX heading spacing — no semantic changes"
-mode: agent
 lastReviewed: 2026-05-26
 ---
 

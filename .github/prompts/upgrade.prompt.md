@@ -1,6 +1,5 @@
 ---
 description: "Pull the latest Edition into this heir — apply directly, summarize, surface notable changes"
-mode: agent
 lastReviewed: 2026-05-26
 ---
 

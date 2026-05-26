@@ -38,13 +38,13 @@ Subagent audits (4 parallel runs) surfaced **39 Revise items**:
 
 ## Current Edition brain shape (post-audit)
 
-- **Skills**: 30 (27 + 3 added: code-review, git-workflow, status-reporting)
-- **Instructions**: 36 (33 + 3 added routing pointers for the new skills)
-- **Prompts**: 26 (27 - 1 removed: migrate-from-alex-master)
+- **Skills**: 31 (was 30; +1 deep-review mirrored from Supervisor)
+- **Instructions**: 36 (unchanged)
+- **Prompts**: 26 (unchanged file count; all 22 with deprecated `mode: agent` cleaned)
 - **Agents**: 4 (unchanged file count; all 4 tightened with WRif + allowlist trims)
 - **Muscles**: 0 (folder eliminated; cross-cutting executables moved to `.github/scripts/`)
 
-**Total: 96 artifacts** (was 91 pre-fit-audit; +3 skills, +3 instructions, -1 prompt).
+**Total: 97 artifacts** (was 96 pre-playbook-revisit; +1 deep-review).
 
 ## Shared-core byte-identity verified
 

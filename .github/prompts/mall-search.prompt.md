@@ -1,6 +1,5 @@
 ---
 description: "Search the Alex ACT Plugin Mall by keyword, category, shape, or tier"
-mode: agent
 lastReviewed: 2026-05-26
 ---
 

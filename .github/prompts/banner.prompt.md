@@ -1,6 +1,5 @@
 ---
 description: "Generate a 1200×300 SVG banner for a document — title, subtitle, watermark category, on-brand for Alex — ACT Edition"
-mode: agent
 lastReviewed: 2026-05-26
 ---
 

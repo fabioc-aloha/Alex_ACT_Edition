@@ -1,6 +1,5 @@
 ---
 description: "Propose a local skill for contribution to the Plugin Mall — strip project specifics, format as a Mall-compatible proposal, submit via feedback channel"
-mode: agent
 lastReviewed: 2026-05-26
 ---
 

@@ -8,6 +8,11 @@ All notable changes to Alex ACT Edition.
 
 **Pending [behaviour] — per-type review/creator pairs land + full Edition audit closes 39 findings + muscles/ folder collapsed into scripts/.**
 
+### Changed
+
+- **22 prompts: stripped deprecated `mode: agent` frontmatter** — per current Microsoft Learn prompt-files spec, `mode: agent` is deprecated and ignored. Removed across all prompts that still carried it (audit-brain, banner, checkin, configure-vscode, configure-vscode-verify, convert, critical-thinking, feedback, format-markdown, initialize, lint-markdown, mall-contribute, mall-install, mall-refresh, mall-search, meditate, note, problem-framing-audit, save-session-note, status, upgrade, welcome).
+- **3 converter skills gain `## Would Revise If`** — `html-to-md`, `markdown-sanitization-chain`, `md-to-txt` previously had no falsifier section per `falsifiability-deadlines.instructions.md`. Added 90-day windows + specific trigger conditions for each.
+
 ### Removed
 
 - **`/migrate-from-alex-master` slash-prompt deleted** — fleet completed AlexMaster → ACT Edition migration months ago (per v2.0.3 CHANGELOG note). The prompt was historical tooling for one-time migration; keeping it shipped maintained the false implication that AlexMaster heirs still need active migration support. Bootstrap remains via `init-edition.cjs` for new heirs.
@@ -16,6 +21,7 @@ All notable changes to Alex ACT Edition.
 
 ### Added
 
+- **`deep-review` skill mirrored from Supervisor** — adversarial code review with three parallel perspectives (Advocate, Skeptic, Architect) that create productive tension; complements the systematic single-pass `code-review` for high-stakes PRs or architectural changes. Closes the `code-review / deep-review / git-workflow` overlap-audit deferred item from the Supervisor playbook.
 - **3 baseline skills mirrored from Supervisor** — `code-review` (correctness + security + growth review), `git-workflow` (branch hygiene, safe commits, recovery patterns), `status-reporting` (stakeholder-friendly updates). Each comes with its always-on routing instruction. Closes a real gap in Edition's heir-baseline: any heir doing project work needs these disciplines, and they were Supervisor-only despite being heir-applicable.
 - **Architecture-table refresh in `copilot-instructions.md`** — the cluster table now accurately lists only artifacts that ship in Edition. Previously named 7 instructions that were deleted in the 2026-05-18 consolidation (debugging, scope-management, creative-loop, partnership-charter, technical-writing, skill-building, bootstrap-learning); the stale claim violated Tenet III (Calibrated Uncertainty). Table now has 11 clusters covering the actual brain shape (added Discipline, Brain Curation, Tool Awareness clusters; renamed Converters and Authoring; updated Infrastructure and Fleet).
 - **6 per-type review/creator pair skills** (`instruction-review`, `instruction-creator`, `prompt-review`, `prompt-creator`, `agent-review`, `agent-creator`) — heir-adapted mirrors of Supervisor's per-type pairs per ADR-007. Heirs gain the same audit surface Supervisor uses for brain curation.
