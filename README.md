@@ -12,7 +12,7 @@ cp ~/Development/Alex_ACT_Edition/init-edition.cjs ~/Development/ && cd <your-pr
 # open the project in VS Code → run /welcome in Copilot Chat
 ```
 
-Three other paths exist (clone-and-`/initialize`, VS Code Marketplace extension, or the full [Quick Start](#quick-start) section below). The 3-line block above is the fastest happy path.
+Two other paths exist (clone-and-`/initialize` for an existing workspace, or the VS Code Marketplace extension). The 3-line block above is the fastest happy path; see [Quick Start](#quick-start) for all three.
 
 ---
 
@@ -30,50 +30,48 @@ This is a **cognitive architecture** -- 30 skills, 36 instructions, 26 prompts, 
 
 ### What we tested with
 
-The v1.5.0 reasoning baseline and the v2.0.0 release benchmark (Compose verification, 15/15 composite, -22.5% credits) were both run on **Claude Opus 4.7 (1M context)**. Real-world heir adoption (S360) succeeded on Copilot's default model surface; specific model used was not recorded.
+The v1.5.0 reasoning baseline and the v2.0.0 release benchmark (Compose verification, 15/15 composite, -22.5% credits) were both run on the **Microsoft-internal 1M-context variant of Claude Opus 4.7** (visible only to Microsoft enterprise tenants; the public Claude Opus 4.7 GA model in the table below ships with a 200K context window). Real-world heir adoption (S360) succeeded on Copilot's default model surface; specific model used was not recorded.
 
-### Snapshot: Copilot Language Models (2026-05-19)
+### Snapshot: Copilot Language Models (validated 2026-05-26)
 
-The table below is a factual snapshot of the Copilot model surface visible in VS Code 1.121 (`Settings → GitHub Copilot → Language Models`). Costs are **credits per 1M tokens** (Copilot internal accounting — different from the GitHub Docs *premium request multiplier* surface). **Verify against your own picker** before depending on these values; model availability and pricing can change between releases.
+The table below is validated against the [GitHub Docs Supported AI models](https://docs.github.com/en/copilot/reference/ai-models/supported-models) reference. Cost values (credits per 1M tokens) come from the Copilot internal accounting visible in `Settings → GitHub Copilot → Language Models` in VS Code 1.121+ — different from the public *premium request multiplier* surface, and shown as `—` for rows where the internal panel value was not captured. **Verify against your own picker** before depending on these values; availability and pricing change between releases.
 
 | Model | Context | Tools | Vision | In (cr/1M) | Out (cr/1M) | Cache (cr/1M) | Recommendation |
 | --- | ---: | :---: | :---: | ---: | ---: | ---: | --- |
 | Claude Haiku 4.5 | 200K | ✓ | ✓ | 100 | 500 | 10 | 🟡 Utility slot only |
 | Claude Opus 4.5 | 200K | ✓ | ✓ | 500 | 2500 | 50 | ✅ Primary (inferred) |
 | Claude Opus 4.6 | 200K | ✓ | ✓ | 500 | 2500 | 50 | ✅ Primary (inferred) |
-| Claude Opus 4.6 (Internal only) | 1000K | ✓ | ✓ | 500 | 2500 | 50 | ✅ Primary (inferred) |
+| Claude Opus 4.6 (fast mode) (Preview) | 200K | ✓ | ✓ | — | — | — | ✅ Primary (inferred) — 30x multiplier |
 | Claude Opus 4.7 | 200K | ✓ | ✓ | 500 | 2500 | 50 | ✅ Primary (family measured) |
-| Claude Opus 4.7 (Extra high reasoning)(Internal only) | 200K | ✓ | ✓ | 500 | 2500 | 50 | ✅ Primary (family measured) |
-| Claude Opus 4.7 (High reasoning)(Internal only) | 200K | ✓ | ✓ | 500 | 2500 | 50 | ✅ Primary (family measured) |
-| Claude Opus 4.7 (Internal only) | 1000K | ✓ | ✓ | 500 | 2500 | 50 | ✅ Primary (**measured**) |
 | Claude Sonnet 4.5 | 200K | ✓ | ✓ | 300 | 1500 | 30 | ✅ Primary (inferred) |
 | Claude Sonnet 4.6 | 200K | ✓ | ✓ | 300 | 1500 | 30 | ✅ Primary (inferred) |
 | Gemini 2.5 Pro | 173K | ✓ | ✓ | 125 | 1000 | 12.5 | ✅ Primary (inferred) |
 | Gemini 3 Flash (Preview) | 173K | ✓ | ✓ | 50 | 300 | 5 | 🟡 Utility slot only |
 | Gemini 3.1 Pro (Preview) | 200K | ✓ | ✓ | 200 | 1200 | 20 | ✅ Primary (inferred) |
+| Gemini 3.5 Flash | — | ✓ | ✓ | — | — | — | 🟡 Utility slot only — 14x multiplier |
 | GPT-4.1 ⚠️ *(retiring 2026-06-01)* | 128K | ✓ | ✓ | 200 | 800 | 50 | ❌ Do not adopt |
-| GPT-4o | 68K | ✓ | ✓ | 250 | 1000 | 125 | ❌ Avoid (context+cache) |
 | GPT-5 mini | 192K | ✓ | ✓ | 25 | 200 | 2.5 | ⚠️ Test first |
 | GPT-5.2 ⚠️ *(retiring 2026-06-01)* | 400K | ✓ | ✓ | 175 | 1400 | 17.5 | ❌ Do not adopt |
 | GPT-5.2-Codex *(retiring 2026-06-01)* | 400K | ✓ | ✓ | 175 | 1400 | 17.5 | ❌ Do not adopt |
 | GPT-5.3-Codex | 400K | ✓ | ✓ | 175 | 1400 | 17.5 | ✅ Primary (inferred) |
 | GPT-5.4 | 400K | ✓ | ✓ | 175 | 1400 | 17.5 | ✅ Primary (inferred) |
 | GPT-5.4 mini | 400K | ✓ | ✓ | 75 | 450 | 7.5 | 🟡 Utility slot only |
-| GPT-5.5 | 400K | ✓ | ✓ | 500 | 3000 | 50 | ✅ Primary (inferred) |
+| GPT-5.5 | 400K | ✓ | ✓ | 500 | 3000 | 50 | ✅ Primary (inferred) — 7.5x promotional multiplier |
+| Raptor mini (Preview, fine-tuned GPT-5 mini) | — | ✓ | — | — | — | — | ⚠️ Test first |
+| Goldeneye (Preview, fine-tuned GPT-5.1-Codex) | — | ✓ | — | — | — | — | ✅ Primary (inferred) |
 
-**Universal**: every Copilot model in this lineup exposes Tools + Vision — those capability flags are not differentiators within this surface. **Variable**: context window (68K → 1M), input cost (25 → 500), output cost (200 → 3000), and cache cost (2.5 → 125). The capability-floor benchmark (`MAN.8.3`, tracked in Supervisor `HANDOFF.md`) will measure ACT-discipline performance across a subset of these models; the data above is the factual spec sheet that feeds that benchmark, not a recommendation.
+**Universal**: every Copilot model in this lineup exposes Tools; most expose Vision (Raptor mini and Goldeneye unverified). **Variable**: context window (128K → 400K for verified rows), input cost (25 → 500), output cost (200 → 3000), and cache cost (2.5 → 50). The capability-floor benchmark (`MAN.8.3`, tracked in Supervisor `HANDOFF.md`) will measure ACT-discipline performance across a subset of these models; the data above is the factual spec sheet that feeds that benchmark, not a recommendation.
 
 **Recommendation legend** (preliminary; `MAN.8.3` open):
 
 | Marker | Meaning |
 | --- | --- |
-| ✅ **Primary (measured)** | Empirically validated against ACT discipline. Currently: Claude Opus 4.7 family only (v1.5.0 reasoning baseline + v2.0.0 release benchmark, both on the 1M-context Internal variant). |
-| ✅ **Primary (family measured)** | Same model family as the measured variant; same architecture, different routing tier. Strong inference but not separately benchmarked. |
+| ✅ **Primary (measured)** | Empirically validated against ACT discipline. Currently: Microsoft-internal 1M-context Claude Opus 4.7 variant (v1.5.0 reasoning baseline + v2.0.0 release benchmark). Not in the public table above; documented under *What we tested with*. |
+| ✅ **Primary (family measured)** | Same model family as the measured variant; same architecture, different context window or routing tier. Strong inference but not separately benchmarked. |
 | ✅ **Primary (inferred)** | GitHub Docs categorizes for *deep reasoning + debugging* or *general-purpose + agent tasks*. Architectural fit matches ACT needs; not yet measured against ACT discipline specifically. |
-| ⚠️ **Test first** | Cross-category model (GitHub Docs recommends GPT-5 mini for **both** general-purpose AND deep reasoning). High-leverage benchmark target — if it handles ACT discipline at 0× premium multiplier and 200 cr/1M output, that's a major credit-economy win. Do not adopt for production ACT work before measuring. |
+| ⚠️ **Test first** | GitHub Docs cross-categorizes the model (e.g. GPT-5 mini recommended for **both** general-purpose AND deep reasoning; Raptor mini is a fine-tuned variant of GPT-5 mini). High-leverage benchmark target if low-cost. Do not adopt for production ACT work before measuring. |
 | 🟡 **Utility slot only** | GitHub Docs categorizes for *fast help with simple or repetitive tasks*. Appropriate for the `chat.utilityModel` / `chat.utilitySmallModel` slots per v2.0.2 welcome baseline. **Not** for primary agent work — multi-step act-pass discipline is exactly the chained reasoning this tier is designed not to do. |
 | ❌ **Do not adopt** | Retiring 2026-06-01 per GitHub Docs; migrate now if currently using. |
-| ❌ **Avoid (context+cache)** | GPT-4o specifically: 68K context is below the comfortable floor (Edition's always-on + workspace + tool descriptions + conversation fills this fast), and 125 cr/1M cache cost is an anti-pattern for ACT's chunky reusable always-on prefix. |
 
 ### What the brain needs from a model
 
@@ -90,7 +88,7 @@ ACT discipline depends on the model meeting all four:
 
 | Slot | Recommendation |
 | --- | --- |
-| **Primary agent model** (the chat conversation) | Reasoning-class model from Copilot's lineup — Claude Sonnet 4+ / Claude Opus / GPT-4.1 / GPT-4o or equivalent. Smaller models (e.g. gpt-4o-mini) may work for routine tasks but **have not been validated** against the full act-pass discipline. |
+| **Primary agent model** (the chat conversation) | Reasoning-class model marked ✅ in the table above — Claude Opus 4.7 family (measured on internal 1M variant), Claude Sonnet 4.5+, Claude Opus 4.5+, Gemini 2.5 Pro / 3.1 Pro, GPT-5.3-Codex / 5.4 / 5.5, Goldeneye (preview), or equivalent. Models marked ❌ (retiring 2026-06-01) should be avoided. Note Claude Opus 4.6 *fast mode* preview carries a 30x multiplier and Claude Opus 4.7 carries 15x — the highest in the lineup. Smaller models (e.g. `gpt-4o-mini`, Raptor mini) may work for routine tasks but **have not been validated** against the full act-pass discipline. |
 | **`chat.utilityModel` / `chat.utilitySmallModel`** (title generation, rename suggestions, settings search) | `gpt-4o-mini` is set as the default in `welcome-baseline.json` (v2.0.2+). These slots are deliberately routed to a cheap model for token economy; they don't run ACT discipline. |
 
 ### Open question (tracked)
@@ -107,7 +105,7 @@ The brain ships slash-prompts grouped by lifecycle stage. Type `/` in Copilot Ch
 | --- | --- | --- |
 | `/initialize` | Workspace has Edition content but isn't registered | Detects state (fresh / partial-clean / partial-dirty / full) and runs the right bootstrap path |
 | `/welcome` | First session after bootstrap, or whenever you want a reorientation | Read-only orientation tour — who you are in this project, what's loaded, three good first prompts, and where to go next. No writes. |
-| `/configure-vscode` | First machine setup, or moving to a new machine | Applies the fleet-baseline VS Code user-scope settings (Copilot model defaults, agent behaviors). Was `/welcome` in Edition ≤ v2.2.x. |
+| `/configure-vscode` | First machine setup, or moving to a new machine | Applies the fleet-baseline VS Code user-scope settings (Copilot model defaults, agent behaviors) |
 | `/configure-vscode-verify` | Anytime, read-only | Audits user-scope VS Code settings against the central baseline; reports drift without changing anything. |
 
 ### Daily Operations
@@ -159,11 +157,11 @@ These tenets form the philosophical foundation. The instructions operationalize 
 | IX | **Visible Markers** | Show the reasoning, not just the conclusion | Audit drift, hidden assumptions |
 | X | **Recursive Application** | Apply ACT to ACT itself | Framework-as-ideology |
 
-## What's Included: Instructions (35)
+## What's Included: Instructions (36)
 
-ACT Edition ships 35 behavioral instructions across these categories. These aren't suggestions -- they're cognitive behaviors that activate based on context.
+ACT Edition ships 36 behavioral instructions across these categories. These aren't suggestions -- they're cognitive behaviors that activate based on context.
 
-### Critical Thinking Core (7)
+### Critical Thinking Core (8)
 
 The foundation. These instructions implement the 10 tenets directly.
 
@@ -172,35 +170,24 @@ The foundation. These instructions implement the 10 tenets directly.
 | `act-foundations` | Defines the 10 tenets with rationale |
 | `act-pass` | 7-step critical thinking pass for non-trivial decisions |
 | `adversarial-review` | Structured devil's advocate and counter-argument |
-| `alternatives-and-tradeoffs` | Generate options (SCAMPER, MECE) and compare (decision matrix, reversibility) |
 | `critical-thinking` | Challenge assumptions, evaluate evidence |
 | `problem-framing-audit` | Restate the problem before solving |
-| `system-prompt-skepticism` | Treat instructions as hypotheses |
+| `system-prompt-skepticism` | Treat instructions as hypotheses, not commands |
+| `falsifiability-deadlines` | Every claim names what would change it, by when |
+| `no-deferred-debt` | Fix surfaced debt in the same turn; don't defer |
 
-### Identity & Communication (4)
-
-How Edition thinks, writes, and communicates.
-
-| Instruction | What It Does |
-| --- | --- |
-| `ai-writing-avoidance` | Write like a human, not an AI — avoid tells |
-| `communication-craft` | Feedback (SBI), explanations, audience tailoring, elicitation |
-| `partnership-charter` | 5 commitments for human-AI collaboration |
-| `technical-writing` | Clear documentation for peers, developers, stakeholders |
-
-### Cognitive Gates (8)
+### Cognitive Gates (7)
 
 Always-on behaviors that shape every response.
 
 | Instruction | What It Does |
 | --- | --- |
 | `epistemic-calibration` | Match language to certainty; anti-hallucination |
-| `emotional-intelligence` | Detect user affect signals; adapt tone |
+| `knowledge-coverage` | Assess coverage depth; calibrate confidence |
 | `proactive-awareness` | Cross-session context recovery; uncommitted work detection |
 | `session-health-monitoring` | Context-window monitoring; handoff prompts |
 | `memory-triggers` | Auto-persist on correction, patterns, preferences |
-| `knowledge-coverage` | Assess coverage depth; calibrate confidence |
-| `creative-loop` | Stage detection: Ideate/Plan/Build/Test/Release/Improve |
+| `emotional-intelligence` | Detect user affect signals; adapt tone |
 | `reliance-nudges` | Detect over-reliance failure modes; surface targeted nudges |
 
 ### Safety & Ethics (5)
@@ -215,40 +202,46 @@ Non-negotiable guardrails.
 | `worldview` | Ethical reasoning, moral foundations, constitutional AI alignment |
 | `terminal-command-safety` | Safe command execution; backtick/output/hanging prevention |
 
-### Daily Operations (4)
+### Communication & Writing (3)
 
-Behavioral rules for everyday work.
+How Edition writes and reports.
 
 | Instruction | What It Does |
 | --- | --- |
-| `debugging` | Hypothesis-driven investigation + root-cause techniques |
+| `ai-writing-avoidance` | Write like a human, not an AI — avoid tells |
+| `communication-craft` | Feedback (SBI), explanations, audience tailoring, elicitation |
+| `status-reporting` | Stakeholder-friendly progress reports and status updates |
+
+### Code & Workflow Discipline (5)
+
+Engineering behaviors for code, commits, and orchestration.
+
+| Instruction | What It Does |
+| --- | --- |
+| `code-review` | Systematic review for correctness, security, and growth |
+| `git-workflow` | Consistent branch hygiene, safe commits, recovery patterns |
 | `lint-discipline` | Fix lint always — if you edited it, you own it |
-| `scope-management` | Feature creep prevention; ship the right thing |
-| `meditation` | Session-end knowledge consolidation |
+| `severity-tagged-commits` | Brain-touching commits carry severity tag (typo/clarification/behaviour/constitutional) |
+| `agent-delegation` | Delegate mechanical work to worker subagents to preserve parent capacity |
 
-### Converters (3)
+### Operations & Routing (8)
 
-Document conversion: one routing instruction, one rendering skill, one session-start check.
+Session-end consolidation, document conversion, fleet integration, and dispatcher routing.
 
 | Instruction | What It Does |
 | --- | --- |
-| `converter` | Routes `/convert` to the right format muscle |
+| `meditation` | Session-end knowledge consolidation into permanent architecture |
 | `markdown-mermaid` | Markdown + Mermaid rendering rules |
+| `converter` | Routes `/convert` to the right format muscle |
 | `greeting-checkin` | Session-start version check + announcement reader |
-
-### Infrastructure (4)
-
-Mall integration, tool awareness, fleet communication, and local brain audit routing.
-
-| Instruction | What It Does |
-| --- | --- |
 | `brain-audit` | Routes brain-audit requests to the `brain-auditor` trifecta and severity-first remediation |
 | `mall-installation` | How projects install plugins from the [Alex ACT Plugin Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall) |
 | `tool-awareness` | Platform awareness for deferred tools and external ingest |
+| `tool-awareness-categories` | Scoped reference table for common deferred-tool search patterns |
 
 ## Quick Start
 
-Four entry paths. Pick the one that matches your setup:
+Three entry paths. Pick the one that matches your setup:
 
 ### Path 1 — CLI (recommended for dev workstations)
 
@@ -336,20 +329,12 @@ node .github/scripts/upgrade-self.cjs --apply   # write changes
 
 The script clones Edition into a temp dir, diffs edition-owned paths, never touches `local/` content, and updates the marker.
 
-### AI-Memory & The Mall
+### AI-Memory & The Plugin Mall
 
 Two shared surfaces complete the architecture:
 
 - **AI-Memory** (OneDrive shared folder) — your fleet registry, feedback channel to Edition, and announcement inbox. Bootstrapped automatically on first install.
-- **[Alex ACT Plugin Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall)** -- public catalog of optional plugins across many categories. Browse, search, install what you need into `local/` slots.
-
-### The Plugin Mall
-
-Edition ships lean. The [Alex ACT Plugin Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall) extends it with curated plugins across security, Azure, data, healthcare, architecture, publishing, and more. Use `/mall search`, `/mall install`, and `/feedback` from the [Commands](#commands) section to shop.
-
-Skills install into `.github/skills/local/` so they survive Edition upgrades. The Mall also offers patterns, scaffolds, and a complete Supervisor package for users who want to run their own fleet governance.
-
-**Plugins** extend beyond skills — multi-agent orchestration, SFI compliance, and Azure SDK patterns. See [PLUGINS.md](PLUGINS.md) for registration instructions.
+- **[Alex ACT Plugin Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall)** — public catalog of optional plugins across security, Azure, data, healthcare, architecture, publishing, and more. Edition ships lean; the Mall extends it. Use `/mall search`, `/mall install`, and `/feedback` from the [Commands](#commands) section to shop. Skills install into `.github/skills/local/` so they survive Edition upgrades. The Mall also offers patterns, scaffolds, and a complete Supervisor package for users who want to run their own fleet governance.
 
 ## The ACT Pass: How It Works
 

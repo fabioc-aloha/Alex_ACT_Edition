@@ -6,11 +6,20 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
-**Pending [behaviour] — per-type review/creator pairs land + full Edition audit closes 39 findings + muscles/ folder collapsed into scripts/.**
+**Pending [behaviour] — per-type review/creator pairs land + full Edition audit closes 39 findings + muscles/ folder collapsed into scripts/ + 2026-05-26 cleanup pass (Fabio-specific plugin guide removed, README revised, model table validated against GitHub Docs).**
+
+### Changed (2026-05-26 cleanup pass)
+
+- **`README.md` revised** — instructions list aligned with actual brain (36 instructions across 6 cleaner categories; dropped 6 phantom instructions that no longer exist: `alternatives-and-tradeoffs`, `partnership-charter`, `technical-writing`, `creative-loop`, `debugging`, `scope-management`; added 8 missing real ones: `agent-delegation`, `code-review`, `falsifiability-deadlines`, `git-workflow`, `no-deferred-debt`, `severity-tagged-commits`, `status-reporting`, `tool-awareness-categories`). Path-count contradiction fixed (was "Three other paths / Four entry paths" → now "Three entry paths" matching reality). `/configure-vscode` row dropped historical "Was `/welcome` in v2.2.x" note (v2.3.0 now). Two redundant Mall subsections consolidated into one. Practical Recommendation row aligned with the model table above it (no GPT-4.1/GPT-4o).
+- **Model table validated against [GitHub Docs Supported AI models](https://docs.github.com/en/copilot/reference/ai-models/supported-models) as of 2026-05-26** — removed 5 entries (GPT-4o not in public chat picker, utility-only; 4 Microsoft-internal Claude variants `Opus 4.6 Internal`, `Opus 4.7 Internal`, `Opus 4.7 Extra high reasoning Internal`, `Opus 4.7 High reasoning Internal` — Fabio-tenant-only). Added 4 entries (`Claude Opus 4.6 (fast mode) (Preview)`, `Gemini 3.5 Flash` GA, `Raptor mini` Preview, `Goldeneye` Preview) with `—` placeholders in cells where the Copilot internal Settings panel value wasn't captured. Multiplier callouts inlined: 30x (Opus 4.6 fast mode), 14x (Gemini 3.5 Flash), 7.5x promotional (GPT-5.5). Recommendation legend dropped GPT-4o-specific "Avoid (context+cache)" row. "What we tested with" clarified — the 1M-context test variant is Microsoft-internal-tenant-only; public Claude Opus 4.7 ships at 200K. Snapshot date refreshed 2026-05-19 → validated 2026-05-26. `GPT-5.4 nano` deliberately not added (GitHub Docs footnote: Codex VS Code only, Pro+, not in Chat).
+
+### Removed (2026-05-26 cleanup pass)
+
+- **`PLUGINS.md` removed (root)** — Fabio-specific plugin-registration guide that hardcoded `C:\Development\MALL\.github-private\plugins\...` paths into Microsoft-internal stores most heirs cannot clone. 9 of 12 documented plugins lived under `.github-private` (internal-only). No inbound references remained after dropping the README pointer. The `chat.pluginLocations` pattern itself is generic enough that heirs needing it can register their own stores; the curated 12-plugin list was operator content, not heir baseline.
+- **`assets/banner-plugins.svg` removed** — orphan after `PLUGINS.md` deletion (sole consumer; zero other references).
+- **`scripts/` folder removed (root)** — contained only `cleanup-frontmatter.cjs`, a one-shot from the 2026-05-26 frontmatter sweep (commit `997c6d6`). Architectural rule (commit `c2764df`): Edition-owned files live under `.github/` to avoid namespace collisions with heir project files. The script ran once, no inbound references, canonical Edition scripts already under `.github/scripts/`.
 
 ### Changed
-
-- **22 prompts: stripped deprecated `mode: agent` frontmatter** — per current Microsoft Learn prompt-files spec, `mode: agent` is deprecated and ignored. Removed across all prompts that still carried it (audit-brain, banner, checkin, configure-vscode, configure-vscode-verify, convert, critical-thinking, feedback, format-markdown, initialize, lint-markdown, mall-contribute, mall-install, mall-refresh, mall-search, meditate, note, problem-framing-audit, save-session-note, status, upgrade, welcome).
 - **3 converter skills gain `## Would Revise If`** — `html-to-md`, `markdown-sanitization-chain`, `md-to-txt` previously had no falsifier section per `falsifiability-deadlines.instructions.md`. Added 90-day windows + specific trigger conditions for each.
 
 ### Removed
