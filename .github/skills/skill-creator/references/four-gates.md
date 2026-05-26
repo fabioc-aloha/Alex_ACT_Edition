@@ -7,7 +7,7 @@ Inversion of the four gates. Use as a pre-commit self-audit checklist.
 ## Gate 1 — Spec compliance
 
 - [ ] Frontmatter has all required fields (`name`, `description`, `lastReviewed`)
-- [ ] `description` is third-person, names both *what* + *when* (trigger phrases), ≤1024 chars (convention ≤300)
+- [ ] `description` is third-person, names both *what* + *when* (trigger phrases), ≤1024 chars
 - [ ] `name` is kebab-case, ≤64 chars, matches folder name
 - [ ] Skill lives in the right repo for its scope (this brain for generic-enough skills, Mall for external-surface delivery)
 - [ ] No dropped fields present (`type`, `application`, `applyTo`, `inheritance`, `tier`, `currency`, `lifecycle`)

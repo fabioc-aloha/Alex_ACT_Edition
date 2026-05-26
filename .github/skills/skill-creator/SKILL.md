@@ -147,7 +147,7 @@ See [`references/bundled-resources.md`](references/bundled-resources.md) for the
 
 ### Phase 7 — Dogfood self-audit
 
-Before committing, run [`skill-review`](../skill-review/SKILL.md)'s four gates on your own draft. Fill out the verdict template from `skill-review/SKILL.md § Output Template` — writing the verdict, not just thinking it, is what surfaces the gaps. If any gate fails, fix and re-run.
+Before committing, run [`skill-review`](../skill-review/SKILL.md)'s four gates on your own draft. For routine self-audit the verdict lives in the commit message; for an external candidate (Mall unit, store skill) write the verdict per `skill-review/SKILL.md § Recording the Verdict`. Writing it down, not just thinking it, is what surfaces the gaps. If any gate fails, fix and re-run.
 
 Also write 2-3 test prompts:
 
