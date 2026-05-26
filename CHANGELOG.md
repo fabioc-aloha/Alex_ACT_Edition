@@ -8,6 +8,10 @@ All notable changes to Alex ACT Edition.
 
 **Pending [behaviour] — per-type review/creator pairs land + full Edition audit closes 39 findings + muscles/ folder collapsed into scripts/ + 2026-05-26 cleanup pass (Fabio-specific plugin guide removed, README revised, model table validated against GitHub Docs).**
 
+### Added (2026-05-26 cleanup pass)
+
+- **`.vscode/settings.json` bootstrap template** (heir-owned) — Edition now ships a workspace settings template that bootstrap-copies to fresh heir projects: wires `markdown.styles` at the just-shipped `.vscode/markdown-light.css`, sets sensible markdown preview defaults (`fontSize: 12`, `lineHeight: 1.4`, `frontMatter: "codeBlock"` matching the VS Code 1.121 default-as-table opt-out for code-heavy projects), enables Ctrl+mousewheel zoom, and disables chat incremental rendering animation (`chat.experimental.incrementalRendering.animationStyle: "none"`). Heirs preserve this file across `/upgrade` via the heir-owned policy. Eliminates the previous "add this setting yourself" step from `/polish-mermaid-setup`.
+
 ### Changed (2026-05-26 cleanup pass)
 
 - **`markdown-light.css` moved to `.vscode/`** — completing the Supervisor f98cf55 pattern. The canonical Mermaid-friendly markdown preview CSS now lives at `.vscode/markdown-light.css` (edition-owned, refreshed on `/upgrade`) instead of `.github/skills/markdown-mermaid/markdown-light.css`. Heirs get the asset shipped directly to the editor location where VS Code expects to find user stylesheets, instead of the prior copy-via-prompt workflow.
