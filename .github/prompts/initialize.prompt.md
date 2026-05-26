@@ -20,7 +20,7 @@ Before any writes, classify the workspace:
 | **C — Edition content, no marker, dirty** | Same as B but at least one Edition-owned file is locally modified per git | Quick register (path-1: copy only missing files + render marker) |
 | **D — Already a heir** | `.github/.act-heir.json` exists | Refuse, suggest `/upgrade` |
 
-To detect dirty state in B vs C: run `git status --porcelain .github/` and check whether any reported files match the `edition_owned` globs in Edition's `.github/config/sync-policy.json`.
+To detect dirty state in B vs C: run `git status --porcelain .github/` and check whether any reported files match the `EDITION_OWNED` globs inlined in `.github/scripts/_registry.cjs`.
 
 ## Inputs to Gather
 
@@ -68,7 +68,7 @@ node <edition-path>/.github/scripts/bootstrap-heir.cjs \
 
 The workspace already has Edition content with local modifications. Running the bootstrap script directly would silently overwrite those modifications. Instead:
 
-1. **Inventory what's missing**. For each path in Edition's `sync-policy.json` `edition_owned` globs, check whether it exists in the target. Build the missing-files list.
+1. **Inventory what's missing**. For each path in Edition's `EDITION_OWNED` globs (inlined in `.github/scripts/_registry.cjs`), check whether it exists in the target. Build the missing-files list.
 
 2. **Inventory what's diverged**. For each path that exists in both, hash both copies. Files that differ are heir-modified Edition content — they will be silently clobbered on the next `upgrade-self.cjs --apply`. List them.
 

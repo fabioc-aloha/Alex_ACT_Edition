@@ -22,9 +22,13 @@ const { execSync } = require('child_process');
 
 const HEIR_ROOT = process.cwd();
 const GH = path.join(HEIR_ROOT, '.github');
-const POLICY_PATH = path.join(GH, 'config', 'sync-policy.json');
 const MARKER_PATH = path.join(GH, '.act-heir.json');
 const IS_EDITION_TEMPLATE = fs.existsSync(path.join(HEIR_ROOT, 'init-edition.cjs'));
+
+// Sync policy now lives inline in scripts/_registry.cjs (was .github/config/sync-policy.json).
+// Import directly; if the heir is missing _registry.cjs the script will error on require, which
+// is what we want — _registry.cjs is edition-owned and load-bearing.
+const { EDITION_OWNED, HEIR_OWNED } = require(path.join(GH, 'scripts', '_registry.cjs'));
 
 const args = process.argv.slice(2);
 const jsonOutput = args.includes('--json');
@@ -56,16 +60,10 @@ if (!fs.existsSync(MARKER_PATH)) {
     info(`Heir: ${marker.heir_id || '(no heir_id)'} on Edition v${marker.edition_version || '?'}`);
 }
 
-// ---- Check 2: sync-policy exists --------------------------------------------
-if (!fs.existsSync(POLICY_PATH)) {
-    err('Missing .github/config/sync-policy.json — cannot verify file ownership.');
-    emit();
-    process.exit(2);
-}
-
-const policy = JSON.parse(fs.readFileSync(POLICY_PATH, 'utf8'));
-const editionOwned = policy.edition_owned || [];
-const heirOwned = policy.heir_owned || [];
+// ---- Check 2: sync policy loaded --------------------------------------------
+// Policy is imported from _registry.cjs above. If require failed we'd already have crashed.
+const editionOwned = EDITION_OWNED || [];
+const heirOwned = HEIR_OWNED || [];
 
 // ---- Check 3: local/ subdirs exist ------------------------------------------
 const expectedLocalDirs = [
@@ -151,7 +149,6 @@ for (const s of ['upgrade-self.cjs', 'bootstrap-heir.cjs']) {
 // ---- Check 6b: heir-owned config templates ----------------------------------
 const heirConfigs = [
     { rel: '.github/config/cognitive-config.json', ref: 'knowledge-coverage instruction (showConfidenceBadge)' },
-    { rel: '.github/config/goals.json', ref: 'proactive-awareness instruction (active focus routing)' },
 ];
 for (const { rel, ref } of heirConfigs) {
     if (!fs.existsSync(path.join(HEIR_ROOT, rel))) {

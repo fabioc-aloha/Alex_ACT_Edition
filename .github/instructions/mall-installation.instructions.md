@@ -80,7 +80,7 @@ Every plugin has a README that explains what it does, what Edition version it ne
 
 ### Cardinal Rule: Use `local/` Subdirs
 
-Edition's `sync-policy.json` declares these as **heir-owned** (never overwritten on upgrade):
+Edition's sync policy (inlined in `.github/scripts/_registry.cjs` as the `HEIR_OWNED` array) declares these as **heir-owned** (never overwritten on upgrade):
 
 - `.github/skills/local/**`
 - `.github/instructions/local/**`

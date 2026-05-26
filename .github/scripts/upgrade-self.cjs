@@ -23,7 +23,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const { execFileSync } = require('child_process');
-const { upsertHeir } = require('./_registry.cjs');
+const { upsertHeir, EDITION_OWNED, HEIR_OWNED } = require('./_registry.cjs');
 
 // ─── CLI & Config ────────────────────────────────────────────────────────────
 
@@ -87,12 +87,6 @@ if (!fs.existsSync(versionPath)) {
 }
 const newVersion = fs.readFileSync(versionPath, 'utf8').trim();
 
-const policyPath = path.join(tmp, '.github', 'config', 'sync-policy.json');
-if (!fs.existsSync(policyPath)) {
-    console.error('Cloned Edition has no sync-policy.json. Aborting.');
-    process.exit(1);
-}
-
 function semver(v) {
     const m = /^(\d+)\.(\d+)\.(\d+)/.exec(v);
     if (!m) return [0, 0, 0];
@@ -125,15 +119,11 @@ console.log('');
 
 // ─── Collect Heir-Owned Files ────────────────────────────────────────────────
 
-// Read from the CURRENT policy (before it gets replaced)
-const currentPolicyPath = path.join(HEIR_ROOT, '.github', 'config', 'sync-policy.json');
+// Read the canonical heir-owned list from the imported policy.
 let heirOwnedFiles = [];
-if (fs.existsSync(currentPolicyPath)) {
-    const currentPolicy = JSON.parse(fs.readFileSync(currentPolicyPath, 'utf8'));
-    for (const pattern of (currentPolicy.heir_owned || [])) {
-        for (const rel of expandGlob(HEIR_ROOT, pattern)) {
-            heirOwnedFiles.push(rel);
-        }
+for (const pattern of HEIR_OWNED) {
+    for (const rel of expandGlob(HEIR_ROOT, pattern)) {
+        heirOwnedFiles.push(rel);
     }
 }
 
@@ -142,7 +132,6 @@ const alwaysRecover = [
     '.github/.act-heir.json',
     '.github/copilot-instructions.local.md',
     '.github/config/cognitive-config.json',
-    '.github/config/goals.json',
 ];
 for (const f of alwaysRecover) {
     if (fs.existsSync(path.join(HEIR_ROOT, f)) && !heirOwnedFiles.includes(f)) {
@@ -254,16 +243,13 @@ if (relocations.length > 0) {
     }
 }
 
-// ─── Implement "unmatched: preserve" from sync-policy ────────────────────────
+// ─── Implement "unmatched: preserve" from the inlined policy ────────────────
 // Walk current .github/ and preserve any file that is NOT edition-owned.
 // This catches .github/workflows/, .github/ISSUE_TEMPLATE/, dependabot.yml, etc.
 
 const dotGithubDir = path.join(HEIR_ROOT, '.github');
 if (fs.existsSync(dotGithubDir)) {
-    const currentPolicy = fs.existsSync(currentPolicyPath)
-        ? JSON.parse(fs.readFileSync(currentPolicyPath, 'utf8'))
-        : {};
-    const editionOwnedPatterns = currentPolicy.edition_owned || [];
+    const editionOwnedPatterns = EDITION_OWNED;
 
     function isEditionOwned(relPath) {
         const normalized = relPath.replace(/\\/g, '/');
