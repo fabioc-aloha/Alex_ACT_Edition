@@ -10,8 +10,8 @@
  * @platform windows,macos,linux
  * @requires node
  *
- * Usage: node .github/muscles/heir-doctor.cjs
- *        node .github/muscles/heir-doctor.cjs --json
+ * Usage: node .github/skills/greeting-checkin/scripts/heir-doctor.cjs
+ *        node .github/skills/greeting-checkin/scripts/heir-doctor.cjs --json
  *
  * Exit codes: 0 = healthy, 1 = warnings, 2 = errors (bugs in heir layout)
  */

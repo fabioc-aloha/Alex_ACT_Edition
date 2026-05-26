@@ -125,7 +125,7 @@ Wrap the findings inside a normal greeting response. Keep it short — one parag
 | `upgrade-self.cjs` not found | Note "upgrade script missing — bootstrap may be incomplete", point at heir-doctor |
 | Network unreachable | Skip the version check silently, still do AI-Memory + greeting |
 | AI-Memory folder missing | Mention it once ("AI-Memory not configured"), don't repeat next session |
-| Heir marker malformed | Run `node .github/muscles/heir-doctor.cjs` and report what it says |
+| Heir marker malformed | Run `node .github/skills/greeting-checkin/scripts/heir-doctor.cjs` and report what it says |
 
 ## Falsifiability
 

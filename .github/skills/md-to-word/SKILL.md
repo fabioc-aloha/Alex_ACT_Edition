@@ -86,13 +86,13 @@ Diagrams are rendered at 4x scale (4800px width) for crisp printing, then sized 
 
 ```bash
 # From your project root
-node .github/muscles/md-to-word.cjs docs/spec.md
+node .github/skills/md-to-word/scripts/md-to-word.cjs docs/spec.md
 
 # With custom output name
-node .github/muscles/md-to-word.cjs README.md output.docx
+node .github/skills/md-to-word/scripts/md-to-word.cjs README.md output.docx
 
 # Keep intermediate files for debugging
-node .github/muscles/md-to-word.cjs docs/plan.md --keep-temp
+node .github/skills/md-to-word/scripts/md-to-word.cjs docs/plan.md --keep-temp
 ```
 
 ### What It Does
@@ -371,14 +371,14 @@ textutil -convert docx document.html -output document.docx
 ```powershell
 # Windows PowerShell
 Get-ChildItem docs/*.md | ForEach-Object {
-    node .github/muscles/md-to-word.cjs $_.FullName --style professional
+    node .github/skills/md-to-word/scripts/md-to-word.cjs $_.FullName --style professional
 }
 ```
 
 ```bash
 # macOS/Linux
 for f in docs/*.md; do
-    node .github/muscles/md-to-word.cjs "$f" --style professional
+    node .github/skills/md-to-word/scripts/md-to-word.cjs "$f" --style professional
 done
 ```
 
@@ -386,14 +386,14 @@ done
 
 ```bash
 # All .md files in docs/ and subdirectories
-node .github/muscles/md-to-word.cjs docs --recursive --style professional
+node .github/skills/md-to-word/scripts/md-to-word.cjs docs --recursive --style professional
 ```
 
 ### Watch Mode
 
 ```bash
 # Auto-rebuild when source changes
-node .github/muscles/md-to-word.cjs spec.md --watch
+node .github/skills/md-to-word/scripts/md-to-word.cjs spec.md --watch
 ```
 
 ---
@@ -407,7 +407,7 @@ node .github/muscles/md-to-word.cjs spec.md --watch
 - name: Generate Word Documents
   run: |
     npm install -g @mermaid-js/mermaid-cli svgexport
-    node .github/muscles/md-to-word.cjs docs/spec.md --toc --cover
+    node .github/skills/md-to-word/scripts/md-to-word.cjs docs/spec.md --toc --cover
 
 - name: Upload artifacts
   uses: actions/upload-artifact@v4
@@ -421,7 +421,7 @@ node .github/muscles/md-to-word.cjs spec.md --watch
 ```json
 {
   "scripts": {
-    "docs:word": "node .github/muscles/md-to-word.cjs docs/README.md --style professional --toc"
+    "docs:word": "node .github/skills/md-to-word/scripts/md-to-word.cjs docs/README.md --style professional --toc"
   }
 }
 ```
@@ -430,10 +430,10 @@ node .github/muscles/md-to-word.cjs spec.md --watch
 
 ## For Heir Projects
 
-1. Copy `.github/muscles/md-to-word.cjs` to your project
+1. Copy `.github/skills/md-to-word/scripts/md-to-word.cjs` to your project
 2. Copy shared modules from `.github/muscles/shared/` (markdown-preprocessor, mermaid-pipeline)
 3. Install prerequisites: `npm install -g @mermaid-js/mermaid-cli svgexport`
-4. Run: `node .github/muscles/md-to-word.cjs your-doc.md`
+4. Run: `node .github/skills/md-to-word/scripts/md-to-word.cjs your-doc.md`
 
 ---
 

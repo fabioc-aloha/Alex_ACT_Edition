@@ -57,7 +57,7 @@ Ask the user only for what's missing. Defaults:
 ### Step 2 — Generate
 
 ```sh
-node .github/muscles/generate-banner.cjs \
+node .github/skills/alex-banner-generation/scripts/generate-banner.cjs \
   --title "Document Title" \
   --subtitle "One-line purpose statement." \
   --watermark PLAN

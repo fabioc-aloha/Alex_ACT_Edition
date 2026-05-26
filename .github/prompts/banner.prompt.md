@@ -8,7 +8,7 @@ lastReviewed: 2026-05-26
 
 Generate an SVG banner for the top of a markdown document. Wraps the `generate-banner.cjs` muscle and the `alex-banner-generation` skill.
 
-Skill: [alex-banner-generation](../skills/alex-banner-generation/SKILL.md). Muscle: `.github/muscles/generate-banner.cjs`.
+Skill: [alex-banner-generation](../skills/alex-banner-generation/SKILL.md). Muscle: `.github/skills/alex-banner-generation/scripts/generate-banner.cjs`.
 
 ## When to Use
 
@@ -36,7 +36,7 @@ Skill: [alex-banner-generation](../skills/alex-banner-generation/SKILL.md). Musc
 5. **Run**:
 
    ```sh
-   node .github/muscles/generate-banner.cjs \
+   node .github/skills/alex-banner-generation/scripts/generate-banner.cjs \
      --title "Project Name" \
      --subtitle "One-line value statement" \
      --watermark DOCS \

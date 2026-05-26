@@ -8,7 +8,7 @@ lastReviewed: 2026-05-26
 
 Run the markdown validator on a file before converting it to Word, HTML, EML, or TXT. Catches issues that cause conversion failures or degraded output.
 
-Skill: [lint-clean-markdown](../skills/lint-clean-markdown/SKILL.md). Muscle: `.github/muscles/markdown-lint.cjs`. Always-on rule: [lint-discipline.instructions.md](../instructions/lint-discipline.instructions.md) ("fix lint always — even if not yours").
+Skill: [lint-clean-markdown](../skills/lint-clean-markdown/SKILL.md). Muscle: `.github/skills/markdown-mermaid/scripts/markdown-lint.cjs`. Always-on rule: [lint-discipline.instructions.md](../instructions/lint-discipline.instructions.md) ("fix lint always — even if not yours").
 
 ## When to Use
 
@@ -31,8 +31,8 @@ Skill: [lint-clean-markdown](../skills/lint-clean-markdown/SKILL.md). Muscle: `.
 2. **Run**:
 
    ```sh
-   node .github/muscles/markdown-lint.cjs FILE.md
-   node .github/muscles/markdown-lint.cjs docs/ --recursive
+   node .github/skills/markdown-mermaid/scripts/markdown-lint.cjs FILE.md
+   node .github/skills/markdown-mermaid/scripts/markdown-lint.cjs docs/ --recursive
    ```
 
 3. **Read the report**:

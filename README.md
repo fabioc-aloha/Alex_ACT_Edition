@@ -286,7 +286,7 @@ Open a Copilot chat and follow this checklist in order:
 ```text
 ✓ Brain installed at .github/
 ✓ Heir marker rendered at .github/.act-heir.json
-✓ heir-doctor passed (run again anytime with: node .github/muscles/heir-doctor.cjs)
+✓ heir-doctor passed (run again anytime with: node .github/skills/greeting-checkin/scripts/heir-doctor.cjs)
 
 Next:
   1. Edit .github/copilot-instructions.local.md

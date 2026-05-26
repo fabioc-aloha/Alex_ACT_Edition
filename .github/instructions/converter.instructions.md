@@ -12,12 +12,12 @@ Route conversion requests to the right format skill and muscle. Each format has 
 
 | Request pattern | Skill | Muscle | Command prefix |
 | --- | --- | --- | --- |
-| Markdown to HTML | `md-to-html` | `md-to-html.cjs` | `node .github/muscles/md-to-html.cjs` |
-| Markdown to Word | `md-to-word` | `md-to-word.cjs` | `node .github/muscles/md-to-word.cjs` |
-| Markdown to email | `md-to-eml` | `md-to-eml.cjs` | `node .github/muscles/md-to-eml.cjs` |
-| Markdown to plain text | `md-to-txt` | `md-to-txt.cjs` | `node .github/muscles/md-to-txt.cjs` |
-| Word to Markdown | `docx-to-md` | `docx-to-md.cjs` | `node .github/muscles/docx-to-md.cjs` |
-| HTML to Markdown | `html-to-md` | `html-to-md.cjs` | `node .github/muscles/html-to-md.cjs` |
+| Markdown to HTML | `md-to-html` | `md-to-html.cjs` | `node .github/skills/md-to-html/scripts/md-to-html.cjs` |
+| Markdown to Word | `md-to-word` | `md-to-word.cjs` | `node .github/skills/md-to-word/scripts/md-to-word.cjs` |
+| Markdown to email | `md-to-eml` | `md-to-eml.cjs` | `node .github/skills/md-to-eml/scripts/md-to-eml.cjs` |
+| Markdown to plain text | `md-to-txt` | `md-to-txt.cjs` | `node .github/skills/md-to-txt/scripts/md-to-txt.cjs` |
+| Word to Markdown | `docx-to-md` | `docx-to-md.cjs` | `node .github/skills/docx-to-md/scripts/docx-to-md.cjs` |
+| HTML to Markdown | `html-to-md` | `html-to-md.cjs` | `node .github/skills/html-to-md/scripts/html-to-md.cjs` |
 
 ## Workflow
 

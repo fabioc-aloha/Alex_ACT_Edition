@@ -11,7 +11,7 @@ Convert HTML documents to clean Markdown. Strips inline styles, scripts, and tra
 ## Quick Start
 
 ```bash
-node .github/muscles/html-to-md.cjs page.html page.md
+node .github/skills/html-to-md/scripts/html-to-md.cjs page.html page.md
 ```
 
 ## What's preserved

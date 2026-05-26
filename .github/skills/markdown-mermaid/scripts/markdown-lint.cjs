@@ -29,7 +29,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { findMermaidBlocks: _sharedFindMermaid } = require(path.join(__dirname, 'shared', 'mermaid-pipeline.cjs'));
+const { findMermaidBlocks: _sharedFindMermaid } = require(path.join(__dirname, '..', '..', '..', 'muscles', 'shared', 'mermaid-pipeline.cjs'));
 // Note: glob patterns handled manually via fs + path
 
 // -----------------------------------------------------------------------------

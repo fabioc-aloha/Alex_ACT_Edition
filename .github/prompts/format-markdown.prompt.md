@@ -8,7 +8,7 @@ lastReviewed: 2026-05-26
 
 Run the markdown whitespace formatter on a file or directory. Cleans presentation without altering meaning. Wraps the `md-format.cjs` muscle.
 
-Muscle: `.github/muscles/md-format.cjs`. Companion: `lint-discipline.instructions.md` (the always-on rule that says "fix lint always — even if not yours") and `lint-clean-markdown` skill (the validator).
+Muscle: `.github/skills/markdown-mermaid/scripts/md-format.cjs`. Companion: `lint-discipline.instructions.md` (the always-on rule that says "fix lint always — even if not yours") and `lint-clean-markdown` skill (the validator).
 
 ## When to Use
 
@@ -40,9 +40,9 @@ Muscle: `.github/muscles/md-format.cjs`. Companion: `lint-discipline.instruction
 3. **Run**. Examples:
 
    ```sh
-   node .github/muscles/md-format.cjs README.md --check
-   node .github/muscles/md-format.cjs docs/ --in-place
-   node .github/muscles/md-format.cjs CHANGELOG.md --diff
+   node .github/skills/markdown-mermaid/scripts/md-format.cjs README.md --check
+   node .github/skills/markdown-mermaid/scripts/md-format.cjs docs/ --in-place
+   node .github/skills/markdown-mermaid/scripts/md-format.cjs CHANGELOG.md --diff
    ```
 
 4. **Verify**. If `--in-place`, `git diff` to see what changed. Should be only whitespace.

@@ -57,7 +57,7 @@ node <edition-path>/.github/scripts/bootstrap-heir.cjs \
 1. Run dry-run first (omit `--apply`). Summarize: file count, marker fields.
 2. Confirm with user.
 3. Re-run with `--apply`.
-4. Run `node .github/muscles/heir-doctor.cjs` -- must exit 0.
+4. Run `node .github/skills/greeting-checkin/scripts/heir-doctor.cjs` -- must exit 0.
 5. **AI-Memory setup**: The bootstrap script auto-detects cloud drives and creates `AI-Memory/` if none exists. If it reports "No AI-Memory folder found", help the user:
    - List detected cloud drives (OneDrive variants, iCloud, Dropbox)
    - Ask which one to use for fleet communication
@@ -79,7 +79,7 @@ The workspace already has Edition content with local modifications. Running the 
 
 4. **Copy only the missing files** from Edition into the target. Do not touch existing files.
 
-5. Run `node .github/muscles/heir-doctor.cjs` — must exit 0.
+5. Run `node .github/skills/greeting-checkin/scripts/heir-doctor.cjs` — must exit 0.
 
 6. Stage but do NOT commit. Suggest commit message: `chore: register as ACT heir (path-1 quick register)`.
 

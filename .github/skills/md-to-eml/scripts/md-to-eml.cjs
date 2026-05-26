@@ -60,11 +60,11 @@ const { execSync } = require('child_process');
 // Try to load shared modules
 let sharedPreprocessor, sharedMermaid;
 try {
-  sharedPreprocessor = require('./shared/markdown-preprocessor.cjs');
-  sharedMermaid = require('./shared/mermaid-pipeline.cjs');
+  sharedPreprocessor = require(path.join(__dirname, '..', '..', '..', 'muscles', 'shared', 'markdown-preprocessor.cjs'));
+  sharedMermaid = require(path.join(__dirname, '..', '..', '..', 'muscles', 'shared', 'mermaid-pipeline.cjs'));
 } catch {
   // Fallback: resolve from same directory structure
-  const sharedDir = path.join(__dirname, 'shared');
+  const sharedDir = path.join(__dirname, '..', '..', '..', 'muscles', 'shared');
   if (fs.existsSync(path.join(sharedDir, 'markdown-preprocessor.cjs'))) {
     sharedPreprocessor = require(path.join(sharedDir, 'markdown-preprocessor.cjs'));
     sharedMermaid = require(path.join(sharedDir, 'mermaid-pipeline.cjs'));

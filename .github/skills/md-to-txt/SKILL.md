@@ -11,7 +11,7 @@ Strip all Markdown formatting and produce clean plain text. Useful for clipboard
 ## Quick Start
 
 ```bash
-node .github/muscles/md-to-txt.cjs source.md output.txt
+node .github/skills/md-to-txt/scripts/md-to-txt.cjs source.md output.txt
 ```
 
 ## Options
