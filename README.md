@@ -22,7 +22,7 @@ ACT Edition changes that. Not by making AI "smarter," but by making it **honest*
 
 A confident wrong answer is worse than an uncertain correct answer. ACT shifts the default from "sound authoritative" to "show your work." When the AI doesn't know, it says "I don't know." When it's uncertain, it quantifies the uncertainty. When it challenges your framing, it explains why. Debugging a confident hallucination takes hours. Verifying a well-reasoned hypothesis takes minutes.
 
-This is a **cognitive architecture** -- 18 skills, 36 instructions, 23 prompts, 4 worker agents, and 15 muscles that teach your AI assistant to think critically about its own reasoning. Built for GitHub Copilot's `.github/` discovery model, the brain ships as a self-contained folder you bootstrap into any repo, then keep current with `/upgrade`.
+This is a **cognitive architecture** -- 27 skills, 33 instructions, 27 prompts, and 4 worker agents that teach your AI assistant to think critically about its own reasoning. Built for GitHub Copilot's `.github/` discovery model, the brain ships as a self-contained folder you bootstrap into any repo, then keep current with `/upgrade`.
 
 ## Model Compatibility
 
@@ -305,11 +305,10 @@ Beyond the instructions, the brain bundles:
 
 | Surface | Purpose |
 | --- | --- |
-| **Skills** (`.github/skills/`) | 18 skills -- critical thinking, document conversion (6 formats), markdown-mermaid, banner generation, greeting check-in, brain audit, meditation, AI-Memory setup, sanitization, creative writing, academic paper drafting |
-| **Prompts** (`.github/prompts/`) | 23 slash-commands for setup, daily ops, skill discovery, memory, and maintenance (see [Commands](#commands)) |
-| **Muscles** (`.github/muscles/`) | Cross-cutting executables: `converter-qa.cjs` (cross-converter test runner), `audit-mall-drift.cjs` (Mall plugin freshness). Skill-bound scripts live in each skill's own `scripts/` folder. |
+| **Skills** (`.github/skills/`) | 27 skills -- critical thinking, document conversion (6 formats), markdown-mermaid, banner generation, greeting check-in, brain audit, meditation, AI-Memory setup, per-type review/creator pairs (skill/instruction/prompt/agent), doc-hygiene, creative writing, academic paper drafting. Each skill bundles its own `scripts/` folder when it ships executables. |
+| **Prompts** (`.github/prompts/`) | 27 slash-commands for setup, daily ops, skill discovery, memory, and maintenance (see [Commands](#commands)) |
 | **Configs** (`.github/config/`) | `sync-policy.json`, `edition-manifest.json` (release-time allowlist), `markdown-light.css`, project-owned `cognitive-config.json` + `goals.json` |
-| **Scripts** (`.github/scripts/`) | `bootstrap-heir.cjs`, `upgrade-self.cjs`, `build-edition-manifest.cjs` (regenerates the allowlist), shared `_registry.cjs`, plus `shared/` library used by converter skill-scripts |
+| **Scripts** (`.github/scripts/`) | Heir lifecycle (`bootstrap-heir.cjs`, `upgrade-self.cjs`, `build-edition-manifest.cjs`, `_registry.cjs`) + cross-cutting executables (`converter-qa.cjs`, `audit-mall-drift.cjs`) + shared library (`shared/`) used by converter skill-scripts |
 | **Workspace defaults** (`.vscode/`) | `extensions.json` + `settings.json` shipped as project-owned templates — new projects receive them at bootstrap; existing ones keep their own |
 
 ### Project-Owned Customization Slots
@@ -320,7 +319,7 @@ Edition reserves `local/` subdirectories that survive every upgrade:
 .github/instructions/local/  ← your project-specific instructions
 .github/skills/local/        ← your custom skills
 .github/prompts/local/       ← your custom prompts
-.github/muscles/local/       ← your automation scripts
+.github/scripts/local/       ← your automation scripts (Mall executables install here)
 .github/config/local/        ← your tool configs
 .github/copilot-instructions.local.md  ← your identity layer
 ```
@@ -379,11 +378,11 @@ The brain uses a **trifecta pattern** for extensibility:
 
 | Artifact | Purpose | Location |
 | --- | --- | --- |
-| **Skill** | Domain knowledge | `.github/skills/<name>/SKILL.md` |
+| **Skill** | Domain knowledge (with bundled `scripts/` if it ships executables) | `.github/skills/<name>/SKILL.md` |
 | **Instruction** | Behavior trigger | `.github/instructions/<name>.instructions.md` |
-| **Muscle** | Automation script | `.github/muscles/<name>.cjs` |
+| **Script** | Cross-skill automation | `.github/scripts/<name>.cjs` |
 
-Start with a skill (knowledge). Add an instruction if you need it to auto-load. Add a muscle when automation is worth it.
+Start with a skill (knowledge). Add an instruction if you need it to auto-load. Add a script when automation is worth it (skill-bound → `skills/<name>/scripts/`, cross-cutting → `scripts/`).
 
 ## License
 

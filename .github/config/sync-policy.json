@@ -6,7 +6,6 @@
         ".github/instructions/**",
         ".github/skills/**",
         ".github/prompts/**",
-        ".github/muscles/**",
         ".github/agents/**",
         ".github/config/sync-policy.json",
         ".github/config/edition-manifest.json",
@@ -21,6 +20,7 @@
         ".github/scripts/bootstrap-heir.cjs",
         ".github/scripts/build-edition-manifest.cjs",
         ".github/scripts/_registry.cjs",
+        ".github/scripts/CONVERTER-CHANGELOG.md",
         ".github/VERSION"
     ],
     "heir_owned": [
@@ -32,7 +32,7 @@
         ".github/instructions/local/**",
         ".github/skills/local/**",
         ".github/prompts/local/**",
-        ".github/muscles/local/**",
+        ".github/scripts/local/**",
         ".github/agents/local/**",
         ".github/episodic/**",
         ".github/workflows/**",

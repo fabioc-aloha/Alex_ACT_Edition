@@ -6,7 +6,12 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
-**Pending [behaviour] — per-type review/creator pairs land + full Edition audit closes 39 findings.** New authoring surface for instruction, prompt, and agent review workflows; 4 worker agents tightened against Gate 6 tool-allowlist minimality; 8 shared-core instructions byte-identical with Supervisor; `markdown-mermaid` skill body trimmed 80% with heavy content extracted to references/. Falsifier window 2026-08-26.
+**Pending [behaviour] — per-type review/creator pairs land + full Edition audit closes 39 findings + muscles/ folder collapsed into scripts/.**
+
+### Removed
+
+- **`.github/muscles/` folder eliminated entirely** — the brain-executable tier collapsed into `.github/scripts/` after the per-skill consolidation drained it of skill-bound content. Cross-cutting executables (`converter-qa.cjs`, `audit-mall-drift.cjs`) and shared library (`scripts/shared/`) live in `scripts/`. The `CONVERTER-CHANGELOG.md` doc moved with them. Heir Mall-install destination migrated from `.github/muscles/local/**` to `.github/scripts/local/**` (sync-policy + mall-installation updated). Heirs with content in the old `muscles/local/` will see it preserved via the `unmatched:preserve` rule but should manually move to `scripts/local/` for ongoing maintenance.
+- **`audit-apis` workflow removed entirely** — deleted `.github/EXTERNAL-API-REGISTRY.md`, `.github/muscles/audit-api-drift.cjs` (already removed in prior commit), and `.github/prompts/audit-apis.prompt.md`. The external-API freshness workflow proved low-yield (registry stayed stale despite quarterly cadence; the drift detector flagged the registry as a date-checker not a source-of-truth checker; semantic audit fell back on the model knowing what's current anyway). Heirs that want external-API tracking can install a Mall plugin or maintain their own registry under `.github/local/`.
 
 ### Added
 
@@ -22,6 +27,10 @@ All notable changes to Alex ACT Edition.
 - **`markdown-mermaid` SKILL.md trimmed 1648→327 lines** (80% reduction) by extracting reference content to `references/mermaid-reference.md`. SKILL.md retains operational core (init template, ATACCU workflow, mode fragility). Description rewritten from slogan ("Clear documentation through visual excellence") to what+when discovery aid.
 - **20 prompts gain `## Would Revise If` section** + `lastReviewed` bump to 2026-05-26. Generic template applied; per-prompt specificity deferred to next audit.
 - **`audit-apis` workflow removed entirely** — deleted `.github/EXTERNAL-API-REGISTRY.md`, `.github/muscles/audit-api-drift.cjs`, and `.github/prompts/audit-apis.prompt.md`. The external-API freshness workflow proved low-yield (registry stayed stale despite quarterly cadence; the drift detector flagged the registry as a date-checker not a source-of-truth checker; semantic audit fell back on the model knowing what's current anyway). Heirs that want external-API tracking can install a Mall plugin or maintain their own registry under `.github/local/`.
+
+### Architecture
+
+- **4-artifact-type brain (was 5).** With muscles/ gone, the brain lexicon now describes 4 artifact types (skills/instructions/prompts/agents) plus an executable tier (`.github/scripts/`). The change is reflected in `copilot-instructions.md`, `severity-tagged-commits.instructions.md`, `meditation.instructions.md` + skill, `falsifiability-deadlines.instructions.md`, `skill-creator/SKILL.md` routing tables, `welcome.prompt.md` brain-inventory line, and `README.md` (header counts, What Else Ships, Customization Slots, Vocabulary).
 - **6 converter skills strip legacy `muscle:` frontmatter field** (no consumer; documentation-only field that drifted).
 - **`creative-writing` skill description** rewritten from generic prose to what+when format.
 - **`md-to-eml` SKILL.md** drops "graveyard" prose section that fossilized prior design discussion.

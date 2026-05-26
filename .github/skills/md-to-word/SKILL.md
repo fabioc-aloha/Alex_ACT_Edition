@@ -431,7 +431,7 @@ node .github/skills/md-to-word/scripts/md-to-word.cjs spec.md --watch
 ## For Heir Projects
 
 1. Copy `.github/skills/md-to-word/scripts/md-to-word.cjs` to your project
-2. Copy shared modules from `.github/muscles/shared/` (markdown-preprocessor, mermaid-pipeline)
+2. Copy shared modules from `.github/scripts/shared/` (markdown-preprocessor, mermaid-pipeline)
 3. Install prerequisites: `npm install -g @mermaid-js/mermaid-cli svgexport`
 4. Run: `node .github/skills/md-to-word/scripts/md-to-word.cjs your-doc.md`
 

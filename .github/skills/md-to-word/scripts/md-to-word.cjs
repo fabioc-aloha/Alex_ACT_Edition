@@ -68,7 +68,7 @@ try {
   // Fallback: search common locations relative to the heir repo
   const fallbackPaths = [
     path.join(__dirname, '..', '..', 'node_modules', 'jszip'),       // heir/node_modules
-    path.join(__dirname, 'node_modules', 'jszip'),                   // muscles/node_modules
+    path.join(__dirname, 'node_modules', 'jszip'),                   // skill/node_modules
     path.join(process.cwd(), 'node_modules', 'jszip'),               // cwd/node_modules
   ];
   for (const p of fallbackPaths) {

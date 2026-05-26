@@ -71,7 +71,7 @@ const heirOwned = policy.heir_owned || [];
 const expectedLocalDirs = [
     '.github/skills/local',
     '.github/instructions/local',
-    '.github/muscles/local',
+    '.github/scripts/local',
     '.github/prompts/local',
     '.github/agents/local',
 ];
@@ -82,7 +82,7 @@ for (const d of expectedLocalDirs) {
     }
 }
 
-// ---- Check 4: misplaced custom skills/prompts/instructions/muscles ----------
+// ---- Check 4: misplaced custom skills/prompts/instructions/scripts ----------
 // We read the edition-shipped allowlist from .github/config/edition-manifest.json,
 // which is generated at release time and synced to heirs as edition-owned.
 // Without the manifest we cannot reliably tell heir-added files from edition

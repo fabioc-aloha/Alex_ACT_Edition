@@ -1,6 +1,6 @@
 ---
 description: "Every new or edited brain artefact (instruction / skill / prompt / agent / muscle) must declare a specific falsification deadline — a literal date, an observable event, or count+time bound — not 'after N passes' or 'when conditions warrant'."
-applyTo: "**/.github/instructions/**,**/.github/skills/**,**/.github/prompts/**,**/.github/muscles/**,**/.github/agents/**"
+applyTo: "**/.github/instructions/**,**/.github/skills/**,**/.github/prompts/**,**/.github/agents/**"
 lastReviewed: 2026-05-24
 ---
 

@@ -28,7 +28,7 @@ Three things worth knowing, framed as capabilities not files:
 
 ### 3. Where capability comes from
 
-The brain ships with **35 instructions, 18 skills, 23 prompts, 16 muscles, 4 agents** baked in (the kernel). For anything beyond that, the **Alex ACT Plugin Mall** is the live capability surface — hundreds of skills available on demand, install one at a time:
+The brain ships with **33 instructions, 27 skills, 27 prompts, 4 agents** baked in (the kernel). For anything beyond that, the **Alex ACT Plugin Mall** is the live capability surface — hundreds of skills available on demand, install one at a time:
 
 ```text
 /mall search <topic>     # find a plugin

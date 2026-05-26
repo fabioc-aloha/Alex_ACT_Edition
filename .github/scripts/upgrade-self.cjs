@@ -153,7 +153,7 @@ for (const f of alwaysRecover) {
 // Recover local/ directories
 const localDirs = [
     '.github/skills/local', '.github/instructions/local',
-    '.github/muscles/local', '.github/prompts/local',
+    '.github/scripts/local', '.github/prompts/local',
     '.github/agents/local',
 ];
 for (const ld of localDirs) {
@@ -176,7 +176,7 @@ if (fs.existsSync(episodicDir)) {
 }
 
 // ─── Detect Heir-Added Artifacts Outside local/ ──────────────────────────────
-// Skills/instructions/prompts/muscles added directly into edition-owned paths
+// Skills/instructions/prompts added directly into edition-owned paths
 // (pre-v1.0 pattern). These get relocated to local/ during upgrade.
 
 const editionManifestPath = path.join(tmp, '.github', 'config', 'edition-manifest.json');
@@ -239,25 +239,9 @@ if (fs.existsSync(heirPromptsDir)) {
     }
 }
 
-// Check muscles
-const editionMuscleDir = path.join(tmp, '.github', 'muscles');
-const editionMuscles = new Set();
-if (fs.existsSync(editionMuscleDir)) {
-    for (const f of walkDir(editionMuscleDir)) {
-        editionMuscles.add(path.relative(path.join(tmp, '.github', 'muscles'), f).replace(/\\/g, '/'));
-    }
-}
-const heirMuscleDir = path.join(HEIR_ROOT, '.github', 'muscles');
-if (fs.existsSync(heirMuscleDir)) {
-    for (const entry of fs.readdirSync(heirMuscleDir, { withFileTypes: true })) {
-        if (entry.name === 'local' || entry.name === 'shared' || entry.name === 'lua-filters') continue;
-        if (!entry.isFile()) continue;
-        if (editionMuscles.has(entry.name)) continue;
-        const rel = `.github/muscles/${entry.name}`;
-        const newRel = `.github/muscles/local/${entry.name}`;
-        relocations.push({ from: rel, to: newRel });
-    }
-}
+// Check muscles (legacy: muscles/ folder was removed in v2.4+; any remaining
+// heir content there is preserved via unmatched:preserve and should be moved
+// to scripts/local/ manually)
 
 // Include relocated files in heir-owned collection so they get preserved
 if (relocations.length > 0) {

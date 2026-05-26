@@ -31,7 +31,7 @@ Install a plugin from the Plugin Mall into this project's `local/` paths.
    Token cost: ~<token_cost> tokens
    Artifacts:
      - skill -> .github/skills/local/<name>/SKILL.md
-     - muscle -> .github/muscles/local/<name>.cjs (if applicable)
+     - script -> .github/scripts/local/<name>.cjs (if applicable)
      - instruction -> .github/instructions/local/<file> (if applicable)
    ```
 
@@ -62,7 +62,7 @@ Install a plugin from the Plugin Mall into this project's `local/` paths.
 7. **Commit**:
 
    ```bash
-   git add .github/skills/local .github/instructions/local .github/muscles/local .github/prompts/local
+   git add .github/skills/local .github/instructions/local .github/scripts/local .github/prompts/local
    git commit -m "Install plugin: <name> from ACT Plugin Mall"
    ```
 

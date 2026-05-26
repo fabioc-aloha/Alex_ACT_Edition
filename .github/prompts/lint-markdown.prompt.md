@@ -45,7 +45,7 @@ Skill: [lint-clean-markdown](../skills/lint-clean-markdown/SKILL.md). Muscle: `.
 ## Boundaries
 
 - **Not a formatter.** This validates; it doesn't modify files. For whitespace cleanup, use `/format-markdown` first.
-- **Converter-specific rules.** What's valid here is what the converters in `.github/muscles/md-to-*.cjs` expect. Markdown that lints clean here may still fail other markdown processors that have stricter rules.
+- **Converter-specific rules.** What's valid here is what the converters in `.github/skills/md-to-*/scripts/md-to-*.cjs` expect. Markdown that lints clean here may still fail other markdown processors that have stricter rules.
 - **Mermaid validation is best-effort.** The linter parses syntax but doesn't render diagrams. Genuine render failures only show up in `/md-to-word` or `/md-to-html` output.
 - **Frontmatter rules vary by file type.** A SKILL.md needs different fields than an instructions.md needs different fields than a prompt.md. The linter applies the right rule by filename pattern.
 

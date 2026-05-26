@@ -1,6 +1,6 @@
 ---
 description: "How heirs install plugins from the Alex ACT Plugin Mall into local/ paths so Edition upgrades don't clobber them"
-applyTo: "**/.github/skills/local/**,**/.github/instructions/local/**,**/.github/muscles/local/**,**/.github/prompts/local/**,**/.mcp.json,**/mcp.json"
+applyTo: "**/.github/skills/local/**,**/.github/instructions/local/**,**/.github/scripts/local/**,**/.github/prompts/local/**,**/.mcp.json,**/mcp.json"
 lastReviewed: 2026-05-02
 ---
 
@@ -84,7 +84,7 @@ Edition's `sync-policy.json` declares these as **heir-owned** (never overwritten
 
 - `.github/skills/local/**`
 - `.github/instructions/local/**`
-- `.github/muscles/local/**`
+- `.github/scripts/local/**`
 - `.github/prompts/local/**`
 
 Installing outside `local/` means `upgrade-self.cjs --apply` will **delete it**.
@@ -111,10 +111,10 @@ Installing outside `local/` means `upgrade-self.cjs --apply` will **delete it**.
    gh api repos/fabioc-aloha/Alex_Skill_Mall/contents/plugins/<category>/<name>/<instruction-file> \
      --jq .content | base64 -d > .github/instructions/local/<instruction-file>
 
-   # Muscle (if plugin.json lists one)
-   mkdir -p .github/muscles/local
-   gh api repos/fabioc-aloha/Alex_Skill_Mall/contents/plugins/<category>/<name>/<muscle-file> \
-     --jq .content | base64 -d > .github/muscles/local/<muscle-file>
+   # Script (if plugin.json lists one)
+   mkdir -p .github/scripts/local
+   gh api repos/fabioc-aloha/Alex_Skill_Mall/contents/plugins/<category>/<name>/<script-file> \
+     --jq .content | base64 -d > .github/scripts/local/<script-file>
    ```
 
 3. **Alternative: local clone** (for bulk installs):
@@ -131,7 +131,7 @@ Installing outside `local/` means `upgrade-self.cjs --apply` will **delete it**.
 5. **Commit**:
 
    ```bash
-   git add .github/skills/local .github/instructions/local .github/muscles/local .github/prompts/local
+   git add .github/skills/local .github/instructions/local .github/scripts/local .github/prompts/local
    git commit -m "Install plugin: <name> from ACT Plugin Mall"
    ```
 

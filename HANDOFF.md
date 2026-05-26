@@ -42,9 +42,9 @@ Subagent audits (4 parallel runs) surfaced **39 Revise items**:
 - **Instructions**: 33 (unchanged)
 - **Prompts**: 27 (was 24; +3 per-type pair prompts; -1 audit-apis removed)
 - **Agents**: 4 (unchanged file count; all 4 tightened with WRif + allowlist trims)
-- **Muscles**: 2 (unchanged)
+- **Muscles**: 0 (folder eliminated; cross-cutting executables moved to `.github/scripts/`)
 
-**Total: 94 artifacts** (Supervisor: 101; Edition correctly missing Supervisor-only curation surface like brain-curation-rules, mall-curation, extension-delivery, surface-adaptation-pipeline, shared-core-coherence-audit, fleet-status).
+**Total: 91 artifacts** (Supervisor: 101; Edition correctly missing Supervisor-only curation surface like brain-curation-rules, mall-curation, extension-delivery, surface-adaptation-pipeline, shared-core-coherence-audit, fleet-status).
 
 ## Shared-core byte-identity verified
 

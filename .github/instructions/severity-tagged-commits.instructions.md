@@ -1,5 +1,5 @@
 ---
-description: "Every commit touching brain artefacts (instructions / skills / prompts / agents / muscles / config / docs/ledgers / HANDOFF) must carry a severity tag in the commit subject: [typo | clarification | behaviour | constitutional]. [behaviour] and [constitutional] require an ACT pass before commit."
+description: "Every commit touching brain artefacts (instructions / skills / prompts / agents / scripts / config / docs/ledgers / HANDOFF) must carry a severity tag in the commit subject: [typo | clarification | behaviour | constitutional]. [behaviour] and [constitutional] require an ACT pass before commit."
 applyTo: "**/.github/**,**/docs/**,**/HANDOFF.md,**/CHANGELOG.md,**/VERSION,**/README.md"
 lastReviewed: 2026-05-24
 ---
@@ -58,7 +58,7 @@ Files that trigger this rule when touched:
 - `.github/skills/**`
 - `.github/prompts/**`
 - `.github/agents/**`
-- `.github/muscles/**`
+- `.github/scripts/**` (when changes affect brain semantics, not pure refactor)
 - `.github/config/**`
 - `.github/copilot-instructions.md`
 - `ACT/**` (Supervisor only — framework authorship territory)
