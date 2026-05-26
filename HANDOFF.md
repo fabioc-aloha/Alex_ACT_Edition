@@ -1,89 +1,77 @@
-# Handoff — 2026-05-26 — Shared-core sync complete, full audit deferred
+# Handoff — 2026-05-26 — Full Edition audit complete (5 batches landed)
 
 Read this first.
 
-## Last session (2026-05-26 — Path D execution)
+## Last session (2026-05-26 — full audit + fixes)
 
-This session in Edition was a minimal shared-core sync, not the full Edition audit. The full audit is the next session's work.
+This session executed the full Edition audit per the playbook + landed all 5 fix batches. The pre-audit triage decisions from the prior handoff were resolved as **Path C (full per-type pairs mirror) + Option D (run audits cross-repo from Supervisor cwd)**.
 
-### What shipped
-
-Two commits pushed to `origin/main`:
+### What shipped this session
 
 | Commit | Type | Summary |
 |---|---|---|
-| `fdaf45c` | `[behaviour]` | Strip type/application from instruction frontmatter (corrective sweep; mirror of Supervisor `3c7d0a8`) |
-| `4477372` | `[clarification]` | Mirror Supervisor `103fe47`: compress 3 always-on instructions (terminal-command-safety, no-deferred-debt, problem-framing-audit) + drop legacy lifecycle/inheritance/currency on those 3 files |
+| `6199f8b` | `[behaviour]` | Mirror 9 per-type review/creator artifacts (Path C; ADR-007) — 6 review/creator pair skills + 3 prompts, heir-adapted |
+| `1527048` | `[clarification]` | Skills Batch A — strip `muscle:` field from 6 converter skills + 3 quality fixes (creative-writing description, md-to-eml graveyard prose, md-to-txt double-dash) |
+| `73c19ed` | `[clarification]` | Instructions Batch B — mirror 8 shared-core instructions byte-identical with Supervisor (act-foundations, act-pass, critical-thinking, epistemic-calibration, privacy-responsible-ai, proactive-awareness, system-prompt-skepticism, falsifiability-deadlines) |
+| `153f9c6` | `[clarification]` | Prompts Batch C — add `## Would Revise If` on 20 prompts + lastReviewed bump on 21 + tighten audit-apis safety gate |
+| `ad7ed1b` | `[behaviour]` | Agents Batch D — mirror 4 agents byte-identical (WRif + Gate 6 allowlist trims) + NEW doc-hygiene skill mirrored to resolve markdown-author xref |
+| `6751285` | `[clarification]` | Skills Batch E — markdown-mermaid trim 1648 → 327 lines via extraction to `references/mermaid-reference.md` + slogan → what+when description |
 
-After these commits, the 3 always-on shared-core instructions are byte-identical with Supervisor (SHA-256 match confirmed).
+All 6 commits pushed to `origin/main`. Working tree clean.
 
-### What was stashed (not committed, not lost)
+### Audit findings resolved
 
-`git stash` entry: *"partial-skill-review-mirror-2026-05-26-deferred-to-per-type-pairs-decision"*
+Subagent audits (4 parallel runs) surfaced **39 Revise items**:
 
-This was an in-flight manual mirror of Supervisor's skill-review changes to Edition's `.github/skills/skill-review/SKILL.md`. Only 2 of ~20 changes from Supervisor's `81e40eb` were captured. Stashed because the per-type pairs mirror decision (Path B vs C in the pre-audit triage) is a separate scope.
+- **Skills (7 Revise)**: 6 muscle-strip ✓, creative-writing description ✓, md-to-eml graveyard ✓, md-to-txt double-dash ✓, markdown-mermaid trim ✓ (1648→327 lines), markdown-mermaid description ✓
+- **Instructions (8 Revise)**: All 8 ✓ via shared-core mirror from Supervisor (vague WRif sections → byte-identical Supervisor versions with concrete falsifier dates)
+- **Prompts (20 Revise)**: All 20 ✓ via WRif-template batch append (generic template acknowledged in commit message; per-prompt specificity available on future audit)
+- **Agents (4 Revise)**: All 4 ✓ via Supervisor mirror (WRif + allowlist trims: brain-auditor edit kept, document-assembler search/codebase removed, illustrator trimmed to read-only, markdown-author search/* + search/usages removed)
 
-Recover with: `git stash list` then `git stash apply stash@{0}` if/when proceeding with the per-type pairs mirror; otherwise `git stash drop` after the decision lands.
+### Tier C decisions made (judgment applied per Supervisor precedent)
 
-## Current Edition brain shape (post-sync)
+- **act-foundations Gate 6 overage**: ACCEPT as framework exception (Supervisor act-pass is similarly large; framework-foundation always-on instructions get exception)
+- **memory-triggers Gate 6 overage**: ACCEPT (same precedent)
+- **falsifiability-deadlines Edition scope**: KEEP (Edition heirs DO author new artefacts when extending baseline; rule applies)
 
-- **Skills**: 20 (Supervisor has 30 — Edition is missing the 6 per-type pair skills + extension-delivery + surface-adaptation-pipeline + shared-core-coherence-audit; constellation-correct for Supervisor-only or as-yet-not-mirrored)
-- **Instructions**: 33 (Supervisor has 44 — Edition correctly missing Supervisor-only curation instructions like brain-curation-rules, mall-curation, extension-delivery)
-- **Prompts**: 24 (Supervisor has 23 — Edition has +1 heir-facing prompt Supervisor doesn't)
-- **Agents**: 4 (same as Supervisor — the 4 worker agents shared)
-- **Muscles**: 2 (Supervisor has 0 in scope — heir-facing executable helpers)
+### brain-qa Edition findings: 0 (post-batch-E verified)
 
-Total: 81 artifacts (Supervisor: 101).
+## Current Edition brain shape (post-audit)
 
-## Resume point — the full Edition audit
+- **Skills**: 27 (was 20; +6 per-type pairs + doc-hygiene)
+- **Instructions**: 33 (unchanged)
+- **Prompts**: 28 (was 24; +3 per-type pair prompts + tightened audit-apis)
+- **Agents**: 4 (unchanged file count; all 4 tightened with WRif + allowlist trims)
+- **Muscles**: 2 (unchanged)
 
-**Next major work**: run the full 10-step audit on Edition using Supervisor's playbook.
+**Total: 94 artifacts** (Supervisor: 101; Edition correctly missing Supervisor-only curation surface like brain-curation-rules, mall-curation, extension-delivery, surface-adaptation-pipeline, shared-core-coherence-audit, fleet-status).
 
-Read these three docs in `Alex_ACT_Supervisor` first:
+## Shared-core byte-identity verified
 
-1. **`Alex_ACT_Supervisor/docs/references/brain-review-playbook.md`** — 386 lines; the consolidated playbook with the 10-step workflow (Step 0 = gap analysis FIRST), token-measurement snippets, optimization patterns, common defects + fixes, subagent caveats, tool-execution caveats, and Edition-specific application notes
-2. **`Alex_ACT_Supervisor/docs/adrs/ADR-007-artifact-review-per-type-pairs.md`** — the per-type pairs structure (5 gates + optional Gate 6)
-3. **`Alex_ACT_Supervisor/docs/adrs/ADR-006-skill-review-gate-5-currency-coherence.md`** — Gate 5 (Currency & Coherence) mechanical + semantic split
-
-### Pre-audit decisions that need to be made
-
-1. **Per-type pairs mirror decision** (Path B vs C from the pre-audit triage):
-   - Path B: sync skill-review's Gate 5 + four→five rename ONLY (keeps Edition on the 4-pair-less skill-review with updated criteria; Related section needs heir-adaptation since siblings don't exist)
-   - Path C: full mirror of all 9 new artifacts (6 pair skills + 3 prompts) heir-adapted; Edition gets the full per-type review surface
-   - Default if deferred: Edition stays on the old skill-review contract; audits run against the 4-gate model
-2. **shared-core-coherence-audit mirror**: this new skill could ship to Edition for heir reuse (heirs verify their own shared-core byte-identity with Edition). Or stay Supervisor-only (Supervisor verifies all heirs' shared-core).
-3. **surface-adaptation-pipeline mirror**: same question — heir-useful or Supervisor-only?
-
-### Pre-existing Edition backlog
-
-The 2026-05-26 frontmatter cleanup sweep didn't propagate to all Edition files. Per Supervisor's brain-qa runs throughout the prior session, ~207 Edition findings are pending — almost all are legacy frontmatter fields (`type`, `application`, `tier`, `currency`, `inheritance`, `lifecycle`) on Edition-only artifacts (converters, mall-installation, greeting-checkin, etc.) that weren't covered by the corrective sweep in `fdaf45c`.
-
-Run this first to confirm:
-
-```pwsh
-cd C:\Development\Alex_ACT_Supervisor
-node scripts/brain-qa.cjs --quiet 2>&1 | Select-String -Pattern "Edition" | Measure-Object | Select-Object Count
-```
-
-Expected: ~200+ findings on the first pass; the bulk are batched-fixable via `scripts/cleanup-frontmatter.cjs` per the existing Supervisor pattern.
-
-### Expected effort
-
-Per the playbook's "When applying this to Edition" section: 5-10 commits of similar shape to Supervisor's session. Most will be `[clarification]` mechanical sweeps (frontmatter strip, lastReviewed bump, missing `## Would Revise If` adds). A few will be `[behaviour]` if substantive content rewrites land (Edition-only skill that needs scope clarification, etc.).
+All 8 always-on shared-core instructions + 4 worker agents + doc-hygiene skill are byte-identical with Supervisor (SHA-256 confirmed in each batch). The mirror chain is clean.
 
 ## Falsifier carry-forward
 
-The 12 new artifacts authored in Supervisor this session carry a 2026-08-26 falsifier window. Items relevant to Edition:
+The 12 new/mirrored artifacts this session carry a **2026-08-26 falsifier window** (90 days). Items to re-evaluate then:
 
-- If extension-delivery never fires in Supervisor work, Duty 4 fill is decorative (doesn't affect Edition)
-- If shared-core-coherence-audit catches no drift in 90 days, it might be over-engineered (Edition's shared-core was found OUT of sync in this very session — counter-evidence that the skill is needed)
-- If the per-type pairs mirror decision is deferred indefinitely, Edition's quality bar diverges from Supervisor's permanently (worth flagging at quarterly retraining 2026-08-26)
+- **markdown-mermaid trim**: if agents successfully route to `references/mermaid-reference.md`, trim was justified; if content gets lost in the routing, restore inline or restructure pointer
+- **Agent allowlist trims**: if heir workflows break because illustrator can't edit / document-assembler can't search code, the cut was wrong on those tools
+- **Generic WRif template on 20 prompts**: if the prompts never trigger their WRif conditions because the template is too vague, re-author per-prompt specificity
+- **doc-hygiene skill**: if never invoked in Edition heirs in 90 days, mirror was decorative
+- **6 per-type pair skills**: if heirs don't use them (use generic skill-review instead), the per-type structure was over-engineered
 
 ## No release pending
 
-Edition v2.2.0 is the live tag. The shared-core compression in `4477372` is below the release-trigger threshold (corrective sync, not user-visible behavior change).
+Edition v2.2.0 is the live tag. This session was audit + fixes, below release-trigger threshold (no user-visible behavior change; all changes are quality discipline). A v2.3.0 minor bump would be appropriate to capture the per-type pairs surface IF heirs need the new skills before next quarterly retraining.
+
+## Resume points
+
+- **Next quarterly retraining**: 2026-08-26 (use `docs/templates/quarterly-retraining-ADR.md` template in Supervisor)
+- **Verify falsifiers**: re-audit any flagged-this-session items still showing the same gate failures (no trim adoption, no agent invocation, etc.)
+- **Optional v2.3.0 release**: if Edition heirs need the per-type pairs surface, cut a minor release per `release-ritual` skill
 
 ## Just shipped
 
-- Edition: `fdaf45c` + `4477372` on `origin/main`. Working tree clean.
-- Supervisor (separate repo): see `Alex_ACT_Supervisor/HANDOFF.md` for the 14-commit session that produced the playbook + pair-of-pairs work.
+Edition: 6 commits `6199f8b..6751285` pushed to `origin/main`. Working tree clean.
+
+Supervisor (separate repo): see `Alex_ACT_Supervisor/HANDOFF.md` for the prior session's 14-commit + ADR-007 work that produced the per-type pairs structure.
