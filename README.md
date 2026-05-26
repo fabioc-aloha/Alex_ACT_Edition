@@ -22,7 +22,7 @@ ACT Edition changes that. Not by making AI "smarter," but by making it **honest*
 
 A confident wrong answer is worse than an uncertain correct answer. ACT shifts the default from "sound authoritative" to "show your work." When the AI doesn't know, it says "I don't know." When it's uncertain, it quantifies the uncertainty. When it challenges your framing, it explains why. Debugging a confident hallucination takes hours. Verifying a well-reasoned hypothesis takes minutes.
 
-This is a **cognitive architecture** -- 31 skills, 36 instructions, 26 prompts, and 4 worker agents that teach your AI assistant to think critically about its own reasoning. Built for GitHub Copilot's `.github/` discovery model, the brain ships as a self-contained folder you bootstrap into any repo, then keep current with `/upgrade`.
+This is a **cognitive architecture** -- 30 skills, 36 instructions, 26 prompts, and 4 worker agents that teach your AI assistant to think critically about its own reasoning. Built for GitHub Copilot's `.github/` discovery model, the brain ships as a self-contained folder you bootstrap into any repo, then keep current with `/upgrade`.
 
 ## Model Compatibility
 
@@ -305,7 +305,7 @@ Beyond the instructions, the brain bundles:
 
 | Surface | Purpose |
 | --- | --- |
-| **Skills** (`.github/skills/`) | 31 skills -- critical thinking, document conversion (6 formats), markdown-mermaid, banner generation, greeting check-in, brain audit, meditation, AI-Memory setup, per-type review/creator pairs (skill/instruction/prompt/agent), doc-hygiene, code-review, deep-review, git-workflow, status-reporting, creative writing, academic paper drafting. Each skill bundles its own `scripts/` folder when it ships executables. |
+| **Skills** (`.github/skills/`) | 30 skills -- critical thinking, document conversion (6 formats), markdown-mermaid, banner generation, greeting check-in, brain audit, meditation, AI-Memory setup, per-type review/creator pairs (skill/instruction/prompt/agent), doc-hygiene, code-review, deep-review, git-workflow, status-reporting, creative writing. Each skill bundles its own `scripts/` folder when it ships executables. |
 | **Prompts** (`.github/prompts/`) | 26 slash-commands for setup, daily ops, skill discovery, memory, and maintenance (see [Commands](#commands)) |
 | **Configs** (`.github/config/`) | `sync-policy.json`, `edition-manifest.json` (release-time allowlist), `markdown-light.css`, project-owned `cognitive-config.json` + `goals.json` |
 | **Scripts** (`.github/scripts/`) | Heir lifecycle (`bootstrap-heir.cjs`, `upgrade-self.cjs`, `build-edition-manifest.cjs`, `_registry.cjs`) + cross-cutting executables (`converter-qa.cjs`, `audit-mall-drift.cjs`) + shared library (`shared/`) used by converter skill-scripts |

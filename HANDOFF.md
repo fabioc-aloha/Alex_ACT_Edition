@@ -38,13 +38,13 @@ Subagent audits (4 parallel runs) surfaced **39 Revise items**:
 
 ## Current Edition brain shape (post-audit)
 
-- **Skills**: 31 (was 30; +1 deep-review mirrored from Supervisor)
+- **Skills**: 30 (31 - 1 removed: academic-paper-drafting per user decision 2026-05-26 after re-audit found it over the 500-line cap)
 - **Instructions**: 36 (unchanged)
 - **Prompts**: 26 (unchanged file count; all 22 with deprecated `mode: agent` cleaned)
 - **Agents**: 4 (unchanged file count; all 4 tightened with WRif + allowlist trims)
 - **Muscles**: 0 (folder eliminated; cross-cutting executables moved to `.github/scripts/`)
 
-**Total: 97 artifacts** (was 96 pre-playbook-revisit; +1 deep-review).
+**Total: 96 artifacts** (was 97; -1 academic-paper-drafting).
 
 ## Shared-core byte-identity verified
 
@@ -70,7 +70,7 @@ Edition v2.2.0 is the live tag. This session was audit + fixes, below release-tr
 - **Verify falsifiers**: re-audit any flagged-this-session items still showing the same gate failures (no trim adoption, no agent invocation, etc.)
 - **Optional v2.3.0 release**: if Edition heirs need the per-type pairs surface, cut a minor release per `release-ritual` skill
 
-## Decision: keep the 7 audit-flagged "niche" artifacts as baseline
+## Decision: keep 6 audit-flagged "niche" artifacts as baseline; remove academic-paper-drafting
 
 The 2026-05-26 fit-for-mission audit flagged 7 artifacts as candidates for relocation to Mall as opt-in plugins (theoretical "niche" classification):
 
@@ -78,12 +78,12 @@ The 2026-05-26 fit-for-mission audit flagged 7 artifacts as candidates for reloc
 - `markdown-sanitization-chain`
 - `md-to-eml`
 - `creative-writing`
-- `academic-paper-drafting`
+- ~~`academic-paper-drafting`~~ — **removed 2026-05-26** after a follow-on semantic review found the body at 683 lines (over the 500-line skill body cap); user decided to remove rather than trim or accept-exception
 - `alex-banner-generation` + `/banner`
 
-**Decision (user, 2026-05-26): KEEP all 7 as baseline.** User reported actual extensive usage in their projects. The audit's "niche" classification was theoretical generality (would a hypothetical heir need this?) rather than observed usage signal (does the actual user invoke this?). Observed-usage wins over theoretical-generality.
+**Decision (user, 2026-05-26): KEEP 6 as baseline; REMOVE academic-paper-drafting.** User reported actual extensive usage of the kept 6 in their projects. The audit's "niche" classification was theoretical generality (would a hypothetical heir need this?) rather than observed usage signal (does the actual user invoke this?). Observed-usage wins over theoretical-generality.
 
-**Lesson for future audits:** do not classify artifacts as "niche, move to Mall" without telemetry or explicit user confirmation. Theoretical-generality reasoning systematically undercounts artifacts that serve real workflows the auditor doesn't observe.
+**Lesson for future audits:** do not classify artifacts as "niche, move to Mall" without telemetry or explicit user confirmation. Theoretical-generality reasoning systematically undercounts artifacts that serve real workflows the auditor doesn't observe. But observed-usage cuts both ways — the user can also choose to remove an artifact they previously kept, as happened with academic-paper-drafting.
 
 ## Just shipped
 
