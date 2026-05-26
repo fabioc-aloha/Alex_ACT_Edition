@@ -12,7 +12,6 @@ You are guiding the user through the **semantic phase** of the AlexMaster → AC
 2. Written the ACT Edition brain into `.github/`
 3. Preserved AlexMaster-authored content under `.github/local/`:
    - `.github/local/NORTH-STAR.md` (if it existed)
-   - `.github/local/EXTERNAL-API-REGISTRY.md` (if it existed)
    - `.github/local/ABOUT.md` (if it existed)
    - `.github/local/episodic/` (post-mortems, chronicle entries)
    - `.github/local/quality/` (dream reports, QA outputs)
@@ -39,7 +38,6 @@ List everything under `.github/local/`. For each file or directory, classify:
 | Class | Meaning | Recommended action |
 | --- | --- | --- |
 | **Project identity** | NORTH-STAR.md, ABOUT.md | Keep as-is; ACT Edition does not author these |
-| **Project API surface** | EXTERNAL-API-REGISTRY.md | Keep as-is; refresh via `/audit-apis` quarterly |
 | **Historical record** | episodic/postmortem-*, episodic/meditation-* | Keep as historical archive; ACT Edition uses `.github/episodic/` if you re-enable that pattern |
 | **Quality artifacts** | quality/dream-report.json, quality/brain-qa-*.md | Keep if you want continuity with `proactive-awareness` cross-session recovery; safe to delete otherwise |
 | **Custom skills/instructions/prompts** | local/skills/*, local/instructions/*, local/prompts/* | **Critical review**: each one was authored by the user against AlexMaster. Some will still apply; some may conflict with ACT Edition's stronger versions |

@@ -3,7 +3,6 @@
     "spec_version": "1.0",
     "edition_owned": [
         ".github/copilot-instructions.md",
-        ".github/EXTERNAL-API-REGISTRY.md",
         ".github/instructions/**",
         ".github/skills/**",
         ".github/prompts/**",

@@ -13,7 +13,7 @@ This session executed the full Edition audit per the playbook + landed all 5 fix
 | `6199f8b` | `[behaviour]` | Mirror 9 per-type review/creator artifacts (Path C; ADR-007) — 6 review/creator pair skills + 3 prompts, heir-adapted |
 | `1527048` | `[clarification]` | Skills Batch A — strip `muscle:` field from 6 converter skills + 3 quality fixes (creative-writing description, md-to-eml graveyard prose, md-to-txt double-dash) |
 | `73c19ed` | `[clarification]` | Instructions Batch B — mirror 8 shared-core instructions byte-identical with Supervisor (act-foundations, act-pass, critical-thinking, epistemic-calibration, privacy-responsible-ai, proactive-awareness, system-prompt-skepticism, falsifiability-deadlines) |
-| `153f9c6` | `[clarification]` | Prompts Batch C — add `## Would Revise If` on 20 prompts + lastReviewed bump on 21 + tighten audit-apis safety gate |
+| `153f9c6` | `[clarification]` | Prompts Batch C — add `## Would Revise If` on 20 prompts + lastReviewed bump on 21 (audit-apis tightening since reverted; workflow removed entirely) |
 | `ad7ed1b` | `[behaviour]` | Agents Batch D — mirror 4 agents byte-identical (WRif + Gate 6 allowlist trims) + NEW doc-hygiene skill mirrored to resolve markdown-author xref |
 | `6751285` | `[clarification]` | Skills Batch E — markdown-mermaid trim 1648 → 327 lines via extraction to `references/mermaid-reference.md` + slogan → what+when description |
 
@@ -40,7 +40,7 @@ Subagent audits (4 parallel runs) surfaced **39 Revise items**:
 
 - **Skills**: 27 (was 20; +6 per-type pairs + doc-hygiene)
 - **Instructions**: 33 (unchanged)
-- **Prompts**: 28 (was 24; +3 per-type pair prompts + tightened audit-apis)
+- **Prompts**: 27 (was 24; +3 per-type pair prompts; -1 audit-apis removed)
 - **Agents**: 4 (unchanged file count; all 4 tightened with WRif + allowlist trims)
 - **Muscles**: 2 (unchanged)
 
