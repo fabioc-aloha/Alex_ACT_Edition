@@ -19,7 +19,8 @@
         ".github/scripts/build-edition-manifest.cjs",
         ".github/scripts/_registry.cjs",
         ".github/scripts/CONVERTER-CHANGELOG.md",
-        ".github/VERSION"
+        ".github/VERSION",
+        ".vscode/markdown-light.css"
     ],
     "heir_owned": [
         ".github/.act-heir.json",

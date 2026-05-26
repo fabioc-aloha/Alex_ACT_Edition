@@ -62,26 +62,15 @@ For `bierner.markdown-mermaid` (recommended):
 
 ### Step 4: Custom CSS (Optional)
 
-For additional styling control, copy the CSS from this skill:
-
-```powershell
-# Copy markdown-light.css to workspace
-$skillPath = ".github/skills/markdown-mermaid/markdown-light.css"
-$targetPath = ".vscode/markdown-light.css"
-
-if (Test-Path $skillPath) {
-    Copy-Item $skillPath $targetPath -Force
-    Write-Host "Copied CSS to $targetPath"
-}
-```
-
-Then add to settings:
+Edition ships a curated stylesheet at `.vscode/markdown-light.css` (Mermaid-friendly light theme + blockquote/table polish). To activate it, add to your settings:
 
 ```json
 {
   "markdown.styles": [".vscode/markdown-light.css"]
 }
 ```
+
+The CSS file is edition-owned and refreshed on every `/upgrade`. Heir-side customizations should go in `.vscode/local-markdown.css` (heir-owned) and be added to `markdown.styles` alongside.
 
 ### Step 5: Test Rendering
 

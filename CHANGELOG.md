@@ -10,6 +10,11 @@ All notable changes to Alex ACT Edition.
 
 ### Changed (2026-05-26 cleanup pass)
 
+- **`markdown-light.css` moved to `.vscode/`** — completing the Supervisor f98cf55 pattern. The canonical Mermaid-friendly markdown preview CSS now lives at `.vscode/markdown-light.css` (edition-owned, refreshed on `/upgrade`) instead of `.github/skills/markdown-mermaid/markdown-light.css`. Heirs get the asset shipped directly to the editor location where VS Code expects to find user stylesheets, instead of the prior copy-via-prompt workflow.
+  - `sync-policy.json` gains `.vscode/markdown-light.css` in `edition_owned` (was 18 paths, now 19).
+  - `/polish-mermaid-setup` Step 4 simplified — no more copy snippet; activate the shipped CSS via `"markdown.styles": [".vscode/markdown-light.css"]` in your settings.
+  - `.github/config/README.md` note updated to point at the new location.
+  - `README.md` "What Else Ships" `.vscode/` row corrected — previously claimed Edition ships `extensions.json` + `settings.json` templates (false; neither exists), now accurately describes the CSS shipment and notes the extensions/settings templates are heir-owned per sync-policy.
 - **`welcome-baseline.json` validated against VS Code 1.121-1.122 release notes** — three changes from a second audit pass:
   - **Added** `github.copilot.chat.claudeAgent.allowAutoPermissions: false` (defensive lock against VS Code 1.121's Claude Agent preview Auto permission mode — runs without prompts using a classifier safety net; ACT prefers explicit permission per system-prompt-skepticism).
   - **Added** `github.copilot.chat.claudeAgent.allowDangerouslySkipPermissions: false` (defensive lock against the VS Code 1.121 "YOLO mode" / "Bypass all permissions" option — release notes literally describe it as "fully unattended execution with no safety checks"; ACT's permission discipline is non-negotiable).

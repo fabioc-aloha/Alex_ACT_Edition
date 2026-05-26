@@ -302,7 +302,7 @@ Beyond the instructions, the brain bundles:
 | **Prompts** (`.github/prompts/`) | 26 slash-commands for setup, daily ops, skill discovery, memory, and maintenance (see [Commands](#commands)) |
 | **Configs** (`.github/config/`) | `sync-policy.json`, `edition-manifest.json` (release-time allowlist), `markdown-light.css`, project-owned `cognitive-config.json` + `goals.json` |
 | **Scripts** (`.github/scripts/`) | Heir lifecycle (`bootstrap-heir.cjs`, `upgrade-self.cjs`, `build-edition-manifest.cjs`, `_registry.cjs`) + cross-cutting executables (`converter-qa.cjs`, `audit-mall-drift.cjs`) + shared library (`shared/`) used by converter skill-scripts |
-| **Workspace defaults** (`.vscode/`) | `extensions.json` + `settings.json` shipped as project-owned templates — new projects receive them at bootstrap; existing ones keep their own |
+| **Workspace defaults** (`.vscode/`) | Edition ships `.vscode/markdown-light.css` (edition-owned Mermaid-friendly markdown preview theme; activate via `markdown.styles` setting per `/polish-mermaid-setup`). `.vscode/extensions.json` and `.vscode/settings.json` are heir-owned per `sync-policy.json` — Edition does not currently ship templates for these; heirs author their own. |
 
 ### Project-Owned Customization Slots
 
