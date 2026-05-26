@@ -1,7 +1,7 @@
 ---
 description: "Audit installed Mall plugins for upstream drift, then update or remove with explicit user consent"
 mode: agent
-lastReviewed: 2026-05-13
+lastReviewed: 2026-05-26
 ---
 
 # /mall refresh
@@ -69,3 +69,7 @@ Audit this heir's installed Mall plugins for upstream drift, then apply updates 
 - Never delete unrelated local files outside plugin install paths.
 - If a fetch fails for one plugin, continue with the rest and report partial completion.
 - This command manages only locally installed Mall plugins (`.github/skills/local/*`).
+
+## Would Revise If
+
+Revisit this prompt by **2026-08-26** (90 days) or sooner if any of the following fires: the workflow it invokes ceases to produce its intended output (skill body changed but prompt steps stale); the visible markers / verification steps in its body are consistently skipped; or the slash-command name is no longer discoverable in the prompt picker.

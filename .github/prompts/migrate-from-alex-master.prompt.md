@@ -1,6 +1,7 @@
 ---
 description: "Finalize the AlexMaster → ACT Edition migration with a semantic review of preserved files. Run after the deterministic migration phase has placed legacy content under `.github/local/`."
 tools: []
+lastReviewed: 2026-05-26
 ---
 
 # Migrate from AlexMaster

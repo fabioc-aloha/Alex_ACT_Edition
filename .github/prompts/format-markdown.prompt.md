@@ -1,7 +1,7 @@
 ---
 description: "Format Markdown files for professional appearance — whitespace cleanup, blockquote continuity, ATX heading spacing — no semantic changes"
 mode: agent
-lastReviewed: 2026-05-01
+lastReviewed: 2026-05-26
 ---
 
 # Format Markdown
@@ -53,3 +53,7 @@ Muscle: `.github/muscles/md-format.cjs`. Companion: `lint-discipline.instruction
 - **Not for code files.** Only `*.md`. Don't run on `.cjs`, `.json`, `.yml`.
 - **Two-space hard breaks preserved.** Trailing-whitespace trimming explicitly skips lines ending in `  ` or ` \`.
 - **Code fences are safe.** Content inside ` ``` ` blocks is never modified.
+
+## Would Revise If
+
+Revisit this prompt by **2026-08-26** (90 days) or sooner if any of the following fires: the workflow it invokes ceases to produce its intended output (skill body changed but prompt steps stale); the visible markers / verification steps in its body are consistently skipped; or the slash-command name is no longer discoverable in the prompt picker.

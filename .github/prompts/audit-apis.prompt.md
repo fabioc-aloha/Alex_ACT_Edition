@@ -1,7 +1,7 @@
 ---
 description: "Detect drift in external APIs (model versions, endpoints, deprecations) and propose registry + downstream skill updates"
 mode: agent
-lastReviewed: 2026-04-30
+lastReviewed: 2026-05-26
 ---
 
 # Audit External APIs
@@ -37,9 +37,9 @@ Refresh `.github/EXTERNAL-API-REGISTRY.md` and surface drift in skills/scripts t
    - Skill / instruction / script edits implied by the change (file path + brief rationale; do not paste full files)
    - Any patterns that became incorrect (e.g., a SKILL.md's example uses a model that no longer exists)
 
-6. **Confirm before applying** — wait for the user to approve. After approval:
+6. **Confirm before applying** — wait for the user to explicitly approve the change set. After approval:
    - Update the registry rows in-place. Use ISO `YYYY-MM-DD` for `Last Checked`.
-   - Apply the proposed downstream edits.
+   - **For each downstream edit** (skill / instruction / script), show the diff and wait for per-file approval before writing — registry-row updates may be batched, but content edits to skills/scripts require per-file confirmation.
    - Re-run `node .github/muscles/audit-api-drift.cjs` to verify all entries are fresh.
 
 7. **Report** — one-line summary: how many entries were updated, how many downstream files changed.
@@ -50,3 +50,7 @@ Refresh `.github/EXTERNAL-API-REGISTRY.md` and surface drift in skills/scripts t
 - **Do not invent entries.** If the registry has no rows for a category, do not add one unless the user installs a skill that requires it.
 - **Probe failures are not always drift.** A 403 or rate-limit means "couldn't check", not "deprecated". Flag for the user; do not auto-update those rows.
 - **ISO dates only.** Convert any legacy `Apr 2026`-style entries to `YYYY-MM-DD` when you touch them.
+
+## Would Revise If
+
+Revisit this prompt by **2026-08-26** (90 days) or sooner if any of the following fires: the workflow it invokes ceases to produce its intended output (skill body changed but prompt steps stale); the visible markers / verification steps in its body are consistently skipped; or the slash-command name is no longer discoverable in the prompt picker.

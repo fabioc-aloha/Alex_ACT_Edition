@@ -1,7 +1,7 @@
 ---
 description: "First-session orientation tour — what's loaded, what to try next, how to extend"
 mode: agent
-lastReviewed: 2026-05-25
+lastReviewed: 2026-05-26
 ---
 
 # Welcome
@@ -70,3 +70,7 @@ Friendly, brief, factual. Match the user's energy — if they ran `/welcome` bec
 - **Read-only.** No file writes, no settings changes, no marker updates. Anything that needs to change gets pointed at the right command (`/configure-vscode`, `/initialize`, `/upgrade`) — never executed from here.
 - **No invented context.** If `.github/copilot-instructions.local.md` `## Project Context` is empty, say so. Don't fabricate a project purpose.
 - **No hardcoded counts.** Read `35 / 18 / 23 / 16 / 4` from the brain at response time if possible (count files in `.github/instructions/`, `.github/skills/`, etc.). If counting at runtime isn't feasible, use the numbers above and accept that they drift between Edition releases — small drift in a friendly orientation message is acceptable; large drift means update this prompt.
+
+## Would Revise If
+
+Revisit this prompt by **2026-08-26** (90 days) or sooner if any of the following fires: the workflow it invokes ceases to produce its intended output (skill body changed but prompt steps stale); the visible markers / verification steps in its body are consistently skipped; or the slash-command name is no longer discoverable in the prompt picker.

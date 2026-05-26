@@ -1,7 +1,7 @@
 ---
 description: "Initialize this workspace as an ACT heir — bootstrap the brain or finish a partial install (path-1 quick register)"
 mode: agent
-lastReviewed: 2026-04-30
+lastReviewed: 2026-05-26
 ---
 
 # Initialize
@@ -112,3 +112,7 @@ Refuse. Read `.github/.act-heir.json` and report `heir_id` + `edition_version`. 
 ## Why a single prompt for four states?
 
 The states are mechanically distinct (different commands, different safety rails) but operationally one question: *"make this workspace a heir."* Splitting into `/bootstrap` and `/quick-register` would force the user to diagnose state before invoking — that's the prompt's job.
+
+## Would Revise If
+
+Revisit this prompt by **2026-08-26** (90 days) or sooner if any of the following fires: the workflow it invokes ceases to produce its intended output (skill body changed but prompt steps stale); the visible markers / verification steps in its body are consistently skipped; or the slash-command name is no longer discoverable in the prompt picker.
