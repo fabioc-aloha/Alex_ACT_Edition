@@ -6,7 +6,9 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
-**Pending [behaviour] — substantial release**: per-type review/creator pairs (ADR-007), full Edition audit closing 39 findings, `.github/muscles/` folder collapsed into `.github/scripts/`, and the 2026-05-26 cleanup pass (heir-facing docs validated, plugin guide removed, model table refreshed against GitHub Docs, `.github/config/` pruned, `.vscode/` workspace template established with curated CSS + 14-key settings).
+## [2.4.0] - 2026-05-26
+
+**Minor [behaviour] — substantial release**: per-type review/creator pairs (ADR-007), full Edition audit closing 39 findings, `.github/muscles/` folder collapsed into `.github/scripts/`, the 2026-05-26 cleanup pass (heir-facing docs validated, plugin guide removed, model table refreshed against GitHub Docs, `.github/config/` pruned, `.vscode/` workspace template established with curated CSS + 14-key settings), and `edition-manifest.json` extended to a complete file-level bill-of-materials (spec_version 1.0 → 1.3).
 
 ### Added
 
