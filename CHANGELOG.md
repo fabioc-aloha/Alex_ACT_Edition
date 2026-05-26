@@ -10,6 +10,10 @@ All notable changes to Alex ACT Edition.
 
 ### Added (2026-05-26 cleanup pass)
 
+- **`.vscode/settings.json` gains 3 QoL groups** (7 keys → 14 keys; brain-aligned authoring environment):
+  - **Mermaid theme defaults** (4 keys): `markdown-mermaid.lightModeTheme: "neutral"`, `darkModeTheme: "dark"`, `languages: ["mermaid"]`, `maxTextSize: 50000`. These are exactly the recommended settings documented in `/polish-mermaid-setup` Step 3 — shipping them eliminates that manual step for fresh heirs. Settings keys belong to the `bierner.markdown-mermaid` extension, now merged into VS Code 1.121+ as built-in Mermaid Markdown Features.
+  - **Markdown-scoped editor settings** (1 language block with 3 sub-settings): `[markdown] { files.trimTrailingWhitespace: false (preserves markdown's two-space line-break syntax), editor.wordWrap: "on" (long-form brain prose readability), editor.quickSuggestions: { other/comments/strings: "on" } (re-enables Copilot inline suggestions for markdown after VS Code 1.121's default-suppression change) }`.
+  - **File hygiene defaults** (2 keys): `files.insertFinalNewline: true`, `files.trimFinalNewlines: true` — POSIX-standard, cleans up diffs across the brain.
 - **`.vscode/settings.json` bootstrap template** (heir-owned) — Edition now ships a workspace settings template that bootstrap-copies to fresh heir projects: wires `markdown.styles` at the just-shipped `.vscode/markdown-light.css`, sets sensible markdown preview defaults (`fontSize: 12`, `lineHeight: 1.4`, `frontMatter: "codeBlock"` matching the VS Code 1.121 default-as-table opt-out for code-heavy projects), enables Ctrl+mousewheel zoom, and disables chat incremental rendering animation (`chat.experimental.incrementalRendering.animationStyle: "none"`). Heirs preserve this file across `/upgrade` via the heir-owned policy. Eliminates the previous "add this setting yourself" step from `/polish-mermaid-setup`.
 
 ### Changed (2026-05-26 cleanup pass)
