@@ -3,7 +3,7 @@ description: "Audit installed Mall plugins for upstream drift, then update or re
 lastReviewed: 2026-05-26
 ---
 
-# /mall refresh
+# /mall-refresh
 
 Audit this heir's installed Mall plugins for upstream drift, then apply updates and removals only after explicit consent.
 

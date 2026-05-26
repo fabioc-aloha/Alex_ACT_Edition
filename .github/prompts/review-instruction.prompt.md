@@ -17,3 +17,5 @@ Steps:
 6. Save the verdict where your heir keeps audit decisions (commit message for routine self-audit; dedicated file for external adoption)
 
 If the verdict is **Decline** and the decline sets a precedent (a class of candidate we expect to see again), record it in your heir's decision-record location.
+
+**Would revise if**: the [instruction-review](../skills/instruction-review/SKILL.md) gates change (especially Gate 6 token budget for always-on), or new instruction-adoption patterns emerge that the contract doesn't cover. Re-evaluate by 2026-08-26.

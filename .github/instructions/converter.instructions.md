@@ -1,7 +1,7 @@
 ---
 description: "Document conversion routing -- detect format, delegate to the converter SA or run the appropriate muscle directly"
 applyTo: "**/*convert*,**/*docx*,**/*word*,**/*eml*,**/*html-to-md*,**/*md-to-*"
-lastReviewed: 2026-05-02
+lastReviewed: 2026-05-26
 ---
 
 # Document Conversion
@@ -36,3 +36,7 @@ Route conversion requests to the right format skill and muscle. Each format has 
 | `--debug` | Keep intermediate files for troubleshooting |
 
 Format-specific options are documented in each format's skill file.
+
+## Would Revise If
+
+Revisit this instruction by **2026-08-26** (90 days) or sooner if any of the following fires: pandoc upstream changes a flag this routing table promises (`--style`, `--toc`); a converter skill moves out of `.github/skills/<format>/scripts/`; or a new conversion format ships (e.g., md-to-pdf) and the routing table doesn't reflect it.

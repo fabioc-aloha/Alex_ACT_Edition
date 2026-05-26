@@ -3,7 +3,7 @@ description: "Search the Alex ACT Plugin Mall by keyword, category, shape, or ti
 lastReviewed: 2026-05-26
 ---
 
-# /mall search
+# /mall-search
 
 Search the Plugin Mall catalog for plugins matching a query.
 

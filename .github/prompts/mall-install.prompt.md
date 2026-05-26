@@ -3,7 +3,7 @@ description: "Install a plugin from the Alex ACT Plugin Mall into local/ paths"
 lastReviewed: 2026-05-26
 ---
 
-# /mall install
+# /mall-install
 
 Install a plugin from the Plugin Mall into this project's `local/` paths.
 

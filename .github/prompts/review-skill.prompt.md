@@ -16,3 +16,5 @@ Steps:
 5. Save the verdict where your heir keeps audit decisions (commit message for routine self-audit; dedicated file for external adoption)
 
 If the verdict is **Decline** and the decline sets a precedent, record it in your heir's decision-record location.
+
+**Would revise if**: the [skill-review](../skills/skill-review/SKILL.md) gates change, or new skill-adoption patterns emerge that the current 5-gate contract doesn't cover. Re-evaluate by 2026-08-26.
