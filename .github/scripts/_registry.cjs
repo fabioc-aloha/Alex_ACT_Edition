@@ -211,7 +211,7 @@ function discoverCloudDrives(heirRoot) {
 
 /**
  * Create the AI-Memory folder structure in the given cloud drive.
- * @param {string} driveName - cloud drive folder name (e.g. 'OneDrive - Correa Family') or full path
+ * @param {string} driveName - cloud drive folder name (e.g. 'OneDrive - Personal') or full path
  * @returns {{ ok: boolean, root: string, created: string[] }}
  */
 function initAiMemory(driveName) {
