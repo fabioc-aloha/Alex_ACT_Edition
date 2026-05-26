@@ -86,7 +86,7 @@ Files exempt:
 
 ## Brain-qa-changelog integration
 
-Where the repo maintains a brain-qa-changelog (Supervisor ships one at `docs/ledgers/brain-qa-changelog.md`), every row must include the severity tag of the shipping commit (in the Notes column or as a dedicated column). Enforced by [brain-curation-rules.instructions.md](brain-curation-rules.instructions.md) § Severity + Falsifiability Gate.
+Where the repo maintains a brain-qa-changelog (some projects keep one at `docs/ledgers/brain-qa-changelog.md`), every row must include the severity tag of the shipping commit (in the Notes column or as a dedicated column). The tag carries through whether the changelog is maintained or not.
 
 ## Falsification
 

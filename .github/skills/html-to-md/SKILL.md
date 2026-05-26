@@ -4,7 +4,7 @@ description: "Convert HTML documents to clean Markdown via pandoc"
 lastReviewed: 2026-05-26
 ---
 
-# HTML to Markdown
+# Html To Md
 
 Convert HTML documents to clean Markdown. Strips inline styles, scripts, and tracking pixels while preserving semantic structure.
 

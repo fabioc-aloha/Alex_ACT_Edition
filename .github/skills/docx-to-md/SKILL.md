@@ -4,7 +4,7 @@ description: "Convert Word documents (.docx) to clean Markdown with image extrac
 lastReviewed: 2026-04-30
 ---
 
-# Word to Markdown Conversion
+# Docx To Md
 
 > Ingest Word documents into your Markdown workflow — clean, linted, version-control ready
 

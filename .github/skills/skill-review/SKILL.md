@@ -74,7 +74,7 @@ The semantic layer of currency-and-coherence judgment. A mechanical validator (b
 |---|---|
 | Frontmatter matches body | Description's "what + when" claims survive a deep read of the body. No drift between advertised scope and actual content. |
 | No stale entity references (semantic) | References to retired entities carry a per-file `<!-- brain-qa: allow <Entity> -->` marker AND the marker is justified — the reference adds historical or operational value, isn't fossil. |
-| Cross-references resolve and add value | Every `[text](path)` link points to a live artifact AND the target adds something the reader needs. Dead links and decorative xrefs both fail. |
+| Cross-references resolve and add value | Every markdown link (the `\[label\]\(target\)` form) points to a live artifact AND the target adds something the reader needs. Dead links and decorative xrefs both fail. |
 | `lastReviewed` is honest | The date reflects when the file was actually re-verified, not a rubber-stamp. Body content must be consistent with what was true at that date. |
 | H1 matches advertised scope | The H1 reflects the skill's actual scope per `name` + `description`. "MCP Server Development Guide" vs name "mcp-builder" fails this gate. |
 | Description has "what" AND "when" | Third-person; names the operation AND the trigger phrases. No slogans, no missing trigger clauses. |

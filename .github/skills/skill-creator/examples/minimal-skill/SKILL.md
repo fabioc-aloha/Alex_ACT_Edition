@@ -51,4 +51,4 @@ Append to `docs/ledgers/curation-log.md` in the same commit as the artifact chan
 
 ## Related
 
-- [brain-curation-rules](../../../../instructions/brain-curation-rules.instructions.md) — the proposal-first protocol this skill records the outcome of
+- [severity-tagged-commits](../../../../instructions/severity-tagged-commits.instructions.md) — the tagging discipline this skill's outcomes record

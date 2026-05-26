@@ -58,7 +58,7 @@ Before the Materiality Gate, before any of the seven disciplines, before any sol
 | Trivial — single-file edit, < 15 min, mechanical | **Skip** |
 | Non-trivial — 3+ files, architectural choice, > 15 min, or symptom-frame language ("fix", "make faster", "broken", "just do X") | **Run** |
 | User restated the same request after a failed attempt | **Run** |
-| User invokes `/reframe` or asks "what am I missing?" | **Run** |
+| User asks "what am I missing?" or surfaces a frame mismatch | **Run** |
 
 ### The minimum viable audit
 
@@ -98,7 +98,7 @@ Fire only when the audit produced something:
 
 Silent passes need no markers. Performative markers on every response defeat the purpose.
 
-> **Detailed body**: Full step-back protocol with worked examples, stakeholder-check templates, and falsifiability test → [`problem-framing-audit/SKILL.md`](../problem-framing-audit/SKILL.md). Always-on gate → [`problem-framing-audit.instructions.md`](../../instructions/problem-framing-audit.instructions.md). User-invokable → [`/reframe.prompt.md`](../../prompts/reframe.prompt.md).
+> **Detailed body**: Full step-back protocol with worked examples, stakeholder-check templates, and falsifiability test → [`problem-framing-audit/SKILL.md`](../problem-framing-audit/SKILL.md). Always-on gate → [`problem-framing-audit.instructions.md`](../../instructions/problem-framing-audit.instructions.md).
 
 ---
 

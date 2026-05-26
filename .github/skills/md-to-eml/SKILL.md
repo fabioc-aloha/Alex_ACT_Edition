@@ -4,7 +4,7 @@ description: Convert Markdown to RFC 5322 email (.eml) with inline CSS and CID i
 lastReviewed: 2026-05-26
 ---
 
-# Markdown to Email Conversion
+# Md To Eml
 
 > Write in Markdown, send as professional email — works in any email client
 

@@ -4,7 +4,7 @@ description: "Strip Markdown formatting and produce clean plain text via pandoc"
 lastReviewed: 2026-05-26
 ---
 
-# Markdown to Plain Text
+# Md To Txt
 
 Strip all Markdown formatting and produce clean plain text. Useful for clipboard export, email body fallback, accessibility, and as input to text analysis tools.
 

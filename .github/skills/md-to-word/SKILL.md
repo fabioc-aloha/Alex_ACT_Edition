@@ -4,7 +4,7 @@ description: "Convert Markdown with Mermaid diagrams and SVG illustrations to pr
 lastReviewed: 2026-05-18
 ---
 
-# Markdown to Word Conversion
+# Md To Word
 
 > One command to professional Word documents — diagrams, tables, and formatting done right on first attempt.
 
@@ -180,10 +180,10 @@ SVG files are automatically detected and converted to PNG for Word compatibility
 
 ```markdown
 <!-- This SVG reference in your Markdown... -->
-![Architecture](assets/architecture.svg)
+![Architecture](<your-diagram>.svg)
 
 <!-- ...becomes this embedded PNG in Word -->
-![Architecture](images/architecture.png){width=5.8in}
+![Architecture](<your-diagram>.png){width=5.8in}
 ```
 
 **Requirements**: `svgexport` (`npm install -g svgexport`)

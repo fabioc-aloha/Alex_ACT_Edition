@@ -4,7 +4,7 @@ description: Documentation hygiene — anti-drift rules, count elimination, and 
 lastReviewed: 2026-05-05
 ---
 
-# Documentation Hygiene
+# Doc Hygiene
 
 > Prevent documentation drift through structural rules — not manual vigilance.
 
