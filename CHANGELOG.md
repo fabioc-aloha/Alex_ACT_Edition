@@ -6,81 +6,71 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
-**Pending [behaviour] — per-type review/creator pairs land + full Edition audit closes 39 findings + muscles/ folder collapsed into scripts/ + 2026-05-26 cleanup pass (Fabio-specific plugin guide removed, README revised, model table validated against GitHub Docs).**
-
-### Added (2026-05-26 cleanup pass)
-
-- **`.vscode/settings.json` gains 3 QoL groups** (7 keys → 14 keys; brain-aligned authoring environment):
-  - **Mermaid theme defaults** (4 keys): `markdown-mermaid.lightModeTheme: "neutral"`, `darkModeTheme: "dark"`, `languages: ["mermaid"]`, `maxTextSize: 50000`. These are exactly the recommended settings documented in `/polish-mermaid-setup` Step 3 — shipping them eliminates that manual step for fresh heirs. Settings keys belong to the `bierner.markdown-mermaid` extension, now merged into VS Code 1.121+ as built-in Mermaid Markdown Features.
-  - **Markdown-scoped editor settings** (1 language block with 3 sub-settings): `[markdown] { files.trimTrailingWhitespace: false (preserves markdown's two-space line-break syntax), editor.wordWrap: "on" (long-form brain prose readability), editor.quickSuggestions: { other/comments/strings: "on" } (re-enables Copilot inline suggestions for markdown after VS Code 1.121's default-suppression change) }`.
-  - **File hygiene defaults** (2 keys): `files.insertFinalNewline: true`, `files.trimFinalNewlines: true` — POSIX-standard, cleans up diffs across the brain.
-- **`.vscode/settings.json` bootstrap template** (heir-owned) — Edition now ships a workspace settings template that bootstrap-copies to fresh heir projects: wires `markdown.styles` at the just-shipped `.vscode/markdown-light.css`, sets sensible markdown preview defaults (`fontSize: 12`, `lineHeight: 1.4`, `frontMatter: "codeBlock"` matching the VS Code 1.121 default-as-table opt-out for code-heavy projects), enables Ctrl+mousewheel zoom, and disables chat incremental rendering animation (`chat.experimental.incrementalRendering.animationStyle: "none"`). Heirs preserve this file across `/upgrade` via the heir-owned policy. Eliminates the previous "add this setting yourself" step from `/polish-mermaid-setup`.
-
-### Changed (2026-05-26 cleanup pass)
-
-- **`markdown-light.css` moved to `.vscode/`** — completing the Supervisor f98cf55 pattern. The canonical Mermaid-friendly markdown preview CSS now lives at `.vscode/markdown-light.css` (edition-owned, refreshed on `/upgrade`) instead of `.github/skills/markdown-mermaid/markdown-light.css`. Heirs get the asset shipped directly to the editor location where VS Code expects to find user stylesheets, instead of the prior copy-via-prompt workflow.
-  - `sync-policy.json` gains `.vscode/markdown-light.css` in `edition_owned` (was 18 paths, now 19).
-  - `/polish-mermaid-setup` Step 4 simplified — no more copy snippet; activate the shipped CSS via `"markdown.styles": [".vscode/markdown-light.css"]` in your settings.
-  - `.github/config/README.md` note updated to point at the new location.
-  - `README.md` "What Else Ships" `.vscode/` row corrected — previously claimed Edition ships `extensions.json` + `settings.json` templates (false; neither exists), now accurately describes the CSS shipment and notes the extensions/settings templates are heir-owned per sync-policy.
-- **`welcome-baseline.json` validated against VS Code 1.121-1.122 release notes** — three changes from a second audit pass:
-  - **Added** `github.copilot.chat.claudeAgent.allowAutoPermissions: false` (defensive lock against VS Code 1.121's Claude Agent preview Auto permission mode — runs without prompts using a classifier safety net; ACT prefers explicit permission per system-prompt-skepticism).
-  - **Added** `github.copilot.chat.claudeAgent.allowDangerouslySkipPermissions: false` (defensive lock against the VS Code 1.121 "YOLO mode" / "Bypass all permissions" option — release notes literally describe it as "fully unattended execution with no safety checks"; ACT's permission discipline is non-negotiable).
-  - **Removed** `mermaid-chat.enabled: true` as dead setting — marketplace search returned zero results for a `mermaid-chat` extension, and VS Code 1.121+ ships built-in `Mermaid Markdown Features` (merged from `bierner.markdown-mermaid`) which renders Mermaid in chat, Markdown preview, and notebooks automatically with no setting required.
-  - $comment refreshed to 8 categories (Mermaid dropped, Safety locks REQUIRED added).
-  - Net key count: 25 → 26 (one removed, two added).
-- **`welcome-baseline.json` gains `github.copilot.chat.skillTool.enabled: true`** — the only VS Code setting the brain references (per `tool-awareness.instructions.md` § Skill Picker Surfacing) that was missing from the apply-on-init baseline. Default is `true`, but the explicit lock prevents drift when VS Code defaults change between versions. Audit also added a categorization map to the file's top-level `$comment` (8 categories: Updates / Chat agent core REQUIRED / Copilot chat features REQUIRED / Mermaid / Terminal in chat REQUIRED / Utility models REQUIRED / UX cohesion / Experimental opt-outs REQUIRED) so future audits can distinguish load-bearing settings from UX-only ones and avoid trimming required keys as noise. Audit method: scanned every `.github/instructions/`, `.github/skills/`, `.github/prompts/` file for VS Code settings-key patterns; only two keys surfaced (`chat.tools.compressOutput.enabled` already in baseline; `github.copilot.chat.skillTool.enabled` missing).
-- **`README.md` revised** — instructions list aligned with actual brain (36 instructions across 6 cleaner categories; dropped 6 phantom instructions that no longer exist: `alternatives-and-tradeoffs`, `partnership-charter`, `technical-writing`, `creative-loop`, `debugging`, `scope-management`; added 8 missing real ones: `agent-delegation`, `code-review`, `falsifiability-deadlines`, `git-workflow`, `no-deferred-debt`, `severity-tagged-commits`, `status-reporting`, `tool-awareness-categories`). Path-count contradiction fixed (was "Three other paths / Four entry paths" → now "Three entry paths" matching reality). `/configure-vscode` row dropped historical "Was `/welcome` in v2.2.x" note (v2.3.0 now). Two redundant Mall subsections consolidated into one. Practical Recommendation row aligned with the model table above it (no GPT-4.1/GPT-4o).
-- **Model table validated against [GitHub Docs Supported AI models](https://docs.github.com/en/copilot/reference/ai-models/supported-models) as of 2026-05-26** — removed 5 entries (GPT-4o not in public chat picker, utility-only; 4 Microsoft-internal Claude variants `Opus 4.6 Internal`, `Opus 4.7 Internal`, `Opus 4.7 Extra high reasoning Internal`, `Opus 4.7 High reasoning Internal` — Fabio-tenant-only). Added 4 entries (`Claude Opus 4.6 (fast mode) (Preview)`, `Gemini 3.5 Flash` GA, `Raptor mini` Preview, `Goldeneye` Preview) with `—` placeholders in cells where the Copilot internal Settings panel value wasn't captured. Multiplier callouts inlined: 30x (Opus 4.6 fast mode), 14x (Gemini 3.5 Flash), 7.5x promotional (GPT-5.5). Recommendation legend dropped GPT-4o-specific "Avoid (context+cache)" row. "What we tested with" clarified — the 1M-context test variant is Microsoft-internal-tenant-only; public Claude Opus 4.7 ships at 200K. Snapshot date refreshed 2026-05-19 → validated 2026-05-26. `GPT-5.4 nano` deliberately not added (GitHub Docs footnote: Codex VS Code only, Pro+, not in Chat).
-
-### Removed (2026-05-26 cleanup pass)
-
-- **`.github/config/` pruning** — applied Supervisor's f98cf55 pattern (prune dead-weight from config folder) to Edition. Two fossils removed after a per-file consumer audit:
-  - **`.github/config/markdown-light.css`** (21,410 bytes) — duplicate of the canonical, slightly-smaller skill-bundled copy at `.github/skills/markdown-mermaid/markdown-light.css` (16,628 bytes; **different hash**). The skill-bundled copy is the one the `/polish-mermaid-setup` prompt actually targets (copies it to `.vscode/markdown-light.css`). The config/ copy has zero functional consumers — exactly the divergent-twins drift pattern Supervisor's commit explicitly warned about.
-  - **`.github/config/mcp.json.template`** — zero functional consumers anywhere in Edition. The previous README claimed *"Copy to `.vscode/mcp.json` on first bootstrap"* but no script ever did so; the intended workflow was never wired. Heirs that want MCP servers can author `.vscode/mcp.json` directly.
-  - **`sync-policy.json`** updated: both paths removed from `edition_owned` list.
-  - **`.github/config/README.md`** rewritten: ownership table now shows only files that actually exist (`sync-policy`, `edition-manifest`, `welcome-baseline`, `cognitive-config`, `goals`, README), with the `Read by` column added so future audits can see live consumers at a glance. Added note that VS Code editor assets belong in `.vscode/`, not `.github/config/`.
-  - Heir-upgrade impact: on next `/upgrade`, heirs that have these files locally see them preserved via the `unmatched:preserve` rule (Edition no longer overwrites them); heirs that don't have them see no change. Config folder shrinks 8 files → 6.
-- **`PLUGINS.md` removed (root)** — Fabio-specific plugin-registration guide that hardcoded `C:\Development\MALL\.github-private\plugins\...` paths into Microsoft-internal stores most heirs cannot clone. 9 of 12 documented plugins lived under `.github-private` (internal-only). No inbound references remained after dropping the README pointer. The `chat.pluginLocations` pattern itself is generic enough that heirs needing it can register their own stores; the curated 12-plugin list was operator content, not heir baseline.
-- **`assets/banner-plugins.svg` removed** — orphan after `PLUGINS.md` deletion (sole consumer; zero other references).
-- **`scripts/` folder removed (root)** — contained only `cleanup-frontmatter.cjs`, a one-shot from the 2026-05-26 frontmatter sweep (commit `997c6d6`). Architectural rule (commit `c2764df`): Edition-owned files live under `.github/` to avoid namespace collisions with heir project files. The script ran once, no inbound references, canonical Edition scripts already under `.github/scripts/`.
-
-### Fixed (2026-05-26 cleanup pass)
-
-- **`init-edition.cjs` heir-doctor path** — bootstrap step 3 referenced `.github/muscles/heir-doctor.cjs`, a path that no longer exists after the muscles → scripts folder collapse documented in this same Unreleased section. Every fresh init silently warned *"heir-doctor.cjs not found at ... (skipping)"* and never ran the doctor. Path corrected to `.github/skills/greeting-checkin/scripts/heir-doctor.cjs` (canonical location, matches the path documented in README's after-bootstrap checklist). Fresh inits will now actually run heir-doctor instead of skipping it.
-- **3 alias prompts gain inline falsifier** — `checkin.prompt.md`, `meditate.prompt.md`, `note.prompt.md` had no `## Would Revise If` section, surfaced by the brain-review-playbook sweep run after the cleanup pass. These are thin (≤20 line) wrappers that delegate to a skill or another prompt; the prior 20-prompt falsifier batch (per ADR/CHANGELOG above) didn't cover them. Added one-line inline `**Would revise if**: <underlying-artifact-change>; Re-evaluate 2026-08-26.` to each per the falsifiability-deadlines rule. Inline form (vs `## ` heading) is appropriate for thin delegating prompts where the substantive falsifier lives on the delegated artifact.
-
-### Changed
-- **3 converter skills gain `## Would Revise If`** — `html-to-md`, `markdown-sanitization-chain`, `md-to-txt` previously had no falsifier section per `falsifiability-deadlines.instructions.md`. Added 90-day windows + specific trigger conditions for each.
-
-### Removed
-
-- **`academic-paper-drafting` skill removed** — the semantic review found the skill body at 683 lines, well over `skill-review` Gate 2's 500-line cap. User chose removal over trim or accept-exception. Skill was previously kept in the 2026-05-26 fit-for-mission audit on usage-signal grounds; user decision reversed after seeing the size violation. Heirs that draft academic papers can install a Mall plugin or maintain their own under `.github/local/skills/`.
-- **`/migrate-from-alex-master` slash-prompt deleted** — fleet completed AlexMaster → ACT Edition migration months ago (per v2.0.3 CHANGELOG note). The prompt was historical tooling for one-time migration; keeping it shipped maintained the false implication that AlexMaster heirs still need active migration support. Bootstrap remains via `init-edition.cjs` for new heirs.
-- **`.github/muscles/` folder eliminated entirely** — the brain-executable tier collapsed into `.github/scripts/` after the per-skill consolidation drained it of skill-bound content. Cross-cutting executables (`converter-qa.cjs`, `audit-mall-drift.cjs`) and shared library (`scripts/shared/`) live in `scripts/`. The `CONVERTER-CHANGELOG.md` doc moved with them. Heir Mall-install destination migrated from `.github/muscles/local/**` to `.github/scripts/local/**` (sync-policy + mall-installation updated). Heirs with content in the old `muscles/local/` will see it preserved via the `unmatched:preserve` rule but should manually move to `scripts/local/` for ongoing maintenance.
-- **`audit-apis` workflow removed entirely** — deleted `.github/EXTERNAL-API-REGISTRY.md`, `.github/muscles/audit-api-drift.cjs` (already removed in prior commit), and `.github/prompts/audit-apis.prompt.md`. The external-API freshness workflow proved low-yield (registry stayed stale despite quarterly cadence; the drift detector flagged the registry as a date-checker not a source-of-truth checker; semantic audit fell back on the model knowing what's current anyway). Heirs that want external-API tracking can install a Mall plugin or maintain their own registry under `.github/local/`.
+**Pending [behaviour] — substantial release**: per-type review/creator pairs (ADR-007), full Edition audit closing 39 findings, `.github/muscles/` folder collapsed into `.github/scripts/`, and the 2026-05-26 cleanup pass (heir-facing docs validated, plugin guide removed, model table refreshed against GitHub Docs, `.github/config/` pruned, `.vscode/` workspace template established with curated CSS + 14-key settings).
 
 ### Added
 
-- **`deep-review` skill mirrored from Supervisor** — adversarial code review with three parallel perspectives (Advocate, Skeptic, Architect) that create productive tension; complements the systematic single-pass `code-review` for high-stakes PRs or architectural changes. Closes the `code-review / deep-review / git-workflow` overlap-audit deferred item from the Supervisor playbook.
-- **3 baseline skills mirrored from Supervisor** — `code-review` (correctness + security + growth review), `git-workflow` (branch hygiene, safe commits, recovery patterns), `status-reporting` (stakeholder-friendly updates). Each comes with its always-on routing instruction. Closes a real gap in Edition's heir-baseline: any heir doing project work needs these disciplines, and they were Supervisor-only despite being heir-applicable.
-- **Architecture-table refresh in `copilot-instructions.md`** — the cluster table now accurately lists only artifacts that ship in Edition. Previously named 7 instructions that were deleted in the 2026-05-18 consolidation (debugging, scope-management, creative-loop, partnership-charter, technical-writing, skill-building, bootstrap-learning); the stale claim violated Tenet III (Calibrated Uncertainty). Table now has 11 clusters covering the actual brain shape (added Discipline, Brain Curation, Tool Awareness clusters; renamed Converters and Authoring; updated Infrastructure and Fleet).
-- **6 per-type review/creator pair skills** (`instruction-review`, `instruction-creator`, `prompt-review`, `prompt-creator`, `agent-review`, `agent-creator`) — heir-adapted mirrors of Supervisor's per-type pairs per ADR-007. Heirs gain the same audit surface Supervisor uses for brain curation.
-- **3 new slash-prompts** (`/review-instruction`, `/review-prompt`, `/review-agent`) — slash-command entry points for the new review skills. `/review-skill` already existed; this completes the four-way symmetry.
-- **`doc-hygiene` skill** mirrored from Supervisor (anti-drift rules, link integrity, count elimination, living-document maintenance). Resolves the broken `markdown-author` agent xref and gives heirs a callable anti-drift discipline.
-- **`markdown-mermaid/references/mermaid-reference.md`** (1339 lines) — on-demand deep-dive content extracted from the SKILL.md body: diagram tool selection framework, multi-tool ecosystem, palette + theming reference, visual design principles, parser pitfalls catalog, common pitfalls + solutions, diagram audit methodology, quality checklist.
+#### Skills + prompts
+
+- **`deep-review` skill** mirrored from Supervisor — adversarial code review with three parallel perspectives (Advocate, Skeptic, Architect). Complements single-pass `code-review` for high-stakes PRs.
+- **3 baseline skills mirrored from Supervisor**: `code-review`, `git-workflow`, `status-reporting`. Each with always-on routing instruction. Closes a real heir-baseline gap.
+- **6 per-type review/creator pair skills**: `instruction-review`/`instruction-creator`, `prompt-review`/`prompt-creator`, `agent-review`/`agent-creator` (per ADR-007). Heirs gain Supervisor's curation surface.
+- **3 new slash-prompts**: `/review-instruction`, `/review-prompt`, `/review-agent` — complete four-way symmetry with the existing `/review-skill`.
+- **`doc-hygiene` skill** mirrored from Supervisor (anti-drift rules, link integrity, count elimination, living-document maintenance).
+- **`markdown-mermaid/references/mermaid-reference.md`** (1339 lines) — deep-dive content extracted from SKILL.md (diagram tool selection, palette + theming, parser pitfalls, audit methodology, quality checklist).
+
+#### Workspace environment + user settings
+
+- **`.vscode/markdown-light.css`** (edition-owned) — Mermaid-friendly markdown preview theme shipped directly. Replaces the prior copy-via-prompt workflow.
+- **`.vscode/settings.json`** (heir-owned bootstrap template, 14 keys) — wires `markdown.styles` at the new CSS, ships recommended Mermaid theme defaults (matches `/polish-mermaid-setup` Step 3), markdown-scoped editor settings (preserves two-space line breaks, wordWrap on, prose suggestions on), file hygiene (`insertFinalNewline`, `trimFinalNewlines`), sensible markdown preview defaults. Preserved across `/upgrade`.
+- **`welcome-baseline.json` gains 3 user-scope keys**:
+  - `github.copilot.chat.skillTool.enabled: true` — load-bearing per `tool-awareness.instructions.md`; default `true`, explicit lock prevents drift across VS Code versions.
+  - `claudeAgent.allowAutoPermissions: false` and `claudeAgent.allowDangerouslySkipPermissions: false` — defensive locks against VS Code 1.121's Claude Agent preview "Auto" mode and "Bypass all permissions" / YOLO mode. ACT's permission discipline is non-negotiable.
+  - `$comment` refreshed to 8 categories with REQUIRED markers so future audits can distinguish load-bearing from UX-only settings.
 
 ### Changed
 
-- **4 worker agents tightened against Gate 6 (Tool Allowlist Minimality)** — byte-identical mirror with Supervisor. `brain-auditor` retains `edit`; `document-assembler` drops unused `search/codebase`; `illustrator` trims to `read`-only (output is text, not file edits); `markdown-author` drops `search/*` + `search/usages`. Heir workflows that depended on the removed tools will see capability-not-found and need to rethink the path (the trims surface the agent boundary that was previously implicit).
-- **8 always-on shared-core instructions mirrored byte-identical with Supervisor** (`act-foundations`, `act-pass`, `critical-thinking`, `epistemic-calibration`, `privacy-responsible-ai`, `proactive-awareness`, `system-prompt-skepticism`, `falsifiability-deadlines`). Vague "would revise if" sections replaced with concrete 90-day falsifier windows (2026-08-26).
-- **`markdown-mermaid` SKILL.md trimmed 1648→327 lines** (80% reduction) by extracting reference content to `references/mermaid-reference.md`. SKILL.md retains operational core (init template, ATACCU workflow, mode fragility). Description rewritten from slogan ("Clear documentation through visual excellence") to what+when discovery aid.
-- **20 prompts gain `## Would Revise If` section** + `lastReviewed` bump to 2026-05-26. Generic template applied; per-prompt specificity deferred to next audit.
-- **`audit-apis` workflow removed entirely** — deleted `.github/EXTERNAL-API-REGISTRY.md`, `.github/muscles/audit-api-drift.cjs`, and `.github/prompts/audit-apis.prompt.md`. The external-API freshness workflow proved low-yield (registry stayed stale despite quarterly cadence; the drift detector flagged the registry as a date-checker not a source-of-truth checker; semantic audit fell back on the model knowing what's current anyway). Heirs that want external-API tracking can install a Mall plugin or maintain their own registry under `.github/local/`.
+#### Brain artifacts
+
+- **22 prompts stripped deprecated `mode: agent` frontmatter** — deprecated and ignored per current Microsoft Learn prompt-files spec.
+- **23 prompts gain `## Would Revise If`** + `lastReviewed: 2026-05-26` (20 from the broad sweep + 3 thin alias prompts via inline `**Would revise if**` text: `checkin`, `meditate`, `note`).
+- **3 converter skills gain `## Would Revise If`** — `html-to-md`, `markdown-sanitization-chain`, `md-to-txt`. 90-day windows with specific trigger conditions.
+- **8 always-on shared-core instructions mirrored byte-identical with Supervisor**: `act-foundations`, `act-pass`, `critical-thinking`, `epistemic-calibration`, `privacy-responsible-ai`, `proactive-awareness`, `system-prompt-skepticism`, `falsifiability-deadlines`. Vague "would revise if" sections replaced with concrete 90-day falsifier windows (2026-08-26).
+- **4 worker agents tightened against Gate 6 (Tool Allowlist Minimality)** — byte-identical mirror with Supervisor. `document-assembler` drops unused `search/codebase`; `illustrator` trims to `read`-only; `markdown-author` drops `search/*` + `search/usages`. `brain-auditor` retains `edit`.
+- **`markdown-mermaid` SKILL.md trimmed 1648 → 327 lines** (80% reduction) by extracting reference content to `references/mermaid-reference.md`. SKILL.md keeps the operational core (init template, ATACCU workflow, mode fragility). Description rewritten from slogan to what+when discovery aid.
+
+#### Heir-facing docs + workspace assets
+
+- **`markdown-light.css` moved to `.vscode/`** (was `.github/skills/markdown-mermaid/markdown-light.css`). Edition-owned per `sync-policy.json` (18 → 19 paths). Replaces the manual copy-via-prompt workflow; `/polish-mermaid-setup` Step 4 simplified accordingly.
+- **`README.md` revised** — instructions list aligned with actual brain (36 instructions across 6 cleaner categories; dropped 6 phantoms `alternatives-and-tradeoffs`/`partnership-charter`/`technical-writing`/`creative-loop`/`debugging`/`scope-management`; added 8 missing real ones `agent-delegation`/`code-review`/`falsifiability-deadlines`/`git-workflow`/`no-deferred-debt`/`severity-tagged-commits`/`status-reporting`/`tool-awareness-categories`). Path-count contradiction fixed ("Three entry paths"). Two redundant Mall subsections consolidated. Practical Recommendation aligned with the model table.
+- **Model table validated against [GitHub Docs Supported AI models](https://docs.github.com/en/copilot/reference/ai-models/supported-models)** — removed 5 (GPT-4o utility-only; 4 Microsoft-internal Claude variants); added 4 (Claude Opus 4.6 fast-mode preview, Gemini 3.5 Flash GA, Raptor mini, Goldeneye). Multiplier callouts inlined (30x, 14x, 7.5x). Snapshot date refreshed 2026-05-19 → validated 2026-05-26. `GPT-5.4 nano` deliberately not added (Codex VS Code only per GitHub Docs footnote).
+- **`.github/config/README.md` rewritten** — ownership table shows only files that actually exist + a "Read by" column for at-a-glance consumer visibility.
+
+### Fixed
+
+- **`init-edition.cjs` heir-doctor path** — bootstrap step 3 referenced `.github/muscles/heir-doctor.cjs` (no longer exists after the muscles → scripts collapse). Corrected to `.github/skills/greeting-checkin/scripts/heir-doctor.cjs`. Fresh inits now actually run heir-doctor instead of silently skipping it.
+
+### Removed
+
+#### Brain artifacts
+
+- **`.github/muscles/` folder** — brain-executable tier collapsed into `.github/scripts/` after per-skill consolidation drained it of skill-bound content. Cross-cutting executables (`converter-qa.cjs`, `audit-mall-drift.cjs`) and shared library moved to `scripts/`. Heir Mall-install destination migrated from `.github/muscles/local/**` to `.github/scripts/local/**`.
+- **`academic-paper-drafting` skill** — semantic review found 683 lines (over skill-review Gate 2's 500-line cap). User chose removal over trim or accept-exception (reversed the earlier "keep" decision after the size violation surfaced). Mall plugin or `.github/local/skills/` for heirs that need it.
+- **`/migrate-from-alex-master` slash-prompt** — fleet completed AlexMaster → ACT Edition migration months ago. Historical tooling whose continued presence implied active migration support.
+- **`audit-apis` workflow** — `.github/EXTERNAL-API-REGISTRY.md` + `.github/prompts/audit-apis.prompt.md` + (already-removed) `.github/muscles/audit-api-drift.cjs`. Low-yield: registry stayed stale; drift detector flagged dates not source-of-truth changes; semantic audit fell back on model knowledge anyway. Heirs that want it can install a Mall plugin or maintain their own under `.github/local/`.
+
+#### Heir-facing docs + dead config
+
+- **`PLUGINS.md` + `assets/banner-plugins.svg`** — Fabio-specific plugin-registration guide hardcoding paths into Microsoft-internal `.github-private` stores most heirs cannot clone (9 of 12 plugins). Operator content, not heir baseline. Banner was orphan after the doc deletion.
+- **`scripts/` folder (root)** — contained only `cleanup-frontmatter.cjs`, a one-shot from today's frontmatter sweep (`997c6d6`). Violates the `.github/`-namespace rule (`c2764df`).
+- **`.github/config/markdown-light.css`** (21KB fossil) — duplicate of the canonical skill-bundled copy with divergent content. Zero functional consumers; superseded by the `.vscode/markdown-light.css` shipment.
+- **`.github/config/mcp.json.template`** — zero functional consumers; documented "copy to `.vscode/mcp.json`" workflow was never wired. Heirs that want MCP servers can author `.vscode/mcp.json` directly.
+- **`mermaid-chat.enabled: true`** from `welcome-baseline.json` — dead setting; no marketplace extension publishes it. VS Code 1.121+ ships Mermaid Markdown Features built-in with no setting required.
 
 ### Architecture
 
-- **4-artifact-type brain (was 5).** With muscles/ gone, the brain lexicon now describes 4 artifact types (skills/instructions/prompts/agents) plus an executable tier (`.github/scripts/`). The change is reflected in `copilot-instructions.md`, `severity-tagged-commits.instructions.md`, `meditation.instructions.md` + skill, `falsifiability-deadlines.instructions.md`, `skill-creator/SKILL.md` routing tables, `welcome.prompt.md` brain-inventory line, and `README.md` (header counts, What Else Ships, Customization Slots, Vocabulary).
+- **4-artifact-type brain (was 5)** — with `muscles/` gone, the brain lexicon now describes 4 artifact types (skills/instructions/prompts/agents) plus an executable tier (`.github/scripts/`). Reflected in `copilot-instructions.md`, `severity-tagged-commits.instructions.md`, `meditation.instructions.md` + skill, `falsifiability-deadlines.instructions.md`, `skill-creator/SKILL.md` routing tables, `welcome.prompt.md` brain-inventory line, and `README.md` (header counts, What Else Ships, Customization Slots, Vocabulary).
+- **Architecture-table refresh in `copilot-instructions.md`** — cluster table now accurately lists only artifacts that actually ship (was naming 7 instructions deleted in the 2026-05-18 consolidation, violating Tenet III). 11 clusters covering the actual brain shape.
 - **6 converter skills strip legacy `muscle:` frontmatter field** (no consumer; documentation-only field that drifted).
 - **`creative-writing` skill description** rewritten from generic prose to what+when format.
 - **`md-to-eml` SKILL.md** drops "graveyard" prose section that fossilized prior design discussion.
@@ -88,9 +78,9 @@ All notable changes to Alex ACT Edition.
 
 ### Internal
 
-- Audit method: 4 parallel subagent audits (skill-review, instruction-review, prompt-review, agent-review per ADR-007) surfaced 39 Revise findings across 27 skills / 33 instructions / 28 prompts / 4 agents. All 39 resolved in 5 fix batches.
-- Tier C decisions (judgment applied per Supervisor precedent): `act-foundations` + `memory-triggers` Gate 6 overages ACCEPTED as framework exception; `falsifiability-deadlines` Edition scope KEPT (heirs DO author brain artifacts when extending baseline).
-- brain-qa Edition findings: 0 after every batch. SHA-256 byte-identity verified on all mirrored artifacts.
+- **Audit method**: 4 parallel subagent audits (skill-review, instruction-review, prompt-review, agent-review per ADR-007) surfaced 39 Revise findings across 27 skills / 33 instructions / 28 prompts / 4 agents. All 39 resolved in 5 fix batches.
+- **Tier C decisions** (judgment per Supervisor precedent): `act-foundations` + `memory-triggers` Gate 6 overages ACCEPTED as framework exception; `falsifiability-deadlines` Edition scope KEPT (heirs DO author brain artifacts when extending baseline).
+- **brain-qa Edition findings**: 0 after every batch. SHA-256 byte-identity verified on all mirrored artifacts.
 
 ## [2.3.0] - 2026-05-25
 
