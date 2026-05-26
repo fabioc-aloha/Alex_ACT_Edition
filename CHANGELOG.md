@@ -19,6 +19,10 @@ All notable changes to Alex ACT Edition.
 - **`assets/banner-plugins.svg` removed** — orphan after `PLUGINS.md` deletion (sole consumer; zero other references).
 - **`scripts/` folder removed (root)** — contained only `cleanup-frontmatter.cjs`, a one-shot from the 2026-05-26 frontmatter sweep (commit `997c6d6`). Architectural rule (commit `c2764df`): Edition-owned files live under `.github/` to avoid namespace collisions with heir project files. The script ran once, no inbound references, canonical Edition scripts already under `.github/scripts/`.
 
+### Fixed (2026-05-26 cleanup pass)
+
+- **`init-edition.cjs` heir-doctor path** — bootstrap step 3 referenced `.github/muscles/heir-doctor.cjs`, a path that no longer exists after the muscles → scripts folder collapse documented in this same Unreleased section. Every fresh init silently warned *"heir-doctor.cjs not found at ... (skipping)"* and never ran the doctor. Path corrected to `.github/skills/greeting-checkin/scripts/heir-doctor.cjs` (canonical location, matches the path documented in README's after-bootstrap checklist). Fresh inits will now actually run heir-doctor instead of skipping it.
+
 ### Changed
 - **3 converter skills gain `## Would Revise If`** — `html-to-md`, `markdown-sanitization-chain`, `md-to-txt` previously had no falsifier section per `falsifiability-deadlines.instructions.md`. Added 90-day windows + specific trigger conditions for each.
 

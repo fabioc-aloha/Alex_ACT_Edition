@@ -227,7 +227,7 @@ if (freshCopied > 0) {
 }
 
 console.log(`[3/3] Running heir-doctor`);
-const doctor = path.join(PROJECT_ROOT, '.github', 'muscles', 'heir-doctor.cjs');
+const doctor = path.join(PROJECT_ROOT, '.github', 'skills', 'greeting-checkin', 'scripts', 'heir-doctor.cjs');
 if (fs.existsSync(doctor)) {
   spawnSync(process.execPath, [doctor], { stdio: 'inherit', cwd: PROJECT_ROOT });
 } else {
