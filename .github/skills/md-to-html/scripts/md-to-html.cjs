@@ -54,9 +54,9 @@ const { execSync } = require('child_process');
 // ---------------------------------------------------------------------------
 let sharedPreprocessor, sharedMermaid, sharedDataUri;
 try {
-  sharedPreprocessor = require(path.join(__dirname, '..', '..', '..', 'muscles', 'shared', 'markdown-preprocessor.cjs'));
-  sharedMermaid = require(path.join(__dirname, '..', '..', '..', 'muscles', 'shared', 'mermaid-pipeline.cjs'));
-  sharedDataUri = require(path.join(__dirname, '..', '..', '..', 'muscles', 'shared', 'data-uri.cjs'));
+  sharedPreprocessor = require(path.join(__dirname, '..', '..', '..', 'scripts', 'shared', 'markdown-preprocessor.cjs'));
+  sharedMermaid = require(path.join(__dirname, '..', '..', '..', 'scripts', 'shared', 'mermaid-pipeline.cjs'));
+  sharedDataUri = require(path.join(__dirname, '..', '..', '..', 'scripts', 'shared', 'data-uri.cjs'));
 } catch {
   console.error('WARN: shared modules not found -- some features will be limited');
 }

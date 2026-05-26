@@ -49,7 +49,7 @@ process.on('uncaughtException', (err) => {
 const fs = require('fs');
 const path = require('path');
 
-const { formatMarkdown } = require(path.join(__dirname, '..', '..', '..', 'muscles', 'shared', 'markdown-preprocessor.cjs'));
+const { formatMarkdown } = require(path.join(__dirname, '..', '..', '..', 'scripts', 'shared', 'markdown-preprocessor.cjs'));
 
 function parseArgs(argv) {
   const args = argv.slice(2);

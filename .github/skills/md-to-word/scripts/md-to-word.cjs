@@ -83,8 +83,8 @@ try {
 // ---------------------------------------------------------------------------
 // Shared module imports
 // ---------------------------------------------------------------------------
-const { preprocessMarkdown, detectTocMarker, validateHeadingHierarchy, embedLocalImages, validateLinks } = require(path.join(__dirname, '..', '..', '..', 'muscles', 'shared', 'markdown-preprocessor.cjs'));
-const { findMermaidBlocks, analyzeMermaid, injectPalette } = require(path.join(__dirname, '..', '..', '..', 'muscles', 'shared', 'mermaid-pipeline.cjs'));
+const { preprocessMarkdown, detectTocMarker, validateHeadingHierarchy, embedLocalImages, validateLinks } = require(path.join(__dirname, '..', '..', '..', 'scripts', 'shared', 'markdown-preprocessor.cjs'));
+const { findMermaidBlocks, analyzeMermaid, injectPalette } = require(path.join(__dirname, '..', '..', '..', 'scripts', 'shared', 'mermaid-pipeline.cjs'));
 
 // ---------------------------------------------------------------------------
 // Page Layout Constants (Letter: 8.5"  11", 1" margins)

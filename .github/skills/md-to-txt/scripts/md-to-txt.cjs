@@ -46,7 +46,7 @@ const { execSync } = require('child_process');
 
 // Best-effort load of the shared preprocessor (em-dash + decorative-HR transforms).
 let sharedPreprocessor = null;
-try { sharedPreprocessor = require(path.join(__dirname, '..', '..', '..', 'muscles', 'shared', 'markdown-preprocessor.cjs')); } catch { /* optional */ }
+try { sharedPreprocessor = require(path.join(__dirname, '..', '..', '..', 'scripts', 'shared', 'markdown-preprocessor.cjs')); } catch { /* optional */ }
 
 // ---------------------------------------------------------------------------
 // CLI argument parsing

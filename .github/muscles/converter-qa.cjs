@@ -19,7 +19,7 @@
  * - html-to-md.cjs structure preservation
  * - docx-to-md.cjs round-trip via md-to-word
  * - md-to-eml.cjs structure validation
- * - Shared module unit tests
+ * - shared module unit tests
  * - File size bounds checking
  * - Output format verification
  *
@@ -81,11 +81,12 @@ function suite(name, fn) {
 
 const ROOT = path.join(__dirname, '..', '..');
 const MUSCLES = path.join(ROOT, '.github', 'muscles');
-const SHARED = path.join(MUSCLES, 'shared');
-const LUA = path.join(MUSCLES, 'lua-filters');
-const MD_TO_WORD = path.join(MUSCLES, 'md-to-word.cjs');
-const MD_TO_EML = path.join(MUSCLES, 'md-to-eml.cjs');
-const NAV_INJECT = path.join(MUSCLES, 'nav-inject.cjs');
+const SKILLS = path.join(ROOT, '.github', 'skills');
+const SCRIPTS_SHARED = path.join(ROOT, '.github', 'scripts', 'shared');
+const LUA = path.join(SKILLS, 'md-to-word', 'scripts', 'lua-filters');
+const MD_TO_WORD = path.join(SKILLS, 'md-to-word', 'scripts', 'md-to-word.cjs');
+const MD_TO_EML = path.join(SKILLS, 'md-to-eml', 'scripts', 'md-to-eml.cjs');
+const MARKDOWN_LINT = path.join(SKILLS, 'markdown-mermaid', 'scripts', 'markdown-lint.cjs');
 
 const TEMP_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'converter-qa-'));
 process.on('exit', () => { try { fs.rmSync(TEMP_DIR, { recursive: true, force: true }); } catch { /* ignore */ } });
@@ -118,8 +119,8 @@ function runNode(script, args = [], timeout = 30000) {
 // TEST SUITES
 // -----------------------------------------------------------------------------
 
-suite('Shared: data-uri.cjs', () => {
-  const mod = require(path.join(SHARED, 'data-uri.cjs'));
+suite('shared: data-uri.cjs', () => {
+  const mod = require(path.join(SCRIPTS_SHARED, 'data-uri.cjs'));
 
   assert(typeof mod.encodeToDataUri === 'function', 'encodeToDataUri is exported');
   assert(typeof mod.downloadFile === 'function', 'downloadFile is exported');
@@ -146,8 +147,8 @@ suite('Shared: data-uri.cjs', () => {
   assert(uri.startsWith('data:image/png;base64,'), 'PNG encodes with correct MIME');
 });
 
-suite('Shared: markdown-preprocessor.cjs', () => {
-  const mod = require(path.join(SHARED, 'markdown-preprocessor.cjs'));
+suite('shared: markdown-preprocessor.cjs', () => {
+  const mod = require(path.join(SCRIPTS_SHARED, 'markdown-preprocessor.cjs'));
 
   assert(typeof mod.preprocessMarkdown === 'function', 'preprocessMarkdown is exported');
   assert(typeof mod.convertLatexMath === 'function', 'convertLatexMath is exported');
@@ -189,8 +190,8 @@ suite('Shared: markdown-preprocessor.cjs', () => {
   assert(result.content.trim() === 'Body', 'Body extracted after frontmatter');
 });
 
-suite('Shared: mermaid-pipeline.cjs', () => {
-  const mod = require(path.join(SHARED, 'mermaid-pipeline.cjs'));
+suite('shared: mermaid-pipeline.cjs', () => {
+  const mod = require(path.join(SCRIPTS_SHARED, 'mermaid-pipeline.cjs'));
 
   assert(typeof mod.findMermaidBlocks === 'function', 'findMermaidBlocks is exported');
   assert(typeof mod.injectPalette === 'function', 'injectPalette is exported');
@@ -211,8 +212,8 @@ suite('Shared: mermaid-pipeline.cjs', () => {
   assert(table.includes('|'), 'Table fallback produces markdown table format');
 });
 
-suite('Shared: converter-config.cjs', () => {
-  const mod = require(path.join(SHARED, 'converter-config.cjs'));
+suite('shared: converter-config.cjs', () => {
+  const mod = require(path.join(SCRIPTS_SHARED, 'converter-config.cjs'));
 
   assert(typeof mod.loadConfig === 'function', 'loadConfig is exported');
   assert(typeof mod.loadCharacterConfig === 'function', 'loadCharacterConfig is exported');
@@ -284,13 +285,13 @@ suite('File Inventory: expected files exist', () => {
   const required = [
     { path: MD_TO_WORD, desc: 'md-to-word.cjs' },
     { path: MD_TO_EML, desc: 'md-to-eml.cjs' },
-    { path: NAV_INJECT, desc: 'nav-inject.cjs' },
-    { path: path.join(SHARED, 'data-uri.cjs'), desc: 'shared/data-uri.cjs' },
-    { path: path.join(SHARED, 'mermaid-pipeline.cjs'), desc: 'shared/mermaid-pipeline.cjs' },
-    { path: path.join(SHARED, 'markdown-preprocessor.cjs'), desc: 'shared/markdown-preprocessor.cjs' },
-    { path: path.join(SHARED, 'converter-config.cjs'), desc: 'shared/converter-config.cjs' },
-    { path: path.join(SHARED, 'prompt-preprocessor.cjs'), desc: 'shared/prompt-preprocessor.cjs' },
-    { path: path.join(SHARED, 'index.mjs'), desc: 'shared/index.mjs (ESM bridge)' },
+    { path: MARKDOWN_LINT, desc: 'markdown-lint.cjs' },
+    { path: path.join(SCRIPTS_SHARED, 'data-uri.cjs'), desc: 'shared/data-uri.cjs' },
+    { path: path.join(SCRIPTS_SHARED, 'mermaid-pipeline.cjs'), desc: 'shared/mermaid-pipeline.cjs' },
+    { path: path.join(SCRIPTS_SHARED, 'markdown-preprocessor.cjs'), desc: 'shared/markdown-preprocessor.cjs' },
+    { path: path.join(SCRIPTS_SHARED, 'converter-config.cjs'), desc: 'shared/converter-config.cjs' },
+    { path: path.join(SCRIPTS_SHARED, 'prompt-preprocessor.cjs'), desc: 'shared/prompt-preprocessor.cjs' },
+    { path: path.join(SCRIPTS_SHARED, 'index.mjs'), desc: 'shared/index.mjs (ESM bridge)' },
     { path: path.join(LUA, 'keep-headings.lua'), desc: 'lua-filters/keep-headings.lua' },
     { path: path.join(LUA, 'word-table-style.lua'), desc: 'lua-filters/word-table-style.lua' },
     { path: path.join(LUA, 'caption-labels.lua'), desc: 'lua-filters/caption-labels.lua' },
@@ -390,23 +391,12 @@ suite('md-to-word.cjs: style presets', () => {
   }
 });
 
-suite('nav-inject.cjs: --init creates nav.json', () => {
-  const navJson = path.join(TEMP_DIR, 'nav.json');
-  const result = runNode(NAV_INJECT, ['--init', navJson], 10000);
-  assert(result.status === 0, 'nav-inject --init exits cleanly');
-  if (fileExists(navJson)) {
-    const cfg = JSON.parse(fs.readFileSync(navJson, 'utf8'));
-    assert(cfg.style != null, 'nav.json has style field');
-    assert(Array.isArray(cfg.files), 'nav.json has files array');
-  }
-});
-
 // -----------------------------------------------------------------------------
 // Mermaid creation helpers
 // -----------------------------------------------------------------------------
 
-suite('Shared: mermaid-pipeline.cjs -- creation helpers', () => {
-  const mp = require(path.join(SHARED, 'mermaid-pipeline.cjs'));
+suite('shared: mermaid-pipeline.cjs -- creation helpers', () => {
+  const mp = require(path.join(SCRIPTS_SHARED, 'mermaid-pipeline.cjs'));
 
   // createFlowchart
   assert(typeof mp.createFlowchart === 'function', 'createFlowchart exported');
@@ -468,7 +458,7 @@ suite('Shared: mermaid-pipeline.cjs -- creation helpers', () => {
 // -----------------------------------------------------------------------------
 
 suite('markdown-lint.cjs', () => {
-  const ML = path.join(__dirname, 'markdown-lint.cjs');
+  const ML = MARKDOWN_LINT;
   const mdLint = require(ML);
 
   assert(typeof mdLint.lint === 'function', 'lint exported');
@@ -528,62 +518,6 @@ suite('markdown-lint.cjs', () => {
   const r9 = mdLint.lint(emailBad, { target: 'word' });
   assert(!r9.errors.some(e => e.id === 'FM001'), 'email rules skip for word target');
 });
-
-// -----------------------------------------------------------------------------
-// Markdown scaffold
-// -----------------------------------------------------------------------------
-
-suite('md-scaffold.cjs', () => {
-  const SC = path.join(__dirname, 'md-scaffold.cjs');
-  const mdScaffold = require(SC);
-
-  assert(typeof mdScaffold.scaffold === 'function', 'scaffold exported');
-  assert(typeof mdScaffold.listTemplates === 'function', 'listTemplates exported');
-
-  // listTemplates
-  const templates = mdScaffold.listTemplates();
-  assert(Array.isArray(templates), 'listTemplates returns array');
-  assert(templates.length >= 6, 'at least 6 templates available');
-  assert(templates.some(t => t.name === 'report'), 'report template exists');
-  assert(templates.some(t => t.name === 'email'), 'email template exists');
-  assert(templates.some(t => t.name === 'adr'), 'adr template exists');
-
-  // scaffold -- report
-  const report = mdScaffold.scaffold('report', 'Test Report');
-  assert(report.includes('# Test Report'), 'report has title');
-  assert(report.includes('## Table of Contents') || report.includes('## Executive Summary'), 'report has structure');
-  assert(report.includes('```mermaid'), 'report has mermaid block');
-
-  // scaffold -- email
-  const email = mdScaffold.scaffold('email', 'Test Email', { author: 'Test User' });
-  assert(email.includes('---'), 'email has frontmatter');
-  assert(email.includes('subject:'), 'email has subject field');
-
-  // scaffold -- adr
-  const adr = mdScaffold.scaffold('adr', 'Use TypeScript');
-  assert(adr.includes('Use TypeScript'), 'adr has title');
-  assert(adr.includes('Status'), 'adr has status section');
-
-  // scaffold -- slides
-  const slides = mdScaffold.scaffold('slides', 'My Talk');
-  const h2Count = (slides.match(/^## /gm) || []).length;
-  assert(h2Count >= 3, 'slides has enough H2 breaks');
-
-  // scaffold -- tutorial
-  const tut = mdScaffold.scaffold('tutorial', 'Getting Started');
-  assert(tut.includes('# Getting Started'), 'tutorial has title');
-  assert(tut.includes('Prerequisites') || tut.includes('prerequisite'), 'tutorial has prerequisites');
-
-  // scaffold -- reference
-  const ref = mdScaffold.scaffold('reference', 'CLI Reference');
-  assert(ref.includes('# CLI Reference'), 'reference has title');
-
-  // unknown template
-  let threw = false;
-  try { mdScaffold.scaffold('nonexistent', 'X'); } catch { threw = true; }
-  assert(threw, 'unknown template throws');
-});
-
 // -----------------------------------------------------------------------------
 // Visual Regression Tests (#38) -- validate OOXML structure
 // -----------------------------------------------------------------------------
@@ -895,8 +829,8 @@ Conclusion text.
 // Prompt Preprocessor (#27)
 // -----------------------------------------------------------------------------
 
-suite('Shared: prompt-preprocessor.cjs', () => {
-  const mod = require(path.join(SHARED, 'prompt-preprocessor.cjs'));
+suite('shared: prompt-preprocessor.cjs', () => {
+  const mod = require(path.join(SCRIPTS_SHARED, 'prompt-preprocessor.cjs'));
 
   assert(typeof mod.preprocessPrompt === 'function', 'preprocessPrompt is exported');
   assert(typeof mod.validatePrompt === 'function', 'validatePrompt is exported');
@@ -961,8 +895,8 @@ suite('Shared: prompt-preprocessor.cjs', () => {
 // v5.2.0 NEW FEATURE TESTS
 // -----------------------------------------------------------------------------
 
-suite('Shared: markdown-preprocessor.cjs -- heading validation', () => {
-  const mod = require(path.join(SHARED, 'markdown-preprocessor.cjs'));
+suite('shared: markdown-preprocessor.cjs -- heading validation', () => {
+  const mod = require(path.join(SCRIPTS_SHARED, 'markdown-preprocessor.cjs'));
 
   assert(typeof mod.validateHeadingHierarchy === 'function', 'validateHeadingHierarchy is exported');
 
@@ -986,8 +920,8 @@ suite('Shared: markdown-preprocessor.cjs -- heading validation', () => {
   assert(deepSkip.valid === false, 'H2->H4 skip returns valid=false');
 });
 
-suite('Shared: markdown-preprocessor.cjs -- image embedding', () => {
-  const mod = require(path.join(SHARED, 'markdown-preprocessor.cjs'));
+suite('shared: markdown-preprocessor.cjs -- image embedding', () => {
+  const mod = require(path.join(SCRIPTS_SHARED, 'markdown-preprocessor.cjs'));
 
   assert(typeof mod.embedLocalImages === 'function', 'embedLocalImages is exported');
 
@@ -1031,8 +965,8 @@ suite('md-to-word.cjs: CLI flag parsing (new flags)', () => {
   assert(output.includes('--recursive') || output.includes('recursive'), 'Usage mentions --recursive');
 });
 
-suite('Shared: markdown-preprocessor.cjs -- link validation', () => {
-  const mod = require(path.join(SHARED, 'markdown-preprocessor.cjs'));
+suite('shared: markdown-preprocessor.cjs -- link validation', () => {
+  const mod = require(path.join(SCRIPTS_SHARED, 'markdown-preprocessor.cjs'));
 
   assert(typeof mod.validateLinks === 'function', 'validateLinks is exported');
 
@@ -1064,8 +998,8 @@ suite('Shared: markdown-preprocessor.cjs -- link validation', () => {
   assert(mailto.valid === true, 'mailto links are valid');
 });
 
-suite('Shared: markdown-preprocessor.cjs -- footnote passthrough', () => {
-  const mod = require(path.join(SHARED, 'markdown-preprocessor.cjs'));
+suite('shared: markdown-preprocessor.cjs -- footnote passthrough', () => {
+  const mod = require(path.join(SCRIPTS_SHARED, 'markdown-preprocessor.cjs'));
 
   // Footnote syntax should be preserved through preprocessing (pandoc handles it)
   const input = 'Text with footnote[^1].\n\n[^1]: This is the footnote content.';
@@ -1142,7 +1076,7 @@ More content.
 // verify image handling end-to-end per converter.
 // -----------------------------------------------------------------------------
 
-// Shared image fixtures created on demand by each suite that needs them.
+// shared image fixtures created on demand by each suite that needs them.
 function createImageFixtures(dir) {
   const pngPath = path.join(dir, 'sample.png');
   // Minimal 1x1 transparent PNG (8 bytes header + IHDR + IDAT + IEND)

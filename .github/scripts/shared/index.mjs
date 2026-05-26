@@ -6,7 +6,7 @@
  *
  * Usage in ESM scripts:
  *   import { encodeToDataUri, downloadFile, loadConfig,
- *            loadCharacterConfig } from '../.github/muscles/shared/index.mjs';
+ *            loadCharacterConfig } from '../.github/scripts/shared/index.mjs';
  * @inheritance inheritable
  */
 
