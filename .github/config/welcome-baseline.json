@@ -1,5 +1,5 @@
 {
-    "$schema": "https://json-schema.org/draft-07/schema",
+    "$schema": "https://github.com/fabioc-aloha/Alex_ACT_Edition/blob/main/.github/config/welcome-baseline.schema.json",
     "$comment": [
         "Baseline VS Code user-scope settings applied by /configure-vscode and audited by /configure-vscode-verify.",
         "Edition-owned (overwritten on upgrade). Stable settings only by default; preview/experimental toggles",
