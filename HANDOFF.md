@@ -38,13 +38,13 @@ Subagent audits (4 parallel runs) surfaced **39 Revise items**:
 
 ## Current Edition brain shape (post-audit)
 
-- **Skills**: 27 (was 20; +6 per-type pairs + doc-hygiene)
-- **Instructions**: 33 (unchanged)
-- **Prompts**: 27 (was 24; +3 per-type pair prompts; -1 audit-apis removed)
+- **Skills**: 30 (27 + 3 added: code-review, git-workflow, status-reporting)
+- **Instructions**: 36 (33 + 3 added routing pointers for the new skills)
+- **Prompts**: 26 (27 - 1 removed: migrate-from-alex-master)
 - **Agents**: 4 (unchanged file count; all 4 tightened with WRif + allowlist trims)
 - **Muscles**: 0 (folder eliminated; cross-cutting executables moved to `.github/scripts/`)
 
-**Total: 91 artifacts** (Supervisor: 101; Edition correctly missing Supervisor-only curation surface like brain-curation-rules, mall-curation, extension-delivery, surface-adaptation-pipeline, shared-core-coherence-audit, fleet-status).
+**Total: 96 artifacts** (was 91 pre-fit-audit; +3 skills, +3 instructions, -1 prompt).
 
 ## Shared-core byte-identity verified
 
@@ -69,6 +69,19 @@ Edition v2.2.0 is the live tag. This session was audit + fixes, below release-tr
 - **Next quarterly retraining**: 2026-08-26 (use `docs/templates/quarterly-retraining-ADR.md` template in Supervisor)
 - **Verify falsifiers**: re-audit any flagged-this-session items still showing the same gate failures (no trim adoption, no agent invocation, etc.)
 - **Optional v2.3.0 release**: if Edition heirs need the per-type pairs surface, cut a minor release per `release-ritual` skill
+
+## Deferred to next session
+
+**Phase 3 of fit-for-mission audit — move niche artifacts to Mall.** The 2026-05-26 audit identified 7 artifacts that fit better as Mall opt-in than baseline:
+
+- `agent-creator` + `agent-review` + `/review-agent` (heirs rarely author worker agents)
+- `markdown-sanitization-chain` (niche: only marked.js + DOMPurify renderers)
+- `md-to-eml` (email generation niche)
+- `creative-writing` (book/novel structure niche)
+- `academic-paper-drafting` (CHI/HBR/journals niche)
+- `alex-banner-generation` + `/banner` (branding opt-in)
+
+Not actioned this session because deleting from Edition before the Mall has corresponding plugins ready creates a capability gap with no recovery. Next step: author each as a Mall plugin (plugin.json + README + skill body), publish to `Alex_ACT_Plugin_Mall` CATALOG, then remove from Edition. Plan as a Mall-side workstream.
 
 ## Just shipped
 
