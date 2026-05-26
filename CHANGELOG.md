@@ -6,6 +6,33 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+**Pending [behaviour] — per-type review/creator pairs land + full Edition audit closes 39 findings.** New authoring surface for instruction, prompt, and agent review workflows; 4 worker agents tightened against Gate 6 tool-allowlist minimality; 8 shared-core instructions byte-identical with Supervisor; `markdown-mermaid` skill body trimmed 80% with heavy content extracted to references/. Falsifier window 2026-08-26.
+
+### Added
+
+- **6 per-type review/creator pair skills** (`instruction-review`, `instruction-creator`, `prompt-review`, `prompt-creator`, `agent-review`, `agent-creator`) — heir-adapted mirrors of Supervisor's per-type pairs per ADR-007. Heirs gain the same audit surface Supervisor uses for brain curation.
+- **3 new slash-prompts** (`/review-instruction`, `/review-prompt`, `/review-agent`) — slash-command entry points for the new review skills. `/review-skill` already existed; this completes the four-way symmetry.
+- **`doc-hygiene` skill** mirrored from Supervisor (anti-drift rules, link integrity, count elimination, living-document maintenance). Resolves the broken `markdown-author` agent xref and gives heirs a callable anti-drift discipline.
+- **`markdown-mermaid/references/mermaid-reference.md`** (1339 lines) — on-demand deep-dive content extracted from the SKILL.md body: diagram tool selection framework, multi-tool ecosystem, palette + theming reference, visual design principles, parser pitfalls catalog, common pitfalls + solutions, diagram audit methodology, quality checklist.
+
+### Changed
+
+- **4 worker agents tightened against Gate 6 (Tool Allowlist Minimality)** — byte-identical mirror with Supervisor. `brain-auditor` retains `edit`; `document-assembler` drops unused `search/codebase`; `illustrator` trims to `read`-only (output is text, not file edits); `markdown-author` drops `search/*` + `search/usages`. Heir workflows that depended on the removed tools will see capability-not-found and need to rethink the path (the trims surface the agent boundary that was previously implicit).
+- **8 always-on shared-core instructions mirrored byte-identical with Supervisor** (`act-foundations`, `act-pass`, `critical-thinking`, `epistemic-calibration`, `privacy-responsible-ai`, `proactive-awareness`, `system-prompt-skepticism`, `falsifiability-deadlines`). Vague "would revise if" sections replaced with concrete 90-day falsifier windows (2026-08-26).
+- **`markdown-mermaid` SKILL.md trimmed 1648→327 lines** (80% reduction) by extracting reference content to `references/mermaid-reference.md`. SKILL.md retains operational core (init template, ATACCU workflow, mode fragility). Description rewritten from slogan ("Clear documentation through visual excellence") to what+when discovery aid.
+- **20 prompts gain `## Would Revise If` section** + `lastReviewed` bump to 2026-05-26. Generic template applied; per-prompt specificity deferred to next audit.
+- **`audit-apis` prompt Step 6 safety gate tightened** — explicit per-file confirmation gate before any documentation edits ("wait for the user to explicitly approve the change set").
+- **6 converter skills strip legacy `muscle:` frontmatter field** (no consumer; documentation-only field that drifted).
+- **`creative-writing` skill description** rewritten from generic prose to what+when format.
+- **`md-to-eml` SKILL.md** drops "graveyard" prose section that fossilized prior design discussion.
+- **`md-to-txt` SKILL.md** fixes double-dash typo in section header.
+
+### Internal
+
+- Audit method: 4 parallel subagent audits (skill-review, instruction-review, prompt-review, agent-review per ADR-007) surfaced 39 Revise findings across 27 skills / 33 instructions / 28 prompts / 4 agents. All 39 resolved in 5 fix batches.
+- Tier C decisions (judgment applied per Supervisor precedent): `act-foundations` + `memory-triggers` Gate 6 overages ACCEPTED as framework exception; `falsifiability-deadlines` Edition scope KEPT (heirs DO author brain artifacts when extending baseline).
+- brain-qa Edition findings: 0 after every batch. SHA-256 byte-identity verified on all mirrored artifacts.
+
 ## [2.3.0] - 2026-05-25
 
 **Minor [behaviour] — init UX unified across CLI, README, and Extension; `/welcome` rebuilt as a true orientation tour.** Three previously divergent post-bootstrap paths now hand the user the same next-step checklist, and the `/welcome` slash-command finally matches its name. Heirs auto-update via `node .github/scripts/upgrade-self.cjs`; no `--allow-major` required.
