@@ -1,9 +1,7 @@
 ---
-type: instruction
 lifecycle: provisional
 inheritance: inheritable
 description: "When you spot tech debt, stale references, or outdated content — fix it in the same turn. Do not defer."
-application: "Whenever an action surfaces stale references, dead links, outdated counts, dead-letter code paths, or any inconsistency between the brain's stated facts and reality"
 applyTo: "**"
 currency: 2026-05-24
 lastReviewed: 2026-05-24

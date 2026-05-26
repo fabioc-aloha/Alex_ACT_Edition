@@ -1,5 +1,4 @@
 ---
-type: instruction
 lifecycle: stable
 inheritance: inheritable
 description: "How heirs install plugins from the Alex ACT Plugin Mall into local/ paths so Edition upgrades don't clobber them"

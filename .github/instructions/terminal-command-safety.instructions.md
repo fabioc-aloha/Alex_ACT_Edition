@@ -1,9 +1,7 @@
 ---
-type: instruction
 lifecycle: stable
 inheritance: inheritable
 description: "Prevent terminal command failures from shell metacharacter interpretation, output capture issues, and hanging commands"
-application: "When running terminal commands, especially those with special characters or long output"
 applyTo: "**"
 currency: 2026-05-19
 lastReviewed: 2026-05-19

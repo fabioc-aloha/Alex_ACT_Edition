@@ -1,9 +1,7 @@
 ---
-type: instruction
 lifecycle: stable
 inheritance: inheritable
 description: "Frame audit before solving — restate the problem, flag user-framing mismatches, surface symptom→cause reframes"
-application: "Every non-trivial request — multi-file changes, > 15-minute estimates, or requests using fix/improve/broken/just-do-X language"
 applyTo: "**/*"
 currency: 2026-05-21
 lastReviewed: 2026-05-21
