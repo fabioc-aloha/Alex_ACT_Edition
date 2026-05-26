@@ -70,18 +70,20 @@ Edition v2.2.0 is the live tag. This session was audit + fixes, below release-tr
 - **Verify falsifiers**: re-audit any flagged-this-session items still showing the same gate failures (no trim adoption, no agent invocation, etc.)
 - **Optional v2.3.0 release**: if Edition heirs need the per-type pairs surface, cut a minor release per `release-ritual` skill
 
-## Deferred to next session
+## Decision: keep the 7 audit-flagged "niche" artifacts as baseline
 
-**Phase 3 of fit-for-mission audit — move niche artifacts to Mall.** The 2026-05-26 audit identified 7 artifacts that fit better as Mall opt-in than baseline:
+The 2026-05-26 fit-for-mission audit flagged 7 artifacts as candidates for relocation to Mall as opt-in plugins (theoretical "niche" classification):
 
-- `agent-creator` + `agent-review` + `/review-agent` (heirs rarely author worker agents)
-- `markdown-sanitization-chain` (niche: only marked.js + DOMPurify renderers)
-- `md-to-eml` (email generation niche)
-- `creative-writing` (book/novel structure niche)
-- `academic-paper-drafting` (CHI/HBR/journals niche)
-- `alex-banner-generation` + `/banner` (branding opt-in)
+- `agent-creator` + `agent-review` + `/review-agent`
+- `markdown-sanitization-chain`
+- `md-to-eml`
+- `creative-writing`
+- `academic-paper-drafting`
+- `alex-banner-generation` + `/banner`
 
-Not actioned this session because deleting from Edition before the Mall has corresponding plugins ready creates a capability gap with no recovery. Next step: author each as a Mall plugin (plugin.json + README + skill body), publish to `Alex_ACT_Plugin_Mall` CATALOG, then remove from Edition. Plan as a Mall-side workstream.
+**Decision (user, 2026-05-26): KEEP all 7 as baseline.** User reported actual extensive usage in their projects. The audit's "niche" classification was theoretical generality (would a hypothetical heir need this?) rather than observed usage signal (does the actual user invoke this?). Observed-usage wins over theoretical-generality.
+
+**Lesson for future audits:** do not classify artifacts as "niche, move to Mall" without telemetry or explicit user confirmation. Theoretical-generality reasoning systematically undercounts artifacts that serve real workflows the auditor doesn't observe.
 
 ## Just shipped
 
