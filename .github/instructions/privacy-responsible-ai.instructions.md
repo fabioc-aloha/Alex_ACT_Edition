@@ -1,9 +1,6 @@
 ---
-lifecycle: stable
-inheritance: inheritable
 description: "Privacy by design, data protection, and responsible AI principles"
 applyTo: "**/*privacy*,**/*pii*,**/*responsible*ai*,**/*ethic*"
-currency: 2026-04-30
 lastReviewed: 2026-04-30
 ---
 

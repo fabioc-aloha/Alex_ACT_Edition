@@ -1,9 +1,6 @@
 ---
-lifecycle: stable
-inheritance: inheritable
 description: "Epistemic calibration — confidence matching, hallucination prevention, and self-correction"
 applyTo: "**"
-currency: 2026-05-21
 lastReviewed: 2026-05-21
 ---
 

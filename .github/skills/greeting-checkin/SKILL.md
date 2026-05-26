@@ -1,12 +1,6 @@
 ---
-type: skill
-lifecycle: stable
-inheritance: inheritable
 name: greeting-checkin
 description: "Greeting-triggered self-check — recognise greetings, check Edition version against the upstream tag, scan AI-Memory announcements, and report inside the greeting reply"
-tier: standard
-applyTo: "**/*checkin*,**/*greeting*,**/*welcome*,**/*hello*,**/*hey*"
-currency: 2026-04-30
 lastReviewed: 2026-04-30
 ---
 

@@ -1,9 +1,6 @@
 ---
-lifecycle: stable
-inheritance: inheritable
 description: "Structured devil's advocate and adversarial review — supports ACT Tenet VIII (Adversarial Self-Probe)"
 applyTo: "**/*review*,**/*validate*,**/*challenge*"
-currency: 2026-04-30
 lastReviewed: 2026-04-30
 ---
 

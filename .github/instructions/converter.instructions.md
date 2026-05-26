@@ -1,9 +1,6 @@
 ---
-lifecycle: stable
-inheritance: inheritable
 description: "Document conversion routing -- detect format, delegate to the converter SA or run the appropriate muscle directly"
 applyTo: "**/*convert*,**/*docx*,**/*word*,**/*eml*,**/*html-to-md*,**/*md-to-*"
-currency: 2026-05-02
 lastReviewed: 2026-05-02
 ---
 

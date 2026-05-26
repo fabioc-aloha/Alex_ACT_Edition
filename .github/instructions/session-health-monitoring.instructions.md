@@ -1,9 +1,6 @@
 ---
-lifecycle: stable
-inheritance: inheritable
 description: "Monitor session health, manage context window, and ensure continuity across sessions"
 applyTo: "**"
-currency: 2026-05-19
 lastReviewed: 2026-05-19
 ---
 

@@ -1,12 +1,6 @@
 ---
-type: skill
-lifecycle: stable
 name: "markdown-sanitization-chain"
 description: "Render user-supplied markdown safely — marked.js → DOMPurify → Mermaid (order matters; skipping the sanitizer is XSS)"
-tier: standard
-inheritance: inheritable
-applyTo: '**/*markdown*,**/*sanitiz*,**/*xss*'
-currency: 2026-04-30
 lastReviewed: 2026-04-30
 ---
 

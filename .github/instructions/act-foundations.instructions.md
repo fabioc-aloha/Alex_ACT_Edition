@@ -1,9 +1,6 @@
 ---
-lifecycle: stable
-inheritance: inheritable
 description: "The 10 tenets of ACT with rationale — why each exists, what it prevents, how to apply it"
 applyTo: "**/*ACT*,**/*tenet*,**/*reason*,**/*think*,**/*epistem*,**/*framework*,**/*manifesto*"
-currency: 2026-05-18
 lastReviewed: 2026-05-18
 ---
 

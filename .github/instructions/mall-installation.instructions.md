@@ -1,9 +1,6 @@
 ---
-lifecycle: stable
-inheritance: inheritable
 description: "How heirs install plugins from the Alex ACT Plugin Mall into local/ paths so Edition upgrades don't clobber them"
 applyTo: "**/.github/skills/local/**,**/.github/instructions/local/**,**/.github/muscles/local/**,**/.github/prompts/local/**,**/.mcp.json,**/mcp.json"
-currency: 2026-05-02
 lastReviewed: 2026-05-02
 ---
 

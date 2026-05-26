@@ -1,13 +1,7 @@
 ---
-type: skill
-lifecycle: stable
 name: "html-to-md"
 description: "Convert HTML documents to clean Markdown via pandoc"
-tier: standard
-applyTo: '**/*html-to-md*,**/*.html'
 muscle: .github/muscles/html-to-md.cjs
-inheritance: inheritable
-currency: 2026-04-30
 lastReviewed: 2026-04-30
 ---
 

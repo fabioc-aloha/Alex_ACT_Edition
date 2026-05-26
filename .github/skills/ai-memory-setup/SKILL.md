@@ -1,12 +1,6 @@
 ---
-type: skill
-lifecycle: stable
-inheritance: inheritable
 name: ai-memory-setup
 description: "Detect, create, and manage the AI-Memory fleet communication channel. Fires on bootstrap, session start (announcements), and feedback writes."
-tier: standard
-applyTo: '**/AI-Memory/**,**/cognitive-config*,**/*feedback*,**/*announcement*,**/*fleet*,**/*memory-setup*'
-currency: 2026-05-18
 lastReviewed: 2026-05-18
 ---
 

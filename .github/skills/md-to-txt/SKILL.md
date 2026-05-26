@@ -1,13 +1,7 @@
 ---
-type: skill
-lifecycle: stable
 name: "md-to-txt"
 description: "Strip Markdown formatting and produce clean plain text via pandoc"
-tier: standard
-applyTo: '**/*md-to-txt*,**/*plain-text*,**/*.txt'
 muscle: .github/muscles/md-to-txt.cjs
-inheritance: inheritable
-currency: 2026-04-30
 lastReviewed: 2026-04-30
 ---
 

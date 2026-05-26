@@ -1,12 +1,6 @@
 ---
-type: skill
-lifecycle: stable
-inheritance: inheritable
 name: critical-thinking
 description: Challenge what you think is right — alternative hypotheses, missing data, evidence quality, bias detection, falsifiability, and adversarial review
-tier: core
-applyTo: '**/*critical*,**/*thinking*'
-currency: 2026-04-20
 lastReviewed: 2026-04-30
 ---
 

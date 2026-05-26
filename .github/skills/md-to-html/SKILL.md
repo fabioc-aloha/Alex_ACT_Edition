@@ -1,13 +1,7 @@
 ---
-type: skill
-lifecycle: stable
 name: "md-to-html"
 description: "Convert Markdown to standalone HTML pages with embedded CSS, images, and Mermaid diagrams"
-tier: standard
-inheritance: inheritable
-applyTo: '**/*md-to-html*,**/*convert*html*'
 muscle: .github/muscles/md-to-html.cjs
-currency: 2026-04-30
 lastReviewed: 2026-04-30
 ---
 

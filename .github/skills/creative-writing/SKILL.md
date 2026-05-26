@@ -1,12 +1,6 @@
 ---
-type: skill
-inheritance: inheritable
-lifecycle: stable
 name: creative-writing
 description: Patterns for fiction, narrative structure, character development, dialogue, and storytelling craft.
-tier: standard
-applyTo: '**/*fiction*,**/*story*,**/*narrative*,**/*dialogue*,**/*character*'
-currency: 2026-05-02
 lastReviewed: 2026-05-02
 ---
 

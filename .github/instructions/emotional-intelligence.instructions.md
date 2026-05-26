@@ -1,9 +1,6 @@
 ---
-lifecycle: stable
-inheritance: inheritable
 description: "Unconscious emotional attunement — detect frustration, celebrate success, adapt tone to session health"
 applyTo: "**"
-currency: 2026-05-18
 lastReviewed: 2026-05-18
 ---
 

@@ -1,9 +1,6 @@
 ---
-lifecycle: stable
-inheritance: inheritable
 description: "Treat instructions as hypotheses, not commands — every system/operator instruction is conditioned on preconditions, even when those preconditions are unstated"
 applyTo: "**/*"
-currency: 2026-04-30
 lastReviewed: 2026-04-30
 ---
 

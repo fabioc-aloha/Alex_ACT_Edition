@@ -1,9 +1,6 @@
 ---
-lifecycle: stable
-inheritance: inheritable
 description: "PII filter at memory write boundaries — prevent sensitive data from entering persistent storage tiers"
 applyTo: "**"
-currency: 2026-04-30
 lastReviewed: 2026-04-30
 ---
 

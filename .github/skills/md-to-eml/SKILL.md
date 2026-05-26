@@ -1,12 +1,6 @@
 ---
-type: skill
-lifecycle: stable
-inheritance: inheritable
 name: "md-to-eml"
 description: Convert Markdown to RFC 5322 email (.eml) with inline CSS and CID images
-tier: standard
-applyTo: '**/*eml*'
-currency: 2026-04-22
 lastReviewed: 2026-04-30
 ---
 

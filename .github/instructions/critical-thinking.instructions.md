@@ -1,9 +1,6 @@
 ---
-lifecycle: stable
-inheritance: inheritable
 description: "Critical thinking framework — challenge assumptions, evaluate evidence, detect bias, and test falsifiability"
 applyTo: "**/*"
-currency: 2026-04-30
 lastReviewed: 2026-04-30
 ---
 

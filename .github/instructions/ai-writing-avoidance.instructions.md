@@ -1,9 +1,6 @@
 ---
-lifecycle: stable
-inheritance: inheritable
 description: "Rules for producing authentically human writing by avoiding telltale AI-generated text patterns"
 applyTo: "**/*writing*,**/*content*,**/*blog*"
-currency: 2026-04-30
 lastReviewed: 2026-04-30
 ---
 

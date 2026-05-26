@@ -5,7 +5,6 @@ tools: ['edit', 'read', 'search/codebase', 'runSubagent']
 user-invocable: false
 disable-model-invocation: false
 model: ['Auto']
-currency: 2026-05-01
 lastReviewed: 2026-05-01
 ---
 

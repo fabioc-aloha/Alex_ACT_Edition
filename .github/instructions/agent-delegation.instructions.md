@@ -1,9 +1,6 @@
 ---
-lifecycle: stable
-inheritance: inheritable
 description: "Delegate mechanical work to worker subagents (workers in .github/agents/) so the parent session keeps capacity for ACT applied to the user's real problem"
 applyTo: "**/*agent*,**/*delegate*,**/*subagent*,**/*author*,**/*diagram*,**/*convert*,**/*assembl*"
-currency: 2026-05-01
 lastReviewed: 2026-05-01
 ---
 

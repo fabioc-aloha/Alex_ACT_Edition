@@ -1,12 +1,6 @@
 ---
-type: skill
-lifecycle: stable
 name: "meditation"
 description: "Consolidate session learning into permanent architecture — extract patterns into skills, instructions, prompts, or memory"
-tier: core
-applyTo: '**/*meditat*,**/*consolidat*'
-inheritance: inheritable
-currency: 2026-05-13
 lastReviewed: 2026-05-13
 ---
 

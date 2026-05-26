@@ -1,9 +1,6 @@
 ---
-lifecycle: stable
-inheritance: inheritable
 description: "Greeting-triggered check-in — when the user opens the session with a greeting, run the Edition + AI-Memory check before responding"
 applyTo: "**/*checkin*,**/*greeting*,**/*welcome*,**/*hello*,**/*hey*"
-currency: 2026-04-30
 lastReviewed: 2026-04-30
 ---
 

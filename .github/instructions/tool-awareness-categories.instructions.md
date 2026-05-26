@@ -1,9 +1,6 @@
 ---
-lifecycle: stable
-inheritance: inheritable
 description: "Common deferred tool categories and search-query patterns — scoped reference loaded when working with tools, MCP servers, or GitHub APIs"
 applyTo: "**/*tool*,**/*mcp*,**/*github*,**/*notebook*,**/*browser*,**/*playwright*,**/*figma*,**/*mcp*/**,**/*tool*/**"
-currency: 2026-05-18
 lastReviewed: 2026-05-18
 ---
 

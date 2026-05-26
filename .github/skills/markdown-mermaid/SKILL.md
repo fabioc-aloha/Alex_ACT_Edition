@@ -1,12 +1,6 @@
 ---
-type: skill
-lifecycle: stable
 name: "markdown-mermaid"
 description: "Clear documentation through visual excellence"
-tier: standard
-inheritance: inheritable
-applyTo: '**/*.md,**/*mermaid*,**/*diagram*'
-currency: 2026-05-19
 lastReviewed: 2026-05-19
 ---
 

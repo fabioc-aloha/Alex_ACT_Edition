@@ -1,9 +1,6 @@
 ---
-lifecycle: stable
-inheritance: inheritable
 description: "Communication craft — give feedback, explain concepts, tailor to audience, elicit needs"
 applyTo: "**"
-currency: 2026-05-18
 lastReviewed: 2026-05-18
 ---
 

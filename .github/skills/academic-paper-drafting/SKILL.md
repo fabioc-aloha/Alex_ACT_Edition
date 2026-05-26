@@ -1,12 +1,6 @@
 ---
-type: skill
-lifecycle: stable
-inheritance: inheritable
 name: academic-paper-drafting
 description: End-to-end academic paper drafting for CHI, HBR, journals, and conferences with venue-specific templates, drafting workflows, and revision strategies.
-tier: standard
-applyTo: '**/*academic*,**/*paper*,**/*drafting*,**/*journal*,**/*conference*'
-currency: 2026-05-02
 lastReviewed: 2026-05-02
 ---
 

@@ -1,9 +1,6 @@
 ---
-lifecycle: stable
-inheritance: inheritable
 description: "Strip project specifics before writing to user-shared fleet channels — prevent one heir's project context from leaking into the rest of the fleet"
 applyTo: "**/AI-Memory/**,**/feedback/**,**/announcements/**,**/*fleet*,**/*feedback*"
-currency: 2026-04-30
 lastReviewed: 2026-04-30
 ---
 

@@ -1,13 +1,7 @@
 ---
-type: skill
-lifecycle: stable
 name: "md-to-word"
 description: "Convert Markdown with Mermaid diagrams and SVG illustrations to professional Word documents"
-tier: standard
-applyTo: '**/*docx*,**/*word*,**/*md-to-word*,**/*export*'
 muscle: .github/muscles/md-to-word.cjs
-inheritance: inheritable
-currency: 2026-05-18
 lastReviewed: 2026-05-18
 ---
 

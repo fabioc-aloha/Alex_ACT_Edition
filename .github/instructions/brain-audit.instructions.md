@@ -1,9 +1,6 @@
 ---
-lifecycle: stable
-inheritance: inheritable
 description: Brain audit routing -- run local deterministic QA, validate findings in files, and prioritize fixes by severity.
 applyTo: '**/*audit*brain*,**/*brain*qa*,**/*epistemic*qa*,**/*quality*review*'
-currency: 2026-05-13
 lastReviewed: 2026-05-13
 ---
 
