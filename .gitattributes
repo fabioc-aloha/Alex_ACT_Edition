@@ -1,0 +1,23 @@
+# Normalize line endings to LF for all text files.
+#
+# Rationale: Supervisor authors the shared-core, Edition mirrors it.
+# Without this, Windows checkout produces CRLF on one side and LF on
+# the other, causing false-positive drift in shared-core-coherence-audit
+# (Supervisor-side skill).
+#
+# Added 2026-05-26 (audit: Alex_ACT_Supervisor/docs/audits/shared-core-coherence-2026-05-26.md).
+
+* text=auto eol=lf
+
+# Treat known binary types explicitly so they're never normalized.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg text eol=lf
+*.pdf binary
+*.zip binary
+*.vsix binary
+*.woff binary
+*.woff2 binary
