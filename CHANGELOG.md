@@ -6,6 +6,20 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+## [3.0.0] - 2026-05-27
+
+**Major [behaviour] — structural consolidation and VERSION single-sourcing.**
+
+### Changed
+
+- **VERSION consolidation** — removed stale root `VERSION` file; canonical version is now solely `.github/VERSION`, read by `build-edition-manifest.cjs`, `bootstrap-heir.cjs`, and `upgrade-self.cjs`.
+- **Manifest `edition_version`** updated from 2.6.0 to 3.0.0 (aligning with the v3.0.0 tag).
+- **HANDOFF.md** removed (stale 2026-05-26 session context, superseded).
+
+### Breaking
+
+- Heirs or scripts that read a root-level `VERSION` file must update to read `.github/VERSION` instead.
+
 ## [2.6.0] - 2026-05-27
 
 **Minor [behaviour] — heir discovery setup automation.** Fixes a silent-failure mode where Mall plugins installed under `.github/skills/local/<name>/` (the official path per `mall-installation.instructions.md`) were invisible to VS Code Copilot's chat surface because skill / prompt / agent discovery walks each registered root one level only, while instruction discovery recurses. Empirically verified on the `job` heir 2026-05-27 — adding the three `chat.*FilesLocations` workspace settings surfaced 18 previously-invisible local skills.
