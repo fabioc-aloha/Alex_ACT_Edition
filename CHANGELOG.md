@@ -6,6 +6,11 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+### Added
+
+- **`systematic-debugging` skill** adopted from `MALL/obra-superpowers` — four-phase root-cause-first method (investigate → pattern-analyze → hypothesize → implement) with iron law "NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST". Includes 3 supporting references (`root-cause-tracing.md`, `defense-in-depth.md`, `condition-based-waiting.md`). Closes a confirmed baseline gap — Edition had no debugging discipline; heirs defaulted to symptom-fixing.
+- **`security-and-hardening` skill** adopted from `MALL/addyosmani-agent-skills` — OWASP-aware security-first practices with three-tier boundary system (Always Do / Ask First / Never Do), input validation patterns, secrets management, dependency-audit triage decision tree, security review checklist. Examples in TypeScript but principles are language-agnostic. Closes a confirmed baseline gap — Edition had zero security coverage; heirs handling input/auth/storage started without OWASP awareness.
+
 ## [2.4.0] - 2026-05-26
 
 **Minor [behaviour] — substantial release**: per-type review/creator pairs (ADR-007), full Edition audit closing 39 findings, `.github/muscles/` folder collapsed into `.github/scripts/`, the 2026-05-26 cleanup pass (heir-facing docs validated, plugin guide removed, model table refreshed against GitHub Docs, `.github/config/` pruned, `.vscode/` workspace template established with curated CSS + 14-key settings), and `edition-manifest.json` extended to a complete file-level bill-of-materials (spec_version 1.0 → 1.3).
