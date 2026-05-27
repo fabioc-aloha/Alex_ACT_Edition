@@ -6,10 +6,26 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+## [2.5.0] - 2026-05-27
+
+**Minor [behaviour] — baseline expansion + shared-core coherence.** Two new baseline skills adopted from MALL (debugging + security disciplines), VS Code 1.122 conveniences surfaced across the always-on instruction set, repository-wide EOL normalization (`.gitattributes`), and three shared-core instructions mirrored from Supervisor to close the gaps identified in the 2026-05-26 audit.
+
 ### Added
 
 - **`systematic-debugging` skill** adopted from `MALL/obra-superpowers` — four-phase root-cause-first method (investigate → pattern-analyze → hypothesize → implement) with iron law "NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST". Includes 3 supporting references (`root-cause-tracing.md`, `defense-in-depth.md`, `condition-based-waiting.md`). Closes a confirmed baseline gap — Edition had no debugging discipline; heirs defaulted to symptom-fixing.
 - **`security-and-hardening` skill** adopted from `MALL/addyosmani-agent-skills` — OWASP-aware security-first practices with three-tier boundary system (Always Do / Ask First / Never Do), input validation patterns, secrets management, dependency-audit triage decision tree, security review checklist. Examples in TypeScript but principles are language-agnostic. Closes a confirmed baseline gap — Edition had zero security coverage; heirs handling input/auth/storage started without OWASP awareness.
+
+### Changed
+
+- **`tool-awareness` + `lint-discipline` instructions**: VS Code 1.122 conveniences (`/models` slash, BYOK air-gapped, local agent host watchpoint; "Search only in changed files" toggle for lint scope) surfaced as additive shortcuts. No rule changes.
+- **`pii-memory-filter.instructions.md`**: added cross-link paragraph to `memory-triggers.instructions.md` § Memory Tier Selection clarifying that the filter constrains *what* may be written while MT constrains *where*. `lastReviewed` bumped to 2026-05-26. Mirrored from Supervisor (closes audit divergence).
+- **`falsifiability-deadlines.instructions.md`**: dropped stale `/ muscle` from description after the `.github/muscles/` folder was collapsed into `.github/scripts/` in v2.4.0. `lastReviewed` bumped to 2026-05-26. Mirrored from Supervisor.
+- **`severity-tagged-commits.instructions.md`**: added in-file `<!-- intentional divergence -->` marker documenting why the Edition variant differs from Supervisor's (heirs don't ship `ACT/**`; trigger list includes `.github/scripts/**`; brain-qa-changelog cross-ref is generalized). `lastReviewed` bumped to 2026-05-27. Closes audit Recommendation #3.
+- **README**: skill count refreshed 30 → 32 after the two MALL adoptions.
+
+### Infrastructure
+
+- **`.gitattributes`** added with `* text=auto eol=lf` to normalize line endings across the repo. Required for stable EOL-normalized hashing in Supervisor's `shared-core-coherence-audit` skill. Pairs with Supervisor's matching `.gitattributes` (commit `a0e7e8e`).
 
 ## [2.4.0] - 2026-05-26
 
