@@ -6,6 +6,30 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+## [2.6.0] - 2026-05-27
+
+**Minor [behaviour] — heir discovery setup automation.** Fixes a silent-failure mode where Mall plugins installed under `.github/skills/local/<name>/` (the official path per `mall-installation.instructions.md`) were invisible to VS Code Copilot's chat surface because skill / prompt / agent discovery walks each registered root one level only, while instruction discovery recurses. Empirically verified on the `job` heir 2026-05-27 — adding the three `chat.*FilesLocations` workspace settings surfaced 18 previously-invisible local skills.
+
+### Added
+
+- **`.github/config/heir-workspace-settings-baseline.json`** — declarative baseline of the three VS Code workspace settings (`chat.agentSkillsLocations`, `chat.promptFilesLocations`, `chat.agentFilesLocations`) that register `.github/<type>/local/` as a second discovery root alongside `.github/<type>/`. Carries `$comment` block with full verification context and a falsifier deadline (2026-11-27 or sooner on any VS Code release that changes the settings contract). Registered as EDITION_OWNED in `_registry.cjs`.
+- **`.github/scripts/shared/workspace-settings-merger.cjs`** — shared merger module that performs idempotent per-key deep-merge of the baseline into the heir's `.vscode/settings.json`. Strips JSONC `//` and `/* */` comments before parsing. Exports `mergeWorkspaceSettings(repoRoot, baselinePath)`, `writeMerged(result)`, `formatChangeSummary(result, verb)`. Separates compute from write so callers can dry-run.
+
+### Changed
+
+- **`bootstrap-heir.cjs`** — invokes the merger after the marker write (inside the existing APPLY-gated execute block). Fresh heirs receive the three discovery settings merged on top of the existing `.vscode/settings.json` template; all unrelated keys are preserved verbatim.
+- **`upgrade-self.cjs`** — invokes the merger after step 5 (marker update). Existing heirs upgrading from any prior Edition version receive the three keys backfilled into their `.vscode/settings.json` on next `/upgrade`. Idempotent — subsequent upgrades report "Workspace settings: already current" with no changes.
+- **`mall-installation.instructions.md`** — new `### Discovery setup` section at the top of `## Installation` documents the one-level discovery walk, the three settings keys with two-root maps, references the baseline + automatic merge, and provides a manual fallback for heirs on Edition < 2.6.0 (paste the keys directly, or run `scripts/apply-skill-discovery-settings.cjs --repo <heir-path>` from a sibling Supervisor checkout). `lastReviewed` bumped to 2026-05-27.
+- **`build-edition-manifest.cjs`** — `EDITION_CONFIG_FILES` allowlist extended to include `heir-workspace-settings-baseline.json` so the manifest's `configs` array stays in sync with `_registry.cjs`. Manifest regenerated; `configs` count 3 → 4.
+
+### Heir-visible behaviour delta
+
+Per-key merge semantics: if a heir has previously set one of the three `chat.*FilesLocations` keys to a different shape (e.g. a scalar value or an array instead of an object), the merger will scalar-replace that value with the baseline object. Heirs who have customized these keys for non-default discovery roots should re-apply their customization after upgrade. Heirs who have not touched these keys (the expected majority) see only the three new keys appearing in `.vscode/settings.json` with no other change.
+
+### Compatibility
+
+Older VS Code (pre-1.118) silently ignores the three settings keys — the additions are backwards-compatible. Heirs on Edition < 2.6.0 can adopt the same fix manually using the documented fallback in `mall-installation.instructions.md`; no breakage if they do not upgrade.
+
 ## [2.5.0] - 2026-05-27
 
 **Minor [behaviour] — baseline expansion + shared-core coherence.** Two new baseline skills adopted from MALL (debugging + security disciplines), VS Code 1.122 conveniences surfaced across the always-on instruction set, repository-wide EOL normalization (`.gitattributes`), and three shared-core instructions mirrored from Supervisor to close the gaps identified in the 2026-05-26 audit.
