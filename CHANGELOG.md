@@ -6,18 +6,34 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
-**Pending [behaviour] — Plugin Mall v3 catalog integration (Phase 5a).** Rewrites `/mall-search` and `/mall-show` prompts to read the new trust-scored Plugin Mall catalog (`catalog/index.json` + `catalog/stores/*.json`) per [PLAN-mall-automation v3 / ADR-008](https://github.com/fabioc-aloha/Alex_ACT_Supervisor/blob/main/docs/adrs/ADR-008-mall-self-curation.md). Replaces legacy `CATALOG.json` lookups.
+## [3.1.0] - 2026-05-29
 
-### Changed
+**Minor [behaviour] — Plugin Mall v3 catalog integration (Phase 5a) + shared-core audit fixes.** Rewrites `/mall-search` and `/mall-show` prompts to read the new trust-scored Plugin Mall catalog (`catalog/index.json` + `catalog/stores/*.json`) per [PLAN-mall-automation v3 / ADR-008](https://github.com/fabioc-aloha/Alex_ACT_Supervisor/blob/main/docs/adrs/ADR-008-mall-self-curation.md). Replaces legacy `CATALOG.json` lookups. Also bundles today's shared-core audit fixes that brain-auditor surfaced against Edition.
+
+### Added (Phase 5a — Plugin Mall v3)
 
 - **`/mall-search`** now reads `catalog/index.json` (trust-ranked, ~1.4 MB), surfaces Mall-curated entries (🏆) at the top by trust score (provenance bonus +50), shows store + version + truncated description per result. Falls back to GitHub raw URL when local Mall clone unavailable.
 - **`/mall-show`** is new — drills into one plugin from `catalog/stores/<store>.json` and displays full metadata: trust score + every signal that fed it, `adapted_from` (for Mall-curated entries), `frontmatter.standard` + `extended` + `raw` layers, `available_refs` (default branch + SHA + tags), `source_url`.
 - **`/mall-install`** placeholder: deferred to Phase 5b once heir feedback validates which install workflows actually matter (shape-handling, pinning strategy, multi-file with references). Today heirs install manually from `source_url` per the prompt's instructions; Phase 5b automates with a `mall-install.cjs` script.
 
+### Fixed (audit findings from brain-auditor dispatch 2026-05-29)
+
+- **`system-prompt-skepticism.instructions.md`** (high severity) — replaced broken reference to nonexistent `worldview-integration.instructions.md` with the actual file `worldview.instructions.md`. The drift had been shipping descriptive prose pointing at a file that doesn't exist; heirs reading the always-on instruction saw a dangling reference.
+- **`problem-framing-audit/SKILL.md`** (medium severity) — replaced 2 references to nonexistent `/reframe` prompt with the actual prompt name `/problem-framing-audit`. Pure mirror gap (Supervisor was already correct).
+- **`brain-auditor.agent.md` + `brain-audit/SKILL.md`** (medium severity) — mirrored Supervisor's Phase 7b stale-architecture row + Mall sibling-repo handling (added when the Supervisor brain was stripped of Mall operational artifacts after Mall self-curation went live).
+- **`docx-to-md/SKILL.md`** (medium severity) — removed dead Related-skill reference to nonexistent `md-scaffold`.
+- **`md-to-word/SKILL.md`** (medium severity) — removed 5 dead Related-skill references: `pptx-generation`, `md-scaffold`, `book-publishing`, `svg-graphics`, `brand-asset-management`. None of these skills ship in Edition.
+
+### Changed (shared-core architecture)
+
+- **`critical-thinking/SKILL.md`** — rewrote the documented 3-leg epistemic triad to 2 legs (anti-hallucination + critical-thinking). The `awareness` skill body referenced in the prior triad doesn't ship in either Supervisor or Edition; documentation now matches shipped reality. Error-detection during reasoning is currently distributed across `epistemic-calibration` (self-correction triggers table) + `reliance-nudges` (repeated-same-error nudge). If a heir reports the gap, restore `awareness` as a dedicated skill — tracked for 2026-08-29 retrospective.
+
 ### Heir-visible behaviour delta
 
-- A heir running `/mall-search code-review` on Edition `[Unreleased]` sees Mall-curated entries at the top with trust scores (vs legacy CATALOG.json keyword match with no trust signal).
+- A heir running `/mall-search code-review` on Edition v3.1.0 sees Mall-curated entries at the top with trust scores (vs legacy CATALOG.json keyword match with no trust signal).
 - The new `/mall-show <name>` command surfaces the full signal breakdown — heirs can audit *why* a plugin scored what it scored before installing.
+- Always-on instructions no longer reference nonexistent files (worldview-integration).
+- Critical-thinking docs no longer describe a triad leg that doesn't ship.
 
 ## [3.0.1] - 2026-05-29
 
