@@ -6,6 +6,19 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+**Pending [behaviour] — Plugin Mall v3 catalog integration (Phase 5a).** Rewrites `/mall-search` and `/mall-show` prompts to read the new trust-scored Plugin Mall catalog (`catalog/index.json` + `catalog/stores/*.json`) per [PLAN-mall-automation v3 / ADR-008](https://github.com/fabioc-aloha/Alex_ACT_Supervisor/blob/main/docs/adrs/ADR-008-mall-self-curation.md). Replaces legacy `CATALOG.json` lookups.
+
+### Changed
+
+- **`/mall-search`** now reads `catalog/index.json` (trust-ranked, ~1.4 MB), surfaces Mall-curated entries (🏆) at the top by trust score (provenance bonus +50), shows store + version + truncated description per result. Falls back to GitHub raw URL when local Mall clone unavailable.
+- **`/mall-show`** is new — drills into one plugin from `catalog/stores/<store>.json` and displays full metadata: trust score + every signal that fed it, `adapted_from` (for Mall-curated entries), `frontmatter.standard` + `extended` + `raw` layers, `available_refs` (default branch + SHA + tags), `source_url`.
+- **`/mall-install`** placeholder: deferred to Phase 5b once heir feedback validates which install workflows actually matter (shape-handling, pinning strategy, multi-file with references). Today heirs install manually from `source_url` per the prompt's instructions; Phase 5b automates with a `mall-install.cjs` script.
+
+### Heir-visible behaviour delta
+
+- A heir running `/mall-search code-review` on Edition `[Unreleased]` sees Mall-curated entries at the top with trust scores (vs legacy CATALOG.json keyword match with no trust signal).
+- The new `/mall-show <name>` command surfaces the full signal breakdown — heirs can audit *why* a plugin scored what it scored before installing.
+
 ## [3.0.1] - 2026-05-29
 
 **Patch [behaviour] — additive brain refresh + terminology alignment + protection contract.** Bundles four post-v3.0.0 commits that were not yet released, adds the protected-repo contract, adds a doc-hygiene routing instruction, and renames the heir-facing AI-Memory references to "shared memory bus" for terminology consistency with the sibling-repo architecture. No removals, no schema changes.
