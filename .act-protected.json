@@ -1,0 +1,8 @@
+{
+  "spec_version": "1.0",
+  "kind": "edition",
+  "name": "Alex_ACT_Edition",
+  "role": "Heir template — heirs deploy from here. Source of truth for the heir-facing brain.",
+  "bootstrap_allowed": false,
+  "note": "Do not bootstrap a heir into Edition itself. To create a new heir, clone Edition or run the Extension's Bootstrap command in a separate workspace."
+}

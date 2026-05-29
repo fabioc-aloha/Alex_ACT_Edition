@@ -6,6 +6,30 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+## [3.0.1] - 2026-05-29
+
+**Patch [behaviour] — additive brain refresh + terminology alignment + protection contract.** Bundles four post-v3.0.0 commits that were not yet released, adds the protected-repo contract, adds a doc-hygiene routing instruction, and renames the heir-facing AI-Memory references to "shared memory bus" for terminology consistency with the sibling-repo architecture. No removals, no schema changes.
+
+### Added
+
+- **`.act-protected.json`** at repo root declaring `kind: edition`, `bootstrap_allowed: false`. Tells the Extension's AlexMaster-detection modal and `migrateFromAlexMaster` command to refuse Edition itself as a migration target. Pairs with the Extension-side guard (Extension v8.x patch — see Extension CHANGELOG).
+- **`.github/instructions/doc-hygiene.instructions.md`** — pattern-applied routing pointer (`applyTo: "**/*doc*audit*,**/*doc*quality*,**/*drift*,**/*hygiene*"`) that fires on doc-audit / drift / hygiene file patterns and delegates to the existing `doc-hygiene` skill body.
+- **`anti-hallucination` skill** mirrored from Supervisor brain-auditor findings; sibling `markdown-author` agent folds in the prior `ai-writing-avoidance` content (commit `45dbeae`).
+- **Always-on rationale paragraphs** mirrored across shared-core instructions from Supervisor (commit `2fcf31d`) — names why each always-on rule earns its per-turn budget.
+- **brain-auditor** refreshed for the AI-Memory sibling-repo architecture and frontmatter-spec / applyTo-calibration gap-close (commits `d87eea9`, `189daac`).
+
+### Changed
+
+- **Terminology**: heir-facing prompts and instructions now say "shared memory bus" (or "shared memory") instead of "AI-Memory" — `cross-project-isolation.instructions.md`, `greeting-checkin.instructions.md`, `meditation.instructions.md`, `checkin.prompt.md`, `feedback.prompt.md`, `mall-contribute.prompt.md`, `note.prompt.md`, `save-session-note.prompt.md`, `.github/config/README.md`. The underlying sibling repo `../Alex_ACT_Memory/` is unchanged; only the prose terminology updated.
+- **`meditation.instructions.md`** intentional-divergence marker added: Edition omits the Supervisor-only "Quarterly Retraining Integration" section; meditation frontmatter guidance updated to match the spec-aligned shape (`description`, `applyTo` for instructions; `name` + `description` for skills; `lastReviewed` always).
+- **`cross-project-isolation.instructions.md`** intentional-divergence marker added: Edition includes feedback-channel paths in `applyTo` and a "Fleet feedback" channel row — heir-side surfaces Supervisor doesn't write to.
+- **`mall-contribute.prompt.md`** frontmatter guidance for new Mall SKILL.md files updated from the legacy 9-field shape to the spec-aligned `name` + `description` + `lastReviewed`.
+- **`.github/VERSION`** → `3.0.1`.
+
+### Heir-visible behaviour delta
+
+- A heir on v3.0.0 upgrading to v3.0.1 receives the new `.act-protected.json`, the new `doc-hygiene.instructions.md` routing pointer, the `anti-hallucination` skill, and the terminology rename across 9 instructions/prompts. No `local/` overlay changes. `_registry.cjs` ownership unchanged. Marker `edition_version` rolls 3.0.0 → 3.0.1.
+
 ## [3.0.0] - 2026-05-27
 
 **Major [behaviour] — structural consolidation and VERSION single-sourcing.**
