@@ -1,0 +1,10 @@
+{
+  "name": "alex-act-edition",
+  "version": "3.2.0",
+  "private": true,
+  "description": "Alex — ACT Edition brain repository. Tests cover the load-bearing infrastructure scripts (manifest generator, ownership policy, workspace-settings merger).",
+  "scripts": {
+    "test": "node --test test/registry.test.js test/build-edition-manifest.test.js test/workspace-settings-merger.test.js test/edition-contract.test.js"
+  },
+  "license": "PolyForm-Noncommercial-1.0.0"
+}
