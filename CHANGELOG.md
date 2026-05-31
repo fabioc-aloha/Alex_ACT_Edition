@@ -6,6 +6,12 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+## [3.2.0] - 2026-05-31
+
+**Minor [behaviour] — manifest spec 1.4 lands the static-fetch Extension contract (per [ADR-009](https://github.com/fabioc-aloha/Alex_ACT_Supervisor/blob/main/docs/adrs/ADR-009-extension-github-fetch-brain.md)).**
+
+Pure infrastructure release: brain content is unchanged from v3.1.0. This release exists to ship the `edition-manifest.json` contract fields that Alex_ACT_Extension v9.4.0+ reads at install time to validate which subtrees it may install, what minimum Extension version is required, and what marker shape to write. Heirs running Edition v3.1.0 or earlier continue to work; the new fields are additive and null on legacy reads.
+
 ### Added (manifest spec 1.4 — static-fetch Extension contract)
 
 - `.github/config/extension-contract.json` — hand-authored sidecar declaring `min_extension_version`, `brain_subtrees`, `marker_schema`. Source of truth for the static-fetch Extension contract (ADR-009).
