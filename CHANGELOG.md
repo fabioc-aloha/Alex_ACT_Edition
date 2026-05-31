@@ -6,6 +6,27 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+## [3.2.0] - 2026-05-31
+
+**Minor [behaviour] — manifest spec 1.4 lands the static-fetch Extension contract (per [ADR-009](https://github.com/fabioc-aloha/Alex_ACT_Supervisor/blob/main/docs/adrs/ADR-009-extension-github-fetch-brain.md)).**
+
+Pure infrastructure release: brain content is unchanged from v3.1.0. This release exists to ship the `edition-manifest.json` contract fields that Alex_ACT_Extension v9.4.0+ reads at install time to validate which subtrees it may install, what minimum Extension version is required, and what marker shape to write. Heirs running Edition v3.1.0 or earlier continue to work; the new fields are additive and null on legacy reads.
+
+### Added (manifest spec 1.4 — static-fetch Extension contract)
+
+- `.github/config/extension-contract.json` — hand-authored sidecar declaring `min_extension_version`, `brain_subtrees`, `marker_schema`. Source of truth for the static-fetch Extension contract (ADR-009).
+- `.github/scripts/build-edition-manifest.cjs` bumped to spec 1.4; merges the sidecar fields into the generated `.github/config/edition-manifest.json` at release time. Fields are null on legacy reads (sidecar absent).
+
+### Changed
+
+- `.github/config/edition-manifest.json` carries `min_extension_version: 9.4.0`, `brain_subtrees: [".github"]`, `marker_schema: {file_name: ".act-heir.json", version: 2}`. Read by [Alex_ACT_Extension](https://github.com/fabioc-aloha/Alex_ACT_Extension) v9.4.0+ static-fetch path to validate the install contract before any destructive op. See [ADR-009](https://github.com/fabioc-aloha/Alex_ACT_Supervisor/blob/main/docs/adrs/ADR-009-extension-github-fetch-brain.md).
+
+**Brain contract**: spec_version 1.3 → 1.4, min_extension_version 9.4.0, brain_subtrees [".github"], marker_schema v2.
+
+---
+
+> **CHANGELOG discipline note (added 2026-05-30 per ADR-009 Phase 1A.6)**: every release entry going forward includes a `**Brain contract**:` line. Empty (`Brain contract: no change`) is valid; non-empty entries call out one or more of: `min_extension_version bumped to X.Y.Z`, `brain_subtrees changed (added X, removed Y)`, `marker_schema bumped to vN`. Source of truth for fleet upgrade impact analysis. Bumping `min_extension_version` is a breaking change for any heir whose Extension is older than the new floor.
+
 ## [3.1.0] - 2026-05-29
 
 **Minor [behaviour] — Plugin Mall v3 catalog integration (Phase 5a) + shared-core audit fixes.** Rewrites `/mall-search` and `/mall-show` prompts to read the new trust-scored Plugin Mall catalog (`catalog/index.json` + `catalog/stores/*.json`) per [PLAN-mall-automation v3 / ADR-008](https://github.com/fabioc-aloha/Alex_ACT_Supervisor/blob/main/docs/adrs/ADR-008-mall-self-curation.md). Replaces legacy `CATALOG.json` lookups. Also bundles today's shared-core audit fixes that brain-auditor surfaced against Edition.
@@ -271,7 +292,7 @@ node .github/scripts/upgrade-self.cjs
 ### Gates verified
 
 | Gate | Result |
-|---|---|
+| --- | --- |
 | Supervisor `brain-qa.cjs` | exit 0, 0 hard failures, 0 stale of 132 files |
 | Edition `test-edition-applyto-coverage.cjs` | 18/18 PASS, 0 capability gaps |
 
@@ -303,7 +324,7 @@ No `--allow-major` needed. The new instructions activate automatically — they 
 ### Gates verified
 
 | Gate | Result |
-|---|---|
+| --- | --- |
 | Supervisor `brain-qa.cjs` | exit 0, 0 stale of 139 files |
 | Supervisor `test-applyto-coverage.cjs` | 15/15 PASS, 0 capability gaps |
 | Supervisor always-on set | 17 files, 16,760 tokens (was 16 files, ~16,000 tokens — +760 net) |
