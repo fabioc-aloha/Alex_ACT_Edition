@@ -6,6 +6,17 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+### Fixed
+
+- `[clarification]` `.github/scripts/converter-qa.cjs` — md-to-html suite now skips gracefully when pandoc is absent, matching the guard the md-to-word, html-to-md, and docx-to-md suites already had. Eliminates the 2 spurious failures that appeared on machines without pandoc.
+- `[clarification]` `README.md` — corrected skill/prompt counts (33 skills, 27 prompts) to match the actual brain shape; was lagging at 32/26.
+- `[clarification]` `.github/copilot-instructions.md` — removed two dead skill references from the cluster table (`mall-installation` and `converter` skills do not exist; the `/mall-*` prompts and 6 format skills already cover those domains). Added `alex-banner-generation` skill and `/convert` prompt as accurate replacements.
+
+### Changed
+
+- `[clarification]` Added intentional-divergence audit markers to shared-core brain artifacts that ship with Supervisor-curated heir-portable phrasing (skill-creator, skill-review, agent-creator, agent-review, instruction-creator, instruction-review, prompt-creator, prompt-review, code-review, meditation, brain-audit). No behavior change; the markers make the audit trail explicit per shared-core-coherence-audit.
+- `[clarification]` Mirrored `markdown-mermaid` and `alex-banner-generation` skills (and the `markdown-mermaid/references/` reference set) from Supervisor to clear documentation drift.
+
 ## [3.2.0] - 2026-05-31
 
 **Minor [behaviour] — manifest spec 1.4 lands the static-fetch Extension contract (per [ADR-009](https://github.com/fabioc-aloha/Alex_ACT_Supervisor/blob/main/docs/adrs/ADR-009-extension-github-fetch-brain.md)).**

@@ -135,7 +135,7 @@ Optional: `decision-maker`, `severity`, `related`, `supersedes`.
 
 **Brain-QA proposal** (`docs/proposals/brain-qa-*.md`):
 
-The schema in [brain-curation-rules.instructions.md § Proposal format](../instructions/brain-curation-rules.instructions.md) is authoritative for brain-qa proposals (`Source`, `Queue depth reviewed`, `Prior-fix check`, etc.). That schema currently uses the bold-label prose form below the H1, not YAML frontmatter; **preserve it as-is** until the brain-curation-rules instruction is updated separately. Do not unilaterally convert brain-qa proposals to YAML.
+The schema in the Supervisor `brain-curation-rules` instruction (§ Proposal format) is authoritative for brain-qa proposals (`Source`, `Queue depth reviewed`, `Prior-fix check`, etc.). That schema currently uses the bold-label prose form below the H1, not YAML frontmatter; **preserve it as-is** until the brain-curation-rules instruction is updated separately. Do not unilaterally convert brain-qa proposals to YAML.
 
 **General proposal** (`docs/proposals/*.md` that is NOT a brain-qa proposal):
 

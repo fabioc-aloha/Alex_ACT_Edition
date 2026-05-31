@@ -1111,6 +1111,13 @@ suite('md-to-html.cjs: end-to-end + image handling', () => {
     return;
   }
 
+  // Check if pandoc is available (md-to-html shells out to pandoc)
+  const pandocCheck = spawnSync('pandoc', ['--version'], { encoding: 'utf8', timeout: 5000 });
+  if (pandocCheck.status !== 0) {
+    skip('pandoc not installed -- skipping e2e test');
+    return;
+  }
+
   const sourceDir = path.join(TEMP_DIR, 'md-to-html-src');
   fs.mkdirSync(sourceDir, { recursive: true });
   createImageFixtures(sourceDir);
