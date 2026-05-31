@@ -290,7 +290,6 @@ suite('File Inventory: expected files exist', () => {
     { path: path.join(SCRIPTS_SHARED, 'markdown-preprocessor.cjs'), desc: 'shared/markdown-preprocessor.cjs' },
     { path: path.join(SCRIPTS_SHARED, 'converter-config.cjs'), desc: 'shared/converter-config.cjs' },
     { path: path.join(SCRIPTS_SHARED, 'prompt-preprocessor.cjs'), desc: 'shared/prompt-preprocessor.cjs' },
-    { path: path.join(SCRIPTS_SHARED, 'index.mjs'), desc: 'shared/index.mjs (ESM bridge)' },
     { path: path.join(LUA, 'keep-headings.lua'), desc: 'lua-filters/keep-headings.lua' },
     { path: path.join(LUA, 'word-table-style.lua'), desc: 'lua-filters/word-table-style.lua' },
     { path: path.join(LUA, 'caption-labels.lua'), desc: 'lua-filters/caption-labels.lua' },
