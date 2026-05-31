@@ -6,6 +6,10 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+## [3.2.1] - 2026-05-31
+
+**Patch [clarification] — documentation and tooling cleanup. No behavior change to the brain.**
+
 ### Fixed
 
 - `[clarification]` `.github/scripts/converter-qa.cjs` — md-to-html suite now skips gracefully when pandoc is absent, matching the guard the md-to-word, html-to-md, and docx-to-md suites already had. Eliminates the 2 spurious failures that appeared on machines without pandoc.
