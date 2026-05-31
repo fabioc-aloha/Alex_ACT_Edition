@@ -8,11 +8,15 @@ All notable changes to Alex ACT Edition.
 
 ## [3.2.1] - 2026-05-31
 
-**Patch [clarification] — documentation and tooling cleanup. No behavior change to the brain.**
+**Patch [clarification] — documentation and tooling cleanup, plus dead-file purge. No observable behavior change for any working consumer.**
+
+### Removed
+
+- `[behaviour]` `.github/scripts/shared/index.mjs` — orphaned ESM bridge that imported a `./svg-pipeline.cjs` module which never existed in git history or on disk. Loading the bridge threw `Cannot find module` for any consumer that tried. Audit confirmed zero live consumers; `converter-qa.cjs` only stat-checked its presence, never imported it. Honest cleanup; an ESM bridge can be reintroduced when a real ESM consumer arrives.
 
 ### Fixed
 
-- `[clarification]` `.github/scripts/converter-qa.cjs` — md-to-html suite now skips gracefully when pandoc is absent, matching the guard the md-to-word, html-to-md, and docx-to-md suites already had. Eliminates the 2 spurious failures that appeared on machines without pandoc.
+- `[clarification]` `.github/scripts/converter-qa.cjs` — md-to-html suite now skips gracefully when pandoc is absent, matching the guard the md-to-word, html-to-md, and docx-to-md suites already had. Eliminates the 2 spurious failures that appeared on machines without pandoc. Also dropped the presence-check line for the deleted `shared/index.mjs`.
 - `[clarification]` `README.md` — corrected skill/prompt counts (33 skills, 27 prompts) to match the actual brain shape; was lagging at 32/26.
 - `[clarification]` `.github/copilot-instructions.md` — removed two dead skill references from the cluster table (`mall-installation` and `converter` skills do not exist; the `/mall-*` prompts and 6 format skills already cover those domains). Added `alex-banner-generation` skill and `/convert` prompt as accurate replacements.
 
