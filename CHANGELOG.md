@@ -6,6 +6,10 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+### Changed
+
+- `[clarification]` `.github/config/welcome-baseline.json` — `$comment` refreshed against VS Code 1.123 release notes (2026-06-03). Categories header now reads `VS Code 1.121-1.123`. New sub-note under category (1) documents the 1.123 supply-chain feature: auto-updates apply a 2-hour delay after a new extension version is published (trusted publishers — Microsoft / GitHub / OpenAI — are exempt). `extensions.autoUpdate: true` semantics unchanged; the delay is an implicit platform behaviour, not a setting we can configure. No `settings` object change, no heir-visible behaviour delta.
+
 ## [3.3.0] - 2026-06-03
 
 **Minor [behaviour] — Per-key merge mode for the workspace-settings baseline + pin `chat.permissions.default` on fresh installs.**
