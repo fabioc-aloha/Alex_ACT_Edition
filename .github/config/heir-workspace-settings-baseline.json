@@ -6,10 +6,10 @@
         "welcome-baseline.json which is USER-scope and applied via /configure-vscode.",
         "",
         "Edition's `_registry.cjs` lists `.vscode/settings.json` as HEIR_OWNED — Edition never",
-        "overwrites the file wholesale. The merger reads this baseline, then deep-merges only the",
-        "listed keys into the heir's existing settings.json, preserving all unrelated keys.",
+        "overwrites the file wholesale. The merger reads this baseline, then applies each key",
+        "according to its mode (see `mergeMode` below), preserving all unrelated keys.",
         "",
-        "Why these keys (verified 2026-05-27 against official VS Code Copilot docs):",
+        "Why the discovery-locations keys (verified 2026-05-27 against official VS Code Copilot docs):",
         "  VS Code skill / prompt / agent discovery walks each registered root ONE LEVEL only,",
         "  looking for `<root>/<name>/SKILL.md` (and equivalents). Instruction discovery recurses;",
         "  the others do not. To make `.github/skills/local/<name>/SKILL.md` (and the symmetric",
@@ -22,11 +22,37 @@
         "  Empirically verified on the `job` heir 2026-05-27 — adding `chat.agentSkillsLocations`",
         "  surfaced 18 previously-invisible local skills.",
         "",
-        "Falsifier: if VS Code removes, renames, or changes `chat.*FilesLocations` semantics, this",
-        "baseline goes stale. Re-evaluate by 2026-11-27 or sooner on any VS Code release that",
-        "changes the settings contract."
+        "Why `chat.permissions.default` (added 2026-06-03 per heir feedback):",
+        "  VS Code 1.122 introduces a per-workspace Chat permission level picker with three values:",
+        "  `defaultApprovals`, `bypassApprovals`, `autopilot`. The picker selection is per-session",
+        "  unless the user setting `chat.permissions.default` persists it. ACT pins the safe",
+        "  default on fresh installs (matches VS Code's own default) so the brain's permission",
+        "  discipline is explicit on first use, not just an inherited platform default.",
+        "",
+        "  The key uses `set-if-absent` merge mode — heirs that deliberately flip Bypass for an",
+        "  experimental sandbox or Autopilot for a long-running solo task are NEVER overwritten on",
+        "  upgrade. Permission level is a per-repo workflow choice; the brain holds the safe default",
+        "  for new heirs, not policy over existing heirs.",
+        "",
+        "  Companion locks at user-scope: `welcome-baseline.json` sets",
+        "  `claudeAgent.allowAutoPermissions: false` + `claudeAgent.allowDangerouslySkipPermissions: false`",
+        "  (those are policy locks — ACT holds them; the chat permission level is workflow choice).",
+        "",
+        "Merge modes (per-key, optional; default `enforce`):",
+        "  - `enforce` (default) — overwrite heir's value if it differs (current behaviour).",
+        "    Used for the three discovery-locations objects: their sub-keys must always be present",
+        "    or local skills/prompts/agents stop loading. Object deep-merge preserves heir-added",
+        "    sub-keys; only baseline sub-keys are enforced.",
+        "  - `set-if-absent` — skip wholesale if heir has the key (under any value, including",
+        "    object/scalar/null). Used for `chat.permissions.default` — pin on fresh install,",
+        "    respect heir overrides on upgrade.",
+        "",
+        "Falsifier: if VS Code removes, renames, or changes `chat.*FilesLocations` or",
+        "`chat.permissions.default` semantics, this baseline goes stale. Re-evaluate by",
+        "2026-11-27 (skills/prompts/agents locations) or 2026-09-03 (chat permissions default,",
+        "90 days from add) or sooner on any VS Code release that changes the settings contract."
     ],
-    "spec_version": "1.0",
+    "spec_version": "1.1",
     "settings": {
         "chat.agentSkillsLocations": {
             ".github/skills": true,
@@ -39,6 +65,10 @@
         "chat.agentFilesLocations": {
             ".github/agents": true,
             ".github/agents/local": true
-        }
+        },
+        "chat.permissions.default": "defaultApprovals"
+    },
+    "mergeMode": {
+        "chat.permissions.default": "set-if-absent"
     }
 }

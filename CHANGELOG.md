@@ -6,7 +6,45 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
-## [3.2.1] - 2026-05-31
+## [3.3.0] - 2026-06-03
+
+**Minor [behaviour] — Per-key merge mode for the workspace-settings baseline + pin `chat.permissions.default` on fresh installs.**
+
+Heir feedback flagged that Edition holds policy locks for the Claude Agent permission surfaces (`claudeAgent.allowAutoPermissions: false` and `claudeAgent.allowDangerouslySkipPermissions: false` in `welcome-baseline.json`) but is silent on VS Code 1.122's `chat.permissions.default` — the workspace-scope chat permission level. Heirs who flipped Bypass or Autopilot had no policy signal from the brain.
+
+The fix adds the safe default to the workspace baseline, but workspace-scope clobber on every `/upgrade` is the wrong shape: permission level is a per-repo workflow choice, not a fleet-wide policy stance. So this release also extends the merger with a new `set-if-absent` mode — pin on fresh installs, respect heir overrides on upgrade.
+
+### Added
+
+- `[behaviour]` `.github/scripts/shared/workspace-settings-merger.cjs` — new `mergeMode` map (per-key, optional) in the baseline JSON. Two modes:
+  - `enforce` (default — used when `mergeMode` omits the key) — current behaviour: object deep-merge or scalar overwrite. The three existing `chat.*Locations` discovery keys keep this mode by default (their sub-keys must always be present or local skills/prompts/agents stop loading).
+  - `set-if-absent` — skip wholesale if heir already has the key (under any value, including object/scalar/null). Use when the brain wants a safe default on fresh installs but respects per-repo heir overrides on upgrade.
+- `[behaviour]` `.github/config/heir-workspace-settings-baseline.json` — new key `chat.permissions.default: "defaultApprovals"` with `mergeMode: { "chat.permissions.default": "set-if-absent" }`. Fresh heirs get the safe VS Code default pinned at bootstrap; heirs that deliberately flip to `bypassApprovals` (experimental sandbox) or `autopilot` (long-running solo task) are never overwritten on `/upgrade`.
+- `[behaviour]` Merger result now carries a `skipped` array alongside `changes`. `formatChangeSummary` surfaces respected overrides so bootstrap and upgrade scripts can tell heirs exactly which keys the merger did NOT touch and why.
+- `[clarification]` 7 new tests in `test/workspace-settings-merger.test.js` covering `set-if-absent` on fresh repo, heir-existing value (no change), heir explicit `null` counts as presence, mixed `enforce` + `set-if-absent` routing in same baseline, default `enforce` behaviour preserved when `mergeMode` absent, and `formatChangeSummary` skipped-overrides surfacing.
+
+### Changed
+
+- `[clarification]` `.github/config/heir-workspace-settings-baseline.json` `spec_version` bumped 1.0 → 1.1 (additive `mergeMode` field, backward-compatible — readers that ignore `mergeMode` default to `enforce`).
+- `[clarification]` `.github/config/README.md` — added missing `heir-workspace-settings-baseline.json` row to the ownership table; new "How the workspace-settings merger applies the heir baseline" section documents the two modes.
+- `[clarification]` `.github/scripts/shared/workspace-settings-merger.cjs` — header docstring expanded to document `mergeMode` semantics and link to the new proposal.
+
+### Brain contract
+
+`min_extension_version`: 9.4.0 (no change). `brain_subtrees`: `[.github]` (no change). `marker_schema`: `.act-heir.json` v2 (no change). Brain contract: no change.
+
+### Heir upgrade
+
+`/upgrade` from any 3.x release applies the new key per its mode:
+
+- Heir who never set `chat.permissions.default` → gets `defaultApprovals` written to `.vscode/settings.json` (visible in upgrade output as one applied change).
+- Heir who already set it (any value) → no change; upgrade output reports `respected 1 heir override`.
+
+No `--allow-major` needed. No manual action required for either case.
+
+### Falsifier
+
+2026-09-03 (90 days) or any VS Code release that removes/renames `chat.permissions.default` or changes its valid value set — re-evaluate the baseline key and the heir-feedback channel that drove the change.
 
 **Patch [clarification] — documentation and tooling cleanup, plus dead-file purge. No observable behavior change for any working consumer.**
 

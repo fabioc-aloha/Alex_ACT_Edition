@@ -35,6 +35,12 @@ function mkBaseline(settings) {
     return file;
 }
 
+function mkBaselineWithMode(settings, mergeMode) {
+    const file = path.join(os.tmpdir(), `merger-baseline-mode-${Date.now()}-${Math.random().toString(36).slice(2, 8)}.json`);
+    fs.writeFileSync(file, JSON.stringify({ settings, mergeMode }, null, 2));
+    return file;
+}
+
 function cleanup(p) {
     try { fs.rmSync(p, { recursive: true, force: true }); } catch { /* best effort */ }
 }
@@ -288,4 +294,149 @@ test('formatChangeSummary: verb is interpolated into change summary', () => {
 test('formatChangeSummary: surfaces error from failed merge', () => {
     const summary = formatChangeSummary({ ok: false, error: 'something blew up' }, 'Applied');
     assert.match(summary, /something blew up/);
+});
+
+// ── set-if-absent merge mode ──────────────────────────────────────────
+
+test('mode set-if-absent: applies on fresh settings.json (key not present)', () => {
+    const repo = mkRepoRoot();
+    const baseline = mkBaselineWithMode(
+        { 'chat.permissions.default': 'defaultApprovals' },
+        { 'chat.permissions.default': 'set-if-absent' }
+    );
+    try {
+        const result = mergeWorkspaceSettings(repo, baseline);
+        assert.equal(result.ok, true);
+        assert.equal(result.changes.length, 1, 'fresh install applies the baseline');
+        assert.equal(result.changes[0].key, 'chat.permissions.default');
+        assert.equal(result.changes[0].to, 'defaultApprovals');
+        assert.deepEqual(result.skipped, [], 'no skips when key absent');
+        assert.equal(result.merged['chat.permissions.default'], 'defaultApprovals');
+    } finally { cleanup(repo); fs.unlinkSync(baseline); }
+});
+
+test('mode set-if-absent: respects heir existing value (no change)', () => {
+    const repo = mkRepoRoot();
+    fs.mkdirSync(path.join(repo, '.vscode'));
+    fs.writeFileSync(path.join(repo, '.vscode', 'settings.json'), JSON.stringify({
+        'chat.permissions.default': 'bypassApprovals'
+    }));
+    const baseline = mkBaselineWithMode(
+        { 'chat.permissions.default': 'defaultApprovals' },
+        { 'chat.permissions.default': 'set-if-absent' }
+    );
+    try {
+        const result = mergeWorkspaceSettings(repo, baseline);
+        assert.equal(result.changes.length, 0, 'set-if-absent must NOT overwrite heir value');
+        assert.equal(result.skipped.length, 1);
+        assert.equal(result.skipped[0].key, 'chat.permissions.default');
+        assert.equal(result.skipped[0].mode, 'set-if-absent');
+        assert.equal(result.skipped[0].reason, 'heir-has-key');
+        assert.equal(result.merged['chat.permissions.default'], 'bypassApprovals', 'heir value preserved');
+    } finally { cleanup(repo); fs.unlinkSync(baseline); }
+});
+
+test('mode set-if-absent: heir explicit null counts as present (key respected)', () => {
+    const repo = mkRepoRoot();
+    fs.mkdirSync(path.join(repo, '.vscode'));
+    fs.writeFileSync(path.join(repo, '.vscode', 'settings.json'), JSON.stringify({
+        'chat.permissions.default': null
+    }));
+    const baseline = mkBaselineWithMode(
+        { 'chat.permissions.default': 'defaultApprovals' },
+        { 'chat.permissions.default': 'set-if-absent' }
+    );
+    try {
+        const result = mergeWorkspaceSettings(repo, baseline);
+        assert.equal(result.changes.length, 0, 'explicit null is still presence');
+        assert.equal(result.skipped.length, 1);
+        assert.equal(result.merged['chat.permissions.default'], null, 'null preserved');
+    } finally { cleanup(repo); fs.unlinkSync(baseline); }
+});
+
+test('mode set-if-absent + enforce: routed independently in same baseline', () => {
+    const repo = mkRepoRoot();
+    fs.mkdirSync(path.join(repo, '.vscode'));
+    fs.writeFileSync(path.join(repo, '.vscode', 'settings.json'), JSON.stringify({
+        'chat.permissions.default': 'autopilot',           // heir-set; set-if-absent should skip
+        'chat.agentSkillsLocations': { '.github/skills': false } // enforce should override sub-key
+    }));
+    const baseline = mkBaselineWithMode(
+        {
+            'chat.agentSkillsLocations': { '.github/skills': true, '.github/skills/local': true },
+            'chat.permissions.default': 'defaultApprovals'
+        },
+        {
+            'chat.permissions.default': 'set-if-absent'
+            // chat.agentSkillsLocations omitted → defaults to enforce
+        }
+    );
+    try {
+        const result = mergeWorkspaceSettings(repo, baseline);
+        // Enforce path: sub-key flipped, new sub-key added
+        assert.equal(result.merged['chat.agentSkillsLocations']['.github/skills'], true, 'enforce overrides heir sub-key');
+        assert.equal(result.merged['chat.agentSkillsLocations']['.github/skills/local'], true);
+        // set-if-absent path: heir value preserved
+        assert.equal(result.merged['chat.permissions.default'], 'autopilot', 'set-if-absent preserves heir value');
+        // Bookkeeping: 2 enforce changes, 1 skipped
+        assert.equal(result.changes.length, 2);
+        assert.ok(result.changes.every((c) => c.key === 'chat.agentSkillsLocations'));
+        assert.equal(result.skipped.length, 1);
+        assert.equal(result.skipped[0].key, 'chat.permissions.default');
+    } finally { cleanup(repo); fs.unlinkSync(baseline); }
+});
+
+test('mode enforce (default when mergeMode absent): existing scalar behaviour unchanged', () => {
+    const repo = mkRepoRoot();
+    fs.mkdirSync(path.join(repo, '.vscode'));
+    fs.writeFileSync(path.join(repo, '.vscode', 'settings.json'), JSON.stringify({
+        'editor.fontSize': 11
+    }));
+    // No mergeMode supplied at all — must default to enforce
+    const baseline = mkBaseline({ 'editor.fontSize': 14 });
+    try {
+        const result = mergeWorkspaceSettings(repo, baseline);
+        assert.equal(result.merged['editor.fontSize'], 14, 'enforce remains default when mergeMode absent');
+        assert.deepEqual(result.skipped, [], 'skipped array is always present (empty)');
+    } finally { cleanup(repo); fs.unlinkSync(baseline); }
+});
+
+test('formatChangeSummary: surfaces skipped overrides when no changes', () => {
+    const repo = mkRepoRoot();
+    fs.mkdirSync(path.join(repo, '.vscode'));
+    fs.writeFileSync(path.join(repo, '.vscode', 'settings.json'), JSON.stringify({
+        'chat.permissions.default': 'bypassApprovals'
+    }));
+    const baseline = mkBaselineWithMode(
+        { 'chat.permissions.default': 'defaultApprovals' },
+        { 'chat.permissions.default': 'set-if-absent' }
+    );
+    try {
+        const result = mergeWorkspaceSettings(repo, baseline);
+        const summary = formatChangeSummary(result, 'Applied');
+        assert.match(summary, /already current/);
+        assert.match(summary, /respected 1 heir override/);
+        assert.match(summary, /chat\.permissions\.default/);
+    } finally { cleanup(repo); fs.unlinkSync(baseline); }
+});
+
+test('formatChangeSummary: surfaces skipped overrides alongside applied changes', () => {
+    const repo = mkRepoRoot();
+    fs.mkdirSync(path.join(repo, '.vscode'));
+    fs.writeFileSync(path.join(repo, '.vscode', 'settings.json'), JSON.stringify({
+        'chat.permissions.default': 'autopilot'
+    }));
+    const baseline = mkBaselineWithMode(
+        {
+            'editor.fontSize': 14,
+            'chat.permissions.default': 'defaultApprovals'
+        },
+        { 'chat.permissions.default': 'set-if-absent' }
+    );
+    try {
+        const result = mergeWorkspaceSettings(repo, baseline);
+        const summary = formatChangeSummary(result, 'Applied');
+        assert.match(summary, /Applied 1 workspace-settings change/);
+        assert.match(summary, /Respected 1 heir override \(set-if-absent\)/);
+    } finally { cleanup(repo); fs.unlinkSync(baseline); }
 });

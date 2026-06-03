@@ -17,11 +17,19 @@
  *     absent; tolerating JSONC `//` and block comments)
  *   - For each top-level key in `settings`: if the baseline value is an object,
  *     deep-merge its child keys; otherwise scalar-replace
+ *   - Per-key merge mode (optional `mergeMode` map in baseline JSON):
+ *       - `enforce` (default, unset) — current behaviour: object deep-merge or
+ *         scalar overwrite. Use when the brain holds the opinion.
+ *       - `set-if-absent` — skip wholesale if heir's settings.json already has
+ *         the key (under any value, including object/scalar/null). Use when
+ *         the brain wants to pin a safe default on fresh installs but respect
+ *         heir per-repo overrides on upgrade.
  *   - Returns the merge result without writing — caller decides whether to
  *     persist (lets dry-run paths reuse the same logic)
  *
- * Companion to: docs/proposals/heir-local-skills-discovery-2026-05-27.md
- * (authored in Alex_ACT_Supervisor, shipped via Edition v2.6.0).
+ * Companion to:
+ *   - docs/proposals/heir-local-skills-discovery-2026-05-27.md (Edition v2.6.0)
+ *   - docs/proposals/edition-chat-permissions-default-2026-06-03.md (Edition v3.3.0)
  */
 
 'use strict';
@@ -42,8 +50,11 @@ function stripJsonc(text) {
  *
  * @param {string} repoRoot - heir repo root (where `.vscode/settings.json` lives)
  * @param {string} baselinePath - absolute path to the baseline JSON
- * @returns {object} { ok, settingsFile, existed, hadComments, changes, merged, error? }
+ * @returns {object} { ok, settingsFile, existed, hadComments, changes, skipped, merged, error? }
  *   - changes: array of { key, sub|null, from, to } describing each upsert
+ *   - skipped: array of { key, mode, reason } describing baseline keys whose
+ *     mode (e.g. `set-if-absent`) caused them NOT to be applied because the
+ *     heir already had the key. Always present (may be empty).
  *   - merged: the would-be-written object
  *   - hadComments: true if the existing settings.json contained JSONC comments
  *     (caller may want to warn the heir that comments will be lost on write)
@@ -56,6 +67,7 @@ function mergeWorkspaceSettings(repoRoot, baselinePath) {
         return { ok: false, error: `Cannot read baseline at ${baselinePath}: ${e.message}` };
     }
     const targetKeys = baseline.settings || {};
+    const mergeMode = baseline.mergeMode || {};
 
     const vscodeDir = path.join(repoRoot, '.vscode');
     const settingsFile = path.join(vscodeDir, 'settings.json');
@@ -77,9 +89,18 @@ function mergeWorkspaceSettings(repoRoot, baselinePath) {
     }
 
     const changes = [];
+    const skipped = [];
     const merged = { ...existing };
 
     for (const [key, desiredVal] of Object.entries(targetKeys)) {
+        const mode = mergeMode[key] || 'enforce';
+
+        // set-if-absent: skip entire key when heir already has it under any value
+        if (mode === 'set-if-absent' && Object.prototype.hasOwnProperty.call(merged, key)) {
+            skipped.push({ key, mode, reason: 'heir-has-key' });
+            continue;
+        }
+
         if (
             desiredVal &&
             typeof desiredVal === 'object' &&
@@ -107,7 +128,7 @@ function mergeWorkspaceSettings(repoRoot, baselinePath) {
         }
     }
 
-    return { ok: true, settingsFile, existed, hadComments, changes, merged };
+    return { ok: true, settingsFile, existed, hadComments, changes, skipped, merged };
 }
 
 /**
@@ -133,8 +154,14 @@ function writeMerged(result) {
  */
 function formatChangeSummary(result, verb) {
     if (!result.ok) return `Workspace settings merge: ${result.error}`;
+    const skipped = result.skipped || [];
     if (result.changes.length === 0) {
-        return `Workspace settings: already current (${result.settingsFile})`;
+        let msg = `Workspace settings: already current (${result.settingsFile})`;
+        if (skipped.length > 0) {
+            const noun = skipped.length === 1 ? 'override' : 'overrides';
+            msg += ` (respected ${skipped.length} heir ${noun}: ${skipped.map((s) => s.key).join(', ')})`;
+        }
+        return msg;
     }
     const lines = [
         `${verb} ${result.changes.length} workspace-settings change(s) to ${result.settingsFile}:`,
@@ -142,6 +169,10 @@ function formatChangeSummary(result, verb) {
     for (const c of result.changes) {
         const where = c.sub ? `${c.key}["${c.sub}"]` : c.key;
         lines.push(`  ${where}: ${JSON.stringify(c.from)} -> ${JSON.stringify(c.to)}`);
+    }
+    if (skipped.length > 0) {
+        const noun = skipped.length === 1 ? 'override' : 'overrides';
+        lines.push(`  Respected ${skipped.length} heir ${noun} (set-if-absent): ${skipped.map((s) => s.key).join(', ')}`);
     }
     if (result.hadComments) {
         lines.push(
