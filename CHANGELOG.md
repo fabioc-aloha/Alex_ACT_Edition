@@ -6,9 +6,36 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+## [3.4.0] - 2026-06-07
+
+**Minor [behaviour] — Adopt 4 authoring + prose-quality skills from Hermes Agent.**
+
+Closes named gaps in Edition baseline: no pre-write planning discipline (`plan`), no feasibility validation (`spike`), no test-first enforcement (`test-driven-development`), no deep on-demand prose humanization beyond the always-on `markdown-author` agent's 15-word filter (`humanizer`). All four load on description match — token cost is on-demand, not always-on.
+
+Adapted from [Hermes Agent](https://github.com/NousResearch/hermes-agent) (Nous Research, MIT) which itself ports from [obra/superpowers](https://github.com/obra/superpowers), [GSD](https://github.com/gsd-build/get-shit-done), and [blader/humanizer](https://github.com/blader/humanizer). All upstream sources MIT or MIT-compatible; attribution preserved in each SKILL.md footer.
+
+### Added
+
+- `[behaviour]` `.github/skills/plan/SKILL.md` — new skill. Plan-mode authoring discipline: write a concrete actionable markdown plan with bite-sized tasks (2-5 min each), exact file paths, complete code, verification steps, before any non-trivial implementation. Saves to `docs/plans/`. Adapted from Hermes Agent / obra/superpowers (MIT). Falsifier 2026-09-07. Loaded on description match — `/plan`, "design before building", multi-file work.
+- `[behaviour]` `.github/skills/spike/SKILL.md` — new skill. Throwaway feasibility experiments: decompose an idea into 2-5 questions, build minimal observable prototypes under `spikes/<NNN>-<name>/`, return VALIDATED / PARTIAL / INVALIDATED verdict. Adapted from Hermes Agent / GSD (MIT). Falsifier 2026-09-07. Composes with `problem-framing-audit` (frame-first) and `plan` (post-validation build).
+- `[behaviour]` `.github/skills/test-driven-development/SKILL.md` — new skill. RED-GREEN-REFACTOR enforcement for any production code change. Iron Law: no production code without a failing test first. Carves out throwaway prototypes, generated code, configuration files. Adapted from Hermes Agent / obra/superpowers (MIT). Falsifier 2026-09-07. Composes with `systematic-debugging` (test reproduces bug) and `plan` (every plan task starts with RED).
+- `[behaviour]` `.github/skills/humanizer/SKILL.md` + `.github/skills/humanizer/examples/full-example.md` — new skill. Strips 29 documented AI-writing patterns (Wikipedia's "Signs of AI writing" via blader/humanizer) from any prose. Fires on "humanize", "de-AI", "un-ChatGPT", or voice-match requests. Iterative draft → self-audit → final loop. Optional voice calibration from a user-provided writing sample. Composes with `markdown-author` agent's always-on 15-word banned-vocabulary filter (humanizer is the deeper on-demand pass) and Cardinal Rule 2 (em-dash ban; humanizer Pattern 14 documents the underlying reason). Adapted from Hermes Agent / blader/humanizer (MIT). Falsifier 2026-09-07 (sinks to Mall rather than removing entirely).
+
 ### Changed
 
 - `[clarification]` `.github/config/welcome-baseline.json` — `$comment` refreshed against VS Code 1.123 release notes (2026-06-03). Categories header now reads `VS Code 1.121-1.123`. New sub-note under category (1) documents the 1.123 supply-chain feature: auto-updates apply a 2-hour delay after a new extension version is published (trusted publishers — Microsoft / GitHub / OpenAI — are exempt). `extensions.autoUpdate: true` semantics unchanged; the delay is an implicit platform behaviour, not a setting we can configure. No `settings` object change, no heir-visible behaviour delta.
+
+### Brain contract
+
+`min_extension_version`: 9.4.0 (no change). `brain_subtrees`: `[.github]` (no change). `marker_schema`: `.act-heir.json` v2 (no change). Brain contract: no change.
+
+### Heir upgrade
+
+`/upgrade` from any 3.x release fetches the 4 new skill folders automatically; no `--allow-major` needed. Skills load on description match — heirs that never invoke `/plan`, `/spike`, TDD workflows, or "humanize this" requests see zero behaviour change.
+
+### Falsifier
+
+2026-09-07 (90 days) — per-skill event-based falsifiers in each new SKILL.md `## Would Revise If`. If by then any of the 4 skills has zero observed invocations across the fleet, sunset that skill (TDD + humanizer sink to Mall rather than removing entirely). Track in `Alex_ACT_Supervisor/docs/ledgers/curation-log.md` tagged `[HERMES-TIER-A-ADOPTION]`.
 
 ## [3.3.0] - 2026-06-03
 
@@ -32,6 +59,8 @@ The fix adds the safe default to the workspace baseline, but workspace-scope clo
 - `[clarification]` `.github/config/heir-workspace-settings-baseline.json` `spec_version` bumped 1.0 → 1.1 (additive `mergeMode` field, backward-compatible — readers that ignore `mergeMode` default to `enforce`).
 - `[clarification]` `.github/config/README.md` — added missing `heir-workspace-settings-baseline.json` row to the ownership table; new "How the workspace-settings merger applies the heir baseline" section documents the two modes.
 - `[clarification]` `.github/scripts/shared/workspace-settings-merger.cjs` — header docstring expanded to document `mergeMode` semantics and link to the new proposal.
+- `[clarification]` Added intentional-divergence audit markers to shared-core brain artifacts that ship with Supervisor-curated heir-portable phrasing (skill-creator, skill-review, agent-creator, agent-review, instruction-creator, instruction-review, prompt-creator, prompt-review, code-review, meditation, brain-audit). No behavior change; the markers make the audit trail explicit per shared-core-coherence-audit.
+- `[clarification]` Mirrored `markdown-mermaid` and `alex-banner-generation` skills (and the `markdown-mermaid/references/` reference set) from Supervisor to clear documentation drift.
 
 ### Brain contract
 
@@ -61,11 +90,6 @@ No `--allow-major` needed. No manual action required for either case.
 - `[clarification]` `.github/scripts/converter-qa.cjs` — md-to-html suite now skips gracefully when pandoc is absent, matching the guard the md-to-word, html-to-md, and docx-to-md suites already had. Eliminates the 2 spurious failures that appeared on machines without pandoc. Also dropped the presence-check line for the deleted `shared/index.mjs`.
 - `[clarification]` `README.md` — corrected skill/prompt counts (33 skills, 27 prompts) to match the actual brain shape; was lagging at 32/26.
 - `[clarification]` `.github/copilot-instructions.md` — removed two dead skill references from the cluster table (`mall-installation` and `converter` skills do not exist; the `/mall-*` prompts and 6 format skills already cover those domains). Added `alex-banner-generation` skill and `/convert` prompt as accurate replacements.
-
-### Changed
-
-- `[clarification]` Added intentional-divergence audit markers to shared-core brain artifacts that ship with Supervisor-curated heir-portable phrasing (skill-creator, skill-review, agent-creator, agent-review, instruction-creator, instruction-review, prompt-creator, prompt-review, code-review, meditation, brain-audit). No behavior change; the markers make the audit trail explicit per shared-core-coherence-audit.
-- `[clarification]` Mirrored `markdown-mermaid` and `alex-banner-generation` skills (and the `markdown-mermaid/references/` reference set) from Supervisor to clear documentation drift.
 
 ## [3.2.0] - 2026-05-31
 
