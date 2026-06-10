@@ -161,7 +161,25 @@ const HEIR_OWNED = [
     '.vscode/settings.json',
 ];
 
-module.exports = { resolveMemoryBus, readProfile, writeProfile, scaffoldMemoryRepo, MEMORY_REPO_NAME, MEMORY_REMOTE, EDITION_OWNED, HEIR_OWNED };
+// Explicit subset of HEIR_OWNED that ships as first-install template.
+// build-edition-manifest.cjs reads this list directly instead of inferring
+// from HEIR_OWNED (the older inferred path leaked curator-only files like
+// `.github/dependabot.yml` into bootstrap_templates when Edition's own
+// repo gained them as curator-side policy; see brain-qa-changelog entry
+// for Edition v3.4.1, 2026-06-10).
+//
+// Adding a row here means "the Extension installs this file once on
+// fresh heirs; never overwrites on upgrade." Curator-only HEIR_OWNED
+// files (workflows/, dependabot.yml, episodic/, ISSUE_TEMPLATE/) must
+// NOT be listed here — they're heir territory but Edition has no
+// business shipping its curator-side instance to heirs.
+const BOOTSTRAP_TEMPLATES = [
+    '.github/config/cognitive-config.json',
+    '.vscode/extensions.json',
+    '.vscode/settings.json',
+];
+
+module.exports = { resolveMemoryBus, readProfile, writeProfile, scaffoldMemoryRepo, MEMORY_REPO_NAME, MEMORY_REMOTE, EDITION_OWNED, HEIR_OWNED, BOOTSTRAP_TEMPLATES };
 
 // ── CLI mode ───────────────────────────────────────────────────────
 // node _registry.cjs --resolve [dir]     Resolve memory bus

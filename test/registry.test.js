@@ -181,14 +181,19 @@ test('readProfile: returns user-specific profile when present (takes precedence 
             path.join(root, 'profile', 'default', 'user-profile.json'),
             JSON.stringify({ name: 'default-user' })
         );
-        const previous = process.env.USERNAME;
+        // Manage both USER (Unix) and USERNAME (Windows). The function reads
+        // USER || USERNAME; on macOS/Linux USER is always set to the real
+        // login name, so setting USERNAME alone has no effect there.
+        const prevUser = process.env.USER;
+        const prevUsername = process.env.USERNAME;
+        process.env.USER = fakeUser;
         process.env.USERNAME = fakeUser;
         try {
             const profile = reg.readProfile(root);
             assert.equal(profile && profile.name, 'specific-user', 'user-specific path must win over default');
         } finally {
-            if (previous === undefined) delete process.env.USERNAME;
-            else process.env.USERNAME = previous;
+            if (prevUser === undefined) delete process.env.USER; else process.env.USER = prevUser;
+            if (prevUsername === undefined) delete process.env.USERNAME; else process.env.USERNAME = prevUsername;
         }
     } finally { cleanup(root); }
 });
@@ -212,7 +217,11 @@ test('writeProfile: persists JSON to profile/<user>/user-profile.json', () => {
     const root = mkMemoryRoot();
     try {
         const fakeUser = 'write-test-' + Date.now();
-        const previous = process.env.USERNAME;
+        // Manage both USER (Unix) and USERNAME (Windows). See readProfile test
+        // above for the platform-precedence rationale.
+        const prevUser = process.env.USER;
+        const prevUsername = process.env.USERNAME;
+        process.env.USER = fakeUser;
         process.env.USERNAME = fakeUser;
         try {
             reg.writeProfile(root, { name: fakeUser, written: true });
@@ -222,8 +231,8 @@ test('writeProfile: persists JSON to profile/<user>/user-profile.json', () => {
             assert.equal(written.name, fakeUser);
             assert.equal(written.written, true);
         } finally {
-            if (previous === undefined) delete process.env.USERNAME;
-            else process.env.USERNAME = previous;
+            if (prevUser === undefined) delete process.env.USER; else process.env.USER = prevUser;
+            if (prevUsername === undefined) delete process.env.USERNAME; else process.env.USERNAME = prevUsername;
         }
     } finally { cleanup(root); }
 });

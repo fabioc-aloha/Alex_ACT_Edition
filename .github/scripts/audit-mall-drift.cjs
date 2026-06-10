@@ -117,6 +117,9 @@ async function tryLoadCatalog() {
     candidates.push(path.join(process.cwd(), '..', MALL_CLONE_DIR_NAME, 'catalog', 'index.json'));
     if (process.platform === 'win32') {
         candidates.push(path.join('C:\\Development', MALL_CLONE_DIR_NAME, 'catalog', 'index.json'));
+    } else {
+        // Mac/Linux symmetric fallback for the canonical Development tree.
+        candidates.push(path.join(os.homedir(), 'Development', MALL_CLONE_DIR_NAME, 'catalog', 'index.json'));
     }
     candidates.push(path.join(os.homedir(), MALL_CLONE_DIR_NAME, 'catalog', 'index.json'));
 

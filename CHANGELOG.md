@@ -6,6 +6,55 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+## [3.5.0] - 2026-06-10
+
+**Minor [behaviour] — Mac/Linux command parity for `/configure-vscode`, `/configure-vscode-verify`, `/mall-refresh`.**
+
+Audit 2026-06-10 (post-AP-01/AP-11 fleet adoption) surfaced that several lifecycle prompts shipped Windows PowerShell as the only working reference command. Heir agents on Mac/Linux were lifting `$env:APPDATA` and `ConvertFrom-Json -AsHashtable` verbatim, then failing.
+
+### Changed
+
+- `.github/prompts/configure-vscode.prompt.md` — "Windows Reference Command" section becomes "Reference Commands", adds working bash/zsh implementation (uses `$OSTYPE` to pick macOS `~/Library/Application Support/Code/User/settings.json` vs Linux `~/.config/Code/User/settings.json`, then Node one-liner for the merge). PowerShell block preserved verbatim. Both shells perform the same non-destructive merge.
+- `.github/prompts/configure-vscode-verify.prompt.md` — adds "Reference Commands (read-only audit)" section with bash/zsh + PowerShell implementations. Both compute Compliance/Drift/Missing counts and print a drift table; neither writes to `settings.json`.
+- `.github/prompts/mall-refresh.prompt.md` — ` ```pwsh ` fences on `node .github/scripts/audit-mall-drift.cjs` invocations changed to ` ```bash `. The commands are platform-neutral; the misleading shell label was the bug.
+- `.github/scripts/audit-mall-drift.cjs` — catalog discovery candidate list gains `~/Development/Alex_Skill_Mall/` on Mac/Linux (symmetric to the existing Windows `C:\Development\Alex_Skill_Mall\` fallback). Discovery order unchanged: sibling first, then home, then Development root, then home root, then GitHub raw HTTPS.
+
+### Brain contract: no change
+
+`min_extension_version: 9.4.0`, `brain_subtrees: [.github]`, `marker_schema: v2`. Manifest spec stays at 1.4. All edits are additive (more shells supported, more discovery paths tried).
+
+### Heir impact
+
+Heirs on `/upgrade` from any 3.x release receive the refreshed prompts and the extra catalog discovery candidate. Heirs who had to translate PowerShell to bash by hand on every fresh-Mac install no longer need to. Zero breaking change to any existing workflow.
+
+### Falsifier
+
+The three-shell reference is decorative if 90 days pass (re-evaluate 2026-09-10) and no Mac/Linux heir invokes the new bash block (heir feedback shows agents still defaulting to PowerShell). If so, narrow to a single Node one-liner that works on all three.
+
+## [3.4.1] - 2026-06-10
+
+**Patch [behaviour] — close `bootstrap_templates` leak + fix cross-platform test bugs.**
+
+Fleet-adoption batch shipped 2026-06-10 (AP-01/03/07/11/12) added `.github/dependabot.yml` to Edition. That file lives under HEIR_OWNED in `_registry.cjs` (heirs own their own dependency policy), but `build-edition-manifest.cjs listBootstrapTemplates()` inferred its bootstrap-template list from HEIR_OWNED literal-path entries that exist in Edition. Curator-only `.github/dependabot.yml` therefore joined `bootstrap_templates`, meaning the Extension would install Edition's curator-side dependency policy file into every heir on first install.
+
+### Fixed
+
+- `.github/scripts/_registry.cjs` now exports an explicit `BOOTSTRAP_TEMPLATES` array — the subset of HEIR_OWNED that's genuinely heir-starter-template (cognitive-config, .vscode/extensions, .vscode/settings). Adding a row here is now an explicit curator decision, not an inferred side-effect of touching HEIR_OWNED.
+- `.github/scripts/build-edition-manifest.cjs listBootstrapTemplates()` reads `BOOTSTRAP_TEMPLATES` directly instead of filtering HEIR_OWNED. The regenerated manifest contains the same 3 entries as before today's leak (cognitive-config.json + extensions.json + settings.json); `.github/dependabot.yml` correctly excluded.
+- `test/registry.test.js readProfile/writeProfile` tests now manage both `USER` (Unix) and `USERNAME` (Windows) env vars. Pre-fix, the tests set only `USERNAME` and passed only on Windows where `USER` is typically unset; on macOS / Linux `USER` always wins, so the tests returned the default profile instead of the user-specific one (3 failures on `npm test`).
+
+### Heir impact
+
+Heirs running `/upgrade` against Edition v3.4.1 (via Extension v9.4.0+) will no longer receive Edition's curator `dependabot.yml` as a bootstrap template. Heirs that already received it on a v3.4.0 install can safely `rm .github/dependabot.yml` — the file is heir-owned per `_registry.cjs`. Extension v9.5.1 adds a defense-in-depth source-side HEIR_OWNED filter on the subtree copy that catches this same leak class for any future Edition release.
+
+### Brain contract: no change
+
+`min_extension_version: 9.4.0`, `brain_subtrees: [.github]`, `marker_schema: v2`. Manifest spec stays at 1.4. `BOOTSTRAP_TEMPLATES` is a build-side artifact, not exposed in the manifest contract.
+
+### Falsifier
+
+The explicit BOOTSTRAP_TEMPLATES list is decorative if 90 days pass (re-evaluate 2026-09-10) without any new curator-only HEIR_OWNED file joining Edition that would have been incorrectly inferred. If no such pressure surfaces, the explicit list is still load-bearing (it documents intent), but the falsifier is the gap between intent-as-policy and intent-as-mechanism.
+
 ## [3.4.0] - 2026-06-07
 
 **Minor [behaviour] — Adopt 4 authoring + prose-quality skills from Hermes Agent.**

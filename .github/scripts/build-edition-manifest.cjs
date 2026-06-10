@@ -59,9 +59,9 @@ const VSCODE_DIR = path.join(ROOT, '.vscode');
 const VERSION_FILE = path.join(GH, 'VERSION');
 const OUT = path.join(GH, 'config', 'edition-manifest.json');
 
-// HEIR_OWNED policy lives in _registry.cjs (single source of truth);
-// pulled in to enumerate first-install templates without re-listing.
-const { HEIR_OWNED } = require('./_registry.cjs');
+// HEIR_OWNED + BOOTSTRAP_TEMPLATES policy lives in _registry.cjs
+// (single source of truth); pulled in so we never duplicate the lists.
+const { BOOTSTRAP_TEMPLATES } = require('./_registry.cjs');
 
 // Edition-owned config files (heir-owned configs like cognitive-config.json excluded).
 // Keep in sync with EDITION_OWNED in .github/scripts/_registry.cjs.
@@ -201,16 +201,17 @@ function hasVersionFile() {
 }
 
 function listBootstrapTemplates() {
-  // From HEIR_OWNED in _registry.cjs: literal file paths that exist as
-  // first-install templates in Edition. Excludes glob patterns and
-  // directory markers (those are heir-side scaffolding, not Edition payloads).
-  // Rendered once by bootstrap-heir.cjs, then never overwritten on upgrade.
+  // Read explicit BOOTSTRAP_TEMPLATES from _registry.cjs. Each listed file
+  // must exist on disk (Edition release-preflight asserts this). The
+  // explicit list replaces the older HEIR_OWNED-inferred path, which
+  // leaked curator-only files (e.g. `.github/dependabot.yml`) into the
+  // heir first-install set when Edition's own repo gained them.
+  // See _registry.cjs BOOTSTRAP_TEMPLATES comment for the rule.
   const out = [];
-  for (const pattern of HEIR_OWNED) {
-    if (pattern.includes('*')) continue;
-    const abs = path.join(ROOT, pattern);
+  for (const rel of BOOTSTRAP_TEMPLATES) {
+    const abs = path.join(ROOT, rel);
     if (fs.existsSync(abs) && fs.statSync(abs).isFile()) {
-      out.push(pattern);
+      out.push(rel);
     }
   }
   return out.sort();
