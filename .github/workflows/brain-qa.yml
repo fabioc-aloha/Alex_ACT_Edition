@@ -1,0 +1,33 @@
+name: Brain QA
+
+# AP-01: run Edition's infrastructure test suite on every PR and push to main.
+# Brain-content quality is checked from Supervisor's brain-qa workflow (which
+# checks out Edition as a sibling and runs brain-qa.cjs against it). This
+# workflow covers Edition's own load-bearing scripts: manifest generator,
+# registry, workspace-settings merger, contract validator.
+#
+# Falsifier: re-evaluate by 2026-09-10 (90 days). Sunset if test surface
+# becomes empty (npm test exits 0 trivially) AND no defects shipped during
+# the window (the gate was decorative).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  brain-qa:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Infrastructure tests (node --test)
+        run: npm test
