@@ -70,7 +70,7 @@ The table below is validated against the [GitHub Docs Supported AI models](https
 | ✅ **Primary (family measured)** | Same model family as the measured variant; same architecture, different context window or routing tier. Strong inference but not separately benchmarked. |
 | ✅ **Primary (inferred)** | GitHub Docs categorizes for *deep reasoning + debugging* or *general-purpose + agent tasks*. Architectural fit matches ACT needs; not yet measured against ACT discipline specifically. |
 | ⚠️ **Test first** | GitHub Docs cross-categorizes the model (e.g. GPT-5 mini recommended for **both** general-purpose AND deep reasoning; Raptor mini is a fine-tuned variant of GPT-5 mini). High-leverage benchmark target if low-cost. Do not adopt for production ACT work before measuring. |
-| 🟡 **Utility slot only** | GitHub Docs categorizes for *fast help with simple or repetitive tasks*. Appropriate for the `chat.utilityModel` / `chat.utilitySmallModel` slots per v2.0.2 welcome baseline. **Not** for primary agent work — multi-step act-pass discipline is exactly the chained reasoning this tier is designed not to do. |
+| 🟡 **Utility slot only** | GitHub Docs categorizes for *fast help with simple or repetitive tasks*. Appropriate for the `chat.utilityModel` / `chat.utilitySmallModel` slots routed via the Chat: Manage Language Models UI (1.106+). **Not** for primary agent work — multi-step act-pass discipline is exactly the chained reasoning this tier is designed not to do. |
 | ❌ **Do not adopt** | Retiring 2026-06-01 per GitHub Docs; migrate now if currently using. |
 
 ### What the brain needs from a model
@@ -89,7 +89,7 @@ ACT discipline depends on the model meeting all four:
 | Slot | Recommendation |
 | --- | --- |
 | **Primary agent model** (the chat conversation) | Reasoning-class model marked ✅ in the table above — Claude Opus 4.7 family (measured on internal 1M variant), Claude Sonnet 4.5+, Claude Opus 4.5+, Gemini 2.5 Pro / 3.1 Pro, GPT-5.3-Codex / 5.4 / 5.5, Goldeneye (preview), or equivalent. Models marked ❌ (retiring 2026-06-01) should be avoided. Note Claude Opus 4.6 *fast mode* preview carries a 30x multiplier and Claude Opus 4.7 carries 15x — the highest in the lineup. Smaller models (e.g. `gpt-4o-mini`, Raptor mini) may work for routine tasks but **have not been validated** against the full act-pass discipline. |
-| **`chat.utilityModel` / `chat.utilitySmallModel`** (title generation, rename suggestions, settings search) | `gpt-4o-mini` is set as the default in `welcome-baseline.json` (v2.0.2+). These slots are deliberately routed to a cheap model for token economy; they don't run ACT discipline. |
+| **`chat.utilityModel` / `chat.utilitySmallModel`** (title generation, rename suggestions, settings search) | Managed via the **Chat: Manage Language Models** UI (VS Code 1.106+). Edition no longer pins a value in `welcome-baseline.json` — the schema rejected hardcoded model names as of 1.124. Recommend a cheap model (e.g. `gpt-4o-mini` or equivalent small model) via the picker; these slots don't run ACT discipline. |
 
 ### Open question (tracked)
 

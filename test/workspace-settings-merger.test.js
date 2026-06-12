@@ -301,7 +301,7 @@ test('formatChangeSummary: surfaces error from failed merge', () => {
 test('mode set-if-absent: applies on fresh settings.json (key not present)', () => {
     const repo = mkRepoRoot();
     const baseline = mkBaselineWithMode(
-        { 'chat.permissions.default': 'defaultApprovals' },
+        { 'chat.permissions.default': 'default' },
         { 'chat.permissions.default': 'set-if-absent' }
     );
     try {
@@ -309,9 +309,9 @@ test('mode set-if-absent: applies on fresh settings.json (key not present)', () 
         assert.equal(result.ok, true);
         assert.equal(result.changes.length, 1, 'fresh install applies the baseline');
         assert.equal(result.changes[0].key, 'chat.permissions.default');
-        assert.equal(result.changes[0].to, 'defaultApprovals');
+        assert.equal(result.changes[0].to, 'default');
         assert.deepEqual(result.skipped, [], 'no skips when key absent');
-        assert.equal(result.merged['chat.permissions.default'], 'defaultApprovals');
+        assert.equal(result.merged['chat.permissions.default'], 'default');
     } finally { cleanup(repo); fs.unlinkSync(baseline); }
 });
 
@@ -319,10 +319,10 @@ test('mode set-if-absent: respects heir existing value (no change)', () => {
     const repo = mkRepoRoot();
     fs.mkdirSync(path.join(repo, '.vscode'));
     fs.writeFileSync(path.join(repo, '.vscode', 'settings.json'), JSON.stringify({
-        'chat.permissions.default': 'bypassApprovals'
+        'chat.permissions.default': 'autoApprove'
     }));
     const baseline = mkBaselineWithMode(
-        { 'chat.permissions.default': 'defaultApprovals' },
+        { 'chat.permissions.default': 'default' },
         { 'chat.permissions.default': 'set-if-absent' }
     );
     try {
@@ -332,7 +332,7 @@ test('mode set-if-absent: respects heir existing value (no change)', () => {
         assert.equal(result.skipped[0].key, 'chat.permissions.default');
         assert.equal(result.skipped[0].mode, 'set-if-absent');
         assert.equal(result.skipped[0].reason, 'heir-has-key');
-        assert.equal(result.merged['chat.permissions.default'], 'bypassApprovals', 'heir value preserved');
+        assert.equal(result.merged['chat.permissions.default'], 'autoApprove', 'heir value preserved');
     } finally { cleanup(repo); fs.unlinkSync(baseline); }
 });
 
@@ -343,7 +343,7 @@ test('mode set-if-absent: heir explicit null counts as present (key respected)',
         'chat.permissions.default': null
     }));
     const baseline = mkBaselineWithMode(
-        { 'chat.permissions.default': 'defaultApprovals' },
+        { 'chat.permissions.default': 'default' },
         { 'chat.permissions.default': 'set-if-absent' }
     );
     try {
@@ -364,7 +364,7 @@ test('mode set-if-absent + enforce: routed independently in same baseline', () =
     const baseline = mkBaselineWithMode(
         {
             'chat.agentSkillsLocations': { '.github/skills': true, '.github/skills/local': true },
-            'chat.permissions.default': 'defaultApprovals'
+            'chat.permissions.default': 'default'
         },
         {
             'chat.permissions.default': 'set-if-absent'
@@ -405,10 +405,10 @@ test('formatChangeSummary: surfaces skipped overrides when no changes', () => {
     const repo = mkRepoRoot();
     fs.mkdirSync(path.join(repo, '.vscode'));
     fs.writeFileSync(path.join(repo, '.vscode', 'settings.json'), JSON.stringify({
-        'chat.permissions.default': 'bypassApprovals'
+        'chat.permissions.default': 'autoApprove'
     }));
     const baseline = mkBaselineWithMode(
-        { 'chat.permissions.default': 'defaultApprovals' },
+        { 'chat.permissions.default': 'default' },
         { 'chat.permissions.default': 'set-if-absent' }
     );
     try {
@@ -429,7 +429,7 @@ test('formatChangeSummary: surfaces skipped overrides alongside applied changes'
     const baseline = mkBaselineWithMode(
         {
             'editor.fontSize': 14,
-            'chat.permissions.default': 'defaultApprovals'
+            'chat.permissions.default': 'default'
         },
         { 'chat.permissions.default': 'set-if-absent' }
     );

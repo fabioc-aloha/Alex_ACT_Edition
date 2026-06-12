@@ -1,11 +1,9 @@
 {
-  "$schema": "https://json.schemastore.org/extensions.json",
   "recommendations": [
+    "GitHub.vscode-pull-request-github",
     "fabioc-aloha.alex-cognitive-architecture",
     "DavidAnson.vscode-markdownlint",
     "bierner.markdown-mermaid",
-    "eamodio.gitlens",
-    "GitHub.vscode-pull-request-github",
     "streetsidesoftware.code-spell-checker",
     "redhat.vscode-yaml"
   ]

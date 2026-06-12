@@ -6,6 +6,45 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+## [3.6.0] - 2026-06-12
+
+**Minor [behaviour] — VS Code 1.124 settings drift correction. Removes schema-rejected values from baselines; corrects `chat.permissions.default` enum.**
+
+Full-repo audit 2026-06-12 against the live VS Code 1.124 schema surfaced three settings the brain shipped to heirs that VS Code now rejects, plus four documentation-drift items. The live JSON schema validator was the ground truth (not the cached release-notes prose) — several settings the brain copied from VS Code 1.122 release notes had different schema-accepted values when the build finally landed.
+
+### Changed
+
+- `.github/config/heir-workspace-settings-baseline.json` — `chat.permissions.default` value corrected from `"defaultApprovals"` (schema-rejected) to `"default"`. Valid enum is `default` / `autoApprove` / `autopilot`. `$comment` block updated with the corrected enum names + a note that VS Code 1.124 enabled Autopilot Preview by default (the brain's pin to `default` is the deliberate opt-out for ACT's permission discipline). Merge mode stays `set-if-absent` so heirs with deliberate `autoApprove` / `autopilot` overrides are preserved.
+- `.github/config/welcome-baseline.json` — audit date bumped 2026-05-26 → 2026-06-12; refresh range 1.121-1.123 → 1.121-1.124.
+  - Category 4 `$comment` documents removal of `chat.tools.terminal.backgroundNotifications` (deprecated by VS Code; notifications are now always-on).
+  - Category 5 `$comment` documents removal of `chat.utilityModel` + `chat.utilitySmallModel` (schema rejected `"gpt-4o-mini"`; only `""` is accepted now; users should set utility-model routing via the Chat: Manage Language Models UI introduced in 1.106+).
+  - Category 8 `$comment` adds the heir-workspace `chat.permissions.default: default` companion + the 1.124 Autopilot-default context.
+- `.github/instructions/tool-awareness.instructions.md` — "VS Code 1.122 conveniences" section becomes "VS Code 1.122–1.124 conveniences". New rows: 1.123 session sync + `/chronicle` (clarifies the brain's local `chronicle` skill is adjacent, not replaced), 1.123 sandbox network-retry, 1.124 Autopilot enabled by default, 1.124 Advanced Autopilot opt-in. Table gains a `Release` column.
+- `README.md` — Utility-slot row in the model legend and the `chat.utilityModel` / `chat.utilitySmallModel` row in the Practical Recommendation table rewritten: Edition no longer pins a value in `welcome-baseline.json`; users route utility models via the Chat: Manage Language Models UI.
+- `test/workspace-settings-merger.test.js` — test fixtures rewritten to use the current VS Code enum (`default` / `autoApprove` / `autopilot`) instead of the invalid `defaultApprovals` / `bypassApprovals` strings. The merger tests test merge LOGIC, not VS Code SCHEMA, so this is a documentation-quality fix — future readers don't see invalid enum values in test fixtures. All 69 tests pass.
+
+### Removed
+
+- `chat.tools.terminal.backgroundNotifications` from welcome-baseline.json (VS Code-deprecated).
+- `chat.utilityModel` from welcome-baseline.json (schema-rejected for hardcoded model names).
+- `chat.utilitySmallModel` from welcome-baseline.json (same).
+
+### Brain contract: no change
+
+`min_extension_version: 9.4.0`, `brain_subtrees: [.github]`, `marker_schema: v2`. Manifest spec stays at 1.4. Edits are settings-baseline corrections + documentation refreshes; no install-contract surface changes.
+
+### Heir impact
+
+Heirs running `/upgrade` from any 3.x release:
+
+- Fresh heirs (no prior `chat.permissions.default`): get the corrected `"default"` value pinned.
+- Heirs that received `"defaultApprovals"` from any prior baseline: `set-if-absent` preserves their value, so the schema warning in their `.vscode/settings.json` persists. **Manual fix is the cheapest cleanup**: edit `"defaultApprovals"` → `"default"` (or pick `autoApprove` / `autopilot` if a deliberate override is desired). VS Code's fallback behaviour means the warning is cosmetic, not breaking.
+- Heirs that received `chat.tools.terminal.backgroundNotifications` / `chat.utilityModel` / `chat.utilitySmallModel` via `/configure-vscode`: those keys remain in user-scope settings.json until manually removed. Running `/configure-vscode-verify` will surface them as drift; they are not removed automatically because `welcome-baseline` is additive (the prompts apply baseline; they do not unset keys absent from baseline).
+
+### Falsifier
+
+If VS Code 1.125+ further changes any of the three corrected settings (`chat.permissions.default` enum values, `chat.utilityModel` schema, or deprecates more terminal-chat keys), re-audit. Re-evaluate this release's documentation by 2026-09-12 (90 days). Earlier triggers: any heir feedback that the schema warning on `defaultApprovals` is actually breaking VS Code behaviour, or first observed contradiction between the live schema and the brain's documented enum values.
+
 ## [3.5.0] - 2026-06-10
 
 **Minor [behaviour] — Mac/Linux command parity for `/configure-vscode`, `/configure-vscode-verify`, `/mall-refresh`.**

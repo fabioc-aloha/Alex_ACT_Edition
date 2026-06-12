@@ -22,12 +22,20 @@
         "  Empirically verified on the `job` heir 2026-05-27 — adding `chat.agentSkillsLocations`",
         "  surfaced 18 previously-invisible local skills.",
         "",
-        "Why `chat.permissions.default` (added 2026-06-03 per heir feedback):",
-        "  VS Code 1.122 introduces a per-workspace Chat permission level picker with three values:",
-        "  `defaultApprovals`, `bypassApprovals`, `autopilot`. The picker selection is per-session",
-        "  unless the user setting `chat.permissions.default` persists it. ACT pins the safe",
-        "  default on fresh installs (matches VS Code's own default) so the brain's permission",
-        "  discipline is explicit on first use, not just an inherited platform default.",
+        "Why `chat.permissions.default` (added 2026-06-03 per heir feedback; value corrected 2026-06-12):",
+        "  VS Code's per-workspace Chat permission level picker has three values:",
+        "  `default`, `autoApprove`, `autopilot` (validated against the current VS Code schema).",
+        "  Prior baselines shipped `defaultApprovals` based on early documentation; that value",
+        "  produces a schema warning in heir settings.json but is functionally harmless (VS Code",
+        "  falls back to `default`). Heirs upgraded before the 2026-06-12 correction keep the",
+        "  warning value under `set-if-absent` semantics — manual fix in their `.vscode/settings.json`",
+        "  is the cheapest cleanup; see CHANGELOG for migration note.",
+        "",
+        "  The picker selection is per-session unless `chat.permissions.default` persists it.",
+        "  ACT pins the safe default on fresh installs (matches VS Code's own default) so the",
+        "  brain's permission discipline is explicit on first use, not just an inherited platform",
+        "  default. Note: VS Code 1.124 (June 2026) made Autopilot Preview enabled by default; the",
+        "  brain's pin to `default` is the deliberate opt-out for ACT's permission discipline.",
         "",
         "  The key uses `set-if-absent` merge mode — heirs that deliberately flip Bypass for an",
         "  experimental sandbox or Autopilot for a long-running solo task are NEVER overwritten on",
@@ -66,7 +74,7 @@
             ".github/agents": true,
             ".github/agents/local": true
         },
-        "chat.permissions.default": "defaultApprovals"
+        "chat.permissions.default": "default"
     },
     "mergeMode": {
         "chat.permissions.default": "set-if-absent"
