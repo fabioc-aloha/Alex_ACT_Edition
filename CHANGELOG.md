@@ -6,6 +6,27 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+**[clarification + behaviour] — Adopt VS Code 1.124 + 1.125 platform changes into baseline + brain awareness.**
+
+Audit of VS Code 1.124 (Jun 10) and 1.125 (Jun 17) release notes against current brain claims. The 2026-06-12 audit took the brain to 1.124 awareness; this pass extends to 1.125 and surfaces three concrete drifts: (a) brain's `tool-awareness.instructions.md` table stops at 1.124; (b) `welcome-baseline.json` `$comment` claims `extensions.autoUpdateDelay` is "not a setting we can configure" — VS Code 1.125 made it configurable; (c) `extensions.autoUpdate: true` value uses the pre-1.125 boolean shape (1.125 simplified the setting to `on` / `off` with automatic migration).
+
+### Changed
+
+- `.github/config/welcome-baseline.json` — `extensions.autoUpdate: true` → `"on"` per the 1.125 canonical shape. Heirs running 1.125+ would auto-migrate the literal `true` anyway; pre-1.125 heirs still accept `true`. The `$comment` Categories header refreshed `2026-06-12 audit ... 1.121-1.124` → `2026-06-23 audit ... 1.121-1.125` and Category (1) commentary rewritten to acknowledge 1.123 2-hour delay + 1.125 making `extensions.autoUpdateDelay` configurable (Edition does not pin a value — heirs ride the platform default) + 1.125 making "update only enabled extensions" the default behaviour (the explicit `extensions.autoUpdateOnlyEnabledExtensions: false` pin now overrides that to also update disabled extensions; retained as a deliberate heir-facing choice).
+- `.github/instructions/tool-awareness.instructions.md` — `## VS Code 1.122–1.124 conveniences` → `## VS Code 1.122–1.125 conveniences`. Table gains 4 new rows: (a) 1.124 Enterprise Copilot plugin policies (`chat.plugins.enabledPlugins` / `extraMarketplaces` / `strictMarketplaces` may block Mall installs in regulated orgs; heirs should surface a clear message rather than retry); (b) 1.125 `extensions.autoUpdate` value migration with backwards-compat note; (c) 1.125 `extensions.autoUpdateDelay` configurable, Edition unpinned; (d) 1.125 forwarded-port URL rewriting reduces remote browser-tool failures in Codespaces/Remote-SSH heir setups; (e) 1.125 Native MDM delivery may policy-lock baseline keys for MDM-managed heirs. `lastReviewed` 2026-06-12 → 2026-06-23. Byte-identical to Supervisor.
+
+### Brain contract
+
+No change. `min_extension_version: 9.4.0`, `brain_subtrees: [.github]`, `marker_schema: v2`, manifest spec stays 1.4.
+
+### Heir-visible behaviour delta
+
+Zero behaviour change for heirs running VS Code 1.125+ (platform migrates `true`→`on` automatically). Pre-1.125 heirs still receive a valid value. Next `/configure-vscode` run by any heir writes the canonical `"on"` shape.
+
+### Falsifier
+
+2026-09-23 (90 days) or sooner if (a) a future VS Code release retires `extensions.autoUpdate` entirely; (b) MDM-managed heirs report `welcome-baseline.json` keys being silently policy-ignored; (c) the 1.124 enterprise plugin policies row produces zero observed heir-feedback in 90 days (decorative — demote).
+
 ## [3.6.0] - 2026-06-12
 
 **Minor [behaviour] — VS Code 1.124 settings drift correction. Removes schema-rejected values from baselines; corrects `chat.permissions.default` enum.**
