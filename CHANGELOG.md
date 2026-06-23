@@ -6,26 +6,29 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
-**[clarification + behaviour] — Adopt VS Code 1.124 + 1.125 platform changes into baseline + brain awareness.**
+## [3.6.1] - 2026-06-23
 
-Audit of VS Code 1.124 (Jun 10) and 1.125 (Jun 17) release notes against current brain claims. The 2026-06-12 audit took the brain to 1.124 awareness; this pass extends to 1.125 and surfaces three concrete drifts: (a) brain's `tool-awareness.instructions.md` table stops at 1.124; (b) `welcome-baseline.json` `$comment` claims `extensions.autoUpdateDelay` is "not a setting we can configure" — VS Code 1.125 made it configurable; (c) `extensions.autoUpdate: true` value uses the pre-1.125 boolean shape (1.125 simplified the setting to `on` / `off` with automatic migration).
+**Patch [behaviour] — Brain contract: `min_extension_version` 9.4.0 → 9.5.1. Closes 2 unresolved heir feedback items by enforcing the Extension floor that already carries the fixes.**
 
-### Changed
-
-- `.github/config/welcome-baseline.json` — `extensions.autoUpdate: true` → `"on"` per the 1.125 canonical shape. Heirs running 1.125+ would auto-migrate the literal `true` anyway; pre-1.125 heirs still accept `true`. The `$comment` Categories header refreshed `2026-06-12 audit ... 1.121-1.124` → `2026-06-23 audit ... 1.121-1.125` and Category (1) commentary rewritten to acknowledge 1.123 2-hour delay + 1.125 making `extensions.autoUpdateDelay` configurable (Edition does not pin a value — heirs ride the platform default) + 1.125 making "update only enabled extensions" the default behaviour (the explicit `extensions.autoUpdateOnlyEnabledExtensions: false` pin now overrides that to also update disabled extensions; retained as a deliberate heir-facing choice).
-- `.github/instructions/tool-awareness.instructions.md` — `## VS Code 1.122–1.124 conveniences` → `## VS Code 1.122–1.125 conveniences`. Table gains 4 new rows: (a) 1.124 Enterprise Copilot plugin policies (`chat.plugins.enabledPlugins` / `extraMarketplaces` / `strictMarketplaces` may block Mall installs in regulated orgs; heirs should surface a clear message rather than retry); (b) 1.125 `extensions.autoUpdate` value migration with backwards-compat note; (c) 1.125 `extensions.autoUpdateDelay` configurable, Edition unpinned; (d) 1.125 forwarded-port URL rewriting reduces remote browser-tool failures in Codespaces/Remote-SSH heir setups; (e) 1.125 Native MDM delivery may policy-lock baseline keys for MDM-managed heirs. `lastReviewed` 2026-06-12 → 2026-06-23. Byte-identical to Supervisor.
+The 2026-06-09 (vscode_assets handling) and 2026-06-10 (HEIR_OWNED source filter) install-contract fixes were shipped in Extension v9.5.0 and v9.5.1 respectively, but `min_extension_version` was left at 9.4.0. Heirs running v9.4.x silently missed both protections — confirmed by 2 feedback files in `AI-Memory/feedback/` from 2026-06-12 (anychat heir): (a) `.github/workflows/{brain-qa,release-gate}.yml` + `dependabot.yml` shipped to heir repos and failed CI by construction; (b) `.vscode/markdown-light.css` was `EDITION_OWNED` but never installed on bootstrap. Bumping the floor to 9.5.1 turns these silent failures into explicit refusals ("update the Extension first") and the next `/upgrade` from a v9.5.1+ heir lands both fixes automatically.
 
 ### Brain contract
 
-No change. `min_extension_version: 9.4.0`, `brain_subtrees: [.github]`, `marker_schema: v2`, manifest spec stays 1.4.
+- `min_extension_version: 9.4.0` → `9.5.1` — breaking floor for heirs whose Extension is older than v9.5.1; they see a clear refusal message on next upgrade per ADR-009 install validation. No other contract field changed: `brain_subtrees: [.github]`, `marker_schema: v2`, manifest spec stays 1.4.
 
 ### Heir-visible behaviour delta
 
-Zero behaviour change for heirs running VS Code 1.125+ (platform migrates `true`→`on` automatically). Pre-1.125 heirs still receive a valid value. Next `/configure-vscode` run by any heir writes the canonical `"on"` shape.
+- Heirs on Extension **v9.5.1 or newer** (the common case post-2026-06-10): zero behavior change; the next `/upgrade` lands current Edition normally. The `.github/workflows/**` files inside Edition's `.github/` are filtered out by the install-side HEIR_OWNED source filter; `.vscode/markdown-light.css` ships via `vscode_assets` manifest field.
+- Heirs on Extension **v9.4.0 – v9.5.0**: next `/upgrade` refuses with a typed error pointing at the new floor; user updates the Extension via VS Code Marketplace, then re-runs `/upgrade`. No silent breakage.
+
+### Changed (carried from prior unreleased work)
+
+- `.github/config/welcome-baseline.json` — `extensions.autoUpdate: true` → `"on"` per the VS Code 1.125 canonical shape. Heirs running 1.125+ would auto-migrate the literal `true` anyway; pre-1.125 heirs still accept `true`. The `$comment` Categories header refreshed `2026-06-12 audit ... 1.121-1.124` → `2026-06-23 audit ... 1.121-1.125` and Category (1) commentary rewritten to acknowledge 1.123 2-hour delay + 1.125 making `extensions.autoUpdateDelay` configurable (Edition does not pin a value — heirs ride the platform default) + 1.125 making "update only enabled extensions" the default behaviour (the explicit `extensions.autoUpdateOnlyEnabledExtensions: false` pin now overrides that to also update disabled extensions; retained as a deliberate heir-facing choice).
+- `.github/instructions/tool-awareness.instructions.md` — `## VS Code 1.122–1.124 conveniences` → `## VS Code 1.122–1.125 conveniences`. Table gains 4 new rows: (a) 1.124 Enterprise Copilot plugin policies (`chat.plugins.enabledPlugins` / `extraMarketplaces` / `strictMarketplaces` may block Mall installs in regulated orgs; heirs should surface a clear message rather than retry); (b) 1.125 `extensions.autoUpdate` value migration with backwards-compat note; (c) 1.125 `extensions.autoUpdateDelay` configurable, Edition unpinned; (d) 1.125 forwarded-port URL rewriting reduces remote browser-tool failures in Codespaces/Remote-SSH heir setups; (e) 1.125 Native MDM delivery may policy-lock baseline keys for MDM-managed heirs. `lastReviewed` 2026-06-12 → 2026-06-23. Byte-identical to Supervisor.
 
 ### Falsifier
 
-2026-09-23 (90 days) or sooner if (a) a future VS Code release retires `extensions.autoUpdate` entirely; (b) MDM-managed heirs report `welcome-baseline.json` keys being silently policy-ignored; (c) the 1.124 enterprise plugin policies row produces zero observed heir-feedback in 90 days (decorative — demote).
+2026-09-23 (90 days) or sooner if (a) a heir reports the refused-upgrade UX is confusing or destructive; (b) bumping the floor strands a heir cluster (≥2 heirs) where Marketplace auto-update is disabled; (c) ≥1 new install-contract change ships without a corresponding `min_extension_version` bump (we already failed to ship this bump twice — once for v9.5.0, once for v9.5.1; root cause is missing release-preflight rule that release-preflight skill should grow next).
 
 ## [3.6.0] - 2026-06-12
 
