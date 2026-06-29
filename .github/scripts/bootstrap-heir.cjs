@@ -23,7 +23,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
-const { resolveMemoryBus, EDITION_OWNED, HEIR_OWNED } = require('./_registry.cjs');
+const { resolveMemoryBus, EDITION_OWNED, BOOTSTRAP_TEMPLATES } = require('./_registry.cjs');
 const { mergeWorkspaceSettings, writeMerged, formatChangeSummary } = require('./shared/workspace-settings-merger.cjs');
 
 const IDENTITY_TEMPLATE = `# Identity (heir-owned)
@@ -309,11 +309,13 @@ for (const rel of sortedFiles) {
     copied += 1;
 }
 
-// Heir-owned templates: copy from Edition source on first bootstrap if missing.
-// These files become heir-owned the moment they land — upgrade-self.cjs will
-// never touch them again. Skip any glob (e.g. **/local/**) without source files.
+// Heir-owned templates: copy only the explicit first-install template list.
+// HEIR_OWNED is broader than templates: workflows/, dependabot.yml, episodic/,
+// ISSUE_TEMPLATE/, and local/ namespaces are heir territory and must never be
+// seeded from Edition's curator-side repo. BOOTSTRAP_TEMPLATES is the safe
+// subset that Edition intentionally gives fresh heirs once.
 let templatesRendered = 0;
-for (const pattern of HEIR_OWNED) {
+for (const pattern of BOOTSTRAP_TEMPLATES) {
     for (const rel of expandGlob(pattern)) {
         const src = path.join(EDITION_ROOT, rel);
         const dst = path.join(targetAbs, rel);

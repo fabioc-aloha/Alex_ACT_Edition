@@ -6,11 +6,36 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+## [3.6.3] - 2026-06-29
+
+**Patch [behaviour] — Direct bootstrap/upgrade now apply the ownership contract consistently: `BOOTSTRAP_TEMPLATES` is the only seeded heir-owned subset, broad `HEIR_OWNED` paths are never seeded from Edition, and upgrades seed missing templates while refreshing EDITION_OWNED assets.**
+
+Follow-up to v3.6.2 and the same-day Extension v9.5.6 investigation. The earlier v3.6.2 patch fixed direct-script upgrades refreshing `.vscode/markdown-light.css`, but `bootstrap-heir.cjs` still seeded every `HEIR_OWNED` path from Edition. That meant a fresh direct bootstrap could copy Edition's curator-side `.github/workflows/**` and `.github/dependabot.yml` into a heir — the same leak class found in the Extension path. v3.6.3 makes the direct scripts obey the same policy as the manifest: `BOOTSTRAP_TEMPLATES` is the explicit safe subset; the rest of `HEIR_OWNED` is heir territory only.
+
+### Fixed
+
+- `.github/scripts/bootstrap-heir.cjs` — imports `BOOTSTRAP_TEMPLATES` instead of `HEIR_OWNED` for first-install seeding. Fresh direct bootstraps now seed only `.github/config/cognitive-config.json`, `.vscode/extensions.json`, and `.vscode/settings.json`; workflows, dependabot, ISSUE_TEMPLATE, episodic, and local namespaces are no longer copied from Edition.
+- `.github/scripts/upgrade-self.cjs` — `.github/` subtree copy now skips any source file matching `HEIR_OWNED`, except entries explicitly listed in `BOOTSTRAP_TEMPLATES`. Missing templates are seeded after restore, and `.vscode/markdown-light.css` still refreshes via the v3.6.2 Step 3.5 path.
+
+### Heir-visible behaviour delta
+
+- Fresh direct bootstrap: no Edition workflows or dependabot.yml land in heirs.
+- Direct upgrade: no new Edition workflows or dependabot.yml land in heirs. Existing heir-owned workflows remain preserved.
+- Missing bootstrap templates are repaired on upgrade when absent; existing heir-owned settings/extensions files are not clobbered.
+
+### Brain contract
+
+Unchanged: `min_extension_version: 9.5.1`, `brain_subtrees: [.github]`, `marker_schema: v2`, manifest spec stays 1.4.
+
+### Falsifier
+
+2026-09-29 (90 days) or sooner if a direct bootstrap/upgrade seeds any broad HEIR_OWNED file from Edition (`.github/workflows/**`, `.github/dependabot.yml`, `.github/ISSUE_TEMPLATE/**`, `.github/episodic/**`, or `local/**`) or fails to seed a listed `BOOTSTRAP_TEMPLATES` entry.
+
 ## [3.6.2] - 2026-06-29
 
 **Patch [behaviour] — `upgrade-self.cjs` now refreshes EDITION_OWNED files outside `.github/`. Closes heir feedback `2026-06-27-machine-reset-vscode-assets-not-copied-on-bootstrap-or-upgrade.md`.**
 
-The upgrade path's Step 3 has always done `copyDirRecursive(editionGh, .github)` — refreshing only the `.github/` subtree. EDITION_OWNED has carried `.vscode/markdown-light.css` since the entry was added, but it was never refreshed on upgrade because the script's design treated anything outside `.github/` as invisible. Heirs running `upgrade-self.cjs` carried whatever CSS they had at bootstrap forever; verified `machine-reset` heir had a 16,628-byte stale copy vs Edition's current 15,856-byte canonical. The Extension's `lib/edition-install.js` was unaffected — it reads `vscode_assets` from the manifest separately, so heirs upgrading via the Extension always received the current CSS. Two install paths, asymmetric outcomes.
+The upgrade path's Step 3 has always done `copyDirRecursive(editionGh, .github)` — refreshing only the `.github/` subtree. EDITION_OWNED has carried `.vscode/markdown-light.css` since the entry was added, but it was never refreshed on upgrade because the script's design treated anything outside `.github/` as invisible. Heirs running `upgrade-self.cjs` carried whatever CSS they had at bootstrap forever; verified `machine-reset` heir had a 16,628-byte stale copy vs Edition's current 15,856-byte canonical. **Correction from later 2026-06-29 investigation**: the Extension was also affected, but for a different reason — its production `cmdBootstrap` / `cmdUpgrade` loops did not call `lib/edition-install.js installFromTarball`, so the manifest logic was tested but dead in production. See Extension v9.5.6 and Edition v3.6.3.
 
 ### Fixed
 

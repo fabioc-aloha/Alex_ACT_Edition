@@ -23,7 +23,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const { execFileSync } = require('child_process');
-const { resolveMemoryBus, EDITION_OWNED, HEIR_OWNED } = require('./_registry.cjs');
+const { resolveMemoryBus, EDITION_OWNED, HEIR_OWNED, BOOTSTRAP_TEMPLATES } = require('./_registry.cjs');
 const { mergeWorkspaceSettings, writeMerged, formatChangeSummary } = require('./shared/workspace-settings-merger.cjs');
 
 // ─── CLI & Config ────────────────────────────────────────────────────────────
@@ -333,7 +333,12 @@ fs.renameSync(path.join(HEIR_ROOT, '.github'), backupDir);
 
 // Step 3: Install fresh Edition brain
 const editionGh = path.join(tmp, '.github');
-copyDirRecursive(editionGh, path.join(HEIR_ROOT, '.github'));
+const bootstrapTemplateSet = new Set(BOOTSTRAP_TEMPLATES.map(p => p.replace(/\\/g, '/')));
+copyDirRecursive(editionGh, path.join(HEIR_ROOT, '.github'), {
+    sourceRoot: tmp,
+    heirOwnedPatterns: HEIR_OWNED,
+    bootstrapTemplateSet,
+});
 
 // Step 3.5: Refresh EDITION_OWNED files outside .github/.
 // Step 3 only refreshes the .github/ subtree. Anything EDITION_OWNED that lives
@@ -372,6 +377,22 @@ for (const rel of heirOwnedFiles) {
     recovered++;
 }
 
+// Step 4.5: Seed missing first-install templates only.
+// This is the explicit safe subset of HEIR_OWNED. It excludes curator-side
+// workflows/, dependabot.yml, ISSUE_TEMPLATE/, episodic/, and local/ namespaces.
+let templatesSeeded = 0;
+for (const pattern of BOOTSTRAP_TEMPLATES) {
+    for (const rel of expandGlob(tmp, pattern)) {
+        const src = path.join(tmp, rel);
+        const dst = path.join(HEIR_ROOT, rel);
+        if (!fs.existsSync(src)) continue;
+        if (fs.existsSync(dst)) continue;
+        fs.mkdirSync(path.dirname(dst), { recursive: true });
+        fs.copyFileSync(src, dst);
+        templatesSeeded++;
+    }
+}
+
 // Step 5: Update marker
 const now = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
 marker.edition_version = newVersion;
@@ -408,6 +429,9 @@ console.log(`Fresh brain installed. ${recovered} heir-owned files recovered. ${r
 if (editionAssetsRefreshed > 0) {
     console.log(`Edition assets refreshed outside .github/: ${editionAssetsRefreshed}`);
 }
+if (templatesSeeded > 0) {
+    console.log(`Bootstrap templates seeded: ${templatesSeeded}`);
+}
 console.log(`Backup at: ${path.basename(backupDir)}`);
 console.log('');
 console.log('Next steps:');
@@ -430,17 +454,46 @@ function walkDir(dir) {
     return results;
 }
 
-function copyDirRecursive(src, dest) {
+function copyDirRecursive(src, dest, opts = {}) {
     fs.mkdirSync(dest, { recursive: true });
     for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
         const s = path.join(src, entry.name);
         const d = path.join(dest, entry.name);
         if (entry.isDirectory()) {
-            copyDirRecursive(s, d);
+            if (opts.sourceRoot && shouldSkipForHeirOwnership(opts.sourceRoot, s, opts.heirOwnedPatterns, opts.bootstrapTemplateSet)) {
+                continue;
+            }
+            copyDirRecursive(s, d, opts);
         } else {
+            if (opts.sourceRoot && shouldSkipForHeirOwnership(opts.sourceRoot, s, opts.heirOwnedPatterns, opts.bootstrapTemplateSet)) {
+                continue;
+            }
             fs.copyFileSync(s, d);
         }
     }
+}
+
+function shouldSkipForHeirOwnership(sourceRoot, sourcePath, heirOwnedPatterns = [], bootstrapTemplateSet = new Set()) {
+    const rel = path.relative(sourceRoot, sourcePath).replace(/\\/g, '/');
+    if (bootstrapTemplateSet.has(rel)) return false;
+    return pathMatchesAny(rel, heirOwnedPatterns);
+}
+
+function pathMatchesAny(relPath, patterns = []) {
+    const normalized = relPath.replace(/\\/g, '/');
+    for (const pattern of patterns) {
+        const p = pattern.replace(/\\/g, '/');
+        if (p.endsWith('/**')) {
+            const prefix = p.slice(0, -3);
+            if (normalized === prefix || normalized.startsWith(prefix + '/')) return true;
+        } else if (p.includes('*')) {
+            const escaped = p.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '[^/]*');
+            if (new RegExp('^' + escaped + '$').test(normalized)) return true;
+        } else if (normalized === p) {
+            return true;
+        }
+    }
+    return false;
 }
 
 function expandGlob(root, pattern) {
