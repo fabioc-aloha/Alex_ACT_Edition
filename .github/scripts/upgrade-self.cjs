@@ -335,6 +335,24 @@ fs.renameSync(path.join(HEIR_ROOT, '.github'), backupDir);
 const editionGh = path.join(tmp, '.github');
 copyDirRecursive(editionGh, path.join(HEIR_ROOT, '.github'));
 
+// Step 3.5: Refresh EDITION_OWNED files outside .github/.
+// Step 3 only refreshes the .github/ subtree. Anything EDITION_OWNED that lives
+// elsewhere (today: .vscode/markdown-light.css) would otherwise silently drift.
+// HEIR_OWNED .vscode/ files (.vscode/settings.json, .vscode/extensions.json)
+// are NOT in EDITION_OWNED and are preserved via the existing backup/restore.
+let editionAssetsRefreshed = 0;
+for (const pattern of EDITION_OWNED) {
+    if (pattern.startsWith('.github/')) continue;
+    for (const rel of expandGlob(tmp, pattern)) {
+        const src = path.join(tmp, rel);
+        const dst = path.join(HEIR_ROOT, rel);
+        if (!fs.existsSync(src)) continue;
+        fs.mkdirSync(path.dirname(dst), { recursive: true });
+        fs.copyFileSync(src, dst);
+        editionAssetsRefreshed++;
+    }
+}
+
 // Step 4: Restore heir-owned files (with relocations applied)
 const relocationMap = new Map();
 for (const r of relocations) {
@@ -387,6 +405,9 @@ if (memoryBus && memoryBus.message) console.log(memoryBus.message);
 console.log('');
 console.log(`Upgrade complete: ${currentVersion} -> ${newVersion}`);
 console.log(`Fresh brain installed. ${recovered} heir-owned files recovered. ${relocated} relocated to local/.`);
+if (editionAssetsRefreshed > 0) {
+    console.log(`Edition assets refreshed outside .github/: ${editionAssetsRefreshed}`);
+}
 console.log(`Backup at: ${path.basename(backupDir)}`);
 console.log('');
 console.log('Next steps:');

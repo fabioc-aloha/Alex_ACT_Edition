@@ -6,6 +6,29 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+## [3.6.2] - 2026-06-29
+
+**Patch [behaviour] — `upgrade-self.cjs` now refreshes EDITION_OWNED files outside `.github/`. Closes heir feedback `2026-06-27-machine-reset-vscode-assets-not-copied-on-bootstrap-or-upgrade.md`.**
+
+The upgrade path's Step 3 has always done `copyDirRecursive(editionGh, .github)` — refreshing only the `.github/` subtree. EDITION_OWNED has carried `.vscode/markdown-light.css` since the entry was added, but it was never refreshed on upgrade because the script's design treated anything outside `.github/` as invisible. Heirs running `upgrade-self.cjs` carried whatever CSS they had at bootstrap forever; verified `machine-reset` heir had a 16,628-byte stale copy vs Edition's current 15,856-byte canonical. The Extension's `lib/edition-install.js` was unaffected — it reads `vscode_assets` from the manifest separately, so heirs upgrading via the Extension always received the current CSS. Two install paths, asymmetric outcomes.
+
+### Fixed
+
+- `.github/scripts/upgrade-self.cjs` — new Step 3.5 inserted between brain install and heir-owned restore. Iterates `EDITION_OWNED.filter(p => !p.startsWith('.github/'))`, expands each pattern against the fetched Edition, copies matching files into the heir root. Today filters to exactly one entry (`.vscode/markdown-light.css`); future-proof for any new non-`.github/` EDITION_OWNED entries. HEIR_OWNED `.vscode/settings.json` and `.vscode/extensions.json` are preserved by the existing backup/restore flow (they are not in EDITION_OWNED). Summary line "Edition assets refreshed outside .github/: N" reports the count.
+
+### Heir-visible behaviour delta
+
+- Next `/upgrade` from any 3.x release: heirs whose `.vscode/markdown-light.css` differs from the canonical Edition copy will see the file refreshed. No other `.vscode/` file is touched. No `.github/` behavior change.
+- `bootstrap-heir.cjs` is unchanged — it already copies the CSS correctly via the EDITION_OWNED literal-path branch (verified empirically 2026-06-29).
+
+### Brain contract
+
+Unchanged: `min_extension_version: 9.5.1`, `brain_subtrees: [.github]`, `marker_schema: v2`, manifest spec stays 1.4.
+
+### Falsifier
+
+2026-09-29 (90 days) or sooner if (a) a heir reports the upgrade refreshes a HEIR_OWNED `.vscode/` file (filter is too broad); (b) a heir reports upgrade fails because Step 3.5 cannot find a declared file; (c) the deeper contract convergence (manifest `vscode_assets` vs registry `EDITION_OWNED`) surfaces a defect this fix masked.
+
 ## [3.6.1] - 2026-06-23
 
 **Patch [behaviour] — Brain contract: `min_extension_version` 9.4.0 → 9.5.1. Closes 2 unresolved heir feedback items by enforcing the Extension floor that already carries the fixes.**
