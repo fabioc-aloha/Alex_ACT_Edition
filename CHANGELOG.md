@@ -6,6 +6,38 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+## [3.7.0] - 2026-06-30
+
+**Minor [behaviour] — New `/configure-workspace` and `/configure-workspace-verify` prompts close the workspace-scope gap: bootstrap + upgrade already install workspace `.vscode/` correctly, but until now there was no prompt-driven recovery path for heirs whose `.vscode/markdown-light.css` or discovery-location keys went missing.**
+
+Until v3.7.0, `/configure-vscode` (user-scope) and `/configure-vscode-verify` (user-scope audit) had no workspace-scope siblings. Heirs that cloned a repo with `.vscode/` git-ignored, deleted assets accidentally, or lost the discovery keys had to run `ACT: Upgrade Brain` (Extension) or `node .github/scripts/upgrade-self.cjs --apply` (script) to recover — a full upgrade cycle for what's really an asset-refresh problem. The new pair gives heirs a targeted recovery surface that matches the user-scope pair shape (three-shell payload, single source of truth from `.github/config/*.json`, idempotent, heir-only).
+
+### Added
+
+- `.github/prompts/configure-workspace.prompt.md` — heir-only prompt that refreshes EDITION_OWNED `vscode_assets` (e.g. `markdown-light.css`) on every invocation, seeds HEIR_OWNED `bootstrap_templates` with `.vscode/` prefix if missing (`extensions.json`, `settings.json`), and per-key merges `heir-workspace-settings-baseline.json` into `.vscode/settings.json` (respects `mergeMode` — `set-if-absent` keys like `chat.permissions.default` are preserved if the heir already set them). Source files fetched from GitHub raw at the pinned `v<edition_version>` tag (post-ADR-009 static-fetch pattern). bash/zsh + PowerShell reference commands.
+- `.github/prompts/configure-workspace-verify.prompt.md` — read-only audit. Reports which `vscode_assets` are missing, which `bootstrap_templates` (`.vscode/`-prefixed) are missing, and which baseline keys are compliant / drifted / missing in `.vscode/settings.json`. Recommends `/configure-workspace` only if drift is found.
+
+### Changed
+
+- `.github/prompts/configure-vscode.prompt.md` — cross-links to `/configure-workspace` for workspace-scope; Guardrail clarified that workspace-scope is owned by the new prompt. `lastReviewed` bumped 2026-06-10 → 2026-06-30.
+- `.github/prompts/configure-vscode-verify.prompt.md` — cross-links to `/configure-workspace-verify`. `lastReviewed` bumped 2026-06-10 → 2026-06-30.
+- `.github/prompts/welcome.prompt.md` step 5 — inserted `/configure-workspace-verify` → `/configure-workspace` recovery step between `/configure-vscode` and "Start a real chat". Clarifies that bootstrap already installs the workspace assets and this pair is the recovery path.
+- `.github/config/edition-manifest.json` regenerated — `prompts` 27 → 29 (the two new prompts added); `edition_version` 3.6.3 → 3.7.0.
+
+### Heir-visible behaviour delta
+
+- Two new slash commands: `/configure-workspace` and `/configure-workspace-verify`. Both refuse outside a heir workspace (require `.github/.act-heir.json`).
+- `/welcome` next-steps now has 4 items instead of 3.
+- Zero change to bootstrap or upgrade scripts — they already install workspace `.vscode/` correctly (verified empirically against v3.6.3 in the 2026-06-30 investigation).
+
+### Brain contract
+
+Unchanged: `min_extension_version: 9.5.1`, `brain_subtrees: [.github]`, `marker_schema: v2`, manifest spec stays 1.4.
+
+### Falsifier
+
+2026-09-30 (90 days) or sooner if any of the following fires: (a) the new prompts produce results that diverge from `bootstrap-heir.cjs` / `upgrade-self.cjs` for the same heir; (b) heirs report the prompts adding files that don't match Edition at the pinned tag; (c) the per-key merge logic doesn't respect `mergeMode: set-if-absent` and overwrites heir-chosen permission levels; (d) the GitHub raw URL pattern for Edition releases changes and the prompts can't fetch sources.
+
 ## [3.6.3] - 2026-06-29
 
 **Patch [behaviour] — Direct bootstrap/upgrade now apply the ownership contract consistently: `BOOTSTRAP_TEMPLATES` is the only seeded heir-owned subset, broad `HEIR_OWNED` paths are never seeded from Edition, and upgrades seed missing templates while refreshing EDITION_OWNED assets.**
