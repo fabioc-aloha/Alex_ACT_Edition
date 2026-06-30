@@ -6,6 +6,36 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+## [3.7.1] - 2026-06-30
+
+**Patch [behaviour] — Add `markdown.styles: [".vscode/markdown-light.css"]` to `heir-workspace-settings-baseline.json` with `set-if-absent` mode, closing the gap for heirs whose `.vscode/settings.json` predated bootstrap and never received the key from the first-install template.**
+
+Fresh heirs already received `markdown.styles` because Edition's own `.vscode/settings.json` (seeded as a `bootstrap_template`) carries it. But the bootstrap-template path is first-install-only — heirs whose `.vscode/settings.json` was preserved as HEIR_OWNED before the template seed (e.g., the heir already had a settings.json when bootstrap ran) never received `markdown.styles` and got default VS Code markdown preview styling instead of Edition's CSS. The baseline merge layer didn't carry the key either, so the gap persisted across upgrades.
+
+v3.7.1 adds `markdown.styles` to the baseline with `set-if-absent` mode: heirs without the key get it (markdown preview now styled by Edition's CSS); heirs with a customized `markdown.styles` array (e.g., extended with their own CSS files) keep their array unchanged. Same pattern as `chat.permissions.default`.
+
+### Added
+
+- `.github/config/heir-workspace-settings-baseline.json` — new entry `markdown.styles: [".vscode/markdown-light.css"]` in `settings`; matching entry `markdown.styles: "set-if-absent"` in `mergeMode`. `spec_version` bumped 1.1 → 1.2. `$comment` block documents the rationale (closes HEIR_OWNED-settings-predates-bootstrap-template gap; preserves heir-custom CSS arrays).
+
+### Changed
+
+- `.github/config/edition-manifest.json` regenerated; `edition_version` 3.7.0 → 3.7.1; no shape change otherwise.
+
+### Heir-visible behaviour delta
+
+- Heirs running `ACT: Upgrade Brain` or `/configure-workspace` or `node .github/scripts/upgrade-self.cjs --apply` who currently have no `markdown.styles` will get it added on next upgrade; markdown preview will use Edition's light CSS.
+- Heirs with a customized `markdown.styles` array (any value) are untouched (`set-if-absent` semantics).
+- Heirs who deliberately want default VS Code styling: remove the key after upgrade; future upgrades will not re-add it because their setting is now non-absent (would be `null` if explicitly removed, which counts as "key present" under set-if-absent).
+
+### Brain contract
+
+Unchanged: `min_extension_version: 9.5.1`, `brain_subtrees: [.github]`, `marker_schema: v2`, manifest spec 1.4. **No Extension republish required** — static-fetch (ADR-009) delivers v3.7.1 to heirs at next upgrade.
+
+### Falsifier
+
+2026-09-30 (90 days, shared with v3.7.0 falsifier) or sooner if: (a) the merger's `set-if-absent` mode handles arrays differently than expected and heir-custom `markdown.styles` arrays get clobbered; (b) heirs report `markdown.styles` not being added when their `.vscode/settings.json` lacks the key; (c) the value `[".vscode/markdown-light.css"]` proves wrong relative to where the CSS actually lives.
+
 ## [3.7.0] - 2026-06-30
 
 **Minor [behaviour] — New `/configure-workspace` and `/configure-workspace-verify` prompts close the workspace-scope gap: bootstrap + upgrade already install workspace `.vscode/` correctly, but until now there was no prompt-driven recovery path for heirs whose `.vscode/markdown-light.css` or discovery-location keys went missing.**
