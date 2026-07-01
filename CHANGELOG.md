@@ -6,6 +6,23 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+## [3.8.0] - 2026-07-01
+
+**Minor [behaviour] — Hardens Edition bootstrap/upgrade and converter script safety, removes curator automation from the heir-shipped source tree, and raises the Node runtime baseline to 24+.**
+
+This release keeps the Edition contract stable while tightening the scripts that install, repair, and convert content inside heirs. It removes curator-owned automation from the Edition repo, clarifies user-vs-workspace VS Code settings ownership, makes upgrade rollback safer, preserves heir files inside known skill folders, and adds regression coverage for the failure modes that caused prior bootstrap/upgrade drift.
+
+### Removed
+
+- Removed Edition-owned `.github/workflows/brain-qa.yml`, `.github/workflows/release-gate.yml`, and `.github/dependabot.yml`. CI/update automation belongs outside the heir-shipped Edition brain; bootstrap, upgrade, and Extension install paths already treat workflows and Dependabot config as heir-owned and skip them, but the source repo no longer carries curator automation at all.
+
+### Changed
+
+- Clarified `/configure-vscode` and `/configure-vscode-verify`: user-scope settings are machine-level safe defaults, while workspace `.vscode/settings.json` remains the project-specific override layer handled by `/configure-workspace`.
+- Clarified `/configure-workspace` and `/configure-workspace-verify`: workspace settings intentionally override user-scope settings for the current project while preserving unrelated heir keys.
+- Removed `chat.permissions.default` from Edition's shipped `.vscode/settings.json` template so fresh bootstraps receive the safe baseline value from `heir-workspace-settings-baseline.json` instead of inheriting the Edition repo's own workspace preference.
+- Raised the Edition Node runtime baseline to Node.js 24+: `package.json` now declares `engines.node >=24`, and converter skill/script prerequisite text no longer advertises the older baseline.
+
 ## [3.7.1] - 2026-06-30
 
 **Patch [behaviour] — Add `markdown.styles: [".vscode/markdown-light.css"]` to `heir-workspace-settings-baseline.json` with `set-if-absent` mode, closing the gap for heirs whose `.vscode/settings.json` predated bootstrap and never received the key from the first-install template.**

@@ -210,6 +210,36 @@ test('merge: parses JSONC settings (block comments)', () => {
     } finally { cleanup(repo); fs.unlinkSync(baseline); }
 });
 
+test('merge: parses JSONC settings with inline comments and trailing commas', () => {
+    const repo = mkRepoRoot();
+    fs.mkdirSync(path.join(repo, '.vscode'));
+    fs.writeFileSync(path.join(repo, '.vscode', 'settings.json'),
+        '{\n  "editor.fontSize": 12, // inline comment\n  "files.exclude": {\n    "**/tmp": true,\n  },\n}'
+    );
+    const baseline = mkBaseline({ 'editor.fontSize': 14, 'files.autoSave': 'onFocusChange' });
+    try {
+        const result = mergeWorkspaceSettings(repo, baseline);
+        assert.equal(result.ok, true, 'JSONC inline comments and trailing commas must parse cleanly');
+        assert.equal(result.merged['editor.fontSize'], 14);
+        assert.equal(result.merged['files.exclude']['**/tmp'], true);
+        assert.equal(result.merged['files.autoSave'], 'onFocusChange');
+    } finally { cleanup(repo); fs.unlinkSync(baseline); }
+});
+
+test('merge: preserves comment-looking text inside strings', () => {
+    const repo = mkRepoRoot();
+    fs.mkdirSync(path.join(repo, '.vscode'));
+    fs.writeFileSync(path.join(repo, '.vscode', 'settings.json'), JSON.stringify({
+        'example.url': 'https://example.test//path/*not-comment*/'
+    }));
+    const baseline = mkBaseline({ 'editor.fontSize': 14 });
+    try {
+        const result = mergeWorkspaceSettings(repo, baseline);
+        assert.equal(result.ok, true);
+        assert.equal(result.merged['example.url'], 'https://example.test//path/*not-comment*/');
+    } finally { cleanup(repo); fs.unlinkSync(baseline); }
+});
+
 test('merge: hadComments is false when no comments present', () => {
     const repo = mkRepoRoot();
     fs.mkdirSync(path.join(repo, '.vscode'));

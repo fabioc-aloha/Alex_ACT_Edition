@@ -42,7 +42,7 @@
  *   ---
  *
  * Requirements:
- *   - Node.js 18+
+ *   - Node.js 24+
  *   - pandoc (for markdown -> HTML conversion)
  * @currency 2026-04-20
  */
@@ -55,7 +55,7 @@ process.on("uncaughtException", (err) => {
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { execSync } = require('child_process');
+const { runTool } = require(path.join(__dirname, '..', '..', '..', 'scripts', 'shared', 'tool-runner.cjs'));
 
 // Try to load shared modules
 let sharedPreprocessor, sharedMermaid;
@@ -149,10 +149,7 @@ function markdownToEmailHtml(markdown, options = {}) {
   try {
     fs.writeFileSync(tempMd, markdown, 'utf8');
 
-    execSync(
-      `pandoc "${tempMd}" -o "${tempHtml}" --from markdown --to html5 --standalone=false`,
-      { stdio: ['pipe', 'pipe', 'pipe'], timeout: 30000 }
-    );
+    runTool('pandoc', [tempMd, '-o', tempHtml, '--from', 'markdown', '--to', 'html5', '--standalone=false'], { stdio: ['pipe', 'pipe', 'pipe'], timeout: 30000 });
 
     let html = fs.readFileSync(tempHtml, 'utf8');
 

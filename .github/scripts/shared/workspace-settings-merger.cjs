@@ -38,11 +38,64 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 function stripJsonc(text) {
-    // strip block comments
-    text = text.replace(/\/\*[\s\S]*?\*\//g, '');
-    // strip // line comments (naive; settings.json rarely has // inside string values)
-    text = text.replace(/^\s*\/\/.*$/gm, '');
-    return text;
+    let out = '';
+    let inString = false;
+    let escaped = false;
+    let inLineComment = false;
+    let inBlockComment = false;
+
+    for (let i = 0; i < text.length; i++) {
+        const ch = text[i];
+        const next = text[i + 1];
+
+        if (inLineComment) {
+            if (ch === '\n' || ch === '\r') {
+                inLineComment = false;
+                out += ch;
+            }
+            continue;
+        }
+
+        if (inBlockComment) {
+            if (ch === '*' && next === '/') {
+                inBlockComment = false;
+                i++;
+            }
+            continue;
+        }
+
+        if (inString) {
+            out += ch;
+            if (escaped) {
+                escaped = false;
+            } else if (ch === '\\') {
+                escaped = true;
+            } else if (ch === '"') {
+                inString = false;
+            }
+            continue;
+        }
+
+        if (ch === '"') {
+            inString = true;
+            out += ch;
+            continue;
+        }
+        if (ch === '/' && next === '/') {
+            inLineComment = true;
+            i++;
+            continue;
+        }
+        if (ch === '/' && next === '*') {
+            inBlockComment = true;
+            i++;
+            continue;
+        }
+        out += ch;
+    }
+
+    // Strip trailing commas before object/array closers after comments are gone.
+    return out.replace(/,\s*([}\]])/g, '$1');
 }
 
 /**

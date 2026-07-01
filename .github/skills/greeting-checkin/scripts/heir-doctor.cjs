@@ -18,7 +18,6 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
 
 const HEIR_ROOT = process.cwd();
 const GH = path.join(HEIR_ROOT, '.github');
@@ -100,12 +99,21 @@ if (fs.existsSync(manifestPath)) {
 
 if (editionManifest) {
     const editionShippedSkills = new Set([...(editionManifest.skills || []), 'local']);
+    const editionShippedSkillFiles = new Set(editionManifest.skill_files || []);
     const skillsDir = path.join(GH, 'skills');
     if (fs.existsSync(skillsDir)) {
         const entries = fs.readdirSync(skillsDir, { withFileTypes: true });
         for (const e of entries) {
             if (e.isDirectory() && !editionShippedSkills.has(e.name)) {
                 err(`Skill .github/skills/${e.name}/ is in an edition-owned path and not shipped by Edition. Move to .github/skills/local/${e.name}/ or it will be deleted on next upgrade.`);
+            } else if (e.isDirectory() && e.name !== 'local' && editionShippedSkillFiles.size > 0) {
+                const skillDir = path.join(skillsDir, e.name);
+                for (const absPath of walkDir(skillDir)) {
+                    const rel = path.relative(skillsDir, absPath).replace(/\\/g, '/');
+                    if (!editionShippedSkillFiles.has(rel)) {
+                        err(`File .github/skills/${rel} is inside an Edition-shipped skill but is not shipped by Edition. Move to .github/skills/local/${rel} or it will be relocated on next upgrade.`);
+                    }
+                }
             }
         }
     }

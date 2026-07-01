@@ -26,7 +26,7 @@
  *   --atx-headers        Use ATX-style headers (#) instead of Setext
  *
  * Requirements:
- *   - Node.js 18+
+ *   - Node.js 24+
  *   - pandoc 2.19+
  * @currency 2026-04-21
  */
@@ -41,7 +41,7 @@ process.on("uncaughtException", (err) => {
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { execSync } = require('child_process');
+const { runTool } = require(path.join(__dirname, '..', '..', '..', 'scripts', 'shared', 'tool-runner.cjs'));
 
 // ---------------------------------------------------------------------------
 // CLI argument parsing
@@ -144,19 +144,19 @@ async function build(args) {
 
   console.log('\u{1f4dd} Converting HTML to Markdown...');
   const pandocArgs = [
-    `"${sourcePath}"`, `-o "${tempMd}"`,
-    '--from html', `--to ${toFormat}`,
-    `--resource-path="${path.resolve(sourceDir)}"`,
+    sourcePath, '-o', tempMd,
+    '--from', 'html', '--to', toFormat,
+    '--resource-path', path.resolve(sourceDir),
   ];
   if (args.atxHeaders) pandocArgs.push('--markdown-headings=atx');
   if (args.wrap > 0) {
-    pandocArgs.push(`--wrap=auto`, `--columns=${args.wrap}`);
+    pandocArgs.push('--wrap=auto', `--columns=${args.wrap}`);
   } else {
     pandocArgs.push('--wrap=none');
   }
 
   try {
-    execSync(`pandoc ${pandocArgs.join(' ')}`, { stdio: ['pipe', 'pipe', 'pipe'], timeout: 120000 });
+    runTool('pandoc', pandocArgs, { stdio: ['pipe', 'pipe', 'pipe'], timeout: 120000 });
   } catch (err) {
     console.error(`ERROR: pandoc failed: ${err.stderr ? err.stderr.toString() : err}`);
     process.exit(1);

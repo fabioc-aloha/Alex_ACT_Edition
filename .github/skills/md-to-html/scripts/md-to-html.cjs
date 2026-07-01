@@ -31,7 +31,7 @@
  *   --dry-run           Run preprocessing only, no HTML output
  *
  * Requirements:
- *   - Node.js 18+
+ *   - Node.js 24+
  *   - pandoc (Windows: winget install pandoc | macOS: brew install pandoc | Linux: apt install pandoc)
  *   - mermaid-cli (optional, for --mermaid-png)
  * @currency 2026-04-20
@@ -47,7 +47,7 @@ process.on("uncaughtException", (err) => {
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { execSync } = require('child_process');
+const { runTool } = require(path.join(__dirname, '..', '..', '..', 'scripts', 'shared', 'tool-runner.cjs'));
 
 // ---------------------------------------------------------------------------
 // Shared module imports
@@ -355,11 +355,9 @@ function convertMarkdownToHtml(sourcePath, outputPath, options = {}) {
   try {
     fs.writeFileSync(tempMd, markdown, 'utf8');
 
-    const tocFlag = generateToc ? '--toc --toc-depth=3' : '';
-    execSync(
-      `pandoc "${tempMd}" -o "${tempHtml}" --from markdown --to html5 --standalone=false ${tocFlag}`,
-      { stdio: ['pipe', 'pipe', 'pipe'], timeout: 30000 }
-    );
+    const pandocArgs = [tempMd, '-o', tempHtml, '--from', 'markdown', '--to', 'html5', '--standalone=false'];
+    if (generateToc) pandocArgs.push('--toc', '--toc-depth=3');
+    runTool('pandoc', pandocArgs, { stdio: ['pipe', 'pipe', 'pipe'], timeout: 30000 });
 
     let htmlBody = fs.readFileSync(tempHtml, 'utf8');
 

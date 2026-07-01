@@ -233,3 +233,10 @@ test('manifest: bootstrap_templates only contains literal (non-glob) paths', () 
         assert.equal(fs.statSync(abs).isFile(), true, `bootstrap_templates entry "${tmpl}" is not a file`);
     }
 });
+
+test('manifest: root test folder is never part of the heir install contract', () => {
+    const m = readManifest();
+    assert.equal((m.brain_subtrees || []).includes('test'), false, 'test/ must not be a brain_subtree');
+    assert.equal((m.vscode_assets || []).some((entry) => String(entry).startsWith('test')), false, 'test/ must not be a vscode_asset');
+    assert.equal((m.bootstrap_templates || []).some((entry) => String(entry).startsWith('test/')), false, 'test/ must not be a bootstrap_template');
+});

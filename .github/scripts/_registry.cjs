@@ -12,7 +12,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+const { execFileSync } = require('child_process');
 
 const MEMORY_REPO_NAME = 'Alex_ACT_Memory';
 const MEMORY_REMOTE = 'https://github.com/fabioc-aloha/Alex_ACT_Memory.git';
@@ -22,26 +22,31 @@ const MEMORY_REMOTE = 'https://github.com/fabioc-aloha/Alex_ACT_Memory.git';
  * level: 'sibling' | 'cloned' | 'scaffolded'
  * @param {string} [repoRoot] - the heir's repo root (defaults to cwd)
  */
-function resolveMemoryBus(repoRoot) {
+function resolveMemoryBus(repoRoot, options = {}) {
+    const mutate = options.mutate === true;
     const base = repoRoot ? path.resolve(repoRoot, '..') : path.resolve(process.cwd(), '..');
     const memoryPath = path.join(base, MEMORY_REPO_NAME);
 
     // Level 1: sibling exists — pull updates
     if (fs.existsSync(path.join(memoryPath, '.git'))) {
-        try {
-            execSync('git pull --rebase --quiet', {
-                cwd: memoryPath,
-                stdio: ['ignore', 'ignore', 'ignore'],
-                timeout: 15000,
-            });
-        } catch { /* network failure is fine; use stale copy */ }
+        if (mutate) {
+            try {
+                execFileSync('git', ['pull', '--rebase', '--quiet'], {
+                    cwd: memoryPath,
+                    stdio: ['ignore', 'ignore', 'ignore'],
+                    timeout: 15000,
+                });
+            } catch { /* network failure is fine; use stale copy */ }
+        }
         return { root: memoryPath, level: 'sibling', message: null };
     }
+
+    if (!mutate) return null;
 
     // Level 2: not present but remote configured — clone
     if (MEMORY_REMOTE) {
         try {
-            execSync(`git clone "${MEMORY_REMOTE}" "${memoryPath}" --quiet`, {
+            execFileSync('git', ['clone', MEMORY_REMOTE, memoryPath, '--quiet'], {
                 stdio: ['ignore', 'ignore', 'ignore'],
                 timeout: 30000,
             });
@@ -58,7 +63,7 @@ function resolveMemoryBus(repoRoot) {
  */
 function scaffoldMemoryRepo(memoryPath) {
     fs.mkdirSync(memoryPath, { recursive: true });
-    try { execSync('git init --quiet', { cwd: memoryPath, stdio: 'ignore' }); } catch { /* git not available */ }
+    try { execFileSync('git', ['init', '--quiet'], { cwd: memoryPath, stdio: 'ignore' }); } catch { /* git not available */ }
 
     const dirs = ['announcements', 'feedback', 'knowledge', 'profile/default', 'insights', 'docs'];
     for (const d of dirs) {
@@ -82,7 +87,10 @@ function scaffoldMemoryRepo(memoryPath) {
         }
     }
 
-    try { execSync('git add -A && git commit -m "Initial scaffold" --quiet', { cwd: memoryPath, stdio: 'ignore' }); } catch { /* best effort */ }
+    try {
+        execFileSync('git', ['add', '-A'], { cwd: memoryPath, stdio: 'ignore' });
+        execFileSync('git', ['commit', '-m', 'Initial scaffold', '--quiet'], { cwd: memoryPath, stdio: 'ignore' });
+    } catch { /* best effort */ }
 
     return { root: memoryPath, level: 'scaffolded', message: `Created local memory bus at ${memoryPath}. No remote configured — set one to sync across machines.` };
 }
@@ -93,7 +101,7 @@ function scaffoldMemoryRepo(memoryPath) {
  * @returns {object|null}
  */
 function readProfile(memoryRoot) {
-    const username = process.env.USER || process.env.USERNAME || 'default';
+    const username = sanitizePathSegment(process.env.USER || process.env.USERNAME || 'default');
     const profilePath = path.join(memoryRoot, 'profile', username, 'user-profile.json');
     const fallbackPath = path.join(memoryRoot, 'profile', 'default', 'user-profile.json');
     const target = fs.existsSync(profilePath) ? profilePath : (fs.existsSync(fallbackPath) ? fallbackPath : null);
@@ -107,15 +115,20 @@ function readProfile(memoryRoot) {
  * @param {object} profile
  */
 function writeProfile(memoryRoot, profile) {
-    const username = process.env.USER || process.env.USERNAME || 'default';
+    const username = sanitizePathSegment(process.env.USER || process.env.USERNAME || 'default');
     const profileDir = path.join(memoryRoot, 'profile', username);
     fs.mkdirSync(profileDir, { recursive: true });
     const profilePath = path.join(profileDir, 'user-profile.json');
     fs.writeFileSync(profilePath, JSON.stringify(profile, null, 2) + '\n');
     try {
-        execSync(`git add "${profilePath}" && git commit -m "Update profile: ${username}" --quiet`, { cwd: memoryRoot, stdio: 'ignore' });
-        execSync('git push --quiet', { cwd: memoryRoot, stdio: 'ignore', timeout: 15000 });
+        execFileSync('git', ['add', profilePath], { cwd: memoryRoot, stdio: 'ignore' });
+        execFileSync('git', ['commit', '-m', `Update profile: ${username}`, '--quiet'], { cwd: memoryRoot, stdio: 'ignore' });
+        execFileSync('git', ['push', '--quiet'], { cwd: memoryRoot, stdio: 'ignore', timeout: 15000 });
     } catch { /* best effort — push may fail without remote */ }
+}
+
+function sanitizePathSegment(value) {
+    return String(value || 'default').replace(/[^a-zA-Z0-9._-]/g, '_') || 'default';
 }
 
 // ─── Sync policy ──────────────────────────────────────────────────────────────

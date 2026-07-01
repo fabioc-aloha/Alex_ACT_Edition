@@ -272,49 +272,7 @@ function preprocessMarkdown(content, options = {}) {
     content = stripDecorativeRules(content);
   }
 
-  // LaTeX math -> Unicode
-  content = convertLatexMath(content);
-
-  // Page-break directives
-  content = content.replace(/<!--\s*pagebreak\s*-->/gi, '\\newpage');
-  content = content.replace(/<div\s+class\s*=\s*["']page-break["']\s*(?:\/\s*)?>/gi, '\\newpage');
-  content = content.replace(/<div\s+style\s*=\s*["']page-break-(?:before|after)\s*:\s*always;?["']\s*(?:\/\s*)?>/gi, '\\newpage');
-
-  // Landscape section markers
-  content = content.replace(/<!--\s*landscape\s*-->/gi,
-    '\\newpage\n\n::: {custom-style="LandscapeSection"}\n');
-  content = content.replace(/<!--\s*portrait\s*-->/gi,
-    '\n:::\n\n\\newpage');
-
-  // Callout blocks: ::: tip / ::: warning / ::: note / ::: important / ::: caution
-  content = content.replace(/^:::\s*(tip|warning|note|important|caution)\s*$/gim, (_, type) => {
-    const icons = { tip: '\u{1F4A1}', warning: '\u26A0\uFE0F', note: '\u{1F4DD}', important: '\u2757', caution: '\u{1F525}' };
-    const icon = icons[type.toLowerCase()] || '\u{1F4CC}';
-    return `> **${icon} ${type.charAt(0).toUpperCase() + type.slice(1)}**\n>`;
-  });
-  content = content.replace(/^:::\s*$/gm, '');
-
-  // GitHub-style callout syntax
-  content = content.replace(/^>\s*\[!(TIP|WARNING|NOTE|IMPORTANT|CAUTION)\]\s*$/gim, (_, type) => {
-    const icons = { TIP: '\u{1F4A1}', WARNING: '\u26A0\uFE0F', NOTE: '\u{1F4DD}', IMPORTANT: '\u2757', CAUTION: '\u{1F525}' };
-    const icon = icons[type.toUpperCase()] || '\u{1F4CC}';
-    return `> **${icon} ${type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()}**`;
-  });
-
-  // Keyboard shortcuts: [[Ctrl+S]]
-  content = content.replace(/\[\[([^\]]+)\]\]/g, (_match, keys) => {
-    return keys.split('+').map(k => `<kbd>${k.trim()}</kbd>`).join('+');
-  });
-
-  // Highlights: ==text==
-  content = content.replace(/==([^=]+)==/g, '<mark>$1</mark>');
-
-  // Subscript and superscript (must not span newlines or match footnote syntax [^N])
-  content = content.replace(/(?<![~\\])~([^~\s][^~\n]*)~(?!~)/g, '<sub>$1</sub>');
-  content = content.replace(/(?<![\\[\\]])\^([^^\s][^^\n]*)\^/g, '<sup>$1</sup>');
-
-  // Definition lists
-  content = content.replace(/^([^\n:>*#-][^\n]*)\n:\s+(.+)$/gm, '\n**$1**\n:   $2\n');
+  content = transformOutsideCodeFences(content, transformProseSyntax);
 
   // Line-level transforms
   const lines = content.split('\n');
@@ -374,6 +332,103 @@ function preprocessMarkdown(content, options = {}) {
     }
   }
   return final.join('\n');
+}
+
+function transformOutsideCodeFences(content, transform) {
+  const lines = content.split('\n');
+  const chunks = [];
+  let prose = [];
+  let fence = [];
+  let inFence = false;
+  let fenceMarker = null;
+
+  function flushProse() {
+    if (prose.length > 0) {
+      chunks.push(transform(prose.join('\n')));
+      prose = [];
+    }
+  }
+  function flushFence() {
+    if (fence.length > 0) {
+      chunks.push(fence.join('\n'));
+      fence = [];
+    }
+  }
+
+  for (const line of lines) {
+    const markerMatch = line.match(/^\s*(```+|~~~+)/);
+    if (markerMatch) {
+      const marker = markerMatch[1][0];
+      if (!inFence) {
+        flushProse();
+        inFence = true;
+        fenceMarker = marker;
+        fence.push(line);
+      } else if (marker === fenceMarker) {
+        fence.push(line);
+        inFence = false;
+        fenceMarker = null;
+        flushFence();
+      } else {
+        fence.push(line);
+      }
+      continue;
+    }
+
+    if (inFence) fence.push(line);
+    else prose.push(line);
+  }
+
+  if (inFence) flushFence();
+  else flushProse();
+  return chunks.join('\n');
+}
+
+function transformProseSyntax(content) {
+  // LaTeX math -> Unicode
+  content = convertLatexMath(content);
+
+  // Page-break directives
+  content = content.replace(/<!--\s*pagebreak\s*-->/gi, '\\newpage');
+  content = content.replace(/<div\s+class\s*=\s*["']page-break["']\s*(?:\/\s*)?>/gi, '\\newpage');
+  content = content.replace(/<div\s+style\s*=\s*["']page-break-(?:before|after)\s*:\s*always;?["']\s*(?:\/\s*)?>/gi, '\\newpage');
+
+  // Landscape section markers
+  content = content.replace(/<!--\s*landscape\s*-->/gi,
+    '\\newpage\n\n::: {custom-style="LandscapeSection"}\n');
+  content = content.replace(/<!--\s*portrait\s*-->/gi,
+    '\n:::\n\n\\newpage');
+
+  // Callout blocks: ::: tip / ::: warning / ::: note / ::: important / ::: caution
+  content = content.replace(/^:::\s*(tip|warning|note|important|caution)\s*$/gim, (_, type) => {
+    const icons = { tip: '\u{1F4A1}', warning: '\u26A0\uFE0F', note: '\u{1F4DD}', important: '\u2757', caution: '\u{1F525}' };
+    const icon = icons[type.toLowerCase()] || '\u{1F4CC}';
+    return `> **${icon} ${type.charAt(0).toUpperCase() + type.slice(1)}**\n>`;
+  });
+  content = content.replace(/^:::\s*$/gm, '');
+
+  // GitHub-style callout syntax
+  content = content.replace(/^>\s*\[!(TIP|WARNING|NOTE|IMPORTANT|CAUTION)\]\s*$/gim, (_, type) => {
+    const icons = { TIP: '\u{1F4A1}', WARNING: '\u26A0\uFE0F', NOTE: '\u{1F4DD}', IMPORTANT: '\u2757', CAUTION: '\u{1F525}' };
+    const icon = icons[type.toUpperCase()] || '\u{1F4CC}';
+    return `> **${icon} ${type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()}**`;
+  });
+
+  // Keyboard shortcuts: [[Ctrl+S]]
+  content = content.replace(/\[\[([^\]]+)\]\]/g, (_match, keys) => {
+    return keys.split('+').map(k => `<kbd>${k.trim()}</kbd>`).join('+');
+  });
+
+  // Highlights: ==text==
+  content = content.replace(/==([^=]+)==/g, '<mark>$1</mark>');
+
+  // Subscript and superscript (must not span newlines or match footnote syntax [^N])
+  content = content.replace(/(?<![~\\])~([^~\s][^~\n]*)~(?!~)/g, '<sub>$1</sub>');
+  content = content.replace(/(?<![\\[\\]])\^([^^\s][^^\n]*)\^/g, '<sup>$1</sup>');
+
+  // Definition lists
+  content = content.replace(/^([^\n:>*#-][^\n]*)\n:\s+(.+)$/gm, '\n**$1**\n:   $2\n');
+  return content;
 }
 
 /**

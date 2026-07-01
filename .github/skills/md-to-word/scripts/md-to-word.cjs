@@ -56,7 +56,7 @@ process.on("uncaughtException", (err) => {
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { execSync } = require('child_process');
+const { runTool } = require(path.join(__dirname, '..', '..', '..', 'scripts', 'shared', 'tool-runner.cjs'));
 
 // ---------------------------------------------------------------------------
 // JSZip loading -- try multiple resolution paths
@@ -184,7 +184,7 @@ function convertMermaidToPng(mmdContent, outputPath) {
     // High-res render: 4x scale, 4800px viewport (was 8x/2400px).
     // Wider viewport prevents clipping on wide architecture diagrams;
     // 4 × 4800 = 19200px effective output — same fidelity, more horizontal room.
-    execSync(`npx mmdc -i "${tmpFile}" -o "${outputPath}" -b white -s 4 -w 4800 -H 2400`, {
+    runTool('npx', ['mmdc', '-i', tmpFile, '-o', outputPath, '-b', 'white', '-s', '4', '-w', '4800', '-H', '2400'], {
       stdio: ['pipe', 'pipe', 'pipe'],
       timeout: 120000
     });
@@ -198,7 +198,7 @@ function convertMermaidToPng(mmdContent, outputPath) {
 
 function convertSvgToPng(svgPath, pngPath) {
   try {
-    execSync(`npx svgexport "${svgPath}" "${pngPath}" 800:`, {
+    runTool('npx', ['svgexport', svgPath, pngPath, '800:'], {
       stdio: ['pipe', 'pipe', 'pipe'],
       timeout: 30000
     });
@@ -1180,18 +1180,18 @@ async function build(args) {
 
     // Build pandoc command with options
     const pandocArgs = [
-      `"${tempMd}"`,
-      `-o "${outputPath}"`,
-      '--from markdown',
-      '--to docx',
+      tempMd,
+      '-o', outputPath,
+      '--from', 'markdown',
+      '--to', 'docx',
       '--dpi=300',
-      `--resource-path="${resourcePath}"`
+      '--resource-path', resourcePath
     ];
     if (args.toc) pandocArgs.push('--toc', '--toc-depth=3');
     if (args.referenceDoc) {
       const refDocPath = path.resolve(args.referenceDoc);
       if (fs.existsSync(refDocPath)) {
-        pandocArgs.push(`--reference-doc="${refDocPath}"`);
+        pandocArgs.push('--reference-doc', refDocPath);
       } else {
         console.warn(`[!]  Reference doc not found: ${refDocPath} -- using default`);
       }
@@ -1199,7 +1199,7 @@ async function build(args) {
     if (args.luaFilter) {
       const filterPath = path.resolve(args.luaFilter);
       if (fs.existsSync(filterPath)) {
-        pandocArgs.push(`--lua-filter="${filterPath}"`);
+        pandocArgs.push('--lua-filter', filterPath);
       } else {
         console.warn(`[!]  Lua filter not found: ${filterPath} -- skipping`);
       }
@@ -1211,13 +1211,10 @@ async function build(args) {
     // Write built-in centering Lua filter to temp
     const centerLuaPath = path.join(tempDir, '_center-images.lua');
     fs.writeFileSync(centerLuaPath, CENTER_IMAGES_LUA, 'utf8');
-    pandocArgs.push(`--lua-filter="${centerLuaPath}"`);
+    pandocArgs.push('--lua-filter', centerLuaPath);
 
     try {
-      execSync(
-        `pandoc ${pandocArgs.join(' ')}`,
-        { stdio: ['pipe', 'pipe', 'pipe'], timeout: 120000 }
-      );
+      runTool('pandoc', pandocArgs, { stdio: ['pipe', 'pipe', 'pipe'], timeout: 120000 });
     } catch (err) {
       const stderr = err.stderr ? err.stderr.toString() : String(err);
       console.error(`ERROR: pandoc failed: ${stderr}`);

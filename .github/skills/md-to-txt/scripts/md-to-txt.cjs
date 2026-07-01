@@ -27,7 +27,7 @@
  *   --strip-decorative-rules  Strip decorative `---` (default: disabled for txt)
  *
  * Requirements:
- *   - Node.js 18+
+ *   - Node.js 24+
  *   - pandoc 2.19+
  * @currency 2026-04-21
  */
@@ -42,7 +42,7 @@ process.on("uncaughtException", (err) => {
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { execSync } = require('child_process');
+const { runTool } = require(path.join(__dirname, '..', '..', '..', 'scripts', 'shared', 'tool-runner.cjs'));
 
 // Best-effort load of the shared preprocessor (em-dash + decorative-HR transforms).
 let sharedPreprocessor = null;
@@ -126,18 +126,18 @@ async function build(args) {
 
   console.log('\u{1f4dd} Generating plain text...');
   const pandocArgs = [
-    `"${tempMd}"`, `-o "${outputPath}"`,
-    '--from markdown', '--to plain',
-    `--resource-path="${path.resolve(sourceDir)}"`,
+    tempMd, '-o', outputPath,
+    '--from', 'markdown', '--to', 'plain',
+    '--resource-path', path.resolve(sourceDir),
   ];
   if (args.wrap > 0) {
-    pandocArgs.push(`--wrap=auto`, `--columns=${args.wrap}`);
+    pandocArgs.push('--wrap=auto', `--columns=${args.wrap}`);
   } else {
     pandocArgs.push('--wrap=none');
   }
 
   try {
-    execSync(`pandoc ${pandocArgs.join(' ')}`, { stdio: ['pipe', 'pipe', 'pipe'], timeout: 60000 });
+    runTool('pandoc', pandocArgs, { stdio: ['pipe', 'pipe', 'pipe'], timeout: 60000 });
   } catch (err) {
     console.error(`ERROR: pandoc failed: ${err.stderr ? err.stderr.toString() : err}`);
     process.exit(1);

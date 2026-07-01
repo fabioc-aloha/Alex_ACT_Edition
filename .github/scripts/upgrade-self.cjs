@@ -37,6 +37,7 @@ function arg(name, fallback) {
 }
 const APPLY = args.has('--apply');
 const ALLOW_MAJOR = args.has('--allow-major');
+const SETUP_MEMORY = args.has('--setup-memory');
 const FROM = arg('--from', 'https://github.com/fabioc-aloha/Alex_ACT_Edition.git');
 const REF = arg('--ref', 'main');
 
@@ -171,11 +172,13 @@ if (fs.existsSync(episodicDir)) {
 
 const editionManifestPath = path.join(tmp, '.github', 'config', 'edition-manifest.json');
 let editionSkills = new Set();
+let editionSkillFiles = new Set();
 let editionPrompts = new Set();
 let editionAgents = new Set();
 if (fs.existsSync(editionManifestPath)) {
     const manifest = JSON.parse(fs.readFileSync(editionManifestPath, 'utf8'));
     (manifest.skills || []).forEach(s => editionSkills.add(s));
+    (manifest.skill_files || []).forEach(f => editionSkillFiles.add(f));
     (manifest.prompts || []).forEach(p => editionPrompts.add(p));
     (manifest.agents || []).forEach(a => editionAgents.add(a));
 }
@@ -188,12 +191,14 @@ if (fs.existsSync(heirSkillsDir)) {
     for (const entry of fs.readdirSync(heirSkillsDir, { withFileTypes: true })) {
         if (!entry.isDirectory()) continue;
         if (entry.name === 'local') continue;
-        if (editionSkills.has(entry.name)) continue;
         const srcDir = path.join(heirSkillsDir, entry.name);
         for (const f of walkDir(srcDir)) {
             const rel = path.relative(HEIR_ROOT, f).replace(/\\/g, '/');
-            const newRel = rel.replace('.github/skills/', '.github/skills/local/');
-            relocations.push({ from: rel, to: newRel });
+            const skillRel = rel.replace(/^\.github\/skills\//, '');
+            if (!editionSkills.has(entry.name) || !editionSkillFiles.has(skillRel)) {
+                const newRel = rel.replace('.github/skills/', '.github/skills/local/');
+                relocations.push({ from: rel, to: newRel });
+            }
         }
     }
 }
@@ -320,32 +325,38 @@ if (!APPLY) {
 
 // Step 1: Copy heir-owned files to temp holding area
 const holdDir = fs.mkdtempSync(path.join(os.tmpdir(), 'heir-owned-'));
-for (const rel of heirOwnedFiles) {
-    const src = path.join(HEIR_ROOT, rel);
-    if (!fs.existsSync(src)) continue;
-    const dst = path.join(holdDir, rel);
-    fs.mkdirSync(path.dirname(dst), { recursive: true });
-    fs.copyFileSync(src, dst);
-}
+let backupCreated = false;
+let editionAssetsRefreshed = 0;
+let recovered = 0;
+let relocated = 0;
+let templatesSeeded = 0;
+try {
+    for (const rel of heirOwnedFiles) {
+        const src = path.join(HEIR_ROOT, rel);
+        if (!fs.existsSync(src)) continue;
+        const dst = path.join(holdDir, rel);
+        fs.mkdirSync(path.dirname(dst), { recursive: true });
+        fs.copyFileSync(src, dst);
+    }
 
-// Step 2: Rename .github/ to backup (atomic on same filesystem)
-fs.renameSync(path.join(HEIR_ROOT, '.github'), backupDir);
+    // Step 2: Rename .github/ to backup (atomic on same filesystem)
+    fs.renameSync(path.join(HEIR_ROOT, '.github'), backupDir);
+    backupCreated = true;
 
-// Step 3: Install fresh Edition brain
-const editionGh = path.join(tmp, '.github');
-const bootstrapTemplateSet = new Set(BOOTSTRAP_TEMPLATES.map(p => p.replace(/\\/g, '/')));
-copyDirRecursive(editionGh, path.join(HEIR_ROOT, '.github'), {
-    sourceRoot: tmp,
-    heirOwnedPatterns: HEIR_OWNED,
-    bootstrapTemplateSet,
-});
+    // Step 3: Install fresh Edition brain
+    const editionGh = path.join(tmp, '.github');
+    const bootstrapTemplateSet = new Set(BOOTSTRAP_TEMPLATES.map(p => p.replace(/\\/g, '/')));
+    copyDirRecursive(editionGh, path.join(HEIR_ROOT, '.github'), {
+        sourceRoot: tmp,
+        heirOwnedPatterns: HEIR_OWNED,
+        bootstrapTemplateSet,
+    });
 
 // Step 3.5: Refresh EDITION_OWNED files outside .github/.
 // Step 3 only refreshes the .github/ subtree. Anything EDITION_OWNED that lives
 // elsewhere (today: .vscode/markdown-light.css) would otherwise silently drift.
 // HEIR_OWNED .vscode/ files (.vscode/settings.json, .vscode/extensions.json)
 // are NOT in EDITION_OWNED and are preserved via the existing backup/restore.
-let editionAssetsRefreshed = 0;
 for (const pattern of EDITION_OWNED) {
     if (pattern.startsWith('.github/')) continue;
     for (const rel of expandGlob(tmp, pattern)) {
@@ -364,8 +375,6 @@ for (const r of relocations) {
     relocationMap.set(r.from, r.to);
 }
 
-let recovered = 0;
-let relocated = 0;
 for (const rel of heirOwnedFiles) {
     const src = path.join(holdDir, rel);
     if (!fs.existsSync(src)) continue;
@@ -380,7 +389,6 @@ for (const rel of heirOwnedFiles) {
 // Step 4.5: Seed missing first-install templates only.
 // This is the explicit safe subset of HEIR_OWNED. It excludes curator-side
 // workflows/, dependabot.yml, ISSUE_TEMPLATE/, episodic/, and local/ namespaces.
-let templatesSeeded = 0;
 for (const pattern of BOOTSTRAP_TEMPLATES) {
     for (const rel of expandGlob(tmp, pattern)) {
         const src = path.join(tmp, rel);
@@ -414,11 +422,23 @@ if (fs.existsSync(wsBaselinePath)) {
     }
 }
 
-// Cleanup temp holding area
-try { fs.rmSync(holdDir, { recursive: true, force: true }); } catch { /* best-effort */ }
+} catch (err) {
+    if (backupCreated) {
+        try { fs.rmSync(path.join(HEIR_ROOT, '.github'), { recursive: true, force: true }); } catch { /* best-effort */ }
+        try {
+            if (fs.existsSync(backupDir)) fs.renameSync(backupDir, path.join(HEIR_ROOT, '.github'));
+        } catch (restoreErr) {
+            console.error(`Upgrade failed and rollback could not restore .github/: ${restoreErr.message}`);
+        }
+    }
+    console.error(`Upgrade failed: ${err.message}`);
+    process.exit(1);
+} finally {
+    try { fs.rmSync(holdDir, { recursive: true, force: true }); } catch { /* best-effort */ }
+}
 
 // Best-effort: ensure memory bus is up to date
-const memoryBus = resolveMemoryBus(HEIR_ROOT);
+const memoryBus = resolveMemoryBus(HEIR_ROOT, { mutate: SETUP_MEMORY });
 if (memoryBus && memoryBus.message) console.log(memoryBus.message);
 
 // ─── Summary ─────────────────────────────────────────────────────────────────

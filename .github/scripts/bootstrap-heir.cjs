@@ -159,6 +159,7 @@ function arg(name, fallback) {
 }
 const args = new Set(process.argv.slice(2));
 const APPLY = args.has('--apply');
+const SETUP_MEMORY = args.has('--setup-memory');
 
 // Script lives at <edition-root>/.github/scripts/bootstrap-heir.cjs
 const EDITION_ROOT = path.resolve(__dirname, '..', '..');
@@ -356,7 +357,7 @@ if (!fs.existsSync(identityPath)) {
 }
 
 // Best-effort: resolve shared memory bus (clone or scaffold if needed).
-const memoryBus = resolveMemoryBus(targetAbs);
+const memoryBus = resolveMemoryBus(targetAbs, { mutate: SETUP_MEMORY });
 if (memoryBus && memoryBus.message) {
     console.log('');
     console.log(memoryBus.message);

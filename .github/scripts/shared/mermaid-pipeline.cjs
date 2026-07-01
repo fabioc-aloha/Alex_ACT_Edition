@@ -16,7 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { execSync } = require('child_process');
+const { runTool } = require('./tool-runner.cjs');
 
 // Default scale per output format (harvested from AlexBooks/AIRS patterns)
 const FORMAT_SCALES = {
@@ -228,7 +228,7 @@ function validateSyntax(mmdContent) {
   const tmpOut = tmpFile.replace('.mmd', '.svg');
   try {
     fs.writeFileSync(tmpFile, mmdContent, 'utf8');
-    execSync(`npx mmdc -i "${tmpFile}" -o "${tmpOut}" -b white`, {
+    runTool('npx', ['mmdc', '-i', tmpFile, '-o', tmpOut, '-b', 'white'], {
       stdio: ['pipe', 'pipe', 'pipe'],
       timeout: 30000
     });
@@ -256,6 +256,11 @@ function renderMermaid(mmdContent, outputPath, options = {}) {
   const scale = options.scale || defaults.scale;
   const width = options.width || defaults.width;
   const bg = options.background || 'white';
+  const safeScale = Number(scale);
+  const safeWidth = Number(width);
+  if (!Number.isFinite(safeScale) || safeScale <= 0) return false;
+  if (!Number.isFinite(safeWidth) || safeWidth <= 0) return false;
+  if (!/^[a-zA-Z0-9#_-]+$/.test(String(bg))) return false;
 
   // Optional palette injection
   if (options.injectPalette) {
@@ -272,7 +277,7 @@ function renderMermaid(mmdContent, outputPath, options = {}) {
       fs.mkdirSync(outDir, { recursive: true });
     }
 
-    execSync(`npx mmdc -i "${tmpFile}" -o "${outputPath}" -b ${bg} -s ${scale} -w ${width}`, {
+    runTool('npx', ['mmdc', '-i', tmpFile, '-o', outputPath, '-b', String(bg), '-s', String(safeScale), '-w', String(safeWidth)], {
       stdio: ['pipe', 'pipe', 'pipe'],
       timeout: 60000
     });
@@ -289,7 +294,9 @@ function renderMermaid(mmdContent, outputPath, options = {}) {
  */
 function convertSvgToPng(svgPath, pngPath, width = 800) {
   try {
-    execSync(`npx svgexport "${svgPath}" "${pngPath}" ${width}:`, {
+    const safeWidth = Number(width);
+    if (!Number.isFinite(safeWidth) || safeWidth <= 0) return false;
+    runTool('npx', ['svgexport', svgPath, pngPath, `${safeWidth}:`], {
       stdio: ['pipe', 'pipe', 'pipe'],
       timeout: 30000
     });

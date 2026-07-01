@@ -34,7 +34,7 @@
  *   --debug               Keep intermediate pandoc output as _debug_raw.md
  *
  * Requirements:
- *   - Node.js 18+
+ *   - Node.js 24+
  *   - pandoc (Windows: winget install pandoc | macOS: brew install pandoc | Linux: apt install pandoc)
  * @currency 2026-04-20
  */
@@ -48,7 +48,8 @@ process.on("uncaughtException", (err) => {
 
 const fs = require("fs");
 const path = require("path");
-const { execSync } = require("child_process");
+const os = require("os");
+const { runTool } = require(path.join(__dirname, '..', '..', '..', 'scripts', 'shared', 'tool-runner.cjs'));
 
 // ---------------------------------------------------------------------------
 // Post-processing transforms
@@ -159,7 +160,7 @@ function formatTable(lines) {
 }
 
 /** Extract inline images from markdown, save to images/ folder */
-function extractImages(md, outputDir, imageDirName) {
+function extractImages(md, outputDir, imageDirName, mediaRoot = outputDir) {
   const imageDir = path.join(outputDir, imageDirName);
   let imageCount = 0;
 
@@ -191,7 +192,7 @@ function extractImages(md, outputDir, imageDirName) {
       const newName = `image-${String(imageCount).padStart(3, "0")}${ext}`;
 
       // Try to copy from pandoc media dir if it exists
-      const mediaPath = path.join(outputDir, "media", filename);
+      const mediaPath = path.join(mediaRoot, "media", filename);
       if (fs.existsSync(mediaPath)) {
         if (!fs.existsSync(imageDir))
           fs.mkdirSync(imageDir, { recursive: true });
@@ -249,17 +250,18 @@ function convertDocxToMarkdown(sourcePath, outputPath, options = {}) {
 
   const outputDir = path.dirname(path.resolve(outputPath));
   if (!fs.existsSync(outputDir)) fs.mkdirSync(outputDir, { recursive: true });
+  let mediaRoot = outputDir;
 
   // Pandoc conversion
-  const wrapArg =
-    wrapWidth > 0 ? `--wrap=auto --columns=${wrapWidth}` : "--wrap=none";
-  const extractArg = doExtractImages ? `--extract-media="${outputDir}"` : "";
+  const mediaTempDir = doExtractImages ? fs.mkdtempSync(path.join(os.tmpdir(), "docx-to-md-media-")) : null;
+  if (mediaTempDir) mediaRoot = mediaTempDir;
+  const pandocArgs = [sourcePath, '-o', outputPath, '--from', 'docx', '--to', 'markdown'];
+  if (wrapWidth > 0) pandocArgs.push('--wrap=auto', `--columns=${wrapWidth}`);
+  else pandocArgs.push('--wrap=none');
+  if (doExtractImages) pandocArgs.push('--extract-media', mediaRoot);
 
   try {
-    execSync(
-      `pandoc "${sourcePath}" -o "${outputPath}" --from docx --to markdown ${wrapArg} ${extractArg}`,
-      { stdio: ["pipe", "pipe", "pipe"], timeout: 60000 },
-    );
+    runTool('pandoc', pandocArgs, { stdio: ["pipe", "pipe", "pipe"], timeout: 60000 });
   } catch (err) {
     const stderr = err.stderr ? err.stderr.toString() : "";
     console.error(`ERROR: pandoc conversion failed: ${stderr || err.message}`);
@@ -282,13 +284,11 @@ function convertDocxToMarkdown(sourcePath, outputPath, options = {}) {
 
   if (doExtractImages) {
     const imagesDirName = "images";
-    md = extractImages(md, outputDir, imagesDirName);
+    md = extractImages(md, outputDir, imagesDirName, mediaRoot);
 
-    // Clean up pandoc media/ dir if it created one
-    const mediaDir = path.join(outputDir, "media");
-    if (fs.existsSync(mediaDir)) {
+    if (mediaTempDir && fs.existsSync(mediaTempDir)) {
       try {
-        fs.rmSync(mediaDir, { recursive: true, force: true });
+        fs.rmSync(mediaTempDir, { recursive: true, force: true });
       } catch {
         /* ignore */
       }
@@ -389,6 +389,7 @@ if (require.main === module) {
 
 module.exports = {
   convertDocxToMarkdown,
+  extractImages,
   cleanPandocQuirks,
   normalizeHeadings,
   cleanTables,
