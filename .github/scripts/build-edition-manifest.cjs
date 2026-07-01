@@ -61,7 +61,7 @@ const OUT = path.join(GH, 'config', 'edition-manifest.json');
 
 // HEIR_OWNED + BOOTSTRAP_TEMPLATES policy lives in _registry.cjs
 // (single source of truth); pulled in so we never duplicate the lists.
-const { BOOTSTRAP_TEMPLATES } = require('./_registry.cjs');
+const { BOOTSTRAP_TEMPLATES, HEIR_OWNED } = require('./_registry.cjs');
 
 // Edition-owned config files (heir-owned configs like cognitive-config.json excluded).
 // Keep in sync with EDITION_OWNED in .github/scripts/_registry.cjs.
@@ -259,6 +259,7 @@ const manifest = {
   version_file: hasVersionFile() ? 'VERSION' : null,
   vscode_assets: listVscodeAssets(),
   bootstrap_templates: listBootstrapTemplates(),
+  heir_owned: HEIR_OWNED.slice(),
 };
 
 const newJson = JSON.stringify(manifest, null, 2) + '\n';

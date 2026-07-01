@@ -6,6 +6,10 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+### Changed
+
+- Added `heir_owned` to `.github/config/edition-manifest.json`, generated from `_registry.cjs`, so static-fetch Extension installs can consume the HEIR_OWNED policy as manifest data instead of executing fetched Edition code. This is a forward-compatible contract addition for the next Extension release; existing Extensions still fall back to their legacy parser.
+
 ## [3.8.0] - 2026-07-01
 
 **Minor [behaviour] — Hardens Edition bootstrap/upgrade and converter script safety, removes curator automation from the heir-shipped source tree, and raises the Node runtime baseline to 24+.**
