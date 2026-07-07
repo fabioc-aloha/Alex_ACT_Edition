@@ -6,9 +6,44 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+## [3.8.1] - 2026-07-07
+
+**Patch [behaviour] — VS Code 1.126–1.128 platform-awareness refresh (docs-only tool-awareness + terminal-safety table extensions, welcome-baseline `$comment` refresh) plus a forward-compatible `heir_owned` manifest field for next-gen Extension installs.**
+
+Two coordinated changes queued since v3.8.0, released together as a docs/manifest patch:
+
+1. **VS Code 1.126–1.128 platform-awareness** (Tier A of `Alex_ACT_Supervisor/docs/proposals/vscode-1.126-1.128-adoption-2026-07-07.md`). Extends the always-on tool-awareness table with 9 rows spanning three release cycles (Edit-mode deprecation, macOS/Linux terminal sandboxing, browser tools GA, BYOK Claude via own Anthropic key, and more), adds a `1.127 macOS/Linux terminal sandboxed by default` row to terminal-command-safety, and refreshes welcome-baseline `$comment` to acknowledge 1.126 Edit-mode deprecation reinforcing the `chat.agent.enabled: true` pin.
+2. **`heir_owned` manifest field** (from v3.8.0 post-release commit `cd32ece`). Additive contract addition so next-gen static-fetch Extension installs can read the HEIR_OWNED policy as manifest data instead of executing fetched Edition code.
+
+Both are additive; heirs that ignore the new tool-awareness rows still have correct rules, and existing Extensions still fall back to their legacy HEIR_OWNED parser.
+
+### Added
+
+- `.github/instructions/tool-awareness.instructions.md` — H2 renamed `VS Code 1.122–1.125 conveniences` → `VS Code 1.122–1.128 conveniences`; +9 rows covering 1.126 Edit-mode deprecation (reinforces `chat.agent.enabled: true` pin), 1.127 macOS/Linux terminal sandboxing / `/troubleshoot` on agent host / browser tools GA / file-based managed Copilot settings / built-in Ollama provider deprecated, 1.128 BYOK Claude via own Anthropic key / custom endpoint model options for BYOK / Claude agent → integrated browser DOM. Byte-identical Supervisor↔Edition mirror per shared-core-coherence.
+- `.github/instructions/terminal-command-safety.instructions.md` — H2 renamed `VS Code platform changes (1.117–1.121)` → `(1.117–1.127)`; +1 row for 1.127 macOS/Linux terminal sandboxed by default (Windows unaffected — Backtick Hazard + Output Capture rules still apply); Backtick Hazard falsifier watermark bumped `through 1.121` → `through 1.128` (`microsoft/vscode#295620` re-verified open, milestone *On Deck*).
+- `.github/config/edition-manifest.json` — new `heir_owned` field generated from `_registry.cjs`, forward-compatible for next-gen Extension installs.
+
 ### Changed
 
-- Added `heir_owned` to `.github/config/edition-manifest.json`, generated from `_registry.cjs`, so static-fetch Extension installs can consume the HEIR_OWNED policy as manifest data instead of executing fetched Edition code. This is a forward-compatible contract addition for the next Extension release; existing Extensions still fall back to their legacy parser.
+- `.github/config/welcome-baseline.json` (`$comment` only, `settings` block untouched) — audit watermark 2026-06-23 → 2026-07-07, VS Code coverage 1.121-1.125 → 1.121-1.128, +3 lines under Category (2) documenting VS Code 1.126 Edit-mode deprecation and reinforcing the `chat.agent.enabled: true` pin as doubly-aligned with platform direction (user policy AND platform default converged). Category (4) reference synced `(1.117-1.121 features)` → `(1.117-1.127 features)`.
+- `.github/instructions/tool-awareness.instructions.md` — `lastReviewed` bumped 2026-06-23 → 2026-07-07.
+- `.github/instructions/terminal-command-safety.instructions.md` — `lastReviewed` bumped 2026-05-29 → 2026-07-07.
+
+### Brain contract
+
+No change to `min_extension_version` (stays at `9.5.1`), `brain_subtrees`, `marker_schema`, `vscode_assets`, or `bootstrap_templates`. The `heir_owned` addition is a new optional field that older Extensions ignore.
+
+### Heir upgrade
+
+Run `/upgrade` (Extension `ACT: Upgrade Brain`) to receive the tool-awareness expansion + terminal-safety sandbox row + welcome-baseline `$comment` refresh. No behavior gate changes for existing rules; the mac/Linux sandbox note is informational context an agent uses when reasoning about terminal-command approval frequency on non-Windows heirs. No `--allow-major` needed.
+
+### Falsifier
+
+**2026-08-07** (30 days) per proposal § Falsifiability:
+
+- (a) If any 1.128 row I shipped turns out to be Insiders-only past 2026-07-05 → prune that row (rows are informational; per-row revert, not whole-batch rollback).
+- (b) If the macOS/Linux sandbox note misleads an agent into skipping the file-redirect fallback on a genuinely stripped-output case → revert the sandbox row.
+- (c) If the 1.126 Edit-mode note in welcome-baseline `$comment` produces heir confusion (heirs who deliberately used Edit mode with local overrides) → revert `$comment` refresh; `chat.agent.enabled: true` pin stands independently.
 
 ## [3.8.0] - 2026-07-01
 
