@@ -32,7 +32,7 @@ This is a **cognitive architecture** -- 33 skills, 36 instructions, 27 prompts, 
 
 The v1.5.0 reasoning baseline and the v2.0.0 release benchmark (Compose verification, 15/15 composite, -22.5% credits) were both run on the **Microsoft-internal 1M-context variant of Claude Opus 4.7** (visible only to Microsoft enterprise tenants; the public Claude Opus 4.7 GA model in the table below ships with a 200K context window). Real-world heir adoption (S360) succeeded on Copilot's default model surface; specific model used was not recorded.
 
-### Snapshot: Copilot Language Models (validated 2026-05-26)
+### Snapshot: Copilot Language Models (validated 2026-07-07)
 
 The table below is validated against the [GitHub Docs Supported AI models](https://docs.github.com/en/copilot/reference/ai-models/supported-models) reference. Cost values (credits per 1M tokens) come from the Copilot internal accounting visible in `Settings → GitHub Copilot → Language Models` in VS Code 1.121+ — different from the public *premium request multiplier* surface, and shown as `—` for rows where the internal panel value was not captured. **Verify against your own picker** before depending on these values; availability and pricing change between releases.
 
@@ -41,26 +41,36 @@ The table below is validated against the [GitHub Docs Supported AI models](https
 | Claude Haiku 4.5 | 200K | ✓ | ✓ | 100 | 500 | 10 | 🟡 Utility slot only |
 | Claude Opus 4.5 | 200K | ✓ | ✓ | 500 | 2500 | 50 | ✅ Primary (inferred) |
 | Claude Opus 4.6 | 200K | ✓ | ✓ | 500 | 2500 | 50 | ✅ Primary (inferred) |
-| Claude Opus 4.6 (fast mode) (Preview) | 200K | ✓ | ✓ | — | — | — | ✅ Primary (inferred) — 30x multiplier |
+| Claude Opus 4.6 (fast mode) (Preview) | 200K | ✓ | ✓ | — | — | — | ⚠️ *(deprecation announced 2026-06-18)* — was ✅ Primary, downgraded to Test-first pending migration guidance |
 | Claude Opus 4.7 | 200K | ✓ | ✓ | 500 | 2500 | 50 | ✅ Primary (family measured) |
+| Claude Opus 4.8 (fast mode) (Preview) | — | ✓ | ✓ | — | — | — | ⚠️ Test first — new fast-mode Preview (GH 2026-06-29) |
 | Claude Sonnet 4.5 | 200K | ✓ | ✓ | 300 | 1500 | 30 | ✅ Primary (inferred) |
 | Claude Sonnet 4.6 | 200K | ✓ | ✓ | 300 | 1500 | 30 | ✅ Primary (inferred) |
-| Gemini 2.5 Pro | 173K | ✓ | ✓ | 125 | 1000 | 12.5 | ✅ Primary (inferred) |
-| Gemini 3 Flash (Preview) | 173K | ✓ | ✓ | 50 | 300 | 5 | 🟡 Utility slot only |
+| Claude Sonnet 5 | — | ✓ | ✓ | — | — | — | ✅ Primary (inferred) — GA 2026-06-30, family lineage from Sonnet 4.x |
+| Claude Fable 5 | — | ✓ | ✓ | — | — | — | ✅ Primary (inferred) — GA 2026-06-09, new Claude tier |
+| Gemini 2.5 Pro | 173K | ✓ | ✓ | 125 | 1000 | 12.5 | ⚠️ *(deprecation announced 2026-07-02)* — was ✅ Primary, use Gemini 3.1 Pro or GPT/Claude equivalents |
+| Gemini 3 Flash (Preview) | 173K | ✓ | ✓ | 50 | 300 | 5 | ⚠️ *(deprecation announced 2026-07-02)* — was Utility, use Gemini 3.5 Flash |
 | Gemini 3.1 Pro (Preview) | 200K | ✓ | ✓ | 200 | 1200 | 20 | ✅ Primary (inferred) |
 | Gemini 3.5 Flash | — | ✓ | ✓ | — | — | — | 🟡 Utility slot only — 14x multiplier |
-| GPT-4.1 ⚠️ *(retiring 2026-06-01)* | 128K | ✓ | ✓ | 200 | 800 | 50 | ❌ Do not adopt |
+| GPT-4.1 ❌ *(deprecated 2026-06-02)* | 128K | ✓ | ✓ | 200 | 800 | 50 | ❌ Do not adopt |
 | GPT-5 mini | 192K | ✓ | ✓ | 25 | 200 | 2.5 | ⚠️ Test first |
-| GPT-5.2 ⚠️ *(retiring 2026-06-01)* | 400K | ✓ | ✓ | 175 | 1400 | 17.5 | ❌ Do not adopt |
-| GPT-5.2-Codex *(retiring 2026-06-01)* | 400K | ✓ | ✓ | 175 | 1400 | 17.5 | ❌ Do not adopt |
+| GPT-5.2 ❌ *(deprecated 2026-06-05)* | 400K | ✓ | ✓ | 175 | 1400 | 17.5 | ❌ Do not adopt |
+| GPT-5.2-Codex ❌ *(deprecated 2026-06-05)* | 400K | ✓ | ✓ | 175 | 1400 | 17.5 | ❌ Do not adopt |
 | GPT-5.3-Codex | 400K | ✓ | ✓ | 175 | 1400 | 17.5 | ✅ Primary (inferred) |
 | GPT-5.4 | 400K | ✓ | ✓ | 175 | 1400 | 17.5 | ✅ Primary (inferred) |
 | GPT-5.4 mini | 400K | ✓ | ✓ | 75 | 450 | 7.5 | 🟡 Utility slot only |
 | GPT-5.5 | 400K | ✓ | ✓ | 500 | 3000 | 50 | ✅ Primary (inferred) — 7.5x promotional multiplier |
 | Raptor mini (Preview, fine-tuned GPT-5 mini) | — | ✓ | — | — | — | — | ⚠️ Test first |
 | Goldeneye (Preview, fine-tuned GPT-5.1-Codex) | — | ✓ | — | — | — | — | ✅ Primary (inferred) |
+| Kimi K2.7 Code | — | ✓ | — | — | — | — | ⚠️ Test first — GA 2026-07-01, non-major-vendor entry, no ACT-discipline validation yet |
+| MAI-Code-1-Flash | — | ✓ | — | — | — | — | ⚠️ Test first — GA 2026-06-26 for Business/Enterprise, Flash-tier naming suggests utility fit |
 
-**Universal**: every Copilot model in this lineup exposes Tools; most expose Vision (Raptor mini and Goldeneye unverified). **Variable**: context window (128K → 400K for verified rows), input cost (25 → 500), output cost (200 → 3000), and cache cost (2.5 → 50). The capability-floor benchmark (`MAN.8.3`, tracked in Supervisor `HANDOFF.md`) will measure ACT-discipline performance across a subset of these models; the data above is the factual spec sheet that feeds that benchmark, not a recommendation.
+**Universal**: every Copilot model in this lineup exposes Tools; most expose Vision (Raptor mini, Goldeneye, Kimi K2.7 Code, MAI-Code-1-Flash unverified). **Variable**: context window (128K → 400K for verified rows), input cost (25 → 500), output cost (200 → 3000), and cache cost (2.5 → 50). The capability-floor benchmark (`MAN.8.3`, tracked in Supervisor `HANDOFF.md`) will measure ACT-discipline performance across a subset of these models; the data above is the factual spec sheet that feeds that benchmark, not a recommendation.
+
+**Note on Auto mode + configurable reasoning** (added 2026-07-07 per GH Copilot changelog):
+
+- **Auto mode in Copilot Chat GA'd for all users on 2026-06-17**. Auto delegates model selection to a Copilot classifier that routes per-turn based on task shape. It is a legitimate alternative to the explicit Primary-slot pattern the table above teaches. Trade: you gain per-turn routing intelligence, you lose direct control over which model handles what. ACT discipline (the act-pass, alternative-hypothesis generation, disconfirmer search) has **not been validated on Auto mode routing** — the routing decisions happen inside GitHub's classifier, not the model itself. Recommend explicit Primary-slot selection for the primary agent conversation until Auto is measured against ACT.
+- **Configurable reasoning levels + larger context windows** (GH 2026-06-04) extend some models' effective range for the same name. If your `Chat: Manage Language Models` picker shows a reasoning-effort control on a Primary-slot model, the setting affects the same row above — no separate table entry needed.
 
 **Recommendation legend** (preliminary; `MAN.8.3` open):
 
@@ -71,7 +81,7 @@ The table below is validated against the [GitHub Docs Supported AI models](https
 | ✅ **Primary (inferred)** | GitHub Docs categorizes for *deep reasoning + debugging* or *general-purpose + agent tasks*. Architectural fit matches ACT needs; not yet measured against ACT discipline specifically. |
 | ⚠️ **Test first** | GitHub Docs cross-categorizes the model (e.g. GPT-5 mini recommended for **both** general-purpose AND deep reasoning; Raptor mini is a fine-tuned variant of GPT-5 mini). High-leverage benchmark target if low-cost. Do not adopt for production ACT work before measuring. |
 | 🟡 **Utility slot only** | GitHub Docs categorizes for *fast help with simple or repetitive tasks*. Appropriate for the `chat.utilityModel` / `chat.utilitySmallModel` slots routed via the Chat: Manage Language Models UI (1.106+). **Not** for primary agent work — multi-step act-pass discipline is exactly the chained reasoning this tier is designed not to do. |
-| ❌ **Do not adopt** | Retiring 2026-06-01 per GitHub Docs; migrate now if currently using. |
+| ❌ **Do not adopt** | Deprecated per GitHub Copilot changelog; migrate now if currently using. |
 
 ### What the brain needs from a model
 

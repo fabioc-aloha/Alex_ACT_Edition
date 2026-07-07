@@ -6,6 +6,41 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+## [3.8.2] - 2026-07-07
+
+**Patch [clarification] — GitHub Copilot changelog refresh: Model Compatibility snapshot brought current (5 new models, 3 deprecation promotions, 1 currently-Primary downgrade); welcome-baseline `$comment` extended with enterprise-managed-settings.json per-OS paths.**
+
+Docs-only sibling to v3.8.1 (which shipped the VS Code 1.126–1.128 platform-awareness refresh). No rule changes, no `settings` object changes, no manifest contract change.
+
+Source: Tier D items D2 + D3 from `Alex_ACT_Supervisor/docs/proposals/tier-d-implementation-menu-2026-07-07.md`, tracing back to `copilot-changelog-2026-07-07.md` Tier A.
+
+### Changed
+
+- `README.md § Model Compatibility § Snapshot` — validation date `2026-05-26` → `2026-07-07`. Deprecation flag updates: GPT-4.1 `⚠️ (retiring 2026-06-01)` → `❌ (deprecated 2026-06-02)`; GPT-5.2 + GPT-5.2-Codex `⚠️ (retiring 2026-06-01)` → `❌ (deprecated 2026-06-05)`; Claude Opus 4.6 (fast mode) recommendation downgrade `✅ Primary (inferred)` → `⚠️ (deprecation announced 2026-06-18)`; Gemini 2.5 Pro `✅ Primary` → `⚠️ (deprecation announced 2026-07-02)`; Gemini 3 Flash `🟡 Utility` → `⚠️ (deprecation announced 2026-07-02)`. Recommendation legend `❌ Do not adopt` reworded from `Retiring 2026-06-01 per GitHub Docs` → `Deprecated per GitHub Copilot changelog`.
+- `.github/config/welcome-baseline.json` (`$comment` only, `settings` block untouched) — extended Category (8) block with an "Enterprise-managed environments" note documenting VS Code 1.125+ MDM channel + VS Code 1.127+ file-based delivery (GA 2026-07-01) + per-OS paths for `managed-settings.json` (Windows / macOS / Linux). Precedence order clarified: MDM + file-based delivery both override user-scope settings.json.
+
+### Added
+
+- `README.md § Model Compatibility § Snapshot` — 5 new model rows: Claude Sonnet 5 (✅ Primary inferred, GA 2026-06-30), Claude Fable 5 (✅ Primary inferred, GA 2026-06-09), Claude Opus 4.8 fast-mode Preview (⚠️ Test first, 2026-06-29), Kimi K2.7 Code (⚠️ Test first, GA 2026-07-01), MAI-Code-1-Flash (⚠️ Test first, GA 2026-06-26 Business/Enterprise).
+- `README.md § Model Compatibility` — new paragraph below the Snapshot table: "Note on Auto mode + configurable reasoning" documenting Auto mode GA 2026-06-17 (legitimate alternative to explicit Primary-slot pattern; not yet validated on ACT discipline; recommend explicit selection until measured) and configurable reasoning levels + larger context windows (GH 2026-06-04, extends same-name model rows).
+
+### Brain contract
+
+Unchanged: `min_extension_version` stays `9.5.1`, `brain_subtrees` stays `[.github]`, `marker_schema` stays v2, manifest spec stays `1.4`. Only `edition_version` and `generated_at` change in the manifest.
+
+### Heir upgrade
+
+Standard `/upgrade` (Extension `ACT: Upgrade Brain`). No `--allow-major` needed. Heirs picking models via UI see the Snapshot table's new/deprecated rows on next visit to `README.md`; behavior gate for existing rules unchanged.
+
+### Falsifier
+
+**2026-08-07** (30 days per Copilot proposal falsifier):
+
+- (a) A recommendation flag for a new model (Sonnet 5 as ✅ Primary, Fable 5 as ✅ Primary, Kimi K2.7 / Opus 4.8 fast / MAI-Code-1-Flash as ⚠️ Test first) proves miscalibrated when a heir reports the model doesn't fit architectural-needs criteria → flip the flag via v3.8.3 patch.
+- (b) Opus 4.6 (fast) deprecation gets rescinded before it takes effect → restore the ✅ Primary flag.
+- (c) A model marked deprecated shows up in the Copilot picker still available past its deprecation date → clarify the flag semantics or amend the row.
+- (d) The Auto mode + configurable reasoning paragraph produces heir confusion about "should I pick a specific model or use Auto?" → expand the paragraph or drop it.
+
 ## [3.8.1] - 2026-07-07
 
 **Patch [behaviour] — VS Code 1.126–1.128 platform-awareness refresh (docs-only tool-awareness + terminal-safety table extensions, welcome-baseline `$comment` refresh) plus a forward-compatible `heir_owned` manifest field for next-gen Extension installs.**
