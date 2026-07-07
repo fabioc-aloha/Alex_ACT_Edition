@@ -6,6 +6,40 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+## [3.8.3] - 2026-07-07
+
+**Patch [behaviour] — Tier D bundle D9 + D10: new browser-tools skill (Edition + Supervisor byte-identical mirror) + welcome-baseline `$comment` note documenting Copilot Memory user preferences on Business/Enterprise plans.**
+
+User signal confirmed both preconditions the Tier D menu was holding these items on: (a) enterprise plan in use, unblocking D9's Business/Enterprise Copilot Memory user-preferences awareness; (b) concrete use case named for browser tools — bot-avoidance across multiple projects + design validation — unblocking D10's new skill.
+
+Source: Tier D items D9 + D10 from `Alex_ACT_Supervisor/docs/proposals/tier-d-implementation-menu-2026-07-07.md`.
+
+### Added
+
+- `.github/skills/browser-tools/SKILL.md` (~200 lines) — new skill guiding when to reach for VS Code 1.127+ browser tools instead of `fetch_webpage`. Covers three operational patterns: (1) bot-protected content read (CloudFlare, PerimeterX, Akamai, Datadome), (2) design validation via `screenshot_page`, (3) interactive site behind consent gate. Toolset reference for all agent-invocable browser operations (`open_browser_page`, `screenshot_page`, `click_element`, `read_page`, `type_in_page`, `hover_element`, `handle_dialog`, `drag_element`, `run_playwright_code`, `navigate_page`). Safety section: external URL trust boundary + screenshot content leakage + credential handling (NEVER type secrets via `type_in_page`) + enterprise policy interaction (`BrowserChatTools`, `ChatAgentNetworkFilter`) + consent-gate discipline (don't accept ToS on user's behalf). Cost section: browser tools heavier than `fetch_webpage`, upgrade only when needed. When NOT to Fire: static HTML, trusted docs sources, API endpoints. Byte-identical Supervisor mirror.
+
+### Changed
+
+- `.github/config/welcome-baseline.json` (`$comment` only, `settings` block untouched) — Category (3) Copilot chat features gained 5-line sub-note documenting Copilot Memory user preferences (GH GA 2026-06-02 for Business/Enterprise plans) as a distinct layer from this brain's `memory-triggers.instructions.md`. Platform Copilot Memory persists short-term chat context on GitHub-managed infra; brain memory-triggers govern deliberate persistence to `/memories/`, `HANDOFF.md`, and `../Alex_ACT_Memory/`. Both fire concurrently without conflict.
+
+### Brain contract
+
+Unchanged: `min_extension_version` stays `9.5.1`, `brain_subtrees` stays `[.github]`, `marker_schema` stays v2, manifest spec stays `1.4`. Only `edition_version` (3.8.2 → 3.8.3), `generated_at`, and `skills` count (37 → 38) change in the manifest.
+
+### Heir upgrade
+
+Standard `/upgrade` (Extension `ACT: Upgrade Brain`). No `--allow-major` needed. Heirs picking up v3.8.3 get the new browser-tools skill available for description-match invocation + the welcome-baseline `$comment` refresh. No rule changes; behavior gate for existing rules unchanged.
+
+### Falsifier
+
+**2026-10-07** (90 days) per skill's own `## Would Revise If`:
+
+- Browser tools fire on tasks where `fetch_webpage` would have worked ≥3 times in a quarter → tighten "When to Fire" criteria.
+- Bot-protected content still fails on browser tools ≥1 time → surface the failure mode in Pattern 1.
+- Enterprise policy `BrowserChatTools` blocks tools entirely for a heir's org → add "not-applicable" branch to the skill.
+- Safety incident (screenshot leak, credential typed to wrong field, ToS accepted without authorization) → expand Safety section.
+- Design-validation output discipline slips (agent claims "looks good" without evidence) → tighten Pattern 2 evidence-required rule.
+
 ## [3.8.2] - 2026-07-07
 
 **Patch [clarification] — GitHub Copilot changelog refresh: Model Compatibility snapshot brought current (5 new models, 3 deprecation promotions, 1 currently-Primary downgrade); welcome-baseline `$comment` extended with enterprise-managed-settings.json per-OS paths.**
