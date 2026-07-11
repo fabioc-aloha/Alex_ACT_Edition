@@ -9,9 +9,8 @@
  *  - Module constants (memory repo name + remote URL)
  *  - readProfile / writeProfile filesystem I/O
  *
- * Skipped here: resolveMemoryBus (spawns git; integration concern), the
- * full scaffoldMemoryRepo flow (writes 8+ files + git init), and CLI mode
- * (covered by the manifest builder's own --check test).
+ * Mutating resolveMemoryBus and full scaffold flows remain integration
+ * concerns. Read-only resolution and sanitized profile CLI behavior are tested.
  */
 
 const { test } = require('node:test');
@@ -19,8 +18,14 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
+const { spawnSync } = require('node:child_process');
 
 const reg = require('../.github/scripts/_registry.cjs');
+const {
+    ProfileCryptoError,
+    decryptEnvelope,
+    encryptBuffer,
+} = require('../.github/scripts/shared/profile-crypto.cjs');
 
 // ── Module constants ──────────────────────────────────────────────────
 
@@ -41,6 +46,17 @@ test('MEMORY_REPO_NAME is the canonical sibling repo name', () => {
 
 test('MEMORY_REMOTE points at the canonical GitHub repo', () => {
     assert.match(reg.MEMORY_REMOTE, /^https:\/\/github\.com\/[\w-]+\/Alex_ACT_Memory(\.git)?$/);
+});
+
+test('resolveMemoryBus is read-only by default and does not scaffold', () => {
+    const parent = fs.mkdtempSync(path.join(os.tmpdir(), 'reg-resolve-'));
+    const heirRoot = path.join(parent, 'heir');
+    const memoryRoot = path.join(parent, 'Alex_ACT_Memory');
+    try {
+        fs.mkdirSync(heirRoot);
+        assert.equal(reg.resolveMemoryBus(heirRoot), null);
+        assert.equal(fs.existsSync(memoryRoot), false);
+    } finally { cleanup(parent); }
 });
 
 // ── Ownership policy invariants ───────────────────────────────────────
@@ -124,7 +140,9 @@ test('HEIR_OWNED: contains workspace-settings target', () => {
     );
 });
 
-// ── readProfile / writeProfile ────────────────────────────────────────
+// ── Encrypted readProfile / writeProfile ──────────────────────────────
+
+const PROFILE_PASSWORD = 'synthetic-edition-profile-password';
 
 function mkMemoryRoot() {
     const root = fs.mkdtempSync(path.join(os.tmpdir(), 'reg-memory-'));
@@ -136,6 +154,37 @@ function cleanup(p) {
     try { fs.rmSync(p, { recursive: true, force: true }); } catch { /* best effort */ }
 }
 
+function withUser(fakeUser, operation) {
+    const previous = {
+        USER: process.env.USER,
+        USERNAME: process.env.USERNAME,
+        ALEX_ACT_MEMORY_PASSWORD: process.env.ALEX_ACT_MEMORY_PASSWORD,
+    };
+    process.env.USER = fakeUser;
+    process.env.USERNAME = fakeUser;
+    process.env.ALEX_ACT_MEMORY_PASSWORD = PROFILE_PASSWORD;
+    try {
+        return operation();
+    } finally {
+        for (const [key, value] of Object.entries(previous)) {
+            if (value === undefined) delete process.env[key];
+            else process.env[key] = value;
+        }
+    }
+}
+
+function writeEncryptedProfile(root, username, profile) {
+    const dir = path.join(root, 'profile', username);
+    fs.mkdirSync(dir, { recursive: true });
+    const plaintext = Buffer.from(JSON.stringify(profile));
+    const envelope = encryptBuffer(plaintext, PROFILE_PASSWORD);
+    plaintext.fill(0);
+    fs.writeFileSync(
+        path.join(dir, 'user-profile.encrypted.json'),
+        `${JSON.stringify(envelope, null, 2)}\n`
+    );
+}
+
 test('readProfile: returns null when no profile files exist', () => {
     const root = mkMemoryRoot();
     try {
@@ -143,96 +192,130 @@ test('readProfile: returns null when no profile files exist', () => {
     } finally { cleanup(root); }
 });
 
-test('readProfile: returns parsed JSON from profile/default/user-profile.json fallback', () => {
+test('readProfile: decrypts profile/default/user-profile.encrypted.json fallback', () => {
     const root = mkMemoryRoot();
     try {
-        fs.writeFileSync(
-            path.join(root, 'profile', 'default', 'user-profile.json'),
-            JSON.stringify({ name: 'default-user', tier: 'baseline' })
-        );
-        // Force the non-existence of a user-specific path so fallback fires.
-        // (USER/USERNAME env vars are read inside readProfile; we let whatever
-        // value the test env has be the lookup, and rely on the file being
-        // absent at <root>/profile/<that>/user-profile.json.)
-        const previous = process.env.USERNAME;
-        process.env.USERNAME = 'no-such-user-for-tests-' + Date.now();
-        try {
+        writeEncryptedProfile(root, 'default', { name: 'default-user', tier: 'baseline' });
+        withUser('no-such-user-for-tests-' + Date.now(), () => {
             const profile = reg.readProfile(root);
             assert.equal(profile && profile.name, 'default-user');
             assert.equal(profile && profile.tier, 'baseline');
-        } finally {
-            if (previous === undefined) delete process.env.USERNAME;
-            else process.env.USERNAME = previous;
-        }
+        });
     } finally { cleanup(root); }
 });
 
-test('readProfile: returns user-specific profile when present (takes precedence over default)', () => {
+test('readProfile: encrypted user-specific profile takes precedence over default', () => {
     const root = mkMemoryRoot();
     try {
         const fakeUser = 'test-user-' + Date.now();
-        fs.mkdirSync(path.join(root, 'profile', fakeUser), { recursive: true });
-        fs.writeFileSync(
-            path.join(root, 'profile', fakeUser, 'user-profile.json'),
-            JSON.stringify({ name: 'specific-user' })
-        );
-        // Also write a default so we can prove precedence.
-        fs.writeFileSync(
-            path.join(root, 'profile', 'default', 'user-profile.json'),
-            JSON.stringify({ name: 'default-user' })
-        );
-        // Manage both USER (Unix) and USERNAME (Windows). The function reads
-        // USER || USERNAME; on macOS/Linux USER is always set to the real
-        // login name, so setting USERNAME alone has no effect there.
-        const prevUser = process.env.USER;
-        const prevUsername = process.env.USERNAME;
-        process.env.USER = fakeUser;
-        process.env.USERNAME = fakeUser;
-        try {
+        writeEncryptedProfile(root, fakeUser, { name: 'specific-user' });
+        writeEncryptedProfile(root, 'default', { name: 'default-user' });
+        withUser(fakeUser, () => {
             const profile = reg.readProfile(root);
             assert.equal(profile && profile.name, 'specific-user', 'user-specific path must win over default');
-        } finally {
-            if (prevUser === undefined) delete process.env.USER; else process.env.USER = prevUser;
-            if (prevUsername === undefined) delete process.env.USERNAME; else process.env.USERNAME = prevUsername;
-        }
+        });
     } finally { cleanup(root); }
 });
 
-test('readProfile: returns null when profile JSON is malformed', () => {
+test('readProfile: ignores legacy plaintext profile files', () => {
     const root = mkMemoryRoot();
     try {
-        fs.writeFileSync(path.join(root, 'profile', 'default', 'user-profile.json'), 'NOT JSON {');
-        const previous = process.env.USERNAME;
-        process.env.USERNAME = 'no-such-user-for-tests-' + Date.now();
-        try {
+        fs.writeFileSync(
+            path.join(root, 'profile', 'default', 'user-profile.json'),
+            JSON.stringify({ value: 'SYNTHETIC_PLAINTEXT_MUST_NOT_LOAD' })
+        );
+        withUser('no-such-user-for-tests-' + Date.now(), () => {
             assert.equal(reg.readProfile(root), null);
+        });
+    } finally { cleanup(root); }
+});
+
+test('readProfile: missing password skips safely while wrong password fails closed', () => {
+    const root = mkMemoryRoot();
+    try {
+        writeEncryptedProfile(root, 'default', { name: 'default-user' });
+        const previous = process.env.ALEX_ACT_MEMORY_PASSWORD;
+        delete process.env.ALEX_ACT_MEMORY_PASSWORD;
+        try {
+            assert.equal(reg.readProfile(root, { projectRoot: root }), null);
+            assert.throws(
+                () => reg.readProfile(root, {
+                    environment: { ALEX_ACT_MEMORY_PASSWORD: 'wrong-password' },
+                    projectRoot: root,
+                }),
+                (cause) => cause instanceof ProfileCryptoError && cause.code === 'PROFILE_AUTH_FAILED'
+            );
         } finally {
-            if (previous === undefined) delete process.env.USERNAME;
-            else process.env.USERNAME = previous;
+            if (previous === undefined) delete process.env.ALEX_ACT_MEMORY_PASSWORD;
+            else process.env.ALEX_ACT_MEMORY_PASSWORD = previous;
         }
     } finally { cleanup(root); }
 });
 
-test('writeProfile: persists JSON to profile/<user>/user-profile.json', () => {
+test('readProfile: loads the password from the authorized project env file', () => {
+    const root = mkMemoryRoot();
+    const projectRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'reg-project-'));
+    try {
+        writeEncryptedProfile(root, 'default', { name: 'env-file-user' });
+        spawnSync('git', ['init', '--quiet'], { cwd: projectRoot });
+        fs.writeFileSync(path.join(projectRoot, '.gitignore'), '.env\n');
+        fs.writeFileSync(
+            path.join(projectRoot, '.env'),
+            `ALEX_ACT_MEMORY_PASSWORD="${PROFILE_PASSWORD}"\n`
+        );
+        const previous = process.env.ALEX_ACT_MEMORY_PASSWORD;
+        delete process.env.ALEX_ACT_MEMORY_PASSWORD;
+        try {
+            const profile = reg.readProfile(root, { projectRoot });
+            assert.equal(profile && profile.name, 'env-file-user');
+        } finally {
+            if (previous === undefined) delete process.env.ALEX_ACT_MEMORY_PASSWORD;
+            else process.env.ALEX_ACT_MEMORY_PASSWORD = previous;
+        }
+    } finally {
+        cleanup(root);
+        cleanup(projectRoot);
+    }
+});
+
+test('writeProfile: persists only an encrypted local profile envelope', () => {
     const root = mkMemoryRoot();
     try {
         const fakeUser = 'write-test-' + Date.now();
-        // Manage both USER (Unix) and USERNAME (Windows). See readProfile test
-        // above for the platform-precedence rationale.
-        const prevUser = process.env.USER;
-        const prevUsername = process.env.USERNAME;
-        process.env.USER = fakeUser;
-        process.env.USERNAME = fakeUser;
-        try {
+        withUser(fakeUser, () => {
             reg.writeProfile(root, { name: fakeUser, written: true });
-            const written = JSON.parse(
-                fs.readFileSync(path.join(root, 'profile', fakeUser, 'user-profile.json'), 'utf8')
-            );
-            assert.equal(written.name, fakeUser);
-            assert.equal(written.written, true);
-        } finally {
-            if (prevUser === undefined) delete process.env.USER; else process.env.USER = prevUser;
-            if (prevUsername === undefined) delete process.env.USERNAME; else process.env.USERNAME = prevUsername;
-        }
+            const encryptedPath = path.join(root, 'profile', fakeUser, 'user-profile.encrypted.json');
+            assert.equal(fs.existsSync(encryptedPath), true);
+            assert.equal(fs.existsSync(path.join(root, 'profile', fakeUser, 'user-profile.json')), false);
+            const envelope = JSON.parse(fs.readFileSync(encryptedPath, 'utf8'));
+            const plaintext = decryptEnvelope(envelope, PROFILE_PASSWORD);
+            const written = JSON.parse(plaintext.toString('utf8'));
+            plaintext.fill(0);
+            assert.deepEqual(written, { name: fakeUser, written: true });
+        });
+        assert.equal(fs.existsSync(path.join(root, '.git')), false, 'writeProfile must not initialize, commit, or push');
     } finally { cleanup(root); }
+});
+
+test('registry CLI reports profile availability without printing profile values', () => {
+    const parent = fs.mkdtempSync(path.join(os.tmpdir(), 'reg-cli-'));
+    const heirRoot = path.join(parent, 'heir');
+    const memoryRoot = path.join(parent, 'Alex_ACT_Memory');
+    const syntheticValue = 'SYNTHETIC_PROFILE_VALUE_MUST_NOT_PRINT';
+    try {
+        fs.mkdirSync(path.join(memoryRoot, '.git'), { recursive: true });
+        fs.mkdirSync(heirRoot, { recursive: true });
+        writeEncryptedProfile(memoryRoot, 'default', { value: syntheticValue });
+        const result = spawnSync(process.execPath, [
+            path.resolve(__dirname, '..', '.github', 'scripts', '_registry.cjs'),
+            '--profile', heirRoot,
+        ], {
+            encoding: 'utf8',
+            env: { ...process.env, ALEX_ACT_MEMORY_PASSWORD: PROFILE_PASSWORD },
+        });
+        assert.equal(result.status, 0, result.stderr);
+        assert.match(result.stdout, /profile available/i);
+        assert.equal(result.stdout.includes(syntheticValue), false);
+        assert.equal(result.stderr.includes(syntheticValue), false);
+    } finally { cleanup(parent); }
 });

@@ -9,6 +9,8 @@ All notable changes to Alex ACT Edition.
 ### Changed
 
 - `[behaviour]` Established `.github/VERSION` as the sole authored Edition version and the generated manifest as the inventory source. Removed the unused private-package version duplicate, corrected README inventory to 38 skills / 36 instructions / 29 prompts / 4 agents, and added deterministic metadata consistency tests. These repository files are outside the installed brain subtree; heir payload and brain contract are unchanged.
+- `[constitutional]` Replaced plaintext, auto-pushed Memory profiles with versioned AES-256-GCM envelopes. `readProfile` decrypts only on explicit demand, accepts authorization from `ALEX_ACT_MEMORY_PASSWORD` or a Git-ignored project `.env`, and skips safely when authorization is absent. Wrong keys and tampering fail closed. `writeProfile` writes an encrypted envelope atomically and locally; it never commits or pushes.
+- `[behaviour]` Removed automatic profile decryption from greeting check-in and changed the registry `--profile` command to report availability without printing profile content. Non-profile announcements, feedback, knowledge, and insights remain available without a profile password.
 
 ## [3.8.3] - 2026-07-07
 
