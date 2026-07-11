@@ -23,6 +23,9 @@ const path = require('node:path');
 const REPO_ROOT = path.resolve(__dirname, '..');
 const MANIFEST = path.join(REPO_ROOT, '.github', 'config', 'edition-manifest.json');
 const SIDECAR = path.join(REPO_ROOT, '.github', 'config', 'extension-contract.json');
+const VERSION = path.join(REPO_ROOT, '.github', 'VERSION');
+const PACKAGE = path.join(REPO_ROOT, 'package.json');
+const README = path.join(REPO_ROOT, 'README.md');
 
 function readJson(p) {
     return JSON.parse(fs.readFileSync(p, 'utf8'));
@@ -107,4 +110,33 @@ test('contract: marker_schema.file_name is .act-heir.json (Extension reads this 
     // path to write. Changing this name is a breaking change for every
     // existing heir. Pin it.
     assert.equal(m.marker_schema.file_name, '.act-heir.json');
+});
+
+test('metadata: VERSION matches manifest edition_version', () => {
+    const manifest = readJson(MANIFEST);
+    const version = fs.readFileSync(VERSION, 'utf8').trim();
+    assert.equal(version, manifest.edition_version);
+});
+
+test('metadata: private package does not duplicate the Edition version', () => {
+    const packageJson = readJson(PACKAGE);
+    assert.equal(packageJson.private, true);
+    assert.equal(Object.prototype.hasOwnProperty.call(packageJson, 'version'), false);
+});
+
+test('metadata: active README inventory counts match the manifest', () => {
+    const manifest = readJson(MANIFEST);
+    const readme = fs.readFileSync(README, 'utf8');
+    const checks = [
+        ['skills', manifest.skills.length, /\b(\d+)\s+skills\b/gi],
+        ['instructions', manifest.instructions.length, /\b(\d+)\s+instructions\b/gi],
+        ['prompts', manifest.prompts.length, /\b(\d+)\s+prompts\b/gi],
+        ['agents', manifest.agents.length, /\b(\d+)\s+(?:worker\s+)?agents\b/gi],
+    ];
+    for (const [label, expected, pattern] of checks) {
+        const values = [...readme.matchAll(pattern)].map((match) => Number(match[1]));
+        assert.equal(values.length > 0, true, `README has no active ${label} count`);
+        assert.deepEqual(values, values.map(() => expected),
+            `README ${label} counts ${values.join(', ')} must all equal manifest count ${expected}`);
+    }
 });

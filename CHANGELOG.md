@@ -6,6 +6,10 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+### Changed
+
+- `[behaviour]` Established `.github/VERSION` as the sole authored Edition version and the generated manifest as the inventory source. Removed the unused private-package version duplicate, corrected README inventory to 38 skills / 36 instructions / 29 prompts / 4 agents, and added deterministic metadata consistency tests. These repository files are outside the installed brain subtree; heir payload and brain contract are unchanged.
+
 ## [3.8.3] - 2026-07-07
 
 **Patch [behaviour] — Tier D bundle D9 + D10: new browser-tools skill (Edition + Supervisor byte-identical mirror) + welcome-baseline `$comment` note documenting Copilot Memory user preferences on Business/Enterprise plans.**
