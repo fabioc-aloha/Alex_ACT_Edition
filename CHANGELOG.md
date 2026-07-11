@@ -6,6 +6,14 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+### Added
+
+- `[behaviour]` Added exact-name local secret lookup through `_registry.cjs#readMemorySecret`. Resolution checks the process environment, explicit file, project `.env`, then the sibling Memory clone's ignored and untracked `.env`; it never enumerates variables or mutates `process.env`.
+
+### Changed
+
+- `[constitutional]` Expanded encrypted-profile authorization to use Memory `.env` as the final machine-local fallback. Project values retain precedence, every file source must be Git-ignored, missing profile authorization still skips safely, and greeting remains independent of secret lookup.
+
 ## [4.0.1] - 2026-07-11
 
 **Patch [constitutional] - The ten-tenet ACT canon is explicit and release-blocking.**

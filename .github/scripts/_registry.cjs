@@ -17,7 +17,7 @@ const {
     ProfileCryptoError,
     decryptEnvelope,
     encryptBuffer,
-    readPasswordFromSources,
+    readSecretFromSources,
     writeJsonAtomic,
 } = require('./shared/profile-crypto.cjs');
 
@@ -103,6 +103,28 @@ function scaffoldMemoryRepo(memoryPath) {
 }
 
 /**
+ * Read one exact local secret without importing or enumerating environment data.
+ * @param {string} memoryRoot
+ * @param {string} variableName
+ * @param {{environment?: object, projectRoot?: string, envFile?: string, required?: boolean}} [options]
+ * @returns {string|null}
+ */
+function readMemorySecret(memoryRoot, variableName, options = {}) {
+    const projectRoot = options.projectRoot || process.cwd();
+    const envFiles = [];
+    if (options.envFile) envFiles.push(options.envFile);
+    envFiles.push(path.join(projectRoot, '.env'));
+    envFiles.push(path.join(memoryRoot, '.env'));
+    return readSecretFromSources({
+        environment: options.environment || process.env,
+        envFiles,
+        variableName,
+        requireGitignored: true,
+        required: options.required === true,
+    });
+}
+
+/**
  * Read an encrypted user profile from Memory. Missing authorization skips the
  * optional profile while authentication or envelope failures remain explicit.
  * @param {string} memoryRoot
@@ -115,18 +137,8 @@ function readProfile(memoryRoot, options = {}) {
     const fallbackPath = path.join(memoryRoot, 'profile', 'default', 'user-profile.encrypted.json');
     const target = fs.existsSync(profilePath) ? profilePath : (fs.existsSync(fallbackPath) ? fallbackPath : null);
     if (!target) return null;
-    let password;
-    try {
-        password = readPasswordFromSources({
-            environment: options.environment || process.env,
-            envFile: options.envFile || path.join(options.projectRoot || process.cwd(), '.env'),
-            variableName: PASSWORD_ENV,
-            requireGitignored: true,
-        });
-    } catch (cause) {
-        if (cause instanceof ProfileCryptoError && cause.code === 'PROFILE_PASSWORD_MISSING') return null;
-        throw cause;
-    }
+    const password = readMemorySecret(memoryRoot, PASSWORD_ENV, options);
+    if (!password) return null;
     let envelope;
     try {
         envelope = JSON.parse(fs.readFileSync(target, 'utf8'));
@@ -153,12 +165,13 @@ function readProfile(memoryRoot, options = {}) {
 function writeProfile(memoryRoot, profile, options = {}) {
     const username = sanitizePathSegment(process.env.USER || process.env.USERNAME || 'default');
     const profilePath = path.join(memoryRoot, 'profile', username, 'user-profile.encrypted.json');
-    const password = readPasswordFromSources({
-        environment: options.environment || process.env,
-        envFile: options.envFile || path.join(options.projectRoot || process.cwd(), '.env'),
-        variableName: PASSWORD_ENV,
-        requireGitignored: true,
-    });
+    const password = readMemorySecret(memoryRoot, PASSWORD_ENV, options);
+    if (!password) {
+        throw new ProfileCryptoError(
+            'PROFILE_PASSWORD_MISSING',
+            `Profile password is unavailable in ${PASSWORD_ENV}`
+        );
+    }
     const plaintext = Buffer.from(JSON.stringify(profile));
     try {
         writeJsonAtomic(profilePath, encryptBuffer(plaintext, password));
@@ -232,7 +245,7 @@ const BOOTSTRAP_TEMPLATES = [
     '.vscode/settings.json',
 ];
 
-module.exports = { resolveMemoryBus, readProfile, writeProfile, scaffoldMemoryRepo, MEMORY_REPO_NAME, MEMORY_REMOTE, EDITION_OWNED, HEIR_OWNED, BOOTSTRAP_TEMPLATES };
+module.exports = { resolveMemoryBus, readMemorySecret, readProfile, writeProfile, scaffoldMemoryRepo, MEMORY_REPO_NAME, MEMORY_REMOTE, EDITION_OWNED, HEIR_OWNED, BOOTSTRAP_TEMPLATES };
 
 // ── CLI mode ───────────────────────────────────────────────────────
 // node _registry.cjs --resolve [dir]     Resolve memory bus

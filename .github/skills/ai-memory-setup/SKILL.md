@@ -86,9 +86,11 @@ On session start (triggered by `greeting-checkin.instructions.md`):
 
 ### Profile
 
-User profiles live at `profile/<username>/user-profile.encrypted.json`. Read on demand via `readProfile(memoryRoot, { projectRoot })`; write locally via `writeProfile(memoryRoot, profile, { projectRoot })`. Both use `ALEX_ACT_MEMORY_PASSWORD` from the process environment or the authorized project's local `.env`.
+User profiles live at `profile/<username>/user-profile.encrypted.json`. Read on demand via `readProfile(memoryRoot, { projectRoot })`; write locally via `writeProfile(memoryRoot, profile, { projectRoot })`. Both resolve `ALEX_ACT_MEMORY_PASSWORD` from the process environment, an explicit file, the authorized project's local `.env`, then the sibling Memory clone's local `.env`.
 
-Before using a project `.env`, add `.env` and `.env.*` to that project's `.gitignore`. Edition verifies the file is ignored before reading it. Missing authorization returns no profile; wrong passwords or tampering fail closed. Profile functions never commit or push. The user decides whether to synchronize the encrypted envelope.
+Every `.env` must be ignored and untracked in the repository that owns it. Edition verifies ignore status before reading. Project values override Memory values. Missing authorization returns no profile; wrong passwords or tampering fail closed. Profile functions never commit or push. The user decides whether to synchronize the encrypted envelope.
+
+Explicit workflows may call `readMemorySecret(memoryRoot, variableName, { projectRoot })` for one exact variable. The API never enumerates or imports Memory `.env`, mutates `process.env`, prints values, or runs during greeting. Use project-local overrides, VS Code SecretStorage, or an enterprise secret manager when all heirs on the machine should not share a secret.
 
 ## Programmatic API (`_registry.cjs`)
 
@@ -96,6 +98,7 @@ Before using a project `.env`, add `.env` and `.env.*` to that project's `.gitig
 | --- | --- |
 | `resolveMemoryBus(repoRoot?, options?)` | Returns the sibling or null by default; `{ mutate: true }` enables pull/clone/scaffold |
 | `scaffoldMemoryRepo(memoryPath)` | Creates minimal folder structure + git init |
+| `readMemorySecret(memoryRoot, variableName, options?)` | Returns one exact named local secret using process/explicit/project/Memory precedence |
 | `readProfile(memoryRoot, options?)` | Decrypts an authorized profile on demand, or returns null when absent/unavailable |
 | `writeProfile(memoryRoot, profile, options?)` | Writes an encrypted envelope locally and atomically; never commits or pushes |
 
@@ -125,7 +128,8 @@ Users upgrading from Edition <3.0.0 need a one-time migration:
 | Calling `scaffoldMemoryRepo` directly | Use `resolveMemoryBus(..., { mutate: true })` during explicit setup |
 | Expecting OneDrive/iCloud/Dropbox discovery | Removed in Edition 3.0.0; memory bus is git-only now |
 | Assuming Memory must have a remote | Local-only is valid; configuring or sharing a remote belongs to the user |
-| Keeping the profile password in a tracked file | Use the process environment or a Git-ignored local `.env` |
+| Keeping secrets in tracked files or copying them across heirs | Use exact-name lookup from an ignored project or Memory `.env`, SecretStorage, or an enterprise secret manager |
+| Importing every Memory `.env` variable | Request one exact variable for one explicit operation |
 | Automatically loading a profile on greeting | Decrypt only when an authorized workflow explicitly needs it |
 
 ## Falsifiability

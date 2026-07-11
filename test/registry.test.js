@@ -31,6 +31,7 @@ const {
 
 test('exports: shape', () => {
     assert.equal(typeof reg.resolveMemoryBus, 'function');
+    assert.equal(typeof reg.readMemorySecret, 'function');
     assert.equal(typeof reg.readProfile, 'function');
     assert.equal(typeof reg.writeProfile, 'function');
     assert.equal(typeof reg.scaffoldMemoryRepo, 'function');
@@ -185,6 +186,31 @@ function writeEncryptedProfile(root, username, profile) {
     );
 }
 
+function writeIgnoredEnv(root, lines) {
+    spawnSync('git', ['init', '--quiet'], { cwd: root });
+    fs.writeFileSync(path.join(root, '.gitignore'), '.env\n');
+    fs.writeFileSync(path.join(root, '.env'), `${lines.join('\n')}\n`);
+}
+
+function withoutPasswordForUser(fakeUser, operation) {
+    const previous = {
+        USER: process.env.USER,
+        USERNAME: process.env.USERNAME,
+        ALEX_ACT_MEMORY_PASSWORD: process.env.ALEX_ACT_MEMORY_PASSWORD,
+    };
+    process.env.USER = fakeUser;
+    process.env.USERNAME = fakeUser;
+    delete process.env.ALEX_ACT_MEMORY_PASSWORD;
+    try {
+        return operation();
+    } finally {
+        for (const [key, value] of Object.entries(previous)) {
+            if (value === undefined) delete process.env[key];
+            else process.env[key] = value;
+        }
+    }
+}
+
 test('readProfile: returns null when no profile files exist', () => {
     const root = mkMemoryRoot();
     try {
@@ -276,6 +302,71 @@ test('readProfile: loads the password from the authorized project env file', () 
         cleanup(root);
         cleanup(projectRoot);
     }
+});
+
+test('readProfile: falls back to the sibling Memory env file', () => {
+    const root = mkMemoryRoot();
+    const projectRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'reg-project-'));
+    try {
+        writeEncryptedProfile(root, 'default', { name: 'memory-env-user' });
+        writeIgnoredEnv(root, [`ALEX_ACT_MEMORY_PASSWORD=${PROFILE_PASSWORD}`]);
+        withoutPasswordForUser('no-such-user-for-tests-' + Date.now(), () => {
+            const profile = reg.readProfile(root, { projectRoot });
+            assert.equal(profile && profile.name, 'memory-env-user');
+        });
+    } finally {
+        cleanup(root);
+        cleanup(projectRoot);
+    }
+});
+
+test('readProfile: project env overrides the sibling Memory env file', () => {
+    const root = mkMemoryRoot();
+    const projectRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'reg-project-'));
+    try {
+        writeEncryptedProfile(root, 'default', { name: 'project-env-user' });
+        writeIgnoredEnv(root, ['ALEX_ACT_MEMORY_PASSWORD=wrong-memory-password']);
+        writeIgnoredEnv(projectRoot, [`ALEX_ACT_MEMORY_PASSWORD=${PROFILE_PASSWORD}`]);
+        withoutPasswordForUser('no-such-user-for-tests-' + Date.now(), () => {
+            const profile = reg.readProfile(root, { projectRoot });
+            assert.equal(profile && profile.name, 'project-env-user');
+        });
+    } finally {
+        cleanup(root);
+        cleanup(projectRoot);
+    }
+});
+
+test('readMemorySecret returns one exact named value from Memory env', () => {
+    const root = mkMemoryRoot();
+    const projectRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'reg-project-'));
+    try {
+        writeIgnoredEnv(root, [
+            'SYNTHETIC_SERVICE_KEY=memory-service-value',
+            'UNRELATED_SECRET=must-not-return',
+        ]);
+        const environment = {};
+        assert.equal(reg.readMemorySecret(root, 'SYNTHETIC_SERVICE_KEY', {
+            environment,
+            projectRoot,
+        }), 'memory-service-value');
+        assert.equal(environment.UNRELATED_SECRET, undefined);
+        assert.equal(process.env.UNRELATED_SECRET, undefined);
+    } finally {
+        cleanup(root);
+        cleanup(projectRoot);
+    }
+});
+
+test('readMemorySecret rejects an unignored Memory env file', () => {
+    const root = mkMemoryRoot();
+    try {
+        fs.writeFileSync(path.join(root, '.env'), 'SYNTHETIC_SERVICE_KEY=must-not-load\n');
+        assert.throws(
+            () => reg.readMemorySecret(root, 'SYNTHETIC_SERVICE_KEY', { environment: {} }),
+            (cause) => cause instanceof ProfileCryptoError && cause.code === 'LOCAL_SECRET_ENV_NOT_IGNORED'
+        );
+    } finally { cleanup(root); }
 });
 
 test('writeProfile: persists only an encrypted local profile envelope', () => {

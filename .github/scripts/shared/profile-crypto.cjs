@@ -37,26 +37,67 @@ function readPassword(environment = process.env, variableName = PASSWORD_ENV) {
     return password;
 }
 
-function readPasswordFromSources(options = {}) {
+function readSecretFromSources(options = {}) {
     const environment = options.environment || process.env;
     const variableName = options.variableName || PASSWORD_ENV;
+    if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(variableName)) {
+        fail('LOCAL_SECRET_NAME_INVALID', 'Local secret variable name is invalid');
+    }
     if (typeof environment[variableName] === 'string' && environment[variableName].length > 0) {
         return environment[variableName];
     }
-    if (options.envFile && fs.existsSync(options.envFile)) {
+
+    const candidates = [];
+    if (options.envFile) candidates.push(options.envFile);
+    if (Array.isArray(options.envFiles)) candidates.push(...options.envFiles);
+    const seen = new Set();
+    for (const candidate of candidates) {
+        if (typeof candidate !== 'string' || candidate.length === 0) continue;
+        const envFile = path.resolve(candidate);
+        const key = process.platform === 'win32' ? envFile.toLowerCase() : envFile;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        if (!fs.existsSync(envFile)) continue;
         try {
-            if (options.requireGitignored) assertEnvFileGitignored(options.envFile);
-            const parsed = parseEnv(fs.readFileSync(options.envFile, 'utf8'));
-            return readPassword(parsed, variableName);
+            if (options.requireGitignored) {
+                assertEnvFileGitignored(
+                    envFile,
+                    options.envNotIgnoredCode || 'LOCAL_SECRET_ENV_NOT_IGNORED'
+                );
+            }
+            const parsed = parseEnv(fs.readFileSync(envFile, 'utf8'));
+            if (typeof parsed[variableName] === 'string' && parsed[variableName].length > 0) {
+                return parsed[variableName];
+            }
         } catch (cause) {
             if (cause instanceof ProfileCryptoError) throw cause;
-            fail('PROFILE_ENV_INVALID', 'Local profile environment file is invalid');
+            fail(
+                options.envInvalidCode || 'LOCAL_SECRET_ENV_INVALID',
+                'Local secret environment file is invalid'
+            );
         }
     }
-    return readPassword(environment, variableName);
+
+    if (options.required) {
+        fail(
+            options.missingCode || 'LOCAL_SECRET_MISSING',
+            `Local secret is unavailable in ${variableName}`
+        );
+    }
+    return null;
 }
 
-function assertEnvFileGitignored(envFile) {
+function readPasswordFromSources(options = {}) {
+    return readSecretFromSources({
+        ...options,
+        required: true,
+        missingCode: 'PROFILE_PASSWORD_MISSING',
+        envNotIgnoredCode: 'PROFILE_ENV_NOT_IGNORED',
+        envInvalidCode: 'PROFILE_ENV_INVALID',
+    });
+}
+
+function assertEnvFileGitignored(envFile, errorCode = 'PROFILE_ENV_NOT_IGNORED') {
     const absolute = path.resolve(envFile);
     const result = spawnSync(
         'git',
@@ -64,7 +105,7 @@ function assertEnvFileGitignored(envFile) {
         { cwd: path.dirname(absolute), stdio: 'ignore' }
     );
     if (result.status !== 0) {
-        fail('PROFILE_ENV_NOT_IGNORED', 'Local profile environment file must be ignored by Git');
+        fail(errorCode, 'Local secret environment file must be ignored by Git');
     }
 }
 
@@ -200,6 +241,7 @@ module.exports = {
     parseEnvelope,
     readPassword,
     readPasswordFromSources,
+    readSecretFromSources,
     rotateEnvelope,
     verifyEnvelope,
     writeBufferAtomic,

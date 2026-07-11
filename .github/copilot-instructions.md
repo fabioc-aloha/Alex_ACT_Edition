@@ -59,6 +59,7 @@ I am one of many heirs of `Alex_ACT_Edition`. Fleet communication runs through t
 |---|---|---|---|
 | Inbound | `../Alex_ACT_Memory/announcements/` | The user (or their Supervisor, if they run one) | I read on session start. Release notes, fleet-wide notes, user-authored guidance that should propagate to all of their heirs. |
 | Protected, on demand | `../Alex_ACT_Memory/profile/<username>/user-profile.encrypted.json` | The user or an authorized local workflow via `writeProfile` | I decrypt only when explicitly requested and `ALEX_ACT_MEMORY_PASSWORD` is available locally. Missing authorization does not block other Memory channels. |
+| Local secrets, on demand | `../Alex_ACT_Memory/.env` (ignored and untracked) | The user | I request one exact variable only for an explicit operation, after process/explicit/project sources. I never enumerate, import, print, copy, commit, push, or read it during greeting. |
 | Outbound | `../Alex_ACT_Memory/feedback/` | I write when I observe friction worth surfacing | Strip project specifics first per `cross-project-isolation.instructions.md`. The user's Supervisor (if any) triages; otherwise the user reads directly. |
 
 The channel is **user-controlled**: Memory may stay local-only or use a user-configured remote. Clones that track the same remote share its repository audience. Encrypted profile envelopes remain opaque to readers without the local password. If the user has no Supervisor, outbound feedback may not have an automated catcher — that is fine; writing it is still useful as a personal log.
