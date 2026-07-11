@@ -24,6 +24,15 @@ A confident wrong answer is worse than an uncertain correct answer. ACT shifts t
 
 This is a **cognitive architecture** -- 38 skills, 36 instructions, 29 prompts, and 4 worker agents that teach your AI assistant to think critically about its own reasoning. Built for GitHub Copilot's `.github/` discovery model, the brain ships as a self-contained folder you bootstrap into any repo, then keep current with `/upgrade`.
 
+### Release status
+
+The current tagged release is **v4.0.1**. It includes encrypted, on-demand
+Memory profiles and the release-blocking ten-tenet canon guard. Edition `main`
+also contains an **Unreleased** exact-name local-secret source: explicit
+workflows can resolve one named variable from process, explicit-file, project
+`.env`, then sibling Memory `.env` sources. Extension users receive that
+fallback only after a separately approved Edition release (proposed v4.1.0).
+
 ## Model Compatibility
 
 **Honest framing**: we have **not** characterised the minimum model size that supports ACT compliance. The `MAN.8.3` claim in the [Claims Registry](https://github.com/fabioc-aloha/Alex_ACT_Supervisor/blob/main/ACT/CLAIMS-REGISTRY.md) explicitly tags this as an open empirical question. The guidance below is based on **architectural needs**, not measured floor.
@@ -103,7 +112,7 @@ ACT discipline depends on the model meeting all four:
 
 ### Open question (tracked)
 
-If you run Edition on a specific model and observe what works or breaks, file feedback to `AI-Memory/feedback/alex-act/`. The capability-floor study (MAN.8.3) needs evidence from multiple models. Reports of "this worked on X" / "this failed on Y" both count.
+If you run Edition on a specific model and observe what works or breaks, file stripped feedback under `../Alex_ACT_Memory/feedback/`. The capability-floor study (MAN.8.3) needs evidence from multiple models. Reports of "this worked on X" / "this failed on Y" both count.
 
 ## Commands
 
@@ -140,7 +149,7 @@ The brain ships slash-prompts grouped by lifecycle stage. Type `/` in Copilot Ch
 | --- | --- | --- |
 | `/save-session-note` | End of meaningful session | Persists session memory to `/memories/session/` for next-conversation pickup |
 | `/note` | Mid-session insight worth keeping | Quick capture to user/repo/session memory based on scope |
-| `/feedback` | Edition friction or improvement idea | Writes structured entry to `AI-Memory/feedback/alex-act/` for Supervisor triage |
+| `/feedback` | Edition friction or improvement idea | Writes a stripped structured entry to `../Alex_ACT_Memory/feedback/` for user or Supervisor triage |
 
 ### Maintenance
 
@@ -339,11 +348,11 @@ node .github/scripts/upgrade-self.cjs --apply   # write changes
 
 The script clones Edition into a temp dir, diffs edition-owned paths, never touches `local/` content, and updates the marker.
 
-### AI-Memory & The Plugin Mall
+### Shared Memory & The Plugin Mall
 
 Two shared surfaces complete the architecture:
 
-- **AI-Memory** (OneDrive shared folder) — your fleet registry, feedback channel to Edition, and announcement inbox. Bootstrapped automatically on first install.
+- **[Alex ACT Memory](https://github.com/fabioc-aloha/Alex_ACT_Memory)** — a local-first sibling Git repository for announcements, stripped feedback, durable knowledge, provisional insights, and optional encrypted profiles. A remote is optional; repository access defines its audience. Profile reads are explicit, not session-start behavior. The tracked `.env.example` documents machine-local secret setup; real `.env` remains ignored and untracked. The Memory `.env` exact-name fallback is currently `Unreleased` and proposed for Edition v4.1.0.
 - **[Alex ACT Plugin Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall)** — public catalog of optional plugins across security, Azure, data, healthcare, architecture, publishing, and more. Edition ships lean; the Mall extends it. Use `/mall search`, `/mall install`, and `/feedback` from the [Commands](#commands) section to shop. Skills install into `.github/skills/local/` so they survive Edition upgrades. The Mall also offers patterns, scaffolds, and a complete Supervisor package for users who want to run their own fleet governance.
 
 ## The ACT Pass: How It Works
