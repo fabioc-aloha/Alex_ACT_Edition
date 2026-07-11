@@ -6,6 +6,10 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+## [4.0.1] - 2026-07-11
+
+**Patch [constitutional] - The ten-tenet ACT canon is explicit and release-blocking.**
+
 ### Added
 
 - `[behaviour]` Added a release-blocking ACT canon test. It pins all ten Roman IDs and exact canonical names, the accepted explanatory role map, canon-versus-pass separation, ten operational bindings, replacement-taxonomy exclusions, and explicit medium-stakes disconfirmers.
@@ -14,6 +18,18 @@ All notable changes to Alex ACT Edition.
 
 - `[constitutional]` Added the live ten-tenet canon contract to ACT foundations: Foundational I/II, Operational III/VII/VIII, Protective IV/V/IX, and Governing VI/X. Roles explain function and do not form a second canon or change tenet status.
 - `[behaviour]` Corrected the medium-stakes trimmed pass from steps 1, 3, 5, 6 to steps 1, 3, 4, 5, 6 so Tenet II always receives an explicit disconfirmer. The full seven-step pass is unchanged.
+
+### Brain contract
+
+No Extension floor change: `min_extension_version` remains `9.5.1`, `brain_subtrees` remains `[.github]`, `marker_schema` remains v2, and manifest spec remains `1.4`. The release changes shared ACT prose and adds a repository test outside the installed brain subtree.
+
+### Heir upgrade
+
+Standard patch upgrade from v4.0.0. The ten canonical obligations remain I-X with unchanged names. Medium-stakes ACT output now includes one explicit disconfirmer in addition to alternatives and audit or severity evidence.
+
+### Falsifier
+
+Review by **2026-10-11**. Reopen ADR-011 if canon drift passes the test, role labels become a lower-status replacement taxonomy, any tenet loses its operational binding, or medium-stakes disconfirmers add repeated ceremony without catching errors.
 
 ## [4.0.0] - 2026-07-11
 
