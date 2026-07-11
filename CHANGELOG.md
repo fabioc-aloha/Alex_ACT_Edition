@@ -6,11 +6,39 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+## [4.0.0] - 2026-07-11
+
+**Major [constitutional] - Memory profiles are encrypted, local-first, and loaded only on explicit demand.**
+
+### Breaking
+
+- Plaintext `profile/<username>/user-profile.json` is no longer read or written. Active Memory profiles must use the versioned `user-profile.encrypted.json` envelope.
+- Greeting check-in no longer decrypts profiles automatically. Authorized workflows call `readProfile` explicitly when profile-backed preferences are needed.
+- `writeProfile` no longer commits or pushes. It writes an encrypted envelope locally; repository synchronization remains the user's decision.
+- `_registry.cjs --profile` no longer prints profile JSON. It reports only whether an authorized profile is available.
+
 ### Changed
 
 - `[behaviour]` Established `.github/VERSION` as the sole authored Edition version and the generated manifest as the inventory source. Removed the unused private-package version duplicate, corrected README inventory to 38 skills / 36 instructions / 29 prompts / 4 agents, and added deterministic metadata consistency tests. These repository files are outside the installed brain subtree; heir payload and brain contract are unchanged.
 - `[constitutional]` Replaced plaintext, auto-pushed Memory profiles with versioned AES-256-GCM envelopes. `readProfile` decrypts only on explicit demand, accepts authorization from `ALEX_ACT_MEMORY_PASSWORD` or a Git-ignored project `.env`, and skips safely when authorization is absent. Wrong keys and tampering fail closed. `writeProfile` writes an encrypted envelope atomically and locally; it never commits or pushes.
 - `[behaviour]` Removed automatic profile decryption from greeting check-in and changed the registry `--profile` command to report availability without printing profile content. Non-profile announcements, feedback, knowledge, and insights remain available without a profile password.
+
+### Authorization
+
+- Profile decryption uses `ALEX_ACT_MEMORY_PASSWORD` from the process environment or a local project `.env` that Git confirms is ignored. Missing authorization skips profiles without blocking other Memory channels. Wrong passwords, malformed envelopes, and tampering fail closed.
+- This release does not distribute passwords. The current migration keeps decrypt authorization in the Memory repository only; other projects remain unauthorized until the user provisions them locally.
+
+### Brain contract
+
+No Extension floor change: `min_extension_version` remains `9.5.1`, `brain_subtrees` remains `[.github]`, `marker_schema` remains v2, and manifest spec remains `1.4`. The new shared crypto script is carried by the existing `.github` subtree contract.
+
+### Heir upgrade
+
+This is a major Edition release. Review the profile behavior above before upgrading. Existing non-profile Memory channels continue to work without a key. Projects that need profile access must add the password locally through the process environment or a Git-ignored `.env`; never commit it.
+
+### Falsifier
+
+Revisit by **2026-10-11**, or immediately if any reader without the password decrypts a profile, wrong-key/tamper handling returns content, profile values appear in logs, an ignored `.env` becomes tracked, or non-profile Memory channels become dependent on profile authorization.
 
 ## [3.8.3] - 2026-07-07
 
