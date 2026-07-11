@@ -6,6 +6,15 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+### Added
+
+- `[behaviour]` Added a release-blocking ACT canon test. It pins all ten Roman IDs and exact canonical names, the accepted explanatory role map, canon-versus-pass separation, ten operational bindings, replacement-taxonomy exclusions, and explicit medium-stakes disconfirmers.
+
+### Changed
+
+- `[constitutional]` Added the live ten-tenet canon contract to ACT foundations: Foundational I/II, Operational III/VII/VIII, Protective IV/V/IX, and Governing VI/X. Roles explain function and do not form a second canon or change tenet status.
+- `[behaviour]` Corrected the medium-stakes trimmed pass from steps 1, 3, 5, 6 to steps 1, 3, 4, 5, 6 so Tenet II always receives an explicit disconfirmer. The full seven-step pass is unchanged.
+
 ## [4.0.0] - 2026-07-11
 
 **Major [constitutional] - Memory profiles are encrypted, local-first, and loaded only on explicit demand.**
