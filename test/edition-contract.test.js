@@ -17,7 +17,9 @@
 
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
+const { spawnSync } = require('node:child_process');
 const fs = require('node:fs');
+const os = require('node:os');
 const path = require('node:path');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
@@ -138,5 +140,56 @@ test('metadata: active README inventory counts match the manifest', () => {
         assert.equal(values.length > 0, true, `README has no active ${label} count`);
         assert.deepEqual(values, values.map(() => expected),
             `README ${label} counts ${values.join(', ')} must all equal manifest count ${expected}`);
+    }
+});
+
+test('heir-doctor scans shipped skill files when local skills exist', () => {
+    const heirRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'edition-heir-doctor-'));
+    const githubRoot = path.join(heirRoot, '.github');
+    const doctorSource = path.join(REPO_ROOT, '.github', 'skills', 'greeting-checkin', 'scripts', 'heir-doctor.cjs');
+    const write = (relativePath, content) => {
+        const absolutePath = path.join(heirRoot, relativePath);
+        fs.mkdirSync(path.dirname(absolutePath), { recursive: true });
+        fs.writeFileSync(absolutePath, content);
+    };
+
+    try {
+        write('.github/.act-heir.json', JSON.stringify({
+            heir_id: 'doctor-regression',
+            edition_version: '4.0.1',
+            last_sync_at: new Date().toISOString(),
+        }));
+        write('.github/VERSION', '4.0.1\n');
+        write('.github/scripts/_registry.cjs', 'module.exports = { EDITION_OWNED: [".github/**"], HEIR_OWNED: [".github/skills/local/**"] };\n');
+        write('.github/scripts/upgrade-self.cjs', '');
+        write('.github/scripts/bootstrap-heir.cjs', '');
+        write('.github/config/cognitive-config.json', '{}\n');
+        write('.github/config/edition-manifest.json', JSON.stringify({
+            skills: ['greeting-checkin', 'shipped-skill'],
+            skill_files: [
+                'greeting-checkin/scripts/heir-doctor.cjs',
+                'shipped-skill/SKILL.md',
+            ],
+            prompts: [],
+            agents: [],
+        }));
+        write('.github/copilot-instructions.local.md', '# Local identity\n');
+        write('.github/skills/shipped-skill/SKILL.md', '# Shipped\n');
+        write('.github/skills/local/custom-skill/SKILL.md', '# Local\n');
+        const doctorPath = path.join(githubRoot, 'skills', 'greeting-checkin', 'scripts', 'heir-doctor.cjs');
+        fs.mkdirSync(path.dirname(doctorPath), { recursive: true });
+        fs.copyFileSync(doctorSource, doctorPath);
+
+        const result = spawnSync(process.execPath, [doctorPath, '--json'], {
+            cwd: heirRoot,
+            encoding: 'utf8',
+        });
+
+        assert.equal(result.status, 0, result.stderr || result.stdout);
+        const findings = JSON.parse(result.stdout);
+        assert.deepEqual(findings.errors, []);
+        assert.deepEqual(findings.warnings, []);
+    } finally {
+        fs.rmSync(heirRoot, { recursive: true, force: true });
     }
 });

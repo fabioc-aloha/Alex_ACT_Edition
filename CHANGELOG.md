@@ -13,6 +13,7 @@ All notable changes to Alex ACT Edition.
 ### Changed
 
 - `[constitutional]` Expanded encrypted-profile authorization to use Memory `.env` as the final machine-local fallback. Project values retain precedence, every file source must be Git-ignored, missing profile authorization still skips safely, and greeting remains independent of secret lookup.
+- `[behaviour]` Fixed heir doctor crashing with `ReferenceError: walkDir is not defined` when validating files inside an Edition-shipped skill. Added a temporary-heir regression with both shipped and local skills. The fix is implemented under Unreleased; the v4.0.1 control baseline retains the defect as measured evidence.
 
 ## [4.0.1] - 2026-07-11
 
