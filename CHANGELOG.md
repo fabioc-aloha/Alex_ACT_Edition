@@ -6,6 +6,10 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+## [4.1.0] - 2026-07-13
+
+**Minor [constitutional] - Local Memory secret resolution and heir-doctor reliability.**
+
 ### Added
 
 - `[behaviour]` Added exact-name local secret lookup through `_registry.cjs#readMemorySecret`. Resolution checks the process environment, explicit file, project `.env`, then the sibling Memory clone's ignored and untracked `.env`; it never enumerates variables or mutates `process.env`.
@@ -13,7 +17,19 @@ All notable changes to Alex ACT Edition.
 ### Changed
 
 - `[constitutional]` Expanded encrypted-profile authorization to use Memory `.env` as the final machine-local fallback. Project values retain precedence, every file source must be Git-ignored, missing profile authorization still skips safely, and greeting remains independent of secret lookup.
-- `[behaviour]` Fixed heir doctor crashing with `ReferenceError: walkDir is not defined` when validating files inside an Edition-shipped skill. Added a temporary-heir regression with both shipped and local skills. The fix is implemented under Unreleased; the v4.0.1 control baseline retains the defect as measured evidence.
+- `[behaviour]` Fixed heir doctor crashing with `ReferenceError: walkDir is not defined` when validating files inside an Edition-shipped skill. Added a temporary-heir regression with both shipped and local skills. This release carries the fix; the immutable v4.0.1 control baseline retains the defect as measured evidence.
+
+### Brain contract
+
+No change: `min_extension_version` remains `9.5.1`, `brain_subtrees` remains `[.github]`, `marker_schema` remains v2, and manifest spec remains `1.4`. Extension v9.5.1 or later can install this release without a host update.
+
+### Heir upgrade
+
+Standard minor upgrade from v4.0.1. Projects that use encrypted Memory profiles may authorize exact-name reads through a local Git-ignored `.env`; project-local values retain precedence over the sibling Memory fallback. Projects that do not use profile-backed preferences are unaffected. Heir doctor now validates Edition-shipped and local skills without the v4.0.1 `walkDir` crash.
+
+### Falsifier
+
+Revisit by **2026-10-13**, or immediately if project precedence is bypassed, a non-ignored secret file is read, secret names or values are enumerated or logged, greeting becomes dependent on secret access, or heir doctor misclassifies shipped/local skills after the recursive-walker fix.
 
 ## [4.0.1] - 2026-07-11
 
