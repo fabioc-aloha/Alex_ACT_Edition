@@ -6,6 +6,11 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+### Changed
+
+- `[behaviour]` Aligned the banner prompt, skill, and generator with the current Alex brand: 1200x320 output, canonical x-loop, navy/emerald/teal/cyan palette, zero letter spacing, and a self-contained bundled mark. The stable CLI and output paths are unchanged; the prompt now uses the correct `--out` flag.
+- `[clarification]` Updated the Edition README, package description, and banner to use `Alex ACT Edition` with the descriptor `Artificial Critical Thinking for GitHub Copilot`.
+
 ## [4.1.0] - 2026-07-13
 
 **Minor [constitutional] - Local Memory secret resolution and heir-doctor reliability.**

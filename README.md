@@ -1,8 +1,8 @@
 # Alex ACT Edition
 
-![Alex ACT Edition — Artificial Critical Thinking for AI Assistants](assets/banner-readme.svg)
+![Alex ACT Edition: Artificial Critical Thinking for GitHub Copilot](assets/banner-readme.svg)
 
-> Artificial Critical Thinking for AI Assistants.
+> Artificial Critical Thinking for GitHub Copilot.
 
 ## Quick Start (3 lines)
 
