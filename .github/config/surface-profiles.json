@@ -1,0 +1,25 @@
+{
+  "spec_version": "1.0",
+  "profiles": {
+    "vscode": {
+      "support_state": "supported",
+      "prompt_source": ".github/profiles/vscode/prompts",
+      "vscode_assets": ["markdown-light.css"],
+      "bootstrap_templates": [
+        ".vscode/extensions.json",
+        ".vscode/settings.json"
+      ]
+    },
+    "copilot-app": {
+      "support_state": "candidate",
+      "cli_is_invocation_mode": true,
+      "vscode_assets": [],
+      "bootstrap_templates": [],
+      "agent_invocation": {
+        "direct": "copilot --agent <name>",
+        "parent_delegation": "limited",
+        "interactive_picker": "documented-limitation"
+      }
+    }
+  }
+}

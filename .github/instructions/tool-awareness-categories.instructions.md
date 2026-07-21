@@ -1,36 +1,36 @@
 ---
-description: "Common deferred tool categories and search-query patterns — scoped reference loaded when working with tools, MCP servers, or GitHub APIs"
+description: "Maps tool-related requests to host-neutral capability classes and fallbacks when working with tools, MCP, GitHub, notebooks, browsers, or diagrams."
 applyTo: "**/*tool*,**/*mcp*,**/*github*,**/*notebook*,**/*browser*,**/*playwright*,**/*figma*,**/*mcp*/**,**/*tool*/**"
-lastReviewed: 2026-05-18
+lastReviewed: 2026-07-21
 ---
 
-# Tool Awareness — Categories Reference
+# Tool Capability Classes
 
-Companion to `tool-awareness.instructions.md`. The always-on rule is *search before calling*; this file is the search-query lookup.
+Use capability class first and host tool name second.
 
-## Common Deferred Tool Categories
-
-| Category | Example tools | Search query |
+| Capability class | Purpose | No-capability fallback |
 | --- | --- | --- |
-| GitHub operations | issues, PRs, repos, code search, branches, tags | `github` |
-| Azure MCP | Storage, KeyVault, Cosmos, SQL, AKS, App Service (48+ services) | `azure` or the specific service name |
-| Microsoft Fabric | Eventstream, Kusto, OneLake, items | `fabric` or `onelake` |
-| Microsoft docs | docs search, code samples, full-page fetch | `microsoft docs` |
-| Browser automation | click, navigate, screenshot, fill form, evaluate JS | `browser` or `playwright` |
-| Notebook operations | run cell, edit notebook, read output | `notebook` |
-| Mermaid rendering | preview, validate diagrams | `mermaid` |
-| Bicep / ARM | best practices, schema, diagnostics, format | `bicep` |
-| Figma | design context, code connect, screenshots | `figma` |
-| Microsoft Graph | get, list, suggest queries | `microsoft graph` or `entra` |
+| Repository | Search, read, edit, references, diagnostics | Exact file/patch guidance |
+| Terminal | Build, test, lint, Git, scripts | Command plus expected result |
+| Web fetch | Public static content | User-provided source or mark unknown |
+| Browser | Rendered DOM, interaction, screenshots | Static fetch or explicit refusal |
+| GitHub | Issues, pull requests, releases, repository metadata | Local Git evidence or URL guidance |
+| Cloud/service API | Read or mutate external resources | Local config review; approval before writes |
+| Notebook | Inspect and execute cells | Script or documented manual steps |
+| Diagram/render | Validate Mermaid, SVG, or pixels | Source validation and text fallback |
+| Agent | Isolated delegated role | Direct skill execution or manual fallback |
 
-## Anti-Pattern
+Never retry by guessing adjacent tool names. Consult the selected surface
+profile for discovery and invocation details.
 
-Do not hardcode tool names from `availableDeferredTools` without loading them via `tool_search`. The list is informational; actual availability requires the search call.
+## Anti-Patterns
 
-## When this file does not load
-
-If the topic is not in the glob (e.g., pure prose editing, doc curation), the categories table doesn't load. The always-on `tool-awareness.instructions.md` still fires the *rule*; if a deferred tool is needed, broaden the search query empirically (start with one word, iterate).
+| Avoid | Use instead |
+| --- | --- |
+| Hardcoded host registry names in Core | Capability class plus profile binding |
+| Silent reduced mode | Name missing capability and consequence |
 
 ## Would Revise If
 
-Revise if the categories table goes stale (VS Code adds new deferred tool families not listed), if the search-query patterns produce zero results for tools that `availableDeferredTools` lists as present, or if the "broaden the search query empirically" guidance fails to recover tools that should be reachable.
+Revise by 2026-10-21 if a recurring tool request fits no capability class or a
+fallback produces a false completion claim.

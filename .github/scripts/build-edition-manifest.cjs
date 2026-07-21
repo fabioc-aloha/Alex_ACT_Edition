@@ -47,7 +47,11 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-const ROOT = path.resolve(__dirname, '..', '..');
+const args = process.argv.slice(2);
+const rootIndex = args.indexOf('--root');
+const ROOT = rootIndex >= 0 && args[rootIndex + 1]
+  ? path.resolve(args[rootIndex + 1])
+  : path.resolve(__dirname, '..', '..');
 const GH = path.join(ROOT, '.github');
 const SKILLS_DIR = path.join(GH, 'skills');
 const PROMPTS_DIR = path.join(GH, 'prompts');
@@ -55,6 +59,8 @@ const AGENTS_DIR = path.join(GH, 'agents');
 const INSTRUCTIONS_DIR = path.join(GH, 'instructions');
 const SCRIPTS_DIR = path.join(GH, 'scripts');
 const CONFIG_DIR = path.join(GH, 'config');
+const CORE_DIR = path.join(GH, 'core');
+const PROFILES_DIR = path.join(GH, 'profiles');
 const VSCODE_DIR = path.join(ROOT, '.vscode');
 const VERSION_FILE = path.join(GH, 'VERSION');
 const OUT = path.join(GH, 'config', 'edition-manifest.json');
@@ -69,6 +75,7 @@ const EDITION_CONFIG_FILES = new Set([
   'edition-manifest.json',
   'welcome-baseline.json',
   'heir-workspace-settings-baseline.json',
+  'surface-profiles.json',
   'README.md',
 ]);
 
@@ -77,7 +84,6 @@ const EDITION_VSCODE_FILES = new Set([
   'markdown-light.css',
 ]);
 
-const args = process.argv.slice(2);
 const checkOnly = args.includes('--check');
 const preflight = args.includes('--preflight');
 
@@ -217,6 +223,20 @@ function listBootstrapTemplates() {
   return out.sort();
 }
 
+function listFilesRelative(root) {
+  if (!fs.existsSync(root)) return [];
+  const out = [];
+  function walk(dir) {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const absolute = path.join(dir, entry.name);
+      if (entry.isDirectory()) walk(absolute);
+      else if (entry.isFile()) out.push(path.relative(root, absolute).replace(/\\/g, '/'));
+    }
+  }
+  walk(root);
+  return out.sort();
+}
+
 const version = fs.existsSync(VERSION_FILE)
   ? fs.readFileSync(VERSION_FILE, 'utf8').trim()
   : 'unknown';
@@ -260,6 +280,14 @@ const manifest = {
   vscode_assets: listVscodeAssets(),
   bootstrap_templates: listBootstrapTemplates(),
   heir_owned: HEIR_OWNED.slice(),
+  universal_candidate: {
+    contract_version: '1.0',
+    core_files: listFilesRelative(CORE_DIR),
+    profile_files: listFilesRelative(PROFILES_DIR),
+    surface_profiles: fs.existsSync(path.join(CONFIG_DIR, 'surface-profiles.json'))
+      ? JSON.parse(fs.readFileSync(path.join(CONFIG_DIR, 'surface-profiles.json'), 'utf8')).profiles
+      : null,
+  },
 };
 
 const newJson = JSON.stringify(manifest, null, 2) + '\n';

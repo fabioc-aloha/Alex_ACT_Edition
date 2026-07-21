@@ -8,6 +8,9 @@ All notable changes to Alex ACT Edition.
 
 ### Changed
 
+- `[constitutional]` Added the isolated Universal Edition candidate: four host-neutral contracts, seven Core operations, six compact templates, explicit `vscode` and `copilot-app` profiles, CLI-compatible agent frontmatter, capability-based tool/browser guidance, and a plan-hash-gated existing-project adoption transaction with automatic rollback.
+- `[behaviour]` Moved four VS Code-only configure prompts and the prior VS Code tool/browser guidance into the `vscode` profile source. The Copilot-app profile installs no `.vscode` assets and treats CLI as an invocation mode.
+- `[behaviour]` Isolated manifest tests from the live repository, removing a parallel test race. Candidate tests cover profile isolation, artifact inventory, apply/rollback, conflict refusal, downgrade authorization, templates, Mermaid, and SVG.
 - `[behaviour]` Aligned the banner prompt, skill, and generator with the current Alex brand: 1200x320 output, canonical x-loop, navy/emerald/teal/cyan palette, zero letter spacing, and a self-contained bundled mark. The stable CLI and output paths are unchanged; the prompt now uses the correct `--out` flag.
 - `[clarification]` Updated the Edition README, package description, and banner to use `Alex ACT Edition` with the descriptor `Artificial Critical Thinking for GitHub Copilot`.
 

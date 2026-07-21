@@ -53,6 +53,19 @@ Use the `runSubagent` tool. Pass the agent name (`markdown-author` or `illustrat
 
 The SA returns a result. Surface that result to the user (with assembly if needed for orchestration).
 
+### Cross-Host Invocation
+
+The invocation mechanism belongs to the selected surface profile:
+
+| Surface | Preferred invocation | Manual fallback |
+| --- | --- | --- |
+| VS Code | Use the host-provided worker or `runSubagent` capability when available | Execute the worker's owning skill in the parent |
+| Copilot app / CLI | Use `copilot --agent <name>` for a direct custom-agent run | Execute the owning skill or procedure manually in the current session |
+
+Parent-to-repository-agent delegation is not a Core assumption. TC-002 proved
+direct CLI invocation but not parent delegation. If the preferred mechanism is
+absent, use the manual fallback and state that no isolated worker ran.
+
 ## What NOT to do
 
 - **Do not author a markdown document directly when `markdown-author` is loaded.** This is the most common failure mode. The parent's training favors direct action; this instruction overrides that default.

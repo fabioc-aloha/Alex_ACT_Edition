@@ -4,7 +4,6 @@ description: Runs a local brain audit for ACT Edition (and Supervisor) using det
 tools: ['edit', 'read', 'search/codebase', 'search/usages']
 user-invocable: false
 disable-model-invocation: false
-model: ['Auto']
 lastReviewed: 2026-07-11
 ---
 

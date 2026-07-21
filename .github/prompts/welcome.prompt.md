@@ -27,15 +27,19 @@ Three things worth knowing, framed as capabilities not files:
 
 ### 3. Where capability comes from
 
-The brain ships with **36 instructions, 30 skills, 26 prompts, 4 agents** baked in (the kernel). For anything beyond that, the **Alex ACT Plugin Mall** is the live capability surface — hundreds of skills available on demand, install one at a time:
+Read `.github/config/edition-manifest.json` at response time and summarize the
+active Core plus selected surface profile. Do not repeat hardcoded artifact
+counts. The Plugin Mall remains a separate discovery and trust surface; live
+installation is not a Core capability until its separate lifecycle decision is
+approved.
 
 ```text
 /mall search <topic>     # find a plugin
-/mall install <name>     # adopt it into local/
+/mall show <name>        # inspect source, version, and trust evidence
 /mall refresh            # audit installed plugins for upstream updates
 ```
 
-The kernel stays small; the surface grows as the project needs. New projects often start with zero Mall installs and add 2-3 as patterns emerge.
+Do not imply that a custom Mall installer exists.
 
 ### 4. Three good first prompts
 
@@ -50,8 +54,11 @@ Tailor these to the project type if detectable from the README or `## Project Co
 A short ordered list, not a wall of text:
 
 1. **Edit `.github/copilot-instructions.local.md`** — at minimum, fill in the `## Project Context` paragraph. Identity grounding from session 1 beats identity grounding at session 10.
-2. **Run `/configure-vscode`** — applies fleet-baseline VS Code user-scope settings (Copilot model defaults, agent behaviors). Skip if you've already run it on this machine for another heir.
-3. **Run `/configure-workspace-verify` → `/configure-workspace`** — bootstrap installs `.vscode/markdown-light.css` + discovery-location keys in `.vscode/settings.json`; the verify/apply pair is the recovery path if those files were git-ignored, deleted, or you cloned the heir onto a new machine without the workspace assets.
+2. **Check the selected surface profile** in `.github/.act-heir.json`. For
+	`vscode`, use the profile's configure and verify prompts. For `copilot-app`,
+	use the documented CLI diagnostics and direct-agent invocation path.
+3. **Verify the installation** with the manifest and profile checker before
+	starting consequential work.
 4. **Start a real chat** — pick any of the three first-prompt examples above, or describe what you actually want to build.
 
 ### 6. When you need more
@@ -69,7 +76,8 @@ Friendly, brief, factual. Match the user's energy — if they ran `/welcome` bec
 
 - **Read-only.** No file writes, no settings changes, no marker updates. Anything that needs to change gets pointed at the right command (`/configure-vscode`, `/initialize`, `/upgrade`) — never executed from here.
 - **No invented context.** If `.github/copilot-instructions.local.md` `## Project Context` is empty, say so. Don't fabricate a project purpose.
-- **No hardcoded counts.** Read `35 / 18 / 23 / 16 / 4` from the brain at response time if possible (count files in `.github/instructions/`, `.github/skills/`, etc.). If counting at runtime isn't feasible, use the numbers above and accept that they drift between Edition releases — small drift in a friendly orientation message is acceptable; large drift means update this prompt.
+- **No hardcoded counts.** Read the generated manifest. If it is unavailable,
+  describe capabilities without counts rather than guessing.
 
 ## Would Revise If
 

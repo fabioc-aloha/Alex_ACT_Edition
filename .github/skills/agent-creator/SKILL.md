@@ -65,6 +65,11 @@ lastReviewed: YYYY-MM-DD
 
 If using a tool-allowlist field per current Microsoft Learn agent spec, include it here. Reject legacy fields (`type`, `application`, `tier`, etc.) — same drop set as other types.
 
+**Cross-host model contract:** use a scalar string or omit `model`. Never use an
+array form: Copilot CLI rejects `model: ['Auto']` even when VS Code accepts it.
+Omitting the field lets the selected host choose its current model without a
+fallback warning.
+
 **File location**: `.github/agents/<kebab-name>.agent.md` (flat — no subfolders).
 
 ### Phase 4 — Draft against Gate 2 (Quality)

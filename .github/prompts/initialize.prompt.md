@@ -16,8 +16,8 @@ Before any writes, classify the workspace:
 | State | Signal | Path |
 |---|---|---|
 | **A — Fresh** | No `.github/` directory at all | Full bootstrap |
-| **B — Edition content, no marker, clean** | `.github/copilot-instructions.md` exists, no `.act-heir.json`, no local modifications to Edition-owned files | Full bootstrap (safe overwrite) |
-| **C — Edition content, no marker, dirty** | Same as B but at least one Edition-owned file is locally modified per git | Quick register (path-1: copy only missing files + render marker) |
+| **B — Existing project, no marker, no conflicts** | Git repository exists, no marker, adoption dry run reports zero conflicts | Adoption transaction |
+| **C — Existing project with conflicts** | Git repository exists, no marker, adoption dry run reports path conflicts | Adoption transaction with explicit per-path decisions |
 | **D — Already a heir** | `.github/.act-heir.json` exists | Refuse, suggest `/upgrade` |
 
 To detect dirty state in B vs C: run `git status --porcelain .github/` and check whether any reported files match the `EDITION_OWNED` globs inlined in `.github/scripts/_registry.cjs`.
@@ -42,7 +42,7 @@ To detect dirty state in B vs C: run `git status --porcelain .github/` and check
 
 5. **`owner`** (optional). Parse from `repo-url` (the part before the slug for github.com URLs).
 
-## Path A or B — Full Bootstrap
+## Path A — Full Bootstrap
 
 ```bash
 node <edition-path>/.github/scripts/bootstrap-heir.cjs \
@@ -62,25 +62,36 @@ node <edition-path>/.github/scripts/bootstrap-heir.cjs \
    - Or verify resolution: `node .github/scripts/_registry.cjs --resolve .`
 6. Stage but do NOT commit. Suggest commit message: `chore: bootstrap as Alex_ACT_Edition heir`.
 
-## Path C — Quick Register (path-1)
+## Paths B or C — Existing-Project Adoption
 
-The workspace already has Edition content with local modifications. Running the bootstrap script directly would silently overwrite those modifications. Instead:
+Never run bootstrap against a non-empty existing project. Use the shared,
+dry-run-first transaction:
 
-1. **Inventory what's missing**. For each path in Edition's `EDITION_OWNED` globs (inlined in `.github/scripts/_registry.cjs`), check whether it exists in the target. Build the missing-files list.
+```bash
+node <edition-path>/.github/scripts/adopt-edition.cjs \
+  --source <edition-path> \
+  --target . \
+  --profile <vscode|copilot-app> \
+  --plan-out .act-adoption-plan.json
+```
 
-2. **Inventory what's diverged**. For each path that exists in both, hash both copies. Files that differ are heir-modified Edition content — they will be silently clobbered on the next `upgrade-self.cjs --apply`. List them.
+1. Review creates, identical files, preserved project files, and every conflict.
+2. Resolve each conflict explicitly with `--overwrite <path>` or
+   `--preserve <path>`; wildcard approval is not allowed.
+3. Apply only the exact reviewed plan hash:
 
-3. **Render the marker** at `.github/.act-heir.json` with `notes` set to:
+   ```bash
+   node <edition-path>/.github/scripts/adopt-edition.cjs \
+     --apply \
+     --plan .act-adoption-plan.json \
+     --accept-plan-sha <sha256> \
+     [--overwrite <path>] [--preserve <path>]
+   ```
 
-   > Registered retroactively (path-1 quick register). N edition-owned files diverge locally and will be overwritten on next upgrade-self. Move heir-specific content into `local/` overlays before upgrading.
-
-4. **Copy only the missing files** from Edition into the target. Do not touch existing files.
-
-5. Run `node .github/skills/greeting-checkin/scripts/heir-doctor.cjs` — must exit 0.
-
-6. Stage but do NOT commit. Suggest commit message: `chore: register as ACT heir (path-1 quick register)`.
-
-7. Surface the divergence list to the user with a clear next step: *"These N files are locally modified copies of Edition-owned content. Before your next `/upgrade`, move heir-specific changes into `local/` overlays. Otherwise the next upgrade will silently overwrite them."*
+4. Run the manifest and selected surface-profile checkers.
+5. Review `git diff`; do not auto-commit.
+6. Keep the reported backup until the project passes its own tests. Use the
+   reported rollback command if any acceptance check fails.
 
 ## Path D — Already a Heir
 

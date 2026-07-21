@@ -4,7 +4,6 @@ description: Creates visual diagrams (mermaid flowcharts and sequence/state/clas
 tools: ['read']
 user-invocable: false
 disable-model-invocation: false
-model: ['Auto']
 lastReviewed: 2026-05-26
 ---
 

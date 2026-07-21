@@ -4,7 +4,6 @@ description: Authors or edits markdown content (prose, tables, lists, frontmatte
 tools: ['edit', 'read']
 user-invocable: false
 disable-model-invocation: false
-model: ['Auto']
 lastReviewed: 2026-05-30
 ---
 

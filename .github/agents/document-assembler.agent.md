@@ -1,10 +1,9 @@
 ---
 name: document-assembler
-description: Takes a draft markdown file containing `<!-- ILLUSTRATOR: ... -->` placeholders, dispatches the illustrator worker for each placeholder in parallel, and stitches the rendered diagrams back into the file. Use when a markdown draft has 2 or more diagram placeholders to render and assemble. Returns confirmation that the file was assembled.
+description: "Takes a draft markdown file containing ILLUSTRATOR placeholders, dispatches the illustrator worker for each placeholder in parallel, and stitches the rendered diagrams back into the file. Use when a markdown draft has 2 or more diagram placeholders to render and assemble."
 tools: ['edit', 'read', 'runSubagent']
 user-invocable: false
 disable-model-invocation: false
-model: ['Auto']
 lastReviewed: 2026-05-26
 ---
 

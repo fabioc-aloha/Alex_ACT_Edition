@@ -17,6 +17,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
+const os = require('node:os');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
 
@@ -33,6 +34,21 @@ function runScript(args) {
     });
 }
 
+function copyEditionFixture() {
+    const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'edition-manifest-fixture-'));
+    fs.cpSync(REPO_ROOT, fixture, {
+        recursive: true,
+        filter: (entry) => {
+            const relative = path.relative(REPO_ROOT, entry).replace(/\\/g, '/');
+            if (!relative) return true;
+            if (relative === '.git' || relative.startsWith('.git/')) return false;
+            if (relative.startsWith('.github-backup-')) return false;
+            return true;
+        },
+    });
+    return fixture;
+}
+
 // ── --check mode (CI gate) ────────────────────────────────────────────
 
 test('--check: exits 0 when manifest is current', () => {
@@ -42,31 +58,31 @@ test('--check: exits 0 when manifest is current', () => {
 });
 
 test('--check: exits 1 when manifest content is stale', () => {
-    // Mutate the manifest, run --check, expect failure, restore.
-    const original = fs.readFileSync(MANIFEST_PATH, 'utf8');
+    const fixture = copyEditionFixture();
+    const fixtureManifest = path.join(fixture, '.github', 'config', 'edition-manifest.json');
     try {
-        // Add a bogus skill to make the manifest look stale.
-        const parsed = JSON.parse(original);
+        const parsed = JSON.parse(fs.readFileSync(fixtureManifest, 'utf8'));
         parsed.skills = [...parsed.skills, 'this-skill-does-not-exist'];
-        fs.writeFileSync(MANIFEST_PATH, JSON.stringify(parsed, null, 2) + '\n');
+        fs.writeFileSync(fixtureManifest, JSON.stringify(parsed, null, 2) + '\n');
 
-        const result = runScript(['--check']);
+        const result = runScript(['--root', fixture, '--check']);
         assert.equal(result.status, 1, 'mutated manifest must fail --check');
         assert.match(result.stderr, /stale/i);
     } finally {
-        fs.writeFileSync(MANIFEST_PATH, original);
+        fs.rmSync(fixture, { recursive: true, force: true });
     }
 });
 
 test('--check: exits 1 when manifest is missing', () => {
-    const original = fs.readFileSync(MANIFEST_PATH, 'utf8');
+    const fixture = copyEditionFixture();
+    const fixtureManifest = path.join(fixture, '.github', 'config', 'edition-manifest.json');
     try {
-        fs.unlinkSync(MANIFEST_PATH);
-        const result = runScript(['--check']);
+        fs.unlinkSync(fixtureManifest);
+        const result = runScript(['--root', fixture, '--check']);
         assert.equal(result.status, 1, 'missing manifest must fail --check');
         assert.match(result.stderr, /missing/i);
     } finally {
-        fs.writeFileSync(MANIFEST_PATH, original);
+        fs.rmSync(fixture, { recursive: true, force: true });
     }
 });
 
@@ -169,12 +185,14 @@ test('manifest: regenerates without leaking local/ entries (active filter test)'
     // This test creates temporary local/ subdirs under each category,
     // regenerates the manifest, and verifies the filter actually fires.
 
+    const fixture = copyEditionFixture();
+    const fixtureManifest = path.join(fixture, '.github', 'config', 'edition-manifest.json');
     const tempDirs = [
-        path.join(REPO_ROOT, '.github', 'skills', 'local', '__test-local-skill__'),
-        path.join(REPO_ROOT, '.github', 'instructions', 'local'),
-        path.join(REPO_ROOT, '.github', 'prompts', 'local'),
-        path.join(REPO_ROOT, '.github', 'agents', 'local'),
-        path.join(REPO_ROOT, '.github', 'scripts', 'local')
+        path.join(fixture, '.github', 'skills', 'local', '__test-local-skill__'),
+        path.join(fixture, '.github', 'instructions', 'local'),
+        path.join(fixture, '.github', 'prompts', 'local'),
+        path.join(fixture, '.github', 'agents', 'local'),
+        path.join(fixture, '.github', 'scripts', 'local')
     ];
     const tempFiles = [
         path.join(tempDirs[0], 'SKILL.md'),
@@ -184,18 +202,17 @@ test('manifest: regenerates without leaking local/ entries (active filter test)'
         path.join(tempDirs[4], 'test-local.cjs')
     ];
 
-    const originalManifest = fs.readFileSync(MANIFEST_PATH, 'utf8');
     try {
         // Seed temp local/ dirs + sentinel files.
         for (const d of tempDirs) fs.mkdirSync(d, { recursive: true });
         for (const f of tempFiles) fs.writeFileSync(f, '<!-- test sentinel -->\n');
 
         // Regenerate the manifest (no --check; write mode).
-        const result = spawnSync('node', [SCRIPT], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 30000 });
+        const result = spawnSync('node', [SCRIPT, '--root', fixture], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 30000 });
         assert.equal(result.status, 0, `regen failed: ${result.stderr}`);
 
         // Read the freshly-written manifest, assert no local/ leakage.
-        const fresh = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
+        const fresh = JSON.parse(fs.readFileSync(fixtureManifest, 'utf8'));
         const allEntries = [
             ...fresh.skills,
             ...fresh.skill_files,
@@ -209,18 +226,7 @@ test('manifest: regenerates without leaking local/ entries (active filter test)'
             'local/ entries leaked into manifest despite filter — the local-filter logic regressed'
         );
     } finally {
-        // Restore the original manifest content (the regen overwrote it).
-        fs.writeFileSync(MANIFEST_PATH, originalManifest);
-        // Tear down temp dirs in reverse-depth order.
-        for (const f of tempFiles) {
-            try { fs.unlinkSync(f); } catch { /* best effort */ }
-        }
-        for (const d of [...tempDirs].reverse()) {
-            try { fs.rmdirSync(d); } catch { /* best effort — may not be empty if a real local/ exists */ }
-        }
-        // The deepest skills/local/__test-local-skill__ has a parent skills/local
-        // we also want to remove if we created it.
-        try { fs.rmdirSync(path.join(REPO_ROOT, '.github', 'skills', 'local')); } catch { /* best effort */ }
+        fs.rmSync(fixture, { recursive: true, force: true });
     }
 });
 

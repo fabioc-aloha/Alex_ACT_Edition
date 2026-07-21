@@ -31,6 +31,7 @@ A candidate must pass **all six** to ship. Failure on any gate = decline or revi
 | Check | Pass criterion |
 |---|---|
 | Frontmatter present | `name` + `description` + `lastReviewed` are required. Tool allowlist field (`tools:`) per current Microsoft Learn agent spec. VS Code agent-spec metadata fields are permitted: `user-invocable`, `disable-model-invocation`, `model`. Reject legacy / drift fields: `type`, `application`, `tier`, `currency`, `inheritance`, `lifecycle`. |
+| `model` is cross-host | Omit `model` or use one scalar string accepted by every supported profile. A model array fails Copilot CLI loading and is a Gate 1 failure. |
 | `name` valid | kebab-case, matches filename stem |
 | `description` valid | Third-person, ≤1024 chars, names the agent's *role* (what it is) AND when the parent should delegate to it. |
 | Filename pattern | `<kebab-name>.agent.md` in `.github/agents/` (flat — no subfolders) |

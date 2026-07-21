@@ -4,15 +4,23 @@
 
 > Artificial Critical Thinking for GitHub Copilot.
 
-## Quick Start (3 lines)
+## Universal Edition Candidate
+
+This isolated candidate keeps current Edition capability and adds explicit
+`vscode` and `copilot-app` profiles. Copilot CLI is an invocation mode of the
+`copilot-app` profile, not a third Edition.
+
+For any existing project, run the dry-run adoption planner first. Never run the
+fresh-project bootstrap over a non-empty repository.
 
 ```bash
-git clone https://github.com/fabioc-aloha/Alex_ACT_Edition.git ~/Development/Alex_ACT_Edition
-cp ~/Development/Alex_ACT_Edition/init-edition.cjs ~/Development/ && cd <your-project> && node ~/Development/init-edition.cjs --apply
-# open the project in VS Code → run /welcome in Copilot Chat
+node <edition>/.github/scripts/adopt-edition.cjs --source <edition> --target . --profile copilot-app --plan-out .act-adoption-plan.json
+# Review the plan, then apply its exact plan_hash:
+node <edition>/.github/scripts/adopt-edition.cjs --apply --plan .act-adoption-plan.json --accept-plan-sha <sha256>
 ```
 
-Two other paths exist (clone-and-`/initialize` for an existing workspace, or the VS Code Marketplace extension). The 3-line block above is the fastest happy path; see [Quick Start](#quick-start) for all three.
+See [Universal Edition Candidate Operations](docs/UNIVERSAL-EDITION-CANDIDATE.md)
+for VS Code setup, conflict decisions, diagnostics, rollback, and current limits.
 
 ---
 
@@ -22,16 +30,13 @@ ACT Edition changes that. Not by making AI "smarter," but by making it **honest*
 
 A confident wrong answer is worse than an uncertain correct answer. ACT shifts the default from "sound authoritative" to "show your work." When the AI doesn't know, it says "I don't know." When it's uncertain, it quantifies the uncertainty. When it challenges your framing, it explains why. Debugging a confident hallucination takes hours. Verifying a well-reasoned hypothesis takes minutes.
 
-This is a **cognitive architecture** -- 38 skills, 36 instructions, 29 prompts, and 4 worker agents that teach your AI assistant to think critically about its own reasoning. Built for GitHub Copilot's `.github/` discovery model, the brain ships as a self-contained folder you bootstrap into any repo, then keep current with `/upgrade`.
+This is a **cognitive architecture** -- 38 skills, 36 instructions, 25 prompts active by default, four VS Code profile prompt wrappers, and 4 worker agents that teach your AI assistant to think critically about its own reasoning. Built for GitHub Copilot's `.github/` discovery model, the brain ships as a self-contained folder you adopt or bootstrap into a repo, then keep current with `/upgrade`.
 
 ### Release status
 
-The current tagged release is **v4.0.1**. It includes encrypted, on-demand
-Memory profiles and the release-blocking ten-tenet canon guard. Edition `main`
-also contains an **Unreleased** exact-name local-secret source: explicit
-workflows can resolve one named variable from process, explicit-file, project
-`.env`, then sibling Memory `.env` sources. Extension users receive that
-fallback only after a separately approved Edition release (proposed v4.1.0).
+The current tagged release is **v4.1.0**. This candidate is an isolated
+experiment based on later Edition `main`; it is not a release or supported
+surface declaration.
 
 ## Model Compatibility
 
