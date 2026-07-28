@@ -26,11 +26,11 @@ This is a **cognitive architecture** -- 38 skills, 36 instructions, 29 prompts, 
 
 ### Release status
 
-The current tagged release is **v4.1.0**. It includes encrypted, on-demand
+The current tagged release is **v4.2.0**. It includes encrypted, on-demand
 Memory profiles, the release-blocking ten-tenet canon guard, exact-name local
-secret resolution, and the recursive heir-doctor fix. Edition `main` also
-contains Unreleased Mall 3.0.0 compatibility guidance; Mall 3.0.0 must not ship
-until template heirs upgrade to the Edition release carrying that contract.
+secret resolution, the recursive heir-doctor fix, and version-aware Mall 3.0.0
+legacy installation guidance. Mall 3.0.0 must not ship until target template
+heirs upgrade to v4.2.0 and pass compatibility verification.
 
 ## Model Compatibility
 

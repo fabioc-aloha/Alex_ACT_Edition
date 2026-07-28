@@ -6,11 +6,27 @@ All notable changes to Alex ACT Edition.
 
 ## [Unreleased]
 
+## [4.2.0] - 2026-07-28
+
+**Minor [constitutional] - Mall 3 legacy compatibility and current Alex branding.**
+
 ### Changed
 
 - `[behaviour]` Added version-aware legacy installation guidance for Mall 3.0.0 nested skills, agents, compatible commands, and MCP servers while retaining the Mall 2 root-layout fallback. Installs now record exact `component_paths`; refresh and removal refuse guessed paths. Mall 3.0.0 must not ship until template heirs upgrade to the Edition release carrying this contract.
 - `[behaviour]` Aligned the banner prompt, skill, and generator with the current Alex brand: 1200x320 output, canonical x-loop, navy/emerald/teal/cyan palette, zero letter spacing, and a self-contained bundled mark. The stable CLI and output paths are unchanged; the prompt now uses the correct `--out` flag.
 - `[clarification]` Updated the Edition README, package description, and banner to use `Alex ACT Edition` with the descriptor `Artificial Critical Thinking for GitHub Copilot`.
+
+### Brain contract
+
+No change: `min_extension_version` remains `9.5.1`, `brain_subtrees` remains `[.github]`, `marker_schema` remains v2, and manifest spec remains `1.4`.
+
+### Heir upgrade
+
+Upgrade template and legacy heirs to v4.2.0 before Mall 3.0.0 GA. The updated `/mall-install` and `/mall-refresh` workflows understand Mall 3 nested components, preserve Mall 2 root-layout fallback, and record exact installed `component_paths`. Unchanged Edition 3.x brains are not protected by this compatibility path.
+
+### Falsifier
+
+Review by **2026-10-28**, or immediately if two distinct Mall 3 plugin shapes fail guided installation, `component_paths` removes an unrecorded or user-owned path, Mall 2 fallback breaks, or rollout guidance implies unchanged 3.x brains are protected.
 
 ## [4.1.0] - 2026-07-13
 
