@@ -9,7 +9,7 @@
  *   - Loads the Mall trust-scored catalog index (catalog/index.json, schema 3.0)
  *     from a local sibling clone first, then GitHub raw as fallback.
  *   - Reads local plugin manifests from .github/skills/local/<plugin>/.install.json
- *     (preferred — written by /mall-install when shipped) or plugin.json (legacy).
+ *     (preferred, written by /mall-install) or plugin.json (legacy).
  *   - Classifies each local plugin as:
  *     IN_SYNC | UPDATED_UPSTREAM | DEPRECATED_UPSTREAM | UNMANAGED_LOCAL_PLUGIN
  *   - Emits summary + table (or JSON with --json).
@@ -189,6 +189,9 @@ function scanLocalPluginDirs(localSkillsDir) {
             store: String(manifest.store || 'plugin-mall'),
             version: String(manifest.version_at_install || manifest.version || ''),
             source_url_at_install: String(manifest.source_url || ''),
+            component_paths: Array.isArray(manifest.component_paths)
+                ? manifest.component_paths.map((entry) => String(entry))
+                : [],
         };
 
         rows.push({
@@ -196,6 +199,7 @@ function scanLocalPluginDirs(localSkillsDir) {
             store: normalised.store,
             version_at_install: normalised.version,
             source_url_at_install: normalised.source_url_at_install,
+            component_paths: normalised.component_paths,
             plugin_dir: pluginDir,
             manifest_path: manifestPath,
             manifest_kind: manifestPath === installManifestPath ? 'install' : 'legacy',
@@ -384,6 +388,7 @@ async function main() {
                 plugin_dir: r.plugin_dir,
                 manifest_path: r.manifest_path || null,
                 manifest_kind: r.manifest_kind || null,
+                component_paths: r.component_paths || [],
             })),
         }, null, 2));
     } else if (!quiet) {
@@ -411,11 +416,15 @@ async function main() {
     process.exit(actionable > 0 ? 1 : 0);
 }
 
-main().catch((err) => {
-    if (jsonMode) {
-        console.log(JSON.stringify({ ok: false, error: err.message || String(err) }, null, 2));
-    } else {
-        console.error(`ERROR: ${err.message || err}`);
-    }
-    process.exit(2);
-});
+if (require.main === module) {
+    main().catch((err) => {
+        if (jsonMode) {
+            console.log(JSON.stringify({ ok: false, error: err.message || String(err) }, null, 2));
+        } else {
+            console.error(`ERROR: ${err.message || err}`);
+        }
+        process.exit(2);
+    });
+}
+
+module.exports = { classify, scanLocalPluginDirs, summarize };

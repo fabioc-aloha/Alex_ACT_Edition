@@ -8,6 +8,7 @@ All notable changes to Alex ACT Edition.
 
 ### Changed
 
+- `[behaviour]` Added version-aware legacy installation guidance for Mall 3.0.0 nested skills, agents, compatible commands, and MCP servers while retaining the Mall 2 root-layout fallback. Installs now record exact `component_paths`; refresh and removal refuse guessed paths. Mall 3.0.0 must not ship until template heirs upgrade to the Edition release carrying this contract.
 - `[behaviour]` Aligned the banner prompt, skill, and generator with the current Alex brand: 1200x320 output, canonical x-loop, navy/emerald/teal/cyan palette, zero letter spacing, and a self-contained bundled mark. The stable CLI and output paths are unchanged; the prompt now uses the correct `--out` flag.
 - `[clarification]` Updated the Edition README, package description, and banner to use `Alex ACT Edition` with the descriptor `Artificial Critical Thinking for GitHub Copilot`.
 

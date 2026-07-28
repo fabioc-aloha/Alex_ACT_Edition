@@ -26,12 +26,11 @@ This is a **cognitive architecture** -- 38 skills, 36 instructions, 29 prompts, 
 
 ### Release status
 
-The current tagged release is **v4.0.1**. It includes encrypted, on-demand
-Memory profiles and the release-blocking ten-tenet canon guard. Edition `main`
-also contains an **Unreleased** exact-name local-secret source: explicit
-workflows can resolve one named variable from process, explicit-file, project
-`.env`, then sibling Memory `.env` sources. Extension users receive that
-fallback only after a separately approved Edition release (proposed v4.1.0).
+The current tagged release is **v4.1.0**. It includes encrypted, on-demand
+Memory profiles, the release-blocking ten-tenet canon guard, exact-name local
+secret resolution, and the recursive heir-doctor fix. Edition `main` also
+contains Unreleased Mall 3.0.0 compatibility guidance; Mall 3.0.0 must not ship
+until template heirs upgrade to the Edition release carrying that contract.
 
 ## Model Compatibility
 
@@ -352,7 +351,7 @@ The script clones Edition into a temp dir, diffs edition-owned paths, never touc
 
 Two shared surfaces complete the architecture:
 
-- **[Alex ACT Memory](https://github.com/fabioc-aloha/Alex_ACT_Memory)** — a local-first sibling Git repository for announcements, stripped feedback, durable knowledge, provisional insights, and optional encrypted profiles. A remote is optional; repository access defines its audience. Profile reads are explicit, not session-start behavior. The tracked `.env.example` documents machine-local secret setup; real `.env` remains ignored and untracked. The Memory `.env` exact-name fallback is currently `Unreleased` and proposed for Edition v4.1.0.
+- **[Alex ACT Memory](https://github.com/fabioc-aloha/Alex_ACT_Memory)** — a local-first sibling Git repository for announcements, stripped feedback, durable knowledge, provisional insights, and optional encrypted profiles. A remote is optional; repository access defines its audience. Profile reads are explicit, not session-start behavior. The tracked `.env.example` documents machine-local secret setup; real `.env` remains ignored and untracked. Edition v4.1.0 added the sibling Memory `.env` exact-name fallback.
 - **[Alex ACT Plugin Mall](https://github.com/fabioc-aloha/Alex_Skill_Mall)** — public catalog of optional plugins across security, Azure, data, healthcare, architecture, publishing, and more. Edition ships lean; the Mall extends it. Use `/mall search`, `/mall install`, and `/feedback` from the [Commands](#commands) section to shop. Skills install into `.github/skills/local/` so they survive Edition upgrades. The Mall also offers patterns, scaffolds, and a complete Supervisor package for users who want to run their own fleet governance.
 
 ## The ACT Pass: How It Works
