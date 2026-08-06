@@ -2,7 +2,35 @@
 
 ![Alex ACT Edition: Artificial Critical Thinking for GitHub Copilot](assets/banner-readme.svg)
 
-> Artificial Critical Thinking for GitHub Copilot.
+*Artificial Critical Thinking for GitHub Copilot.*
+
+> [!IMPORTANT]
+> **Deprecated and no longer maintained.** This repository is a frozen snapshot
+> of the former workspace-template distribution. It receives no new brain
+> fixes, compatibility updates, or releases. Do not bootstrap new projects from
+> this repository. Install the supported plugin-native Alex ACT 1.0.0
+> constellation from [Alex ACT Core](https://github.com/fabioc-aloha/Alex_ACT_Core)
+> instead.
+
+## Migrate to plugin-native Alex ACT
+
+1. Commit or back up your workspace. Preserve project-owned files, especially
+   `.github/copilot-instructions.local.md` and anything under
+   `.github/{skills,instructions,prompts,agents}/local/`.
+2. Stop using Edition `/initialize` and `/upgrade`; remove the old
+   Edition-managed brain files from the workspace only after separating them
+   from project-owned GitHub configuration and local customizations.
+3. Follow the [current installation guide](https://github.com/fabioc-aloha/Alex_ACT_Core/blob/main/INSTALL.md)
+   to register `alex-mall`, install Manager and Core, and run
+   `/alex-act-manager install-constellation`.
+4. Approve the 16-file instruction bootstrap if you want ACT discipline in
+   every workspace, then restore only the local customizations you preserved.
+5. Run `/alex-act-manager plugin-status` and confirm the installed, enabled,
+   instruction, skill, user-settings, and workspace planes.
+
+For the safest migration, start in a clean workspace and add project-specific
+customizations back deliberately. Do not copy the full legacy `.github/` brain
+onto a plugin-native installation; both copies can load and drift independently.
 
 ## Quick Start (3 lines)
 
